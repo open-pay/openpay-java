@@ -18,9 +18,9 @@ public class CustomerOperationsTest {
 
     private static String root = "http://localhost:8081/Services";
 
-    private String customerId = "YATTOS-1324546765";
+    private String customerId = "hgqemgk8g368fqw79i35";
 
-    private String apiKey = "1092834756";
+    private String apiKey = "5eb59e956b614015b0a81cb311b892f4";
 
     @Before
     public void setUp() throws Exception {
@@ -29,7 +29,7 @@ public class CustomerOperationsTest {
 
     @Test
     public void testCollectFee() throws ServiceUnavailable, HttpError {
-        String ewalletId = "Yattos-User-10-12345";
+        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
         Double feeAmount = 10.00;
         String desc = "Pago de taxi";
         

@@ -21,9 +21,9 @@ public class EwalletOperationsTest {
 
     private static String root = "http://localhost:8081/Services";
 
-    private String customerId = "YATTOS-1324546765";
+    private String customerId = "hgqemgk8g368fqw79i35";
 
-    private String apiKey = "1092834756";
+    private String apiKey = "5eb59e956b614015b0a81cb311b892f4";
 
     @Before
     public void setUp() throws Exception {
@@ -32,7 +32,7 @@ public class EwalletOperationsTest {
 
     @Test
     public void testCollectFunds() throws ServiceUnavailable, HttpError {
-        String ewalletId = "Yattos-User-10-12345";
+        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
         Double amount = 10000.00;
         String desc = "Pago de taxi";
 
@@ -48,7 +48,7 @@ public class EwalletOperationsTest {
 
     @Test
     public void testSendFunds() throws ServiceUnavailable, HttpError {
-        String ewalletId = "Yattos-User-10-12345";
+        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
         Double amount = 1.00;
         String desc = "Pago de ganancias";
 
@@ -75,15 +75,14 @@ public class EwalletOperationsTest {
 
     @Test
     public void testGetBalance() throws ServiceUnavailable, HttpError {
-        String ewalletId = "zkln17psnqfv51e3pipd";
+        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
         Double balance = this.openPayServices.getBalance(ewalletId);
         Assert.assertNotNull(balance);
-        Assert.assertEquals(0.00D, balance.doubleValue());
     }
 
     @Test
     public void testGetAndUpdateEwallet() throws ServiceUnavailable, HttpError {
-        String ewalletId = "zkln17psnqfv51e3pipd";
+        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
         Ewallet ewallet = this.openPayServices.getEwallet(ewalletId);
         Assert.assertNotNull(ewallet);
 
@@ -94,7 +93,7 @@ public class EwalletOperationsTest {
 
     @Test
     public void testActivateAndInactivateEwallet() throws ServiceUnavailable, HttpError {
-        String ewalletId = "dvbccca5n7zps31cakug";
+        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
         Ewallet ewallet = this.openPayServices.getEwallet(ewalletId);
         Assert.assertNotNull(ewallet);
         
@@ -117,9 +116,9 @@ public class EwalletOperationsTest {
         address.setCity("Distrito Federal");
         address.setExteriorNumber("11");
         address.setInteriorNumber("01");
-        address.setPostalCode("23122");
+        address.setPostalCode("12345");
         address.setRegion("Naucalpan");
-        address.setStreet("Camino");
+        address.setStreet("Camino Real");
         Ewallet ewallet = this.openPayServices.createEwallet("Juan", "Perez Perez", "juan.perez@gmail.com",
                 "55-25634013", address);
         Assert.assertNotNull(ewallet);
