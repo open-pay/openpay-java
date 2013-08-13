@@ -1,4 +1,4 @@
-package mx.openpay.exceptions;
+package mx.openpay.client.exceptions;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,6 @@
-package mx.openpay;
+package mx.openpay.client;
+
+import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,10 @@ public class BankAccount {
     
     private String status;
     
-    private Bank bank;
+    @SerializedName("bank_name")
+    private String bankName;
+
+    @SerializedName("bank_code")
+    private String bankCode;
     
 }

@@ -1,4 +1,4 @@
-package mx.openpay.core;
+package mx.openpay.client.core;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import mx.openpay.exceptions.HttpError;
-import mx.openpay.exceptions.ServiceUnavailable;
+import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;

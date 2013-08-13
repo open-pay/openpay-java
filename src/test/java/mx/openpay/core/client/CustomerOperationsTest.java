@@ -1,12 +1,13 @@
-package mx.openpay.core;
+package mx.openpay.core.client;
 
 import java.util.List;
 
-import mx.openpay.Ewallet;
-import mx.openpay.OpenPayServices;
-import mx.openpay.Transaction;
-import mx.openpay.exceptions.HttpError;
-import mx.openpay.exceptions.ServiceUnavailable;
+import mx.openpay.client.Ewallet;
+import mx.openpay.client.OpenPayServices;
+import mx.openpay.client.Transaction;
+import mx.openpay.client.core.OpenPayServicesImpl;
+import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.junit.Assert;
 import org.junit.Before;

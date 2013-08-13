@@ -1,12 +1,13 @@
-package mx.openpay.core;
+package mx.openpay.core.client;
 
 import java.util.List;
 
-import mx.openpay.Address;
-import mx.openpay.Card;
-import mx.openpay.OpenPayServices;
-import mx.openpay.exceptions.HttpError;
-import mx.openpay.exceptions.ServiceUnavailable;
+import mx.openpay.client.Address;
+import mx.openpay.client.Card;
+import mx.openpay.client.OpenPayServices;
+import mx.openpay.client.core.OpenPayServicesImpl;
+import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,6 +36,7 @@ public class CardOperationsTest {
         for (Card card : cards) {
             Assert.assertNotNull(card);
             Assert.assertNotNull(card.getId());
+            Assert.assertEquals("BANCOMER", card.getBankName());
         }
     }
 

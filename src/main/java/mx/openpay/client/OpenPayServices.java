@@ -1,10 +1,10 @@
-package mx.openpay;
+package mx.openpay.client;
 
 import java.util.Date;
 import java.util.List;
 
-import mx.openpay.exceptions.HttpError;
-import mx.openpay.exceptions.ServiceUnavailable;
+import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.ServiceUnavailable;
 
 public interface OpenPayServices {
 

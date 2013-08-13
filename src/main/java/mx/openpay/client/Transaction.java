@@ -1,4 +1,4 @@
-package mx.openpay;
+package mx.openpay.client;
 
 import java.util.Date;
 

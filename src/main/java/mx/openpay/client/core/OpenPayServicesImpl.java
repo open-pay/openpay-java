@@ -7,7 +7,7 @@
  * You shall not disclose such Confidential Information and shall use it only
  * in accordance with the company policy.
  */
-package mx.openpay.core;
+package mx.openpay.client.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mx.openpay.Address;
-import mx.openpay.BankAccount;
-import mx.openpay.Card;
-import mx.openpay.Ewallet;
-import mx.openpay.OpenPayServices;
-import mx.openpay.Transaction;
-import mx.openpay.exceptions.HttpError;
-import mx.openpay.exceptions.ServiceUnavailable;
+import mx.openpay.client.Address;
+import mx.openpay.client.BankAccount;
+import mx.openpay.client.Card;
+import mx.openpay.client.Ewallet;
+import mx.openpay.client.OpenPayServices;
+import mx.openpay.client.Transaction;
+import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import com.google.gson.reflect.TypeToken;
 

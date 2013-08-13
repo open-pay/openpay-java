@@ -1,4 +1,4 @@
-package mx.openpay;
+package mx.openpay.client;
 
 import lombok.Getter;
 import lombok.Setter;

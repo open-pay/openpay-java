@@ -1,11 +1,12 @@
-package mx.openpay.core;
+package mx.openpay.core.client;
 
 import java.util.List;
 
-import mx.openpay.BankAccount;
-import mx.openpay.OpenPayServices;
-import mx.openpay.exceptions.HttpError;
-import mx.openpay.exceptions.ServiceUnavailable;
+import mx.openpay.client.BankAccount;
+import mx.openpay.client.OpenPayServices;
+import mx.openpay.client.core.OpenPayServicesImpl;
+import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -38,8 +39,8 @@ public class BankAccountOperationsTest {
             BankAccount account = this.openPayServices.getBank(ewalletId, bankId);
             Assert.assertNotNull(account);
             Assert.assertNotNull(account.getId());
-            Assert.assertNotNull(account.getBank());
-            Assert.assertEquals("BANCOMER", account.getBank().getName());
+            Assert.assertNotNull(account.getBankName());
+            Assert.assertEquals("BANCOMER", account.getBankName());
         }
     }
 
