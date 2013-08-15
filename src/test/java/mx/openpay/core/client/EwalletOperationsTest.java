@@ -35,7 +35,7 @@ public class EwalletOperationsTest {
     public void testCollectFunds() throws ServiceUnavailable, HttpError {
         String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
         Double amount = 10000.00;
-        String desc = "Pago de taxi";
+        String desc = "Taxi pay";
 
         List<Card> cards = this.openPayServices.getCards(ewalletId, 0, 10);
         Assert.assertNotNull(cards);
@@ -51,7 +51,7 @@ public class EwalletOperationsTest {
     public void testSendFunds() throws ServiceUnavailable, HttpError {
         String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
         Double amount = 1.00;
-        String desc = "Pago de ganancias";
+        String desc = "Earnings of september";
 
         List<BankAccount> bankAccounts = this.openPayServices.getBankAccounts(ewalletId, 0, 10);
         Assert.assertNotNull(bankAccounts);

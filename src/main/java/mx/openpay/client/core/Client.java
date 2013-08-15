@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
@@ -47,6 +48,7 @@ import com.google.gson.JsonParseException;
 /**
  * @author Heber Lazcano
  */
+@Slf4j
 public class Client {
 
     private static final String AGENT = "openpay-java/";
@@ -198,14 +200,15 @@ public class Client {
                 throw new ServiceUnavailable(e);
             }
         }
-        System.out.println("Time: " + (System.currentTimeMillis() - init));
-
+        log.debug("Request Time: " + (System.currentTimeMillis() - init));
+        init = System.currentTimeMillis();
         StatusLine status = response.getStatusLine();
         if (status.getStatusCode() >= 299) {
             if (contentType != null && contentType.startsWith(ContentType.APPLICATION_JSON.getMimeType())) {
                 HttpError error = this.deserialize(body, HttpError.class, null);
                 throw error;
             } else {
+                System.err.println("No Json response: " + body);
                 throw new HttpError("[" + status.getStatusCode() + "] Internal server error");
             }
         } else {
@@ -213,21 +216,19 @@ public class Client {
                 payload = this.deserialize(body, clazz, type);
             }
         }
+        log.debug("Parse Time: " + (System.currentTimeMillis() - init));
         return payload;
     }
 
     private String serialize(final Object payload) {
         Gson gson = new Gson();
-        return gson.toJson(payload);
-        // ObjectMapper objectMapper = new ObjectMapper();
-        // try {
-        // return objectMapper.writeValueAsString(payload);
-        // } catch (JsonProcessingException e) {
-        // return "";
-        // }
+        String data = gson.toJson(payload);
+        log.debug("Request: " + data);
+        return data;
     }
 
     private <T> T deserialize(String body, Class<T> clazz, Type type) {
+        log.debug("Response: " + body);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter( Date.class, new JsonDeserializer<Date>() {
 
@@ -248,14 +249,5 @@ public class Client {
         } else {
             return gson.fromJson(body, type);
         }
-        // ObjectMapper objectMapper = new ObjectMapper();
-        // try {
-        // return objectMapper.readValue(body, new TypeReference<List<Card>>() {
-        // });
-        //
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // return null;
-        // }
     }
 }

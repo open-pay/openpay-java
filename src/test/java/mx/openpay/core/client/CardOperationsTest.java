@@ -69,10 +69,21 @@ public class CardOperationsTest {
         address.setStreet("Camino");
 
         try {
-            this.openPayServices.createCard(ewalletId, "5243385358972033", "heber lazcano", "111", "09", "14", address);
+            this.openPayServices.createCard(ewalletId, "5243385358972033", "Juanito Perez Perez", "111", "09", "14", address);
             Assert.fail("Card should be exists.");
         } catch (HttpError e) {
             Assert.assertEquals(409, e.getHttpCode().intValue());
+        }
+    }
+    
+    @Test
+    public void testCreateDespositCard() throws ServiceUnavailable {
+        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
+
+        try {
+            this.openPayServices.createDepositCard(ewalletId, "5243385358972033", "Juanito Perez", "012");
+        } catch (HttpError e) {
+            Assert.fail(e.getMessage());
         }
     }
 }

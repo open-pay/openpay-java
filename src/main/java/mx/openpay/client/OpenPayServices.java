@@ -32,12 +32,15 @@ public interface OpenPayServices {
     public Transaction sendFunds(String ewalletId, String destinationId, Double amount, String description,
             String orderID) throws ServiceUnavailable, HttpError;
 
-    public Transaction collectFunds(String ewalletId, String sourceId, Double amount, String description,
-            String orderID) throws ServiceUnavailable, HttpError;
+    public Transaction collectFunds(String ewalletId, String sourceId, Double amount, String description, String orderID)
+            throws ServiceUnavailable, HttpError;
 
     // CARD
     public Card createCard(final String ewalletId, final String number, String holderName, final String cvv2,
             final String expMonth, final String expYear, final Address address) throws ServiceUnavailable, HttpError;
+
+    public Card createDepositCard(String ewalletId, String cardNumber, String holderName, String bankCode)
+            throws ServiceUnavailable, HttpError;
 
     public Card getCard(final String ewalletId, final String cardId) throws ServiceUnavailable, HttpError;
 
