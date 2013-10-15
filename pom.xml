@@ -45,4 +45,24 @@
 			<version>1.7.5</version>
 		</dependency>
   </dependencies>
+  
+  <distributionManagement>
+		<!-- Publish the versioned releases here -->
+		<repository>
+			<id>nexus-facelend</id>
+			<name>RepositoryProxy</name>
+			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
+		</repository>
+		<!-- Publish the snapshots here -->
+		<snapshotRepository>
+			<id>nexus-facelend</id>
+			<name>RepositoryProxy</name>
+			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<organization>
+		<name>OpenCard Inc.</name>
+		<url>www.opencard.mx</url>
+	</organization>
 </project>
