@@ -182,7 +182,7 @@ public class Client {
         try {
             response = this.httpClient.execute(request);
         } catch (ClientProtocolException e) {
-            throw new RuntimeException(e);
+            throw new ServiceUnavailable(e);
         } catch (IOException e) {
             throw new ServiceUnavailable(e);
         }

@@ -20,11 +20,11 @@ public class CustomerOperationsTest {
 
     private OpenPayServices openPayServices;
 
-    private static String root = "http://localhost:8081/Services";
+    private static String root = "http://localhost:8080/Services";
 
-    private String merchantId = "hgqemgk8g368fqw79i35";
+    private String merchantId = "m7psroutl8tycqtcmxly";
 
-    private String apiKey = "5eb59e956b614015b0a81cb311b892f4";
+    private String apiKey = "e97b8bf7728242c0aa97b409a4c59236";
 
     @Before
     public void setUp() throws Exception {
@@ -33,23 +33,22 @@ public class CustomerOperationsTest {
 
     @Test
     public void testCollectFunds() throws ServiceUnavailable, HttpError {
-        String customerId = "ls0jzlyrwvjqm1kk3vwg";
+        String customerId = "agt0tslutb7tyz4nu1ce";
         Double amount = 10000.00;
         String desc = "Taxi pay";
 
         List<Card> cards = this.openPayServices.getCards(customerId, 0, 10);
         Assert.assertNotNull(cards);
 
-        Transaction transaction = this.openPayServices.collectFunds(customerId, cards.get(0).getId(), amount, desc, "1");
+        Transaction transaction = this.openPayServices.collectFunds(customerId, cards.get(0).getId(), amount, desc, "11");
         Assert.assertNotNull(transaction);
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getMemo());
-        Assert.assertEquals(customerId, transaction.getCustomerId());
     }
 
     @Test
     public void testSendFunds() throws ServiceUnavailable, HttpError {
-        String customerId = "ls0jzlyrwvjqm1kk3vwg";
+        String customerId = "agt0tslutb7tyz4nu1ce";
         Double amount = 1.00;
         String desc = "Earnings of september";
 
@@ -76,14 +75,14 @@ public class CustomerOperationsTest {
 
     @Test
     public void testGetBalance() throws ServiceUnavailable, HttpError {
-        String customerId = "ls0jzlyrwvjqm1kk3vwg";
+        String customerId = "agt0tslutb7tyz4nu1ce";
         Double balance = this.openPayServices.getBalance(customerId);
         Assert.assertNotNull(balance);
     }
 
     @Test
     public void testGetAndUpdateCustomer() throws ServiceUnavailable, HttpError {
-        String customerId = "ls0jzlyrwvjqm1kk3vwg";
+        String customerId = "agt0tslutb7tyz4nu1ce";
         Customer customer = this.openPayServices.getCustomer(customerId);
         Assert.assertNotNull(customer);
 
@@ -94,7 +93,7 @@ public class CustomerOperationsTest {
 
     @Test
     public void testActivateAndInactivateCustomer() throws ServiceUnavailable, HttpError {
-        String customerId = "ls0jzlyrwvjqm1kk3vwg";
+        String customerId = "agt0tslutb7tyz4nu1ce";
         Customer customer = this.openPayServices.getCustomer(customerId);
         Assert.assertNotNull(customer);
         

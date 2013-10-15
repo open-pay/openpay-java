@@ -16,11 +16,11 @@ public class BankAccountOperationsTest {
 
     private OpenPayServices openPayServices;
 
-    private static String root = "http://localhost:8081/Services";
+    private static String root = "http://localhost:8080/Services";
 
-    private String customerId = "hgqemgk8g368fqw79i35";
+    private String customerId = "m7psroutl8tycqtcmxly";
 
-    private String apiKey = "5eb59e956b614015b0a81cb311b892f4";
+    private String apiKey = "e97b8bf7728242c0aa97b409a4c59236";
 
     @Before
     public void setUp() throws Exception {
@@ -29,14 +29,14 @@ public class BankAccountOperationsTest {
 
     @Test
     public void testCreateBankAccount() throws ServiceUnavailable, HttpError {
-        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
+        String customerId = "agt0tslutb7tyz4nu1ce";
         try {
-            this.openPayServices.createBank(ewalletId, "012680012570003085");
+            this.openPayServices.createBank(customerId, "012680012570003085");
             Assert.fail("Bank Account should be exists.");
         } catch (HttpError e) {
             Assert.assertEquals(409, e.getHttpCode().intValue());
-            String bankId = "gwe2pjtmmb2omkhrl8fo";
-            BankAccount account = this.openPayServices.getBank(ewalletId, bankId);
+            String bankId = "basok4hygm60d4mepsg6";
+            BankAccount account = this.openPayServices.getBank(customerId, bankId);
             Assert.assertNotNull(account);
             Assert.assertNotNull(account.getId());
             Assert.assertNotNull(account.getBankName());
@@ -46,8 +46,8 @@ public class BankAccountOperationsTest {
 
     @Test
     public void testGetBankAccounts() throws ServiceUnavailable, HttpError {
-        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
-        List<BankAccount> banksAccounts = this.openPayServices.getBankAccounts(ewalletId, 0, 100);
+        String customerId = "agt0tslutb7tyz4nu1ce";
+        List<BankAccount> banksAccounts = this.openPayServices.getBankAccounts(customerId, 0, 100);
         Assert.assertNotNull(banksAccounts);
         for (BankAccount bankAccount : banksAccounts) {
             Assert.assertNotNull(bankAccount);
@@ -57,16 +57,16 @@ public class BankAccountOperationsTest {
 
     @Test
     public void testGetBankAccount() throws ServiceUnavailable, HttpError {
-        String ewalletId = "ls0jzlyrwvjqm1kk3vwg";
-        String bankId = "gwe2pjtmmb2omkhrl8fo";
-        BankAccount bank = this.openPayServices.getBank(ewalletId, bankId);
+        String customerId = "agt0tslutb7tyz4nu1ce";
+        String bankId = "basok4hygm60d4mepsg6";
+        BankAccount bank = this.openPayServices.getBank(customerId, bankId);
         Assert.assertNotNull(bank);
 
-        bank = this.openPayServices.inactivateBank(ewalletId, bankId);
+        bank = this.openPayServices.inactivateBank(customerId, bankId);
         Assert.assertNotNull(bank);
         Assert.assertEquals("INACTIVE", bank.getStatus());
 
-        bank = this.openPayServices.activateBank(ewalletId, bankId);
+        bank = this.openPayServices.activateBank(customerId, bankId);
         Assert.assertNotNull(bank);
         Assert.assertEquals("ACTIVE", bank.getStatus());
     }

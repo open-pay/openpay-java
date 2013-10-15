@@ -17,11 +17,11 @@ public class MerchantOperationsTest {
 
     private OpenPayServices openPayServices;
 
-    private static String root = "http://localhost:8081/Services";
+    private static String root = "http://localhost:8080/Services";
 
-    private String customerId = "hgqemgk8g368fqw79i35";
+    private String customerId = "m7psroutl8tycqtcmxly";
 
-    private String apiKey = "5eb59e956b614015b0a81cb311b892f4";
+    private String apiKey = "e97b8bf7728242c0aa97b409a4c59236";
 
     @Before
     public void setUp() throws Exception {
@@ -30,15 +30,14 @@ public class MerchantOperationsTest {
 
     @Test
     public void testCollectFee() throws ServiceUnavailable, HttpError {
-        String customerId = "ls0jzlyrwvjqm1kk3vwg";
+        String customerId = "agt0tslutb7tyz4nu1ce";
         Double feeAmount = 10.00;
         String desc = "Pago de taxi";
         
-        Transaction transaction = this.openPayServices.collectFee(customerId, feeAmount, desc, "1");
+        Transaction transaction = this.openPayServices.collectFee(customerId, feeAmount, desc, "12");
         Assert.assertNotNull(transaction);
         Assert.assertEquals(feeAmount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getMemo());
-        Assert.assertEquals(customerId, transaction.getCustomerId());
     }
     
     @Test
