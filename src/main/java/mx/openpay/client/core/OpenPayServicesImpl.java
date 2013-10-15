@@ -19,7 +19,7 @@ import java.util.Map;
 import mx.openpay.client.Address;
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
-import mx.openpay.client.Ewallet;
+import mx.openpay.client.Customer;
 import mx.openpay.client.OpenPayServices;
 import mx.openpay.client.Transaction;
 import mx.openpay.client.exceptions.HttpError;
@@ -34,145 +34,145 @@ public class OpenPayServicesImpl implements OpenPayServices {
 
     private static String VERSION = "v1";
 
-    private static String CARD_PATH = "/%s/ewallets/%s/cards";
+    private static String CARD_PATH = "/%s/customers/%s/cards";
 
-    private static String EWALLET_PATH = "/%s/ewallets";
+    private static String CUSTOMER_PATH = "/%s/customers";
 
-    private static String CUSTOMER_PATH = "/%s";
+    private static String MERCHANT_PATH = "/%s";
 
-    private static String BANK_PATH = "/%s/ewallets/%s/bankaccounts";
+    private static String BANK_PATH = "/%s/customers/%s/bankaccounts";
 
-    private final String customerId;
+    private final String merchantId;
 
-    private Client client;
+    private Client serviceClient;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private static final String HTTP_RESOURCE_SEPARATOR = "/";
 
-    public OpenPayServicesImpl(final String customerId, final String apiKey, final String location) {
+    public OpenPayServicesImpl(final String merchantId, final String apiKey, final String location) {
         if (location.endsWith(HTTP_RESOURCE_SEPARATOR)) {
-            this.client = new Client(location + VERSION, apiKey);
+            this.serviceClient = new Client(location + VERSION, apiKey);
         } else {
-            this.client = new Client(location + HTTP_RESOURCE_SEPARATOR + VERSION, apiKey);
+            this.serviceClient = new Client(location + HTTP_RESOURCE_SEPARATOR + VERSION, apiKey);
         }
-        this.customerId = customerId;
+        this.merchantId = merchantId;
     }
 
     // CUSTOMER
 
-    public Transaction collectFee(String ewalletID, Double amount, String desc, String orderID)
+    public Transaction collectFee(String customerId, Double amount, String desc, String orderID)
             throws ServiceUnavailable, HttpError {
-        String path = String.format(CUSTOMER_PATH, this.customerId) + "/collect_fees";
+        String path = String.format(MERCHANT_PATH, this.merchantId) + "/collect_fees";
         Map<String, Object> data = new HashMap<String, Object>();
-        data.put("ewallet_id", ewalletID);
+        data.put("customer_id", customerId);
         data.put("amount", amount);
         data.put("description", desc);
         data.put("order_id", orderID);
-        return this.client.post(path, data, Transaction.class);
+        return this.serviceClient.post(path, data, Transaction.class);
     }
 
-    public List<Ewallet> getEwallets(Integer offset, Integer limit) throws ServiceUnavailable, HttpError {
-        String path = String.format(CUSTOMER_PATH, this.customerId) + "/ewallets";
+    public List<Customer> getCustomers(Integer offset, Integer limit) throws ServiceUnavailable, HttpError {
+        String path = String.format(MERCHANT_PATH, this.merchantId) + "/customers";
         Map<String, String> params = new HashMap<String, String>();
         params.put("limit", String.valueOf(limit));
         params.put("offset", String.valueOf(offset));
-        return this.client.getList(path, params, new TypeToken<Collection<Ewallet>>() {
+        return this.serviceClient.getList(path, params, new TypeToken<Collection<Customer>>() {
         }.getType());
     }
 
     public List<Transaction> getCollectedFees(Date fromDate, Date toDate) throws ServiceUnavailable, HttpError {
-        String path = String.format(CUSTOMER_PATH, this.customerId) + "/fees";
+        String path = String.format(MERCHANT_PATH, this.merchantId) + "/fees";
         Map<String, String> params = new HashMap<String, String>();
         params.put("from", this.simpleDateFormat.format(fromDate));
         params.put("to", this.simpleDateFormat.format(toDate));
-        return this.client.getList(path, params, new TypeToken<Collection<Transaction>>() {
+        return this.serviceClient.getList(path, params, new TypeToken<Collection<Transaction>>() {
         }.getType());
     }
 
-    // EWALLET
+    // CUSTOMER
 
-    public Ewallet createEwallet(final String name, final String lastName, final String email,
+    public Customer createCustomer(final String name, final String lastName, final String email,
             final String phoneNumber, final Address address) throws ServiceUnavailable, HttpError {
-        String path = String.format(EWALLET_PATH, this.customerId);
+        String path = String.format(CUSTOMER_PATH, this.merchantId);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("name", name);
         data.put("last_name", lastName);
         data.put("email", email);
         data.put("phone_number", phoneNumber);
         data.put("address", address);
-        return this.client.post(path, data, Ewallet.class);
+        return this.serviceClient.post(path, data, Customer.class);
     }
 
-    public Ewallet updateEwallet(final Ewallet ewallet) throws ServiceUnavailable, HttpError {
-        String path = String.format(EWALLET_PATH, this.customerId) + HTTP_RESOURCE_SEPARATOR + ewallet.getId();
-        return this.client.put(path, ewallet, Ewallet.class);
+    public Customer updateCustomer(final Customer customer) throws ServiceUnavailable, HttpError {
+        String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customer.getId();
+        return this.serviceClient.put(path, customer, Customer.class);
     }
 
-    public Ewallet getEwallet(String ewalletId) throws ServiceUnavailable, HttpError {
-        String path = String.format(EWALLET_PATH, this.customerId) + HTTP_RESOURCE_SEPARATOR + ewalletId;
-        return this.client.get(path, Ewallet.class);
+    public Customer getCustomer(String customerId) throws ServiceUnavailable, HttpError {
+        String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId;
+        return this.serviceClient.get(path, Customer.class);
     }
 
-    public Ewallet activateEwallet(String ewalletId) throws ServiceUnavailable, HttpError {
-        String path = String.format(EWALLET_PATH, this.customerId) + HTTP_RESOURCE_SEPARATOR + ewalletId + "/activate";
-        return this.client.put(path, null, Ewallet.class);
+    public Customer activateCustomer(String customerId) throws ServiceUnavailable, HttpError {
+        String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/activate";
+        return this.serviceClient.put(path, null, Customer.class);
     }
 
-    public Ewallet inactivateEwallet(String ewalletId) throws ServiceUnavailable, HttpError {
-        String path = String.format(EWALLET_PATH, this.customerId) + HTTP_RESOURCE_SEPARATOR + ewalletId
+    public Customer inactivateCustomer(String customerId) throws ServiceUnavailable, HttpError {
+        String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId
                 + "/inactivate";
-        return this.client.put(path, null, Ewallet.class);
+        return this.serviceClient.put(path, null, Customer.class);
     }
 
-    public Double getBalance(String ewalletId) throws ServiceUnavailable, HttpError {
-        String path = String.format(EWALLET_PATH, this.customerId) + HTTP_RESOURCE_SEPARATOR + ewalletId + "/balance";
-        return this.client.get(path, Double.class);
+    public Double getBalance(String customerId) throws ServiceUnavailable, HttpError {
+        String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/balance";
+        return this.serviceClient.get(path, Double.class);
     }
 
-    public Transaction sendFunds(String ewalletId, String destinationId, Double amount, String description,
+    public Transaction sendFunds(String customerId, String destinationId, Double amount, String description,
             String orderID) throws ServiceUnavailable, HttpError {
-        String path = String.format(EWALLET_PATH, this.customerId) + HTTP_RESOURCE_SEPARATOR + ewalletId
+        String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId
                 + "/send_funds";
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("destination_id", destinationId);
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
-        return this.client.post(path, data, Transaction.class);
+        return this.serviceClient.post(path, data, Transaction.class);
     }
 
-    public Transaction collectFunds(String ewalletId, String sourceId, Double amount, String description, String orderID)
+    public Transaction collectFunds(String customerId, String sourceId, Double amount, String description, String orderID)
             throws ServiceUnavailable, HttpError {
-        String path = String.format(EWALLET_PATH, this.customerId) + HTTP_RESOURCE_SEPARATOR + ewalletId
+        String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId
                 + "/collect_funds";
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("source_id", sourceId);
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
-        return this.client.post(path, data, Transaction.class);
+        return this.serviceClient.post(path, data, Transaction.class);
     }
 
     // CARDS
 
-    public Card getCard(String ewalletId, String cardId) throws ServiceUnavailable, HttpError {
-        String path = String.format(CARD_PATH, this.customerId, ewalletId) + HTTP_RESOURCE_SEPARATOR + cardId;
-        return this.client.get(path, Card.class);
+    public Card getCard(String customerId, String cardId) throws ServiceUnavailable, HttpError {
+        String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + cardId;
+        return this.serviceClient.get(path, Card.class);
     }
 
-    public List<Card> getCards(String ewalletId, int offset, int limit) throws ServiceUnavailable, HttpError {
-        String path = String.format(CARD_PATH, this.customerId, ewalletId);
+    public List<Card> getCards(String customerId, int offset, int limit) throws ServiceUnavailable, HttpError {
+        String path = String.format(CARD_PATH, this.merchantId, customerId);
         Map<String, String> params = new HashMap<String, String>();
         params.put("limit", String.valueOf(limit));
         params.put("offset", String.valueOf(offset));
-        return this.client.getList(path, params, new TypeToken<Collection<Card>>() {
+        return this.serviceClient.getList(path, params, new TypeToken<Collection<Card>>() {
         }.getType());
     }
 
-    public Card createCard(String ewalletId, String cardNumber, String holderName, String cvv2, String expMonth,
+    public Card createCard(String customerId, String cardNumber, String holderName, String cvv2, String expMonth,
             String expYear, Address address) throws ServiceUnavailable, HttpError {
-        String path = String.format(CARD_PATH, this.customerId, ewalletId);
+        String path = String.format(CARD_PATH, this.merchantId, customerId);
         Map<String, Object> cardData = new HashMap<String, Object>();
         cardData.put("card_number", cardNumber);
         cardData.put("cvv2", cvv2);
@@ -180,64 +180,64 @@ public class OpenPayServicesImpl implements OpenPayServices {
         cardData.put("expiration_year", expYear);
         cardData.put("holder_name", holderName);
         cardData.put("address", address);
-        return this.client.post(path, cardData, Card.class);
+        return this.serviceClient.post(path, cardData, Card.class);
     }
 
-    public Card createDepositCard(String ewalletId, String cardNumber, String holderName, String bankCode) throws ServiceUnavailable, HttpError {
-        String path = String.format(CARD_PATH, this.customerId, ewalletId) + "/deposit";
+    public Card createDepositCard(String customerId, String cardNumber, String holderName, String bankCode) throws ServiceUnavailable, HttpError {
+        String path = String.format(CARD_PATH, this.merchantId, customerId) + "/deposit";
         Map<String, Object> cardData = new HashMap<String, Object>();
         cardData.put("card_number", cardNumber);
         cardData.put("holder_name", holderName);
         cardData.put("bank_code", bankCode);
-        return this.client.post(path, cardData, Card.class);
+        return this.serviceClient.post(path, cardData, Card.class);
     }
 
-    public Card activateCard(String ewalletId, String cardId) throws ServiceUnavailable, HttpError {
-        String path = String.format(CARD_PATH, this.customerId, ewalletId) + HTTP_RESOURCE_SEPARATOR + cardId
+    public Card activateCard(String customerId, String cardId) throws ServiceUnavailable, HttpError {
+        String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + cardId
                 + "/activate";
-        return this.client.put(path, null, Card.class);
+        return this.serviceClient.put(path, null, Card.class);
     }
 
-    public Card inactivateCard(String ewalletId, String cardId) throws ServiceUnavailable, HttpError {
-        String path = String.format(CARD_PATH, this.customerId, ewalletId) + HTTP_RESOURCE_SEPARATOR + cardId
+    public Card inactivateCard(String customerId, String cardId) throws ServiceUnavailable, HttpError {
+        String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + cardId
                 + "/inactivate";
-        return this.client.put(path, null, Card.class);
+        return this.serviceClient.put(path, null, Card.class);
     }
 
     // BankAccount
 
-    public BankAccount createBank(String ewalletId, final String clabe) throws ServiceUnavailable, HttpError {
-        String path = String.format(BANK_PATH, this.customerId, ewalletId);
+    public BankAccount createBank(String customerId, final String clabe) throws ServiceUnavailable, HttpError {
+        String path = String.format(BANK_PATH, this.merchantId, customerId);
         Map<String, Object> bankData = new HashMap<String, Object>();
         bankData.put("clabe", clabe);
-        return this.client.post(path, bankData, BankAccount.class);
+        return this.serviceClient.post(path, bankData, BankAccount.class);
     }
 
-    public BankAccount getBank(String ewalletId, String bankId) throws ServiceUnavailable, HttpError {
-        String path = String.format(BANK_PATH, this.customerId, ewalletId) + HTTP_RESOURCE_SEPARATOR + bankId;
-        return this.client.get(path, BankAccount.class);
+    public BankAccount getBank(String customerId, String bankId) throws ServiceUnavailable, HttpError {
+        String path = String.format(BANK_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + bankId;
+        return this.serviceClient.get(path, BankAccount.class);
     }
 
-    public List<BankAccount> getBankAccounts(String ewalletId, int offset, int limit) throws ServiceUnavailable,
+    public List<BankAccount> getBankAccounts(String customerId, int offset, int limit) throws ServiceUnavailable,
             HttpError {
-        String path = String.format(BANK_PATH, this.customerId, ewalletId);
+        String path = String.format(BANK_PATH, this.merchantId, customerId);
         Map<String, String> params = new HashMap<String, String>();
         params.put("limit", String.valueOf(limit));
         params.put("offset", String.valueOf(offset));
-        return this.client.getList(path, params, new TypeToken<Collection<BankAccount>>() {
+        return this.serviceClient.getList(path, params, new TypeToken<Collection<BankAccount>>() {
         }.getType());
     }
 
-    public BankAccount activateBank(String ewalletId, String bankId) throws ServiceUnavailable, HttpError {
-        String path = String.format(BANK_PATH, this.customerId, ewalletId) + HTTP_RESOURCE_SEPARATOR + bankId
+    public BankAccount activateBank(String customerId, String bankId) throws ServiceUnavailable, HttpError {
+        String path = String.format(BANK_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + bankId
                 + "/activate";
-        return this.client.put(path, null, BankAccount.class);
+        return this.serviceClient.put(path, null, BankAccount.class);
     }
 
-    public BankAccount inactivateBank(String ewalletId, String bankId) throws ServiceUnavailable, HttpError {
-        String path = String.format(BANK_PATH, this.customerId, ewalletId) + HTTP_RESOURCE_SEPARATOR + bankId
+    public BankAccount inactivateBank(String customerId, String bankId) throws ServiceUnavailable, HttpError {
+        String path = String.format(BANK_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + bankId
                 + "/inactivate";
-        return this.client.put(path, null, BankAccount.class);
+        return this.serviceClient.put(path, null, BankAccount.class);
     }
 
 }

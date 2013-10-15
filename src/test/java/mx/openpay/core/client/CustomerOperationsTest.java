@@ -2,7 +2,7 @@ package mx.openpay.core.client;
 
 import java.util.List;
 
-import mx.openpay.client.Ewallet;
+import mx.openpay.client.Customer;
 import mx.openpay.client.OpenPayServices;
 import mx.openpay.client.Transaction;
 import mx.openpay.client.core.OpenPayServicesImpl;
@@ -43,9 +43,9 @@ public class CustomerOperationsTest {
     
     @Test
     public void testGetEwallets() throws ServiceUnavailable, HttpError {
-        List<Ewallet> ewallets  = this.openPayServices.getEwallets(0, 100);
+        List<Customer> ewallets  = this.openPayServices.getCustomers(0, 100);
         Assert.assertNotNull(ewallets);
-        for (Ewallet ewallet : ewallets) {
+        for (Customer ewallet : ewallets) {
             Assert.assertNotNull(ewallet.getId());
         }
     }

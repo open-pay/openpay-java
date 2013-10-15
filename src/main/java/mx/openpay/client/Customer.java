@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 @Getter
 @Setter
 @ToString
-public class Ewallet {
+public class Customer {
 
     private String name;
     
