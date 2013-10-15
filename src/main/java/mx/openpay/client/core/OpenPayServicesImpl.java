@@ -41,6 +41,8 @@ public class OpenPayServicesImpl implements OpenPayServices {
     private static String MERCHANT_PATH = "/%s";
 
     private static String BANK_PATH = "/%s/customers/%s/bankaccounts";
+    
+    private static String TRANSACTIONS_PATH = "/%s/transactions";
 
     private final String merchantId;
 
@@ -59,7 +61,7 @@ public class OpenPayServicesImpl implements OpenPayServices {
         this.merchantId = merchantId;
     }
 
-    // CUSTOMER
+    // MERCHANT
 
     public Transaction collectFee(String customerId, Double amount, String desc, String orderID)
             throws ServiceUnavailable, HttpError {
@@ -160,6 +162,17 @@ public class OpenPayServicesImpl implements OpenPayServices {
         String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + cardId;
         return this.serviceClient.get(path, Card.class);
     }
+    
+    public Card updateCard(final String customerId, final Card card) throws ServiceUnavailable, HttpError {
+        String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + card.getId();
+        Map<String, Object> cardData = new HashMap<String, Object>();
+        cardData.put("expiration_month", card.getExpirationMonth());
+        cardData.put("expiration_year", card.getExpirationYear());
+        cardData.put("holder_name", card.getHolderName());
+        cardData.put("address", card.getAddress());
+        return this.serviceClient.put(path, cardData, Card.class);
+    }
+
 
     public List<Card> getCards(String customerId, int offset, int limit) throws ServiceUnavailable, HttpError {
         String path = String.format(CARD_PATH, this.merchantId, customerId);
@@ -240,4 +253,8 @@ public class OpenPayServicesImpl implements OpenPayServices {
         return this.serviceClient.put(path, null, BankAccount.class);
     }
 
+    public Transaction getTransaction(String transactionId) throws ServiceUnavailable, HttpError {
+        String path = String.format(TRANSACTIONS_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + transactionId;
+        return this.serviceClient.get(path, Transaction.class);
+    }
 }

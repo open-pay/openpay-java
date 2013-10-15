@@ -38,9 +38,8 @@ public interface OpenPayServices {
     // CARD
     public Card createCard(final String customerId, final String number, String holderName, final String cvv2,
             final String expMonth, final String expYear, final Address address) throws ServiceUnavailable, HttpError;
-
-    public Card createDepositCard(String customerId, String cardNumber, String holderName, String bankCode)
-            throws ServiceUnavailable, HttpError;
+    
+    public Card updateCard(final String customerId, final Card card) throws ServiceUnavailable, HttpError;
 
     public Card getCard(final String customerId, final String cardId) throws ServiceUnavailable, HttpError;
 
@@ -62,4 +61,8 @@ public interface OpenPayServices {
 
     public List<BankAccount> getBankAccounts(String customerId, int offset, int limit) throws ServiceUnavailable,
             HttpError;
+    
+    //TRANSACTION
+    
+    public Transaction getTransaction(final String transactionId) throws ServiceUnavailable, HttpError;
 }

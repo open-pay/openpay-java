@@ -74,15 +74,4 @@ public class CardOperationsTest {
             Assert.assertEquals(409, e.getHttpCode().intValue());
         }
     }
-    
-    @Test
-    public void testCreateDespositCard() throws ServiceUnavailable {
-        String customerId = "agt0tslutb7tyz4nu1ce";
-
-        try {
-            this.openPayServices.createDepositCard(customerId, "5243385358972033", "Juanito Perez", "012");
-        } catch (HttpError e) {
-            Assert.fail(e.getMessage());
-        }
-    }
 }
