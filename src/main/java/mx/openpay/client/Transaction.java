@@ -26,8 +26,8 @@ public class Transaction {
     
     private String id;
     
-    @SerializedName("ewallet_id")
-    private String ewalletId;
+    @SerializedName("customer_id")
+    private String customerId;
     
     @SerializedName("bank_id")
     private String bankId;
