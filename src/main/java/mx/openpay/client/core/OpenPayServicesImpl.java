@@ -1,5 +1,5 @@
 /*
- * COPYRIGHT © 2012-2013. OPENPAY.
+ * COPYRIGHT �� 2012-2013. OPENPAY.
  * PATENT PENDING. ALL RIGHTS RESERVED.
  * OPENPAY & OPENCARD IS A REGISTERED TRADEMARK OF OPENCARD INC.
  *
@@ -163,16 +163,6 @@ public class OpenPayServicesImpl implements OpenPayServices {
         return this.serviceClient.get(path, Card.class);
     }
     
-    public Card updateCard(final String customerId, final Card card) throws ServiceUnavailable, HttpError {
-        String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + card.getId();
-        Map<String, Object> cardData = new HashMap<String, Object>();
-        cardData.put("expiration_month", card.getExpirationMonth());
-        cardData.put("expiration_year", card.getExpirationYear());
-        cardData.put("holder_name", card.getHolderName());
-        cardData.put("address", card.getAddress());
-        return this.serviceClient.put(path, cardData, Card.class);
-    }
-
 
     public List<Card> getCards(String customerId, int offset, int limit) throws ServiceUnavailable, HttpError {
         String path = String.format(CARD_PATH, this.merchantId, customerId);
@@ -257,4 +247,16 @@ public class OpenPayServicesImpl implements OpenPayServices {
         String path = String.format(TRANSACTIONS_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + transactionId;
         return this.serviceClient.get(path, Transaction.class);
     }
+
+	public Card updateCard(final String customerId, final String carId, final String holderName, String expirationMonth, String expirationYear, Address address, String cvv2)
+			throws ServiceUnavailable, HttpError {
+		 String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + carId;
+        Map<String, Object> cardData = new HashMap<String, Object>();
+        cardData.put("expiration_month", expirationMonth);
+        cardData.put("expiration_year", expirationYear);
+        cardData.put("holder_name", holderName);
+        cardData.put("cvv2", cvv2);
+        cardData.put("address", address);
+        return this.serviceClient.put(path, cardData, Card.class);
+	}
 }

@@ -39,7 +39,7 @@ public interface OpenPayServices {
     public Card createCard(final String customerId, final String number, String holderName, final String cvv2,
             final String expMonth, final String expYear, final Address address) throws ServiceUnavailable, HttpError;
     
-    public Card updateCard(final String customerId, final Card card) throws ServiceUnavailable, HttpError;
+    public Card updateCard(String customerId, final String carId, final String holderName, String expirationMonth, String expirationYear, Address address, String cvv2) throws ServiceUnavailable, HttpError;
 
     public Card getCard(final String customerId, final String cardId) throws ServiceUnavailable, HttpError;
 

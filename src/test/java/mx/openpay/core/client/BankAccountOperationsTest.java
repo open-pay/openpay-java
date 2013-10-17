@@ -16,7 +16,7 @@ public class BankAccountOperationsTest {
 
     private OpenPayServices openPayServices;
 
-    private static String root = "http://localhost:8080/Services";
+    private static String root = "http://openpay-sandbox-api.elasticbeanstalk.com";
 
     private String customerId = "m7psroutl8tycqtcmxly";
 
