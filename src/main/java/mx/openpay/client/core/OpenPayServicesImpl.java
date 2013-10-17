@@ -1,12 +1,3 @@
-/*
- * COPYRIGHT �� 2012-2013. OPENPAY.
- * PATENT PENDING. ALL RIGHTS RESERVED.
- * OPENPAY & OPENCARD IS A REGISTERED TRADEMARK OF OPENCARD INC.
- *
- * This software is confidential and proprietary information of OPENCARD INC.
- * You shall not disclose such Confidential Information and shall use it only
- * in accordance with the company policy.
- */
 package mx.openpay.client.core;
 
 import java.text.SimpleDateFormat;
@@ -221,7 +212,7 @@ public class OpenPayServicesImpl implements OpenPayServices {
         return this.serviceClient.get(path, BankAccount.class);
     }
 
-    public List<BankAccount> getBankAccounts(String customerId, int offset, int limit) throws ServiceUnavailable,
+    public List<BankAccount> getBankAccounts(final String customerId, int offset, int limit) throws ServiceUnavailable,
             HttpError {
         String path = String.format(BANK_PATH, this.merchantId, customerId);
         Map<String, String> params = new HashMap<String, String>();
@@ -248,15 +239,23 @@ public class OpenPayServicesImpl implements OpenPayServices {
         return this.serviceClient.get(path, Transaction.class);
     }
 
-	public Card updateCard(final String customerId, final String carId, final String holderName, String expirationMonth, String expirationYear, Address address, String cvv2)
+	public Card updateCard(final String customerId, final String carId, final Address address)
 			throws ServiceUnavailable, HttpError {
 		 String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + carId;
         Map<String, Object> cardData = new HashMap<String, Object>();
-        cardData.put("expiration_month", expirationMonth);
-        cardData.put("expiration_year", expirationYear);
-        cardData.put("holder_name", holderName);
-        cardData.put("cvv2", cvv2);
         cardData.put("address", address);
         return this.serviceClient.put(path, cardData, Card.class);
+	}
+
+	public Card deleteCard(String customerId, String carId)
+			throws ServiceUnavailable, HttpError {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public BankAccount deleteBank(String customerId, String bankId)
+			throws ServiceUnavailable, HttpError {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
