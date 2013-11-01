@@ -8,7 +8,7 @@ import java.util.List;
 
 import mx.openpay.client.Address;
 import mx.openpay.client.Card;
-import mx.openpay.client.OpenPayServices;
+import mx.openpay.client.core.OpenPayServices;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 

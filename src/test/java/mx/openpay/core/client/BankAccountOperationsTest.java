@@ -5,7 +5,7 @@ import static mx.openpay.core.client.TestConstans.*;
 import java.util.List;
 
 import mx.openpay.client.BankAccount;
-import mx.openpay.client.OpenPayServices;
+import mx.openpay.client.core.OpenPayServices;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 

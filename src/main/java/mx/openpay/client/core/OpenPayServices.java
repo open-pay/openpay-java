@@ -1,4 +1,4 @@
-package mx.openpay.client;
+package mx.openpay.client.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -9,7 +9,11 @@ import java.util.Map;
 
 import com.google.gson.reflect.TypeToken;
 
-import mx.openpay.client.core.Client;
+import mx.openpay.client.Address;
+import mx.openpay.client.BankAccount;
+import mx.openpay.client.Card;
+import mx.openpay.client.Customer;
+import mx.openpay.client.Transaction;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
@@ -29,7 +33,7 @@ public class OpenPayServices {
 
 	private final String merchantId;
 
-	private Client serviceClient;
+	private HttpClient serviceClient;
 
 	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -37,9 +41,9 @@ public class OpenPayServices {
 
 	public OpenPayServices(final String merchantId, final String apiKey, final String location) {
 		if (location.endsWith(HTTP_RESOURCE_SEPARATOR)) {
-			this.serviceClient = new Client(location + VERSION, apiKey);
+			this.serviceClient = new HttpClient(location + VERSION, apiKey);
 		} else {
-			this.serviceClient = new Client(location + HTTP_RESOURCE_SEPARATOR + VERSION, apiKey);
+			this.serviceClient = new HttpClient(location + HTTP_RESOURCE_SEPARATOR + VERSION, apiKey);
 		}
 		this.merchantId = merchantId;
 	}
@@ -107,17 +111,28 @@ public class OpenPayServices {
 		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/inactivate";
 		return this.serviceClient.put(path, null, Customer.class);
 	}
-
-	public Double getBalance(String customerId) throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/balance";
-		return this.serviceClient.get(path, Double.class);
-	}
-
+	
+	//SEND FUNDS
+	
 	public Transaction sendFunds(String customerId, String destinationId, Double amount, String description, String orderID)
 			throws ServiceUnavailable, HttpError {
 		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/send_funds";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("destination_id", destinationId);
+		data.put("amount", amount);
+		data.put("description", description);
+		data.put("order_id", orderID);
+		return this.serviceClient.post(path, data, Transaction.class);
+	}
+	
+	
+	//COLLECT FUNDS
+	
+	public Transaction collectFunds(String customerId, Card card, Double amount, String description, String orderID)
+			throws ServiceUnavailable, HttpError {
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/collect_funds";
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("card", card);
 		data.put("amount", amount);
 		data.put("description", description);
 		data.put("order_id", orderID);
@@ -164,21 +179,18 @@ public class OpenPayServices {
 		return this.serviceClient.post(path, cardData, Card.class);
 	}
 
-	public Card createDepositCard(String customerId, String cardNumber, String holderName, String bankCode) throws ServiceUnavailable,
-			HttpError {
-		String path = String.format(CARD_PATH, this.merchantId, customerId) + "/deposit";
-		Map<String, Object> cardData = new HashMap<String, Object>();
-		cardData.put("card_number", cardNumber);
-		cardData.put("holder_name", holderName);
-		cardData.put("bank_code", bankCode);
-		return this.serviceClient.post(path, cardData, Card.class);
-	}
-
 	public void deleteCard(String customerId, String cardId) throws ServiceUnavailable, HttpError {
 		String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + cardId;
 		this.serviceClient.delete(path);
 	}
 
+	public Card updateCard(final String customerId, final String carId, final Address address) throws ServiceUnavailable, HttpError {
+		String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + carId;
+		Map<String, Object> cardData = new HashMap<String, Object>();
+		cardData.put("address", address);
+		return this.serviceClient.put(path, cardData, Card.class);
+	}
+	
 	// BankAccount
 
 	public BankAccount createBank(String customerId, final String clabe) throws ServiceUnavailable, HttpError {
@@ -207,27 +219,10 @@ public class OpenPayServices {
 		this.serviceClient.delete(path);
 	}
 
+	// Transactions
+
 	public Transaction getTransaction(String transactionId) throws ServiceUnavailable, HttpError {
 		String path = String.format(TRANSACTIONS_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + transactionId;
 		return this.serviceClient.get(path, Transaction.class);
-	}
-
-	public Card updateCard(final String customerId, final String carId, final Address address) throws ServiceUnavailable, HttpError {
-		String path = String.format(CARD_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + carId;
-		Map<String, Object> cardData = new HashMap<String, Object>();
-		cardData.put("address", address);
-		return this.serviceClient.put(path, cardData, Card.class);
-	}
-
-	public Transaction collectFunds(String customerId, Card card, Double amount, String description, String orderID, boolean forgetCard)
-			throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/collect_funds";
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("card", card);
-		data.put("amount", amount);
-		data.put("description", description);
-		data.put("order_id", orderID);
-		data.put("forget_card", forgetCard);
-		return this.serviceClient.post(path, data, Transaction.class);
 	}
 }

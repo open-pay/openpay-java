@@ -1,5 +1,7 @@
 package mx.openpay.client;
 
+import java.util.Date;
+
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -20,5 +22,8 @@ public class BankAccount {
 
     @SerializedName("bank_code")
     private String bankCode;
+    
+    @SerializedName("creation_date")
+    private Date creationDate;
     
 }

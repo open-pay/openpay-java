@@ -13,7 +13,8 @@ import lombok.ToString;
 @ToString
 public class Transaction {
 
-    private Date date;
+    @SerializedName("creation_date")
+    private Date creationDate;
     
     private Double amount;
     

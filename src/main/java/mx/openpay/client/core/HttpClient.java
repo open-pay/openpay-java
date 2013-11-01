@@ -23,7 +23,6 @@ import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -49,7 +48,7 @@ import com.google.gson.JsonParseException;
  * @author Heber Lazcano
  */
 @Slf4j
-public class Client {
+public class HttpClient {
 
     private static final String AGENT = "openpay-java/";
 
@@ -59,9 +58,9 @@ public class Client {
 
     private String key;
 
-    private HttpClient httpClient;
+    private org.apache.http.client.HttpClient httpClient;
 
-    public Client(String location, String key) {
+    public HttpClient(String location, String key) {
         this.key = key;
         this.root = location;
 
@@ -74,7 +73,7 @@ public class Client {
         this.httpClient.getParams().setParameter("http.protocol.content-charset", "UTF-8");
     }
 
-    public Client() {
+    public HttpClient() {
         this(null, null);
     }
 

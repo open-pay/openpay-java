@@ -9,8 +9,8 @@ import mx.openpay.client.Address;
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
-import mx.openpay.client.OpenPayServices;
 import mx.openpay.client.Transaction;
+import mx.openpay.client.core.OpenPayServices;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
@@ -50,7 +50,7 @@ public class CustomerOperationsTest {
 	public void testSendFunds() throws ServiceUnavailable, HttpError {
 		String customerId = "afk4csrazjp1udezj1po";
 		Double amount = 1.00;
-		String desc = "Earnings of september";
+		String desc = "Ganancias";
 
 		List<BankAccount> bankAccounts = this.openPayServices.getBankAccounts(customerId, 0, 10);
 		Assert.assertNotNull(bankAccounts);
@@ -58,7 +58,7 @@ public class CustomerOperationsTest {
 		String orderId = this.dateFormat.format(new Date());
 		Transaction transaction = this.openPayServices.sendFunds(customerId, bankAccounts.get(0).getId(), amount, desc, orderId);
 		Assert.assertNotNull(transaction);
-		Assert.assertNotNull(transaction.getDate());
+		Assert.assertNotNull(transaction.getCreationDate());
 		Assert.assertEquals(amount, transaction.getAmount());
 		Assert.assertEquals(desc, transaction.getDescription());
 		Assert.assertEquals(customerId, transaction.getCustomer().getId());
@@ -70,14 +70,14 @@ public class CustomerOperationsTest {
 		Assert.assertNotNull(customers);
 		for (Customer customer : customers) {
 			Assert.assertNotNull(customer.getId());
+			Assert.assertNotNull(customer.getBalance());
+			Assert.assertNotNull(customer.getCreationDate());
+			Assert.assertNotNull(customer.getEmail());
+			Assert.assertNotNull(customer.getName());
+			Assert.assertNotNull(customer.getStatus());
+			Assert.assertNotNull(customer.getPhoneNumber());
+			Assert.assertNotNull(customer.getAddress());
 		}
-	}
-
-	@Test
-	public void testGetBalance() throws ServiceUnavailable, HttpError {
-		String customerId = "afk4csrazjp1udezj1po";
-		Double balance = this.openPayServices.getBalance(customerId);
-		Assert.assertNotNull(balance);
 	}
 
 	@Test
@@ -86,9 +86,11 @@ public class CustomerOperationsTest {
 		Customer customer = this.openPayServices.getCustomer(customerId);
 		Assert.assertNotNull(customer);
 
-		customer.setName("Juanito");
+		customer.setName("Juanito 2");
+		customer.setCreationDate(null);
+		customer.setBalance(null);
 		customer = this.openPayServices.updateCustomer(customer);
-		Assert.assertEquals("Juanito", customer.getName());
+		Assert.assertEquals("Juanito 2", customer.getName());
 	}
 
 	@Test

@@ -1,5 +1,8 @@
 package mx.openpay.client;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,5 +29,10 @@ public class Customer {
     private Address address;
     
     private String status;
+    
+    private BigDecimal balance;
+    
+    @SerializedName("creation_date")
+    private Date creationDate;
     
 }

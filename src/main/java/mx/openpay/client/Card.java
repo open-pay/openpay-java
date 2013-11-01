@@ -1,5 +1,7 @@
 package mx.openpay.client;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,4 +44,7 @@ public class Card {
     private String bankCode;
 
     private Address address;
+    
+    @SerializedName("creation_date")
+    private Date creationDate;
 }
