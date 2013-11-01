@@ -40,7 +40,7 @@ public class CustomerOperationsTest {
 		Assert.assertNotNull(cards);
 
 		String orderId = this.dateFormat.format(new Date());
-		Transaction transaction = this.openPayServices.collectFunds(customerId, cards.get(0).getId(), amount, desc, orderId);
+		Transaction transaction = this.openPayServices.createCharge(customerId, cards.get(0).getId(), amount, desc, orderId);
 		Assert.assertNotNull(transaction);
 		Assert.assertEquals(amount, transaction.getAmount());
 		Assert.assertEquals(desc, transaction.getDescription());
@@ -56,7 +56,7 @@ public class CustomerOperationsTest {
 		Assert.assertNotNull(bankAccounts);
 
 		String orderId = this.dateFormat.format(new Date());
-		Transaction transaction = this.openPayServices.sendFunds(customerId, bankAccounts.get(0).getId(), amount, desc, orderId);
+		Transaction transaction = this.openPayServices.createWithdrawal(customerId, bankAccounts.get(0).getId(), amount, desc, orderId);
 		Assert.assertNotNull(transaction);
 		Assert.assertNotNull(transaction.getCreationDate());
 		Assert.assertEquals(amount, transaction.getAmount());

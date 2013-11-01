@@ -114,9 +114,9 @@ public class OpenPayServices {
 	
 	//SEND FUNDS
 	
-	public Transaction sendFunds(String customerId, String destinationId, Double amount, String description, String orderID)
+	public Transaction createWithdrawal(String customerId, String destinationId, Double amount, String description, String orderID)
 			throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/send_funds";
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/withdrawals";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("destination_id", destinationId);
 		data.put("amount", amount);
@@ -125,9 +125,9 @@ public class OpenPayServices {
 		return this.serviceClient.post(path, data, Transaction.class);
 	}
 	
-	public Transaction transferFunds(String customerId, String destinationId, Double amount, String description, String orderID)
+	public Transaction createTransfer(String customerId, String destinationId, Double amount, String description, String orderID)
 			throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/transfer";
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/transfers";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("customer_id", destinationId);
 		data.put("amount", amount);
@@ -139,9 +139,9 @@ public class OpenPayServices {
 	
 	//COLLECT FUNDS
 	
-	public Transaction collectFunds(String customerId, Card card, Double amount, String description, String orderID)
+	public Transaction createCharge(String customerId, Card card, Double amount, String description, String orderID)
 			throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/collect_funds";
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/charges";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("card", card);
 		data.put("amount", amount);
@@ -150,9 +150,9 @@ public class OpenPayServices {
 		return this.serviceClient.post(path, data, Transaction.class);
 	}
 
-	public Transaction collectFunds(String customerId, String sourceId, Double amount, String description, String orderID)
+	public Transaction createCharge(String customerId, String sourceId, Double amount, String description, String orderID)
 			throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/collect_funds";
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/charges";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("source_id", sourceId);
 		data.put("amount", amount);
