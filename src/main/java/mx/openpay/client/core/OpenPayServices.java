@@ -206,7 +206,7 @@ public class OpenPayServices {
 		return this.serviceClient.post(path, bankData, BankAccount.class);
 	}
 
-	public BankAccount getBank(String customerId, String bankId) throws ServiceUnavailable, HttpError {
+	public BankAccount getBankAccount(String customerId, String bankId) throws ServiceUnavailable, HttpError {
 		String path = String.format(BANK_PATH, this.merchantId, customerId) + HTTP_RESOURCE_SEPARATOR + bankId;
 		return this.serviceClient.get(path, BankAccount.class);
 	}

@@ -32,7 +32,7 @@ public class BankAccountOperationsTest {
         } catch (HttpError e) {
             Assert.assertEquals(409, e.getHttpCode().intValue());
             String bankId = "b6bhqhlewbbtqz1ga7aq";
-            BankAccount account = this.openPayServices.getBank(customerId, bankId);
+            BankAccount account = this.openPayServices.getBankAccount(customerId, bankId);
             Assert.assertNotNull(account);
             Assert.assertNotNull(account.getId());
             Assert.assertNotNull(account.getBankName());
