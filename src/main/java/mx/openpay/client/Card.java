@@ -29,11 +29,11 @@ public class Card {
     @SerializedName("allows_deposits")
     private boolean allowsDeposits;
 
-    private String status;
-
     private String type;
 
     private String brand;
+    
+    private String cvv2;
 
     @SerializedName("bank_name")
     private String bankName;

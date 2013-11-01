@@ -2,7 +2,6 @@ package mx.openpay.core.client;
 
 import mx.openpay.client.OpenPayServices;
 import mx.openpay.client.Transaction;
-import mx.openpay.client.core.OpenPayServicesImpl;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
@@ -14,7 +13,7 @@ public class TransactionsOperationsTest {
 
     private OpenPayServices openPayServices;
 
-    private static String root = "http://openpay-sandbox-api.elasticbeanstalk.com";
+    private static String root = "http://localhost:8080/Services/";
 
     private String customerId = "m7psroutl8tycqtcmxly";
 
@@ -22,7 +21,7 @@ public class TransactionsOperationsTest {
 
     @Before
     public void setUp() throws Exception {
-        this.openPayServices = new OpenPayServicesImpl(this.customerId, this.apiKey, root);
+        this.openPayServices = new OpenPayServices(this.customerId, this.apiKey, root);
     }
   
     @Test

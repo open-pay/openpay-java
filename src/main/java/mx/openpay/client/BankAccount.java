@@ -15,8 +15,6 @@ public class BankAccount {
     
     private String clabe;
     
-    private String status;
-    
     @SerializedName("bank_name")
     private String bankName;
 

@@ -17,7 +17,7 @@ public class Transaction {
     
     private Double amount;
     
-    private String memo;
+    private String description;
     
     @SerializedName("transaction_type")
     private String transactionType;
@@ -26,12 +26,10 @@ public class Transaction {
     
     private String id;
     
-    @SerializedName("customer_id")
-    private String customerId;
+    private Customer customer;
     
-    @SerializedName("bank_id")
-    private String bankId;
+    @SerializedName("bank_account")
+    private BankAccount bankAccount;
     
-    @SerializedName("card_id")
-    private String cardId;
+    private Card card;
 }
