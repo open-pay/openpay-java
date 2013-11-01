@@ -93,25 +93,6 @@ public class CustomerOperationsTest {
 	}
 
 	@Test
-	public void testActivateAndInactivateCustomer() throws ServiceUnavailable, HttpError {
-		String customerId = "afk4csrazjp1udezj1po";
-		Customer customer = this.openPayServices.getCustomer(customerId);
-		Assert.assertNotNull(customer);
-
-		if (customer.getStatus().equals("ACTIVE")) {
-			customer = this.openPayServices.inactivateCustomer(customer.getId());
-			Assert.assertEquals("INACTIVE", customer.getStatus());
-			customer = this.openPayServices.activateCustomer(customer.getId());
-			Assert.assertEquals("ACTIVE", customer.getStatus());
-		} else {
-			customer = this.openPayServices.activateCustomer(customer.getId());
-			Assert.assertEquals("ACTIVE", customer.getStatus());
-			customer = this.openPayServices.inactivateCustomer(customer.getId());
-			Assert.assertEquals("INACTIVE", customer.getStatus());
-		}
-	}
-
-	@Test
 	public void testCreateCustomer() throws ServiceUnavailable, HttpError {
 		Address address = new Address();
 		address.setCity("Distrito Federal");
@@ -123,5 +104,7 @@ public class CustomerOperationsTest {
 		Customer customer = this.openPayServices.createCustomer("Juan", "Perez Perez", "juan.perez@gmail.com", "55-25634013", address);
 		Assert.assertNotNull(customer);
 		Assert.assertNotNull(customer.getId());
+		
+		this.openPayServices.deleteCustomer(customer.getId());
 	}
 }

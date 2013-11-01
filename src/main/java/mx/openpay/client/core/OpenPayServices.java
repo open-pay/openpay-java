@@ -101,17 +101,12 @@ public class OpenPayServices {
 		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId;
 		return this.serviceClient.get(path, Customer.class);
 	}
-
-	public Customer activateCustomer(String customerId) throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/activate";
-		return this.serviceClient.put(path, null, Customer.class);
-	}
-
-	public Customer inactivateCustomer(String customerId) throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/inactivate";
-		return this.serviceClient.put(path, null, Customer.class);
-	}
 	
+	public void deleteCustomer(String customerId) throws ServiceUnavailable, HttpError {
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId;
+		this.serviceClient.delete(path);
+	}
+
 	//SEND FUNDS
 	
 	public Transaction createWithdrawal(String customerId, String destinationId, Double amount, String description, String orderID)
@@ -137,7 +132,7 @@ public class OpenPayServices {
 	}
 	
 	
-	//COLLECT FUNDS
+	//CHARGES
 	
 	public Transaction createCharge(String customerId, Card card, Double amount, String description, String orderID)
 			throws ServiceUnavailable, HttpError {
