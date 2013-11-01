@@ -26,7 +26,7 @@ public class MerchantOperationsTest {
     
     @Before
     public void setUp() throws Exception {
-    	 this.openPayServices = new OpenPayServices(MERCHANT_ID, API_KEY, ENDPOINT);
+    	this.openPayServices = new OpenPayServices(ENDPOINT, API_KEY, MERCHANT_ID);
     }
 
     @Test

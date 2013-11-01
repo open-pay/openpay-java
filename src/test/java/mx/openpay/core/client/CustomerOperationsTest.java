@@ -27,7 +27,7 @@ public class CustomerOperationsTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.openPayServices = new OpenPayServices(MERCHANT_ID, API_KEY, ENDPOINT);
+		this.openPayServices = new OpenPayServices(ENDPOINT, API_KEY, MERCHANT_ID);
 	}
 
 	@Test
@@ -75,7 +75,6 @@ public class CustomerOperationsTest {
 			Assert.assertNotNull(customer.getEmail());
 			Assert.assertNotNull(customer.getName());
 			Assert.assertNotNull(customer.getStatus());
-			Assert.assertNotNull(customer.getPhoneNumber());
 			Assert.assertNotNull(customer.getAddress());
 		}
 	}

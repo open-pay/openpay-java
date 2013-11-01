@@ -1,5 +1,8 @@
 package mx.openpay.core.client;
 
+import static mx.openpay.core.client.TestConstans.API_KEY;
+import static mx.openpay.core.client.TestConstans.ENDPOINT;
+import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import mx.openpay.client.Transaction;
 import mx.openpay.client.core.OpenPayServices;
 import mx.openpay.client.exceptions.HttpError;
@@ -13,20 +16,14 @@ public class TransactionsOperationsTest {
 
     private OpenPayServices openPayServices;
 
-    private static String root = "http://localhost:8080/Services/";
-
-    private String customerId = "m7psroutl8tycqtcmxly";
-
-    private String apiKey = "e97b8bf7728242c0aa97b409a4c59236";
-
     @Before
     public void setUp() throws Exception {
-        this.openPayServices = new OpenPayServices(this.customerId, this.apiKey, root);
+    	 this.openPayServices = new OpenPayServices(ENDPOINT, API_KEY, MERCHANT_ID);
     }
   
     @Test
     public void testGetTransaction() throws ServiceUnavailable, HttpError {
-        String transactionId = "tryjgria484ta2hweaxz";
+        String transactionId = "tf1wjucai0gj7awz0uvf";
         Transaction transaction = this.openPayServices.getTransaction(transactionId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getAmount());

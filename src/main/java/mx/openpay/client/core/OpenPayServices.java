@@ -39,7 +39,7 @@ public class OpenPayServices {
 
 	private static final String HTTP_RESOURCE_SEPARATOR = "/";
 
-	public OpenPayServices(final String merchantId, final String apiKey, final String location) {
+	public OpenPayServices(final String location, final String apiKey, final String merchantId) {
 		if (location.endsWith(HTTP_RESOURCE_SEPARATOR)) {
 			this.serviceClient = new HttpClient(location + VERSION, apiKey);
 		} else {
@@ -51,7 +51,7 @@ public class OpenPayServices {
 	// MERCHANT
 
 	public Transaction collectFee(String customerId, Double amount, String desc, String orderID) throws ServiceUnavailable, HttpError {
-		String path = String.format(MERCHANT_PATH, this.merchantId) + "/fee";
+		String path = String.format(MERCHANT_PATH, this.merchantId) + "/fees";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("customer_id", customerId);
 		data.put("amount", amount);
@@ -119,6 +119,17 @@ public class OpenPayServices {
 		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/send_funds";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("destination_id", destinationId);
+		data.put("amount", amount);
+		data.put("description", description);
+		data.put("order_id", orderID);
+		return this.serviceClient.post(path, data, Transaction.class);
+	}
+	
+	public Transaction transferFunds(String customerId, String destinationId, Double amount, String description, String orderID)
+			throws ServiceUnavailable, HttpError {
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/transfer";
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("customer_id", destinationId);
 		data.put("amount", amount);
 		data.put("description", description);
 		data.put("order_id", orderID);
