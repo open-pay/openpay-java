@@ -29,16 +29,6 @@ public class SearchParams {
         return this;
     }
 
-    public SearchParams creationLt(final Date date) {
-        this.params.put("creation[lt]", this.format.format(date));
-        return this;
-    }
-
-    public SearchParams creationGt(final Date date) {
-        this.params.put("creation[gt]", this.format.format(date));
-        return this;
-    }
-
     public SearchParams creationLte(final Date date) {
         this.params.put("creation[lte]", this.format.format(date));
         return this;

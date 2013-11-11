@@ -85,7 +85,6 @@ public class JsonServiceClient {
     public <T> T get(final String path, final Class<T> clazz) throws HttpError, ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpGet request = new HttpGet(uri);
-        this.addHeaders(request);
         return this.executeOperation(request, clazz, null);
     }
 
@@ -93,14 +92,12 @@ public class JsonServiceClient {
             ServiceUnavailable {
         URI uri = this.buildUri(path, params);
         HttpGet request = new HttpGet(uri);
-        this.addHeaders(request);
         return this.executeOperation(request, null, type);
     }
 
     public void delete(final String path) throws HttpError, ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpDelete request = new HttpDelete(uri);
-        this.addHeaders(request);
         this.executeOperation(request, null, null);
     }
 
@@ -108,9 +105,7 @@ public class JsonServiceClient {
             ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpPut request = new HttpPut(uri);
-        this.addHeaders(request);
         request.setEntity(new StringEntity(this.serialize(payload), ContentType.APPLICATION_JSON));
-
         return this.executeOperation(request, returnClazz, null);
     }
 
@@ -118,9 +113,7 @@ public class JsonServiceClient {
             ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpPost request = new HttpPost(uri);
-        this.addHeaders(request);
         request.setEntity(new StringEntity(this.serialize(payload), ContentType.APPLICATION_JSON));
-
         return this.executeOperation(request, clazz, null);
     }
 
@@ -136,12 +129,12 @@ public class JsonServiceClient {
             sb.append("?");
             sb.append(this.buildQueryString(params.asMap()));
         }
+        String url = sb.toString();
+        log.info("URL: {}", url);
         try {
-            String url = sb.toString();
-            log.info("URL: {}", url);
             return new URI(url);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("URI can't be parsed: " + url, e);
         }
     }
 
@@ -163,12 +156,9 @@ public class JsonServiceClient {
     private <T> T executeOperation(final HttpUriRequest request, final Class<T> clazz, final Type type)
             throws HttpError,
             ServiceUnavailable {
-        if (this.key != null) {
-            String authEncoding = this.getBase64Auth();
-            request.setHeader("Authorization", "Basic " + authEncoding);
-        }
+        this.addHeaders(request);
+        this.addAuthentication(request);
         long init = System.currentTimeMillis();
-
         HttpResponse response;
         try {
             response = this.httpClient.execute(request);
@@ -189,23 +179,39 @@ public class JsonServiceClient {
                 throw new ServiceUnavailable(e);
             }
         }
+        StatusLine status = response.getStatusLine();
         log.debug("Request Time: " + (System.currentTimeMillis() - init));
         init = System.currentTimeMillis();
-        StatusLine status = response.getStatusLine();
-        T payload = null;
+        T payload = this.getDeserializedObject(status, contentType, body, clazz, type);
+        log.debug("Parse Time: " + (System.currentTimeMillis() - init));
+        return payload;
+
+    }
+
+    private <T> T getDeserializedObject(final StatusLine status, final String contentType, final String body,
+            final Class<T> clazz,
+            final Type type) throws HttpError {
+        boolean isJsonResponse = contentType != null
+                && contentType.startsWith(ContentType.APPLICATION_JSON.getMimeType());
         if (status.getStatusCode() >= 299) {
-            if (contentType != null && contentType.startsWith(ContentType.APPLICATION_JSON.getMimeType())) {
+            if (isJsonResponse) {
                 HttpError error = this.deserialize(body, HttpError.class, null);
                 throw error;
             } else {
-                log.error("No Json response: " + body);
+                log.error("No Json response: {} ", body);
                 throw new HttpError("[" + status.getStatusCode() + "] Internal server error");
             }
-        } else if (contentType != null && contentType.startsWith(ContentType.APPLICATION_JSON.getMimeType())) {
-            payload = this.deserialize(body, clazz, type);
+        } else if (isJsonResponse) {
+            return this.deserialize(body, clazz, type);
         }
-        log.debug("Parse Time: " + (System.currentTimeMillis() - init));
-        return payload;
+        return null;
+    }
+
+    private void addAuthentication(final HttpUriRequest request) {
+        if (this.key != null) {
+            String authEncoding = this.getBase64Auth();
+            request.setHeader("Authorization", "Basic " + authEncoding);
+        }
     }
 
     @SneakyThrows(UnsupportedEncodingException.class)

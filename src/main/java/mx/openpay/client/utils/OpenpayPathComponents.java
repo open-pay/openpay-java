@@ -12,7 +12,7 @@ package mx.openpay.client.utils;
 /**
  * @author elopez
  */
-public class OpenpayPaths {
+public class OpenpayPathComponents {
 
     public static final String VERSION = "v1";
 
@@ -23,8 +23,6 @@ public class OpenpayPaths {
     public static final String BANK_ACCOUNTS = "/bankaccounts";
 
     public static final String CARDS = "/cards";
-
-    public static final String ID = "/%s";
 
     public static final String DEPOSITS = "/deposits";
 
@@ -37,5 +35,7 @@ public class OpenpayPaths {
     public static final String SALES = "/sales";
 
     public static final String REFUND = "/refund";
+
+    public static final String ID = "/%s";
 
 }

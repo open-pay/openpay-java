@@ -42,6 +42,14 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
+    public void testGetTransaction() throws ServiceUnavailable, HttpError {
+        String transactionId = "tf1wjucai0gj7awz0uvf";
+        Withdrawal transaction = Withdrawal.get(transactionId);
+        Assert.assertNotNull(transaction);
+        Assert.assertNotNull(transaction.getAmount());
+    }
+
+    @Test
     public void testWithdrawal() throws ServiceUnavailable, HttpError {
         String customerId = "afk4csrazjp1udezj1po";
         BigDecimal amount = new BigDecimal("1.00");

@@ -11,10 +11,10 @@ package mx.openpay.client;
 
 import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
 import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
-import static mx.openpay.client.utils.OpenpayPaths.ID;
-import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
-import static mx.openpay.client.utils.OpenpayPaths.REFUND;
-import static mx.openpay.client.utils.OpenpayPaths.SALES;
+import static mx.openpay.client.utils.OpenpayPathComponents.ID;
+import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
+import static mx.openpay.client.utils.OpenpayPathComponents.REFUND;
+import static mx.openpay.client.utils.OpenpayPathComponents.SALES;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

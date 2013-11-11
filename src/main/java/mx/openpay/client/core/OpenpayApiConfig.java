@@ -9,7 +9,7 @@
  */
 package mx.openpay.client.core;
 
-import static mx.openpay.client.utils.OpenpayPaths.VERSION;
+import static mx.openpay.client.utils.OpenpayPathComponents.VERSION;
 
 /**
  * @author elopez
