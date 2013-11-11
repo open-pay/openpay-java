@@ -36,4 +36,6 @@ public class OpenpayPaths {
 
     public static final String SALES = "/sales";
 
+    public static final String REFUND = "/refund";
+
 }

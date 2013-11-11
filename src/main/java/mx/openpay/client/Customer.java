@@ -2,6 +2,9 @@ package mx.openpay.client;
 
 import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
 import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.utils.OpenpayPaths.CUSTOMERS;
+import static mx.openpay.client.utils.OpenpayPaths.ID;
+import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -25,16 +28,16 @@ import com.google.gson.reflect.TypeToken;
 @ToString
 public class Customer {
 
-    private static final String CUSTOMER_PATH = "/%s/customers";
+    private static final String CUSTOMERS_PATH = MERCHANT_ID + CUSTOMERS;
 
-    private static final String GET_CUSTOMER_PATH = "/%s/customers/%s";
+    private static final String GET_CUSTOMER_PATH = CUSTOMERS_PATH + ID;
 
     private static final Type CUSTOMER_LIST_TYPE = new TypeToken<Collection<Customer>>() {
     }.getType();
 
     public static Customer create(final String name, final String lastName, final String email,
             final String phoneNumber, final Address address) throws HttpError, ServiceUnavailable {
-        String path = String.format(CUSTOMER_PATH, getMerchantId());
+        String path = String.format(CUSTOMERS_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("name", name);
         data.put("last_name", lastName);
@@ -46,7 +49,7 @@ public class Customer {
 
     public static List<Customer> getList(final Integer offset, final Integer limit) throws HttpError,
             ServiceUnavailable {
-        String path = String.format(CUSTOMER_PATH, getMerchantId());
+        String path = String.format(CUSTOMERS_PATH, getMerchantId());
         Map<String, String> params = new HashMap<String, String>();
         params.put("limit", String.valueOf(limit));
         params.put("offset", String.valueOf(offset));

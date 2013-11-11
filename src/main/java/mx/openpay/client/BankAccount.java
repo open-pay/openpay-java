@@ -2,6 +2,10 @@ package mx.openpay.client;
 
 import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
 import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.utils.OpenpayPaths.BANK_ACCOUNTS;
+import static mx.openpay.client.utils.OpenpayPaths.CUSTOMERS;
+import static mx.openpay.client.utils.OpenpayPaths.ID;
+import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -23,15 +27,12 @@ import com.google.gson.reflect.TypeToken;
 @ToString
 public class BankAccount {
 
-    /**
-     * 
-     */
     private static final Type BANK_ACCOUNT_LIST_TYPE = new TypeToken<Collection<BankAccount>>() {
     }.getType();
 
-    private static final String BANK_ACCOUNTS_PATH = "/%s/customers/%s/bankaccounts";
+    private static final String BANK_ACCOUNTS_PATH = MERCHANT_ID + CUSTOMERS + ID + BANK_ACCOUNTS;
 
-    private static final String GET_BANK_ACCOUNT = "/%s/customers/%s/bankaccounts/%s";
+    private static final String GET_BANK_ACCOUNT = BANK_ACCOUNTS_PATH + ID;
 
     public static BankAccount create(final String customerId, final String clabe, final String ownerName,
             final String alias)

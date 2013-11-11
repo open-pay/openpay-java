@@ -2,6 +2,10 @@ package mx.openpay.client;
 
 import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
 import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.utils.OpenpayPaths.CARDS;
+import static mx.openpay.client.utils.OpenpayPaths.CUSTOMERS;
+import static mx.openpay.client.utils.OpenpayPaths.ID;
+import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -25,9 +29,9 @@ public class Card {
     private static final Type CARD_LIST_TYPE = new TypeToken<Collection<Card>>() {
     }.getType();
 
-    private static final String CARDS_PATH = "/%s/customers/%s/cards";
+    private static final String CARDS_PATH = MERCHANT_ID + CUSTOMERS + ID + CARDS;
 
-    private static final String GET_CARD_PATH = "/%s/customers/%s/cards/%s";
+    private static final String GET_CARD_PATH = CARDS_PATH + ID;
 
     public static Card create(final String customerId, final String cardNumber, final String holderName,
             final String cvv2, final String expMonth, final String expYear, final Address address)

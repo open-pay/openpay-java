@@ -11,6 +11,8 @@ package mx.openpay.client;
 
 import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
 import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.utils.OpenpayPaths.FEES;
+import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -34,7 +36,7 @@ public class Fee extends Transaction {
     private static final Type FEES_LIST_TYPE = new TypeToken<Collection<Fee>>() {
     }.getType();
 
-    private static final String FEES_PATH = "/%s/fees";
+    private static final String FEES_PATH = MERCHANT_ID + FEES;
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
