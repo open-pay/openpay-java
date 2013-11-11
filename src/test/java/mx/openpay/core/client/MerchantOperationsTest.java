@@ -1,5 +1,6 @@
 package mx.openpay.core.client;
 
+import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
@@ -44,7 +45,7 @@ public class MerchantOperationsTest {
 
     @Test
     public void testGetCustomers() throws ServiceUnavailable, HttpError {
-        List<Customer> customers = Customer.getList(0, 100);
+        List<Customer> customers = Customer.getList(search().offset(0).limit(100));
         Assert.assertNotNull(customers);
         for (Customer customer : customers) {
             Assert.assertNotNull(customer.getId());

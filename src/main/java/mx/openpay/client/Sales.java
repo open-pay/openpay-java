@@ -16,17 +16,15 @@ import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPaths.REFUND;
 import static mx.openpay.client.utils.OpenpayPaths.SALES;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
-
-import com.google.gson.reflect.TypeToken;
+import mx.openpay.client.utils.ListTypes;
+import mx.openpay.client.utils.SearchParams;
 
 /**
  * @author elopez
@@ -38,9 +36,6 @@ public class Sales {
     private static final String GET_SALE_PATH = SALES_PATH + ID;
 
     private static final String REFUND_SALE_PATH = GET_SALE_PATH + REFUND;
-
-    private static final Type SALES_LIST_TYPE = new TypeToken<Collection<Sales>>() {
-    }.getType();
 
     public static Sales create(final Card card, final BigDecimal amount, final String description, final String orderId)
             throws HttpError, ServiceUnavailable {
@@ -65,12 +60,9 @@ public class Sales {
         return getJsonClient().post(path, data, Sales.class);
     }
 
-    public static List<Sales> getList(final Integer limit, final Integer offset) throws HttpError, ServiceUnavailable {
+    public static List<Sales> getList(final SearchParams params) throws HttpError, ServiceUnavailable {
         String path = String.format(SALES_PATH, getMerchantId());
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", String.valueOf(limit));
-        params.put("offset", String.valueOf(offset));
-        return getJsonClient().getList(path, params, SALES_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.SALE);
     }
 
     public static Sales get(final String transactionId) throws HttpError, ServiceUnavailable {

@@ -16,17 +16,15 @@ import static mx.openpay.client.utils.OpenpayPaths.ID;
 import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPaths.TRANSFERS;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
-
-import com.google.gson.reflect.TypeToken;
+import mx.openpay.client.utils.ListTypes;
+import mx.openpay.client.utils.SearchParams;
 
 /**
  * @author elopez
@@ -41,16 +39,10 @@ public class Transfer extends Transaction {
 
     private static final String GET_CUSTOMER_TRANSFER_PATH = CUSTOMER_TRANSFERS_PATH + ID;
 
-    private static final Type TRANSFER_LIST_TYPE = new TypeToken<Collection<Transfer>>() {
-    }.getType();
-
-    public static List<Transfer> getList(final Integer limit, final Integer offset) throws HttpError,
+    public static List<Transfer> getList(final SearchParams params) throws HttpError,
             ServiceUnavailable {
         String path = String.format(MERCHANT_TRANSFERS_PATH, getMerchantId());
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", String.valueOf(limit));
-        params.put("offset", String.valueOf(offset));
-        return getJsonClient().getList(path, params, TRANSFER_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.TRANSFER);
     }
 
     public static Transfer get(final String transactionId) throws HttpError, ServiceUnavailable {
@@ -70,13 +62,10 @@ public class Transfer extends Transaction {
         return getJsonClient().post(path, data, Transfer.class);
     }
 
-    public static List<Transfer> getList(final String customerId, final Integer limit, final Integer offset)
+    public static List<Transfer> getList(final String customerId, final SearchParams params)
             throws HttpError, ServiceUnavailable {
         String path = String.format(CUSTOMER_TRANSFERS_PATH, getMerchantId(), customerId);
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", String.valueOf(limit));
-        params.put("offset", String.valueOf(offset));
-        return getJsonClient().getList(path, params, TRANSFER_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.TRANSFER);
     }
 
     public static Transfer get(final String customerId, final String transactionId) throws HttpError,

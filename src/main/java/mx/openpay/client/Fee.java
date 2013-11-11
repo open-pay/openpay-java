@@ -14,31 +14,22 @@ import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
 import static mx.openpay.client.utils.OpenpayPaths.FEES;
 import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
-
-import com.google.gson.reflect.TypeToken;
+import mx.openpay.client.utils.ListTypes;
+import mx.openpay.client.utils.SearchParams;
 
 /**
  * @author elopez
  */
 public class Fee extends Transaction {
 
-    private static final Type FEES_LIST_TYPE = new TypeToken<Collection<Fee>>() {
-    }.getType();
-
     private static final String FEES_PATH = MERCHANT_ID + FEES;
-
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static Fee create(final String customerId, final BigDecimal amount, final String desc,
             final String orderID) throws ServiceUnavailable, HttpError {
@@ -51,16 +42,10 @@ public class Fee extends Transaction {
         return getJsonClient().post(path, data, Fee.class);
     }
 
-    public static List<Fee> getList(final Date fromDate, final Date toDate) throws ServiceUnavailable,
+    public static List<Fee> getList(final SearchParams params) throws ServiceUnavailable,
             HttpError {
         String path = String.format(FEES_PATH, getMerchantId());
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("from", formatDate(fromDate));
-        params.put("to", formatDate(toDate));
-        return getJsonClient().getList(path, params, FEES_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.FEE);
     }
 
-    private static synchronized String formatDate(final Date date) {
-        return simpleDateFormat.format(date);
-    }
 }

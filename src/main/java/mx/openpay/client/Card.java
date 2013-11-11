@@ -7,8 +7,6 @@ import static mx.openpay.client.utils.OpenpayPaths.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPaths.ID;
 import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 
-import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,16 +16,14 @@ import lombok.Getter;
 import lombok.Setter;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
+import mx.openpay.client.utils.ListTypes;
+import mx.openpay.client.utils.SearchParams;
 
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
 
 @Getter
 @Setter
 public class Card {
-
-    private static final Type CARD_LIST_TYPE = new TypeToken<Collection<Card>>() {
-    }.getType();
 
     private static final String CARDS_PATH = MERCHANT_ID + CUSTOMERS + ID + CARDS;
 
@@ -47,13 +43,10 @@ public class Card {
         return getJsonClient().post(path, cardData, Card.class);
     }
 
-    public static List<Card> getList(final String customerId, final int offset, final int limit)
+    public static List<Card> getList(final String customerId, final SearchParams params)
             throws ServiceUnavailable, HttpError {
         String path = String.format(CARDS_PATH, getMerchantId(), customerId);
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", String.valueOf(limit));
-        params.put("offset", String.valueOf(offset));
-        return getJsonClient().getList(path, params, CARD_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.CARD);
     }
 
     public static Card get(final String customerId, final String cardId) throws ServiceUnavailable, HttpError {

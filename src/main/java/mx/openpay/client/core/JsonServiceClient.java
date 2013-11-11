@@ -15,6 +15,7 @@ import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.serialization.CustomerAdapterFactory;
 import mx.openpay.client.serialization.DateFormatSerializer;
+import mx.openpay.client.utils.SearchParams;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
@@ -88,7 +89,7 @@ public class JsonServiceClient {
         return this.executeOperation(request, clazz, null);
     }
 
-    public <T> T getList(final String path, final Map<String, String> params, final Type type) throws HttpError,
+    public <T> T getList(final String path, final SearchParams params, final Type type) throws HttpError,
             ServiceUnavailable {
         URI uri = this.buildUri(path, params);
         HttpGet request = new HttpGet(uri);
@@ -127,13 +128,13 @@ public class JsonServiceClient {
         return this.buildUri(path, null);
     }
 
-    private URI buildUri(final String path, final Map<String, String> params) {
+    private URI buildUri(final String path, final SearchParams params) {
         StringBuilder sb = new StringBuilder();
         sb.append(this.root);
         sb.append(path);
-        if ((params != null) && (params.size() > 0)) {
+        if (params != null && params.asMap().size() > 0) {
             sb.append("?");
-            sb.append(this.buildQueryString(params));
+            sb.append(this.buildQueryString(params.asMap()));
         }
         try {
             String url = sb.toString();

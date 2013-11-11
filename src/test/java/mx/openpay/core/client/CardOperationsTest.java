@@ -1,5 +1,6 @@
 package mx.openpay.core.client;
 
+import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
@@ -26,7 +27,7 @@ public class CardOperationsTest {
     @Test
     public void testGetCards() throws ServiceUnavailable, HttpError {
         String customerId = "afk4csrazjp1udezj1po";
-        List<Card> cards = Card.getList(customerId, 0, 100);
+        List<Card> cards = Card.getList(customerId, search().offset(0).limit(100));
         Assert.assertNotNull(cards);
         for (Card card : cards) {
             Assert.assertNotNull(card);

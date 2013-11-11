@@ -16,17 +16,15 @@ import static mx.openpay.client.utils.OpenpayPaths.ID;
 import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPaths.WITHDRAWALS;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
-
-import com.google.gson.reflect.TypeToken;
+import mx.openpay.client.utils.ListTypes;
+import mx.openpay.client.utils.SearchParams;
 
 /**
  * @author elopez
@@ -40,9 +38,6 @@ public class Withdrawal extends Transaction {
     private static final String CUSTOMER_WITHDRAWALS_PATH = MERCHANT_ID + CUSTOMERS + ID + WITHDRAWALS;
 
     private static final String GET_CUSTOMER_WITHDRAWAL_PATH = CUSTOMER_WITHDRAWALS_PATH + ID;
-
-    private static final Type WITHDRAWAL_LIST_TYPE = new TypeToken<Collection<Withdrawal>>() {
-    }.getType();
 
     public static Withdrawal createForCustomer(final String customerId, final String destinationId,
             final BigDecimal amount, final String description, final String orderID) throws ServiceUnavailable,
@@ -124,21 +119,15 @@ public class Withdrawal extends Transaction {
         return getJsonClient().post(path, data, Withdrawal.class);
     }
 
-    public static List<Withdrawal> getList(final Integer limit, final Integer offset) throws HttpError,
+    public static List<Withdrawal> getList(final SearchParams params) throws HttpError,
             ServiceUnavailable {
         String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", String.valueOf(limit));
-        params.put("offset", String.valueOf(offset));
-        return getJsonClient().getList(path, params, WITHDRAWAL_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.WITHDRAWAL);
     }
 
-    public static List<Withdrawal> getList(final String customerId, final Integer limit, final Integer offset)
+    public static List<Withdrawal> getList(final String customerId, final SearchParams params)
             throws HttpError, ServiceUnavailable {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", String.valueOf(limit));
-        params.put("offset", String.valueOf(offset));
-        return getJsonClient().getList(path, params, WITHDRAWAL_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.WITHDRAWAL);
     }
 }

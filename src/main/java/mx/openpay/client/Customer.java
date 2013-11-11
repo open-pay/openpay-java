@@ -6,9 +6,7 @@ import static mx.openpay.client.utils.OpenpayPaths.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPaths.ID;
 import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +17,10 @@ import lombok.Setter;
 import lombok.ToString;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
+import mx.openpay.client.utils.ListTypes;
+import mx.openpay.client.utils.SearchParams;
 
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
 
 @Getter
 @Setter
@@ -31,9 +30,6 @@ public class Customer {
     private static final String CUSTOMERS_PATH = MERCHANT_ID + CUSTOMERS;
 
     private static final String GET_CUSTOMER_PATH = CUSTOMERS_PATH + ID;
-
-    private static final Type CUSTOMER_LIST_TYPE = new TypeToken<Collection<Customer>>() {
-    }.getType();
 
     public static Customer create(final String name, final String lastName, final String email,
             final String phoneNumber, final Address address) throws HttpError, ServiceUnavailable {
@@ -47,13 +43,10 @@ public class Customer {
         return getJsonClient().post(path, data, Customer.class);
     };
 
-    public static List<Customer> getList(final Integer offset, final Integer limit) throws HttpError,
+    public static List<Customer> getList(final SearchParams params) throws HttpError,
             ServiceUnavailable {
         String path = String.format(CUSTOMERS_PATH, getMerchantId());
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", String.valueOf(limit));
-        params.put("offset", String.valueOf(offset));
-        return getJsonClient().getList(path, params, CUSTOMER_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.CUSTOMER);
     }
 
     public static Customer get(final String customerId) throws HttpError, ServiceUnavailable {

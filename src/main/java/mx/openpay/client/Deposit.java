@@ -17,17 +17,15 @@ import static mx.openpay.client.utils.OpenpayPaths.ID;
 import static mx.openpay.client.utils.OpenpayPaths.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPaths.REFUND;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
-
-import com.google.gson.reflect.TypeToken;
+import mx.openpay.client.utils.ListTypes;
+import mx.openpay.client.utils.SearchParams;
 
 /**
  * @author elopez
@@ -39,9 +37,6 @@ public class Deposit extends Transaction {
     private static final String GET_DEPOSIT_PATH = DEPOSITS_PATH + ID;
 
     private static final String REFUND_DEPOSIT_PATH = GET_DEPOSIT_PATH + REFUND;
-
-    private static final Type DEPOSIT_LIST_TYPE = new TypeToken<Collection<Deposit>>() {
-    }.getType();
 
     public static Deposit create(final String customerId, final Card card, final BigDecimal amount,
             final String description, final String orderID) throws ServiceUnavailable, HttpError {
@@ -66,13 +61,10 @@ public class Deposit extends Transaction {
         return getJsonClient().post(path, data, Deposit.class);
     }
 
-    public static List<Deposit> getList(final String customerId, final Integer limit, final Integer offset)
+    public static List<Deposit> getList(final String customerId, final SearchParams params)
             throws HttpError, ServiceUnavailable {
         String path = String.format(DEPOSITS_PATH, getMerchantId(), customerId);
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("limit", String.valueOf(limit));
-        params.put("offset", String.valueOf(offset));
-        return getJsonClient().getList(path, params, DEPOSIT_LIST_TYPE);
+        return getJsonClient().getList(path, params, ListTypes.DEPOSIT);
     }
 
     public static Deposit get(final String customerId, final String transactionId) throws HttpError, ServiceUnavailable {

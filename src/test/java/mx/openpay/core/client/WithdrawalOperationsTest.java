@@ -9,6 +9,7 @@
  */
 package mx.openpay.core.client;
 
+import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
@@ -46,7 +47,7 @@ public class WithdrawalOperationsTest {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
-        List<BankAccount> bankAccounts = BankAccount.getList(customerId, 0, 10);
+        List<BankAccount> bankAccounts = BankAccount.getList(customerId, search().offset(0).limit(10));
         Assert.assertNotNull(bankAccounts);
 
         String orderId = this.dateFormat.format(new Date());
