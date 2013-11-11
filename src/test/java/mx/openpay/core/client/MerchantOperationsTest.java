@@ -4,13 +4,15 @@ import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import mx.openpay.client.Customer;
+import mx.openpay.client.Fee;
 import mx.openpay.client.Transaction;
-import mx.openpay.client.core.OpenPayServices;
+import mx.openpay.client.core.OpenpayApiConfig;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
@@ -20,31 +22,29 @@ import org.junit.Test;
 
 public class MerchantOperationsTest {
 
-    private OpenPayServices openPayServices;
-
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-    
+
     @Before
     public void setUp() throws Exception {
-    	this.openPayServices = new OpenPayServices(ENDPOINT, API_KEY, MERCHANT_ID);
+        OpenpayApiConfig.configure(ENDPOINT, API_KEY, MERCHANT_ID);
     }
 
     @Test
     public void testCollectFee() throws ServiceUnavailable, HttpError {
         String customerId = "afk4csrazjp1udezj1po";
-        Double feeAmount = 10.00;
+        BigDecimal feeAmount = new BigDecimal("10.00");
         String desc = "Comisión general";
         String orderId = this.dateFormat.format(new Date());
-        
-        Transaction transaction = this.openPayServices.collectFee(customerId, feeAmount, desc, orderId);
+
+        Transaction transaction = Fee.create(customerId, feeAmount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertEquals(feeAmount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
     }
-    
+
     @Test
     public void testGetCustomers() throws ServiceUnavailable, HttpError {
-        List<Customer> customers  = this.openPayServices.getCustomers(0, 100);
+        List<Customer> customers = Customer.getList(0, 100);
         Assert.assertNotNull(customers);
         for (Customer customer : customers) {
             Assert.assertNotNull(customer.getId());

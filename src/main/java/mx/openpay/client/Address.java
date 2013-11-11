@@ -1,18 +1,15 @@
 package mx.openpay.client;
 
-import com.google.gson.annotations.SerializedName;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.google.gson.annotations.SerializedName;
 
 @Getter
 @Setter
 @ToString
 public class Address {
-
-    private String city;
 
     private String region;
 
@@ -21,8 +18,12 @@ public class Address {
 
     private String street;
 
+    private String state;
+
     @SerializedName("interior_number")
     private String interiorNumber;
+
+    private String city;
 
     @SerializedName("exterior_number")
     private String exteriorNumber;
