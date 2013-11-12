@@ -102,7 +102,7 @@ public class TransferOperationsTest {
 
     @Test
     public void testGetList_Customer() throws Exception {
-        List<Transfer> transfers = Transfer.getList(this.customerId, search().limit(2));
+        List<Transfer> transfers = Transfer.list(this.customerId, search().limit(2));
         assertEquals(2, transfers.size());
     }
 }

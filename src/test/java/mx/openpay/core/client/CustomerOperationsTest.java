@@ -49,7 +49,7 @@ public class CustomerOperationsTest {
 
     @Test
     public void testGetList() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Customer> customers = Customer.getList(search().offset(0).limit(100));
+        List<Customer> customers = Customer.list(search().offset(0).limit(100));
         Assert.assertNotNull(customers);
         for (Customer customer : customers) {
             Assert.assertNotNull(customer.getId());

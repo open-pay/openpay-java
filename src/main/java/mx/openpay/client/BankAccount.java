@@ -41,7 +41,7 @@ public class BankAccount {
         return getJsonClient().post(path, bankData, BankAccount.class);
     }
 
-    public static List<BankAccount> getList(final String customerId, final SearchParams params)
+    public static List<BankAccount> list(final String customerId, final SearchParams params)
             throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(BANK_ACCOUNTS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();

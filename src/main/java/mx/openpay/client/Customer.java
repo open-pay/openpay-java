@@ -43,7 +43,7 @@ public class Customer {
         return getJsonClient().post(path, data, Customer.class);
     };
 
-    public static List<Customer> getList(final SearchParams params) throws OpenpayServiceException,
+    public static List<Customer> list(final SearchParams params) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path = String.format(CUSTOMERS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();

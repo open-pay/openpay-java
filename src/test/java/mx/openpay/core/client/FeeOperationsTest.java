@@ -44,7 +44,7 @@ public class FeeOperationsTest {
 
     @Test
     public void testGetList() throws Exception {
-        List<Fee> fees = Fee.getList(search().limit(3));
+        List<Fee> fees = Fee.list(search().limit(3));
         assertEquals(3, fees.size());
     }
 

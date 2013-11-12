@@ -59,7 +59,7 @@ public class Deposit extends Transaction {
         return getJsonClient().post(path, data, Deposit.class);
     }
 
-    public static List<Deposit> getList(final SearchParams params) throws OpenpayServiceException, ServiceUnavailableException {
+    public static List<Deposit> list(final SearchParams params) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(MERCHANT_DEPOSITS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.DEPOSIT);

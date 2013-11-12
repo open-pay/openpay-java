@@ -48,13 +48,13 @@ public class WithdrawalOperationsTest {
 
     @Test
     public void testGetList_Customer() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Withdrawal> transactions = Withdrawal.getList(search().limit(2));
+        List<Withdrawal> transactions = Withdrawal.list(search().limit(2));
         assertEquals(2, transactions.size());
     }
 
     @Test
     public void testGetList_Merchant() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Withdrawal> transactions = Withdrawal.getList(this.customerId, search().limit(2));
+        List<Withdrawal> transactions = Withdrawal.list(this.customerId, search().limit(2));
         assertEquals(2, transactions.size());
     }
 
@@ -80,7 +80,7 @@ public class WithdrawalOperationsTest {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
-        List<BankAccount> bankAccounts = BankAccount.getList(customerId, search().offset(0).limit(10));
+        List<BankAccount> bankAccounts = BankAccount.list(customerId, search().offset(0).limit(10));
         Assert.assertNotNull(bankAccounts);
 
         String orderId = this.dateFormat.format(new Date());

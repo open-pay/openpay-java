@@ -52,7 +52,7 @@ public class DepositOperationsTest {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
 
-        List<Card> cards = Card.getList(this.customerId, search().offset(0).limit(10));
+        List<Card> cards = Card.list(this.customerId, search().offset(0).limit(10));
         Assert.assertNotNull(cards);
 
         String orderId = this.dateFormat.format(new Date());
@@ -95,7 +95,7 @@ public class DepositOperationsTest {
     public void testRefund_Customer() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
-        List<Card> cards = Card.getList(this.customerId, search().offset(0).limit(10));
+        List<Card> cards = Card.list(this.customerId, search().offset(0).limit(10));
         Assert.assertNotNull(cards);
         String orderId = this.dateFormat.format(new Date());
 
@@ -189,10 +189,10 @@ public class DepositOperationsTest {
 
     @Test
     public void testGetList_Merchant() throws Exception {
-        List<Deposit> sale = Deposit.getList(search().limit(3));
+        List<Deposit> sale = Deposit.list(search().limit(3));
         assertEquals(3, sale.size());
 
-        sale = Deposit.getList(search().limit(5));
+        sale = Deposit.list(search().limit(5));
         assertEquals(5, sale.size());
     }
 

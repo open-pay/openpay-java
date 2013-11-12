@@ -6,6 +6,7 @@ import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -34,10 +35,21 @@ public class BankAccountOperationsTest {
     }
 
     @Test
-    public void testGetList() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testDelete_DoesNotExist() throws Exception {
+        try {
+            BankAccount.delete("afk4csrazjp1udezj1po", "fesf4fcsdf");
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
+    public void testList() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = "afk4csrazjp1udezj1po";
-        List<BankAccount> banksAccounts = BankAccount.getList(customerId, search().offset(0).limit(100));
+        List<BankAccount> banksAccounts = BankAccount.list(customerId, search().offset(0).limit(100));
         Assert.assertNotNull(banksAccounts);
+        Assert.assertTrue(banksAccounts.size() > 0);
         for (BankAccount bankAccount : banksAccounts) {
             Assert.assertNotNull(bankAccount);
             Assert.assertNotNull(bankAccount.getId());
@@ -45,10 +57,41 @@ public class BankAccountOperationsTest {
     }
 
     @Test
-    public void testGetBankAccount() throws Exception {
+    public void testList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+        String customerId = "afk4csrazjp1udezj1po";
+        List<BankAccount> banksAccounts = BankAccount.list(customerId, search().offset(1000).limit(3));
+        Assert.assertNotNull(banksAccounts);
+        Assert.assertTrue(banksAccounts.isEmpty());
+    }
+
+    @Test
+    public void testList_CustomerDoesNotExist() throws ServiceUnavailableException, OpenpayServiceException {
+        String customerId = "asdsdsrazjp1udezj1po";
+        try {
+            BankAccount.list(customerId, search().offset(1000).limit(3));
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+            assertNotNull(e.getErrorCode());
+        }
+    }
+
+    @Test
+    public void testGet() throws Exception {
         BankAccount bankAccount = BankAccount.get("afk4csrazjp1udezj1po", "b6bhqhlewbbtqz1ga7aq");
         assertNotNull(bankAccount);
         assertEquals("012680012570003085", bankAccount.getClabe());
+    }
+
+    @Test
+    public void testGet_NotFound() throws Exception {
+        try {
+            BankAccount.get("sfdsf4r4", "sdffsdfs");
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+            assertNotNull(e.getErrorCode());
+        }
     }
 
     @Test

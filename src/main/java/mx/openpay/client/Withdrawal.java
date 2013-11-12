@@ -40,7 +40,8 @@ public class Withdrawal extends Transaction {
     private static final String GET_CUSTOMER_WITHDRAWAL_PATH = CUSTOMER_WITHDRAWALS_PATH + ID;
 
     public static Withdrawal createForCustomer(final String customerId, final String destinationId,
-            final BigDecimal amount, final String description, final String orderID) throws ServiceUnavailableException,
+            final BigDecimal amount, final String description, final String orderID)
+            throws ServiceUnavailableException,
             OpenpayServiceException {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -75,7 +76,8 @@ public class Withdrawal extends Transaction {
         return getJsonClient().post(path, data, Withdrawal.class);
     }
 
-    public static Withdrawal get(final String transactionId) throws OpenpayServiceException, ServiceUnavailableException {
+    public static Withdrawal get(final String transactionId) throws OpenpayServiceException,
+            ServiceUnavailableException {
         String path = String.format(GET_MERCHANT_WITHDRAWAL_PATH, getMerchantId(), transactionId);
         return getJsonClient().get(path, Withdrawal.class);
     }
@@ -108,14 +110,14 @@ public class Withdrawal extends Transaction {
         return getJsonClient().post(path, data, Withdrawal.class);
     }
 
-    public static List<Withdrawal> getList(final SearchParams params) throws OpenpayServiceException,
+    public static List<Withdrawal> list(final SearchParams params) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.WITHDRAWAL);
     }
 
-    public static List<Withdrawal> getList(final String customerId, final SearchParams params)
+    public static List<Withdrawal> list(final String customerId, final SearchParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();

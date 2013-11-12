@@ -42,7 +42,7 @@ public class Fee extends Transaction {
         return getJsonClient().post(path, data, Fee.class);
     }
 
-    public static List<Fee> getList(final SearchParams params) throws ServiceUnavailableException,
+    public static List<Fee> list(final SearchParams params) throws ServiceUnavailableException,
             OpenpayServiceException {
         String path = String.format(FEES_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();

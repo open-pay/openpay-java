@@ -6,6 +6,7 @@ import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -29,9 +30,10 @@ public class CardOperationsTest {
     }
 
     @Test
-    public void testGetList() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Card> cards = Card.getList(this.customerId, search().offset(0).limit(100));
+    public void testList() throws ServiceUnavailableException, OpenpayServiceException {
+        List<Card> cards = Card.list(this.customerId, search().offset(0).limit(100));
         Assert.assertNotNull(cards);
+        Assert.assertTrue(cards.size() > 0);
         for (Card card : cards) {
             Assert.assertNotNull(card);
             Assert.assertNotNull(card.getId());
@@ -39,7 +41,45 @@ public class CardOperationsTest {
     }
 
     @Test
+    public void testList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+        List<Card> cards = Card.list(this.customerId, search().offset(1000).limit(2));
+        Assert.assertNotNull(cards);
+        Assert.assertTrue(cards.isEmpty());
+    }
+
+    @Test
     public void testCreateAndDelete() throws Exception {
+        Address address = this.getAddress();
+        Card card = Card.create(this.customerId, "5243385358972033", "Juanito Pérez Nuñez", "111", "09",
+                "14", address);
+        assertEquals("2033", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+
+        card = Card.get(this.customerId, card.getId());
+        assertEquals("2033", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+
+        Card.delete(this.customerId, card.getId());
+        try {
+            card = Card.get(this.customerId, card.getId());
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
+    public void testDelete_DoesNotExist() throws Exception {
+        try {
+            Card.delete(this.customerId, "kfaq5dm5pq1qefzev3nz");
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+            assertNotNull(e.getErrorCode());
+        }
+    }
+
+    private Address getAddress() {
         Address address = new Address();
         address.setCity("Querétaro");
         address.setExteriorNumber("11");
@@ -48,22 +88,23 @@ public class CardOperationsTest {
         address.setRegion("Corregidora");
         address.setStreet("Camino");
         address.setState("Queretaro");
-
-        Card card = Card.create(this.customerId, "5243385358972033", "Juanito Pérez Nuñez", "111", "09",
-                "14", address);
-        Assert.assertNotNull(card);
-        assertEquals("2033", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
-        card = Card.get(this.customerId, card.getId());
-        Assert.assertNotNull(card);
-        assertEquals("2033", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
-        Card.delete(this.customerId, card.getId());
+        return address;
     }
 
     @Test
     public void testGet() throws Exception {
         Card card = Card.get(this.customerId, "kfaq5dm5pq1qefzev1nz");
         assertNotNull(card);
+    }
+
+    @Test
+    public void testGet_DoesNotExist() throws Exception {
+        try {
+            Card.get(this.customerId, "kfaq5dm5pq1qefzev3nz");
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+            assertNotNull(e.getErrorCode());
+        }
     }
 }

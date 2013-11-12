@@ -20,6 +20,9 @@ public class OpenpayServiceException extends Exception {
     @SerializedName("http_code")
     private Integer httpCode;
 
+    @SerializedName("error_code")
+    private Integer errorCode;
+
     private String requestId;
 
     public OpenpayServiceException() {

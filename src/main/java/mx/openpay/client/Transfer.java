@@ -75,7 +75,7 @@ public class Transfer extends Transaction {
         return getJsonClient().post(path, data, Transfer.class);
     }
 
-    public static List<Transfer> getList(final String customerId, final SearchParams params)
+    public static List<Transfer> list(final String customerId, final SearchParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CUSTOMER_TRANSFERS_PATH, getMerchantId(), customerId);
         return getJsonClient().getList(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);

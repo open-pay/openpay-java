@@ -27,6 +27,12 @@ public class OpenpayAPI {
     private static JsonServiceClient _jsonClient;
 
     public static void configure(final String location, final String apiKey, final String merchantId) {
+        if (location == null) {
+            throw new IllegalArgumentException("Location can't be null");
+        }
+        if (merchantId == null) {
+            throw new IllegalArgumentException("Merchant ID can't be null");
+        }
         OpenpayAPI._location = location;
         OpenpayAPI._merchantId = merchantId;
         OpenpayAPI._apiKey = apiKey;
@@ -52,7 +58,7 @@ public class OpenpayAPI {
         return _merchantId;
     }
 
-    public static String getApiKey() {
+    public static String getAPIKey() {
         return _apiKey;
     }
 
