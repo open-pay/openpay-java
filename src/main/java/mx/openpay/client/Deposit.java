@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.utils.ListTypes;
@@ -73,14 +75,18 @@ public class Deposit extends Transaction {
         return getJsonClient().get(path, Deposit.class);
     }
 
-    public static Transaction refund(final String customerId, final String transactionId, final String description,
+    public static Deposit refund(final String customerId, final String transactionId, final String description,
             final String orderId) throws HttpError, ServiceUnavailable {
         String path = String.format(REFUND_DEPOSIT_PATH, getMerchantId(), customerId, transactionId);
         System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("description", description);
         data.put("order_id", orderId);
-        return getJsonClient().post(path, data, Transaction.class);
+        return getJsonClient().post(path, data, Deposit.class);
     }
+
+    @Getter
+    @Setter
+    private Refund refund;
 
 }

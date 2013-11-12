@@ -26,7 +26,6 @@ import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.Card;
 import mx.openpay.client.Deposit;
-import mx.openpay.client.Transaction;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
@@ -100,14 +99,14 @@ public class DepositOperationsTest {
         Assert.assertNotNull(cards);
         String orderId = this.dateFormat.format(new Date());
 
-        Transaction transaction = Deposit.create(this.customerId, cards.get(0).getId(), amount, desc, orderId);
+        Deposit transaction = Deposit.create(this.customerId, cards.get(0).getId(), amount, desc, orderId);
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
         transaction = Deposit.refund(this.customerId, transaction.getId(), "cancelacion", null);
-        Assert.assertNotNull(transaction);
-        Assert.assertEquals("cancelacion", transaction.getDescription());
+        Assert.assertNotNull(transaction.getRefund());
+        Assert.assertEquals("cancelacion", transaction.getRefund().getDescription());
 
         transaction = Deposit.get(this.customerId, originalTransactionId);
         assertNotNull(transaction.getRefund());

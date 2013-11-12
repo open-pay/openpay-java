@@ -44,6 +44,4 @@ public class Transaction {
     @SerializedName("customer_id")
     private String customerId;
 
-    private Transaction refund;
-
 }

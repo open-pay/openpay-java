@@ -17,7 +17,7 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Deposit;
 import mx.openpay.client.Fee;
-import mx.openpay.client.Sales;
+import mx.openpay.client.Sale;
 import mx.openpay.client.Transfer;
 import mx.openpay.client.Withdrawal;
 
@@ -43,7 +43,7 @@ public class ListTypes {
     public static final Type FEE = new TypeToken<Collection<Fee>>() {
     }.getType();
 
-    public static final Type SALE = new TypeToken<Collection<Sales>>() {
+    public static final Type SALE = new TypeToken<Collection<Sale>>() {
     }.getType();
 
     public static final Type TRANSFER = new TypeToken<Collection<Transfer>>() {

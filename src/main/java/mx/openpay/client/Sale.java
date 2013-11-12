@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.utils.ListTypes;
@@ -29,7 +31,7 @@ import mx.openpay.client.utils.SearchParams;
 /**
  * @author elopez
  */
-public class Sales {
+public class Sale {
 
     private static final String SALES_PATH = MERCHANT_ID + SALES;
 
@@ -37,7 +39,7 @@ public class Sales {
 
     private static final String REFUND_SALE_PATH = GET_SALE_PATH + REFUND;
 
-    public static Sales create(final Card card, final BigDecimal amount, final String description, final String orderId)
+    public static Sale create(final Card card, final BigDecimal amount, final String description, final String orderId)
             throws HttpError, ServiceUnavailable {
         String path = String.format(SALES_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
@@ -45,10 +47,10 @@ public class Sales {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderId);
-        return getJsonClient().post(path, data, Sales.class);
+        return getJsonClient().post(path, data, Sale.class);
     }
 
-    public static Sales create(final String sourceId, final BigDecimal amount, final String description,
+    public static Sale create(final String sourceId, final BigDecimal amount, final String description,
             final String orderId)
             throws HttpError, ServiceUnavailable {
         String path = String.format(SALES_PATH, getMerchantId());
@@ -57,27 +59,31 @@ public class Sales {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderId);
-        return getJsonClient().post(path, data, Sales.class);
+        return getJsonClient().post(path, data, Sale.class);
     }
 
-    public static List<Sales> getList(final SearchParams params) throws HttpError, ServiceUnavailable {
+    public static List<Sale> getList(final SearchParams params) throws HttpError, ServiceUnavailable {
         String path = String.format(SALES_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.SALE);
     }
 
-    public static Sales get(final String transactionId) throws HttpError, ServiceUnavailable {
+    public static Sale get(final String transactionId) throws HttpError, ServiceUnavailable {
         String path = String.format(GET_SALE_PATH, getMerchantId(), transactionId);
-        return getJsonClient().get(path, Sales.class);
+        return getJsonClient().get(path, Sale.class);
     }
 
-    public static void refund(final String transactionId, final String description, final String orderId)
+    public static Sale refund(final String transactionId, final String description, final String orderId)
             throws HttpError, ServiceUnavailable {
         String path = String.format(REFUND_SALE_PATH, getMerchantId(), transactionId);
         System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("description", description);
         data.put("order_id", orderId);
-        getJsonClient().post(path, data, null);
+        return getJsonClient().post(path, data, Sale.class);
     }
+
+    @Getter
+    @Setter
+    private Refund refund;
 }
