@@ -26,7 +26,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import mx.openpay.client.exceptions.OpenpayServiceException;
-import mx.openpay.client.exceptions.ServiceUnavailable;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
@@ -49,7 +49,7 @@ public class Deposit extends Transaction {
 
     public static Deposit create(final Card card, final BigDecimal amount, final String description,
             final String orderId)
-            throws OpenpayServiceException, ServiceUnavailable {
+            throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(MERCHANT_DEPOSITS_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
@@ -59,19 +59,19 @@ public class Deposit extends Transaction {
         return getJsonClient().post(path, data, Deposit.class);
     }
 
-    public static List<Deposit> getList(final SearchParams params) throws OpenpayServiceException, ServiceUnavailable {
+    public static List<Deposit> getList(final SearchParams params) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(MERCHANT_DEPOSITS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.DEPOSIT);
     }
 
-    public static Deposit get(final String transactionId) throws OpenpayServiceException, ServiceUnavailable {
+    public static Deposit get(final String transactionId) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(GET_MERCHANT_DEPOSIT_PATH, getMerchantId(), transactionId);
         return getJsonClient().get(path, Deposit.class);
     }
 
     public static Deposit refund(final String transactionId, final String description, final String orderId)
-            throws OpenpayServiceException, ServiceUnavailable {
+            throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(REFUND_MERCHANT_DEPOSIT_PATH, getMerchantId(), transactionId);
         System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -81,7 +81,7 @@ public class Deposit extends Transaction {
     }
 
     public static Deposit create(final String customerId, final Card card, final BigDecimal amount,
-            final String description, final String orderId) throws ServiceUnavailable, OpenpayServiceException {
+            final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(CUSTOMER_DEPOSITS_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
@@ -92,7 +92,7 @@ public class Deposit extends Transaction {
     }
 
     public static Deposit create(final String customerId, final String sourceId, final BigDecimal amount,
-            final String description, final String orderId) throws ServiceUnavailable, OpenpayServiceException {
+            final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(CUSTOMER_DEPOSITS_PATH, getMerchantId(), customerId);
         System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -104,20 +104,20 @@ public class Deposit extends Transaction {
     }
 
     public static List<Deposit> getList(final String customerId, final SearchParams params)
-            throws OpenpayServiceException, ServiceUnavailable {
+            throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CUSTOMER_DEPOSITS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.DEPOSIT);
     }
 
     public static Deposit get(final String customerId, final String transactionId) throws OpenpayServiceException,
-            ServiceUnavailable {
+            ServiceUnavailableException {
         String path = String.format(GET_CUSTOMER_DEPOSIT_PATH, getMerchantId(), customerId, transactionId);
         return getJsonClient().get(path, Deposit.class);
     }
 
     public static Deposit refund(final String customerId, final String transactionId, final String description,
-            final String orderId) throws OpenpayServiceException, ServiceUnavailable {
+            final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(REFUND_CUSTOMER_DEPOSIT_PATH, getMerchantId(), customerId, transactionId);
         System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();

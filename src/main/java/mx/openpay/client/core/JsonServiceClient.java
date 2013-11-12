@@ -12,7 +12,7 @@ import java.util.Map;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.exceptions.OpenpayServiceException;
-import mx.openpay.client.exceptions.ServiceUnavailable;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.serialization.CardAdapterFactory;
 import mx.openpay.client.serialization.CustomerAdapterFactory;
 import mx.openpay.client.serialization.DateFormatSerializer;
@@ -89,34 +89,34 @@ public class JsonServiceClient {
         this.httpClient.getParams().setParameter("http.connection.timeout", this.connectionTimeout);
     }
 
-    public <T> T get(final String path, final Class<T> clazz) throws OpenpayServiceException, ServiceUnavailable {
+    public <T> T get(final String path, final Class<T> clazz) throws OpenpayServiceException, ServiceUnavailableException {
         URI uri = this.buildUri(path);
         HttpGet request = new HttpGet(uri);
         return this.executeOperation(request, clazz, null);
     }
 
     public <T> T get(final String path, final Map<String, String> map, final Class<T> clazz) throws OpenpayServiceException,
-            ServiceUnavailable {
+            ServiceUnavailableException {
         URI uri = this.buildUri(path, map);
         HttpGet request = new HttpGet(uri);
         return this.executeOperation(request, clazz, null);
     }
 
     public <T> T getList(final String path, final Map<String, String> params, final Type type) throws OpenpayServiceException,
-            ServiceUnavailable {
+            ServiceUnavailableException {
         URI uri = this.buildUri(path, params);
         HttpGet request = new HttpGet(uri);
         return this.executeOperation(request, null, type);
     }
 
-    public void delete(final String path) throws OpenpayServiceException, ServiceUnavailable {
+    public void delete(final String path) throws OpenpayServiceException, ServiceUnavailableException {
         URI uri = this.buildUri(path);
         HttpDelete request = new HttpDelete(uri);
         this.executeOperation(request, null, null);
     }
 
     public <T> T put(final String path, final Object payload, final Class<T> returnClazz) throws OpenpayServiceException,
-            ServiceUnavailable {
+            ServiceUnavailableException {
         URI uri = this.buildUri(path);
         HttpPut request = new HttpPut(uri);
         request.setEntity(new StringEntity(this.serialize(payload), ContentType.APPLICATION_JSON));
@@ -124,7 +124,7 @@ public class JsonServiceClient {
     }
 
     public <T> T post(final String path, final Object payload, final Class<T> clazz) throws OpenpayServiceException,
-            ServiceUnavailable {
+            ServiceUnavailableException {
         URI uri = this.buildUri(path);
         HttpPost request = new HttpPost(uri);
         request.setEntity(new StringEntity(this.serialize(payload), ContentType.APPLICATION_JSON));
@@ -169,7 +169,7 @@ public class JsonServiceClient {
 
     private <T> T executeOperation(final HttpUriRequest request, final Class<T> clazz, final Type type)
             throws OpenpayServiceException,
-            ServiceUnavailable {
+            ServiceUnavailableException {
         this.addHeaders(request);
         this.addAuthentication(request);
         long init = System.currentTimeMillis();
@@ -177,9 +177,9 @@ public class JsonServiceClient {
         try {
             response = this.httpClient.execute(request);
         } catch (ClientProtocolException e) {
-            throw new ServiceUnavailable(e);
+            throw new ServiceUnavailableException(e);
         } catch (IOException e) {
-            throw new ServiceUnavailable(e);
+            throw new ServiceUnavailableException(e);
         }
 
         String body = null;
@@ -190,7 +190,7 @@ public class JsonServiceClient {
                 contentType = entity.getContentType().getValue();
                 body = EntityUtils.toString(entity);
             } catch (IOException e) {
-                throw new ServiceUnavailable(e);
+                throw new ServiceUnavailableException(e);
             }
         }
         StatusLine status = response.getStatusLine();

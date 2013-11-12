@@ -28,7 +28,7 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Deposit;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.exceptions.OpenpayServiceException;
-import mx.openpay.client.exceptions.ServiceUnavailable;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class DepositOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_WithId() throws ServiceUnavailable, OpenpayServiceException {
+    public void testCreate_Customer_WithId() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
 

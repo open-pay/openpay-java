@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.exceptions.OpenpayServiceException;
-import mx.openpay.client.exceptions.ServiceUnavailable;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
@@ -32,7 +32,7 @@ public class Fee extends Transaction {
     private static final String FEES_PATH = MERCHANT_ID + FEES;
 
     public static Fee create(final String customerId, final BigDecimal amount, final String desc,
-            final String orderID) throws ServiceUnavailable, OpenpayServiceException {
+            final String orderID) throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(FEES_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("customer_id", customerId);
@@ -42,7 +42,7 @@ public class Fee extends Transaction {
         return getJsonClient().post(path, data, Fee.class);
     }
 
-    public static List<Fee> getList(final SearchParams params) throws ServiceUnavailable,
+    public static List<Fee> getList(final SearchParams params) throws ServiceUnavailableException,
             OpenpayServiceException {
         String path = String.format(FEES_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();

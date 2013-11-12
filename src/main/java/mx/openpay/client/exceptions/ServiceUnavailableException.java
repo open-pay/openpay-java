@@ -1,23 +1,23 @@
 package mx.openpay.client.exceptions;
 
 
-public class ServiceUnavailable extends Exception {
+public class ServiceUnavailableException extends Exception {
 
     private static final long serialVersionUID = -7388627000694002585L;
 
-    public ServiceUnavailable(String message) {
+    public ServiceUnavailableException(String message) {
         super(message);
     }
 
-    public ServiceUnavailable(Throwable cause) {
+    public ServiceUnavailableException(Throwable cause) {
         super(cause);
     }
 
-    public ServiceUnavailable(String message, Throwable cause) {
+    public ServiceUnavailableException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ServiceUnavailable(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public ServiceUnavailableException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
