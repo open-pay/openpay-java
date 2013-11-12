@@ -34,7 +34,7 @@ public class BankAccountOperationsTest {
     }
 
     @Test
-    public void testGetBankAccounts() throws ServiceUnavailable, HttpError {
+    public void testGetList() throws ServiceUnavailable, HttpError {
         String customerId = "afk4csrazjp1udezj1po";
         List<BankAccount> banksAccounts = BankAccount.getList(customerId, search().offset(0).limit(100));
         Assert.assertNotNull(banksAccounts);

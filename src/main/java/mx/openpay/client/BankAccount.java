@@ -64,7 +64,8 @@ public class BankAccount {
     @SerializedName("bank_name")
     private String bankName;
 
-    private String holderName;
+    @SerializedName("holder_name")
+    private String accountOwner;
 
     private String clabe;
 

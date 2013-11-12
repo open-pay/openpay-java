@@ -29,7 +29,7 @@ public class CardOperationsTest {
     }
 
     @Test
-    public void testGetCards() throws ServiceUnavailable, HttpError {
+    public void testGetList() throws ServiceUnavailable, HttpError {
         List<Card> cards = Card.getList(this.customerId, search().offset(0).limit(100));
         Assert.assertNotNull(cards);
         for (Card card : cards) {
@@ -39,7 +39,7 @@ public class CardOperationsTest {
     }
 
     @Test
-    public void testCreateCardAndDelete() throws Exception {
+    public void testCreateAndDelete() throws Exception {
         Address address = new Address();
         address.setCity("Querétaro");
         address.setExteriorNumber("11");
@@ -62,7 +62,7 @@ public class CardOperationsTest {
     }
 
     @Test
-    public void testGetCard() throws Exception {
+    public void testGet() throws Exception {
         Card card = Card.get(this.customerId, "kfaq5dm5pq1qefzev1nz");
         assertNotNull(card);
     }

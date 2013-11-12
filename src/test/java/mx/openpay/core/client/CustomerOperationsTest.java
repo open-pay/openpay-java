@@ -48,7 +48,7 @@ public class CustomerOperationsTest {
     }
 
     @Test
-    public void testGetCustomers() throws ServiceUnavailable, HttpError {
+    public void testGetList() throws ServiceUnavailable, HttpError {
         List<Customer> customers = Customer.getList(search().offset(0).limit(100));
         Assert.assertNotNull(customers);
         for (Customer customer : customers) {

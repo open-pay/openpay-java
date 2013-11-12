@@ -25,10 +25,8 @@ import java.util.List;
 import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.Card;
-import mx.openpay.client.Deposit;
+import mx.openpay.client.Sale;
 import mx.openpay.client.core.OpenpayAPI;
-import mx.openpay.client.exceptions.HttpError;
-import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,9 +34,7 @@ import org.junit.Test;
 /**
  * @author elopez
  */
-public class DepositOperationsTest {
-
-    String customerId = "afk4csrazjp1udezj1po";
+public class SalesOperationsTest {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -48,22 +44,7 @@ public class DepositOperationsTest {
     }
 
     @Test
-    public void testCreate() throws ServiceUnavailable, HttpError {
-        BigDecimal amount = new BigDecimal("10000.00");
-        String desc = "Pago de taxi";
-
-        List<Card> cards = Card.getList(this.customerId, search().offset(0).limit(10));
-        Assert.assertNotNull(cards);
-
-        String orderId = this.dateFormat.format(new Date());
-        Deposit transaction = Deposit.create(this.customerId, cards.get(0).getId(), amount, desc, orderId);
-        Assert.assertNotNull(transaction);
-        Assert.assertEquals(amount, transaction.getAmount());
-        Assert.assertEquals(desc, transaction.getDescription());
-    }
-
-    @Test
-    public void testCreateWithCard() throws Exception {
+    public void testCreate() throws Exception {
         Address address = new Address();
         address.setCity("Querétaro");
         address.setExteriorNumber("11");
@@ -84,7 +65,7 @@ public class DepositOperationsTest {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         String orderId = this.dateFormat.format(new Date());
-        Deposit deposit = Deposit.create(this.customerId, card, amount, desc, orderId);
+        Sale deposit = Sale.create(card, amount, desc, orderId);
         assertNotNull(deposit);
         assertNotNull(deposit.getCard());
         assertNull(deposit.getCard().getCvv2());
@@ -92,38 +73,62 @@ public class DepositOperationsTest {
     }
 
     @Test
-    public void testRefundDeposit() throws Exception {
+    public void testRefund() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
-        List<Card> cards = Card.getList(this.customerId, search().offset(0).limit(10));
-        Assert.assertNotNull(cards);
         String orderId = this.dateFormat.format(new Date());
 
-        Deposit transaction = Deposit.create(this.customerId, cards.get(0).getId(), amount, desc, orderId);
+        Sale transaction = Sale.create(this.getCard(), amount, desc, orderId);
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = Deposit.refund(this.customerId, transaction.getId(), "cancelacion", null);
+        transaction = Sale.refund(transaction.getId(), "cancelacion", null);
         Assert.assertNotNull(transaction.getRefund());
         Assert.assertEquals("cancelacion", transaction.getRefund().getDescription());
 
-        transaction = Deposit.get(this.customerId, originalTransactionId);
+        transaction = Sale.get(originalTransactionId);
         assertNotNull(transaction.getRefund());
     }
 
     @Test
-    public void testGetDeposit() throws Exception {
-        Deposit deposit = Deposit.get(this.customerId, "t2eqcqtb1uq2k746eiti");
-        assertNotNull(deposit);
+    public void testGet_Merchant() throws Exception {
+        Sale sale = Sale.get("txvdd6sjzcrvbiragy66");
+        assertNotNull(sale);
+    }
+
+    @Test
+    public void testGet_Customer() throws Exception {
+        Sale sale = Sale.get("t2eqcqtb1uq2k746eiti");
+        assertNotNull(sale);
     }
 
     @Test
     public void testGetList() throws Exception {
-        List<Deposit> deposits = Deposit.getList(this.customerId, search().limit(3));
-        assertEquals(3, deposits.size());
+        List<Sale> sale = Sale.getList(search().limit(3));
+        assertEquals(3, sale.size());
 
-        deposits = Deposit.getList(this.customerId, search().limit(5));
-        assertEquals(5, deposits.size());
+        sale = Sale.getList(search().limit(5));
+        assertEquals(5, sale.size());
+    }
+
+    private Card getCard() {
+        Address address = new Address();
+        address.setCity("Querétaro");
+        address.setExteriorNumber("11");
+        address.setInteriorNumber("01");
+        address.setPostalCode("76090");
+        address.setRegion("Corregidora");
+        address.setStreet("Camino");
+        address.setState("Queretaro");
+
+        Card card = new Card();
+        card.setCardNumber("5243385358972033");
+        card.setHolderName("Holder");
+        card.setExpirationMonth("12");
+        card.setExpirationYear("15");
+        card.setCvv2("123");
+        card.setAddress(address);
+        return card;
     }
 }

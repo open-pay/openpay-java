@@ -86,17 +86,6 @@ public class Withdrawal extends Transaction {
         return getJsonClient().get(path, Withdrawal.class);
     }
 
-    public static Withdrawal createForMerchant(final String destinationId, final BigDecimal amount,
-            final String description, final String orderID) throws HttpError, ServiceUnavailable {
-        String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("destination_id", destinationId);
-        data.put("amount", amount);
-        data.put("description", description);
-        data.put("order_id", orderID);
-        return getJsonClient().post(path, data, Withdrawal.class);
-    }
-
     public static Withdrawal createForMerchant(final Card card, final BigDecimal amount,
             final String description, final String orderID) throws HttpError, ServiceUnavailable {
         String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());

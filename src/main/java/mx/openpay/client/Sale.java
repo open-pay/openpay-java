@@ -31,7 +31,7 @@ import mx.openpay.client.utils.SearchParams;
 /**
  * @author elopez
  */
-public class Sale {
+public class Sale extends Transaction {
 
     private static final String SALES_PATH = MERCHANT_ID + SALES;
 
@@ -44,18 +44,6 @@ public class Sale {
         String path = String.format(SALES_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
-        data.put("amount", amount);
-        data.put("description", description);
-        data.put("order_id", orderId);
-        return getJsonClient().post(path, data, Sale.class);
-    }
-
-    public static Sale create(final String sourceId, final BigDecimal amount, final String description,
-            final String orderId)
-            throws HttpError, ServiceUnavailable {
-        String path = String.format(SALES_PATH, getMerchantId());
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("source_id", sourceId);
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderId);
