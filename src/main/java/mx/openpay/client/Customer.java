@@ -15,7 +15,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
@@ -32,7 +32,7 @@ public class Customer {
     private static final String GET_CUSTOMER_PATH = CUSTOMERS_PATH + ID;
 
     public static Customer create(final String name, final String lastName, final String email,
-            final String phoneNumber, final Address address) throws HttpError, ServiceUnavailable {
+            final String phoneNumber, final Address address) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(CUSTOMERS_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("name", name);
@@ -43,24 +43,24 @@ public class Customer {
         return getJsonClient().post(path, data, Customer.class);
     };
 
-    public static List<Customer> getList(final SearchParams params) throws HttpError,
+    public static List<Customer> getList(final SearchParams params) throws OpenpayServiceException,
             ServiceUnavailable {
         String path = String.format(CUSTOMERS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.CUSTOMER);
     }
 
-    public static Customer get(final String customerId) throws HttpError, ServiceUnavailable {
+    public static Customer get(final String customerId) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(GET_CUSTOMER_PATH, getMerchantId(), customerId);
         return getJsonClient().get(path, Customer.class);
     };
 
-    public static Customer update(final Customer customer) throws HttpError, ServiceUnavailable {
+    public static Customer update(final Customer customer) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(GET_CUSTOMER_PATH, getMerchantId(), customer.getId());
         return getJsonClient().put(path, customer, Customer.class);
     }
 
-    public static void delete(final String customerId) throws HttpError, ServiceUnavailable {
+    public static void delete(final String customerId) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(GET_CUSTOMER_PATH, getMerchantId(), customerId);
         getJsonClient().delete(path);
     }

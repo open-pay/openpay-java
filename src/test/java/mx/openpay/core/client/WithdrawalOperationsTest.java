@@ -26,7 +26,7 @@ import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
 import mx.openpay.client.Withdrawal;
 import mx.openpay.client.core.OpenpayAPI;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.junit.Before;
@@ -47,19 +47,19 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testGetList_Customer() throws ServiceUnavailable, HttpError {
+    public void testGetList_Customer() throws ServiceUnavailable, OpenpayServiceException {
         List<Withdrawal> transactions = Withdrawal.getList(search().limit(2));
         assertEquals(2, transactions.size());
     }
 
     @Test
-    public void testGetList_Merchant() throws ServiceUnavailable, HttpError {
+    public void testGetList_Merchant() throws ServiceUnavailable, OpenpayServiceException {
         List<Withdrawal> transactions = Withdrawal.getList(this.customerId, search().limit(2));
         assertEquals(2, transactions.size());
     }
 
     @Test
-    public void testGet_Merchant() throws ServiceUnavailable, HttpError {
+    public void testGet_Merchant() throws ServiceUnavailable, OpenpayServiceException {
         String transactionId = "tf1wjucai0gj7awz0uvf";
         Withdrawal transaction = Withdrawal.get(transactionId);
         Assert.assertNotNull(transaction.getId());
@@ -67,7 +67,7 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testGet_Customer() throws ServiceUnavailable, HttpError {
+    public void testGet_Customer() throws ServiceUnavailable, OpenpayServiceException {
         String transactionId = "tf1wjucai0gj7awz0uvf";
         Withdrawal transaction = Withdrawal.get(this.customerId, transactionId);
         Assert.assertNotNull(transaction.getId());
@@ -75,7 +75,7 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_BankAccountId() throws ServiceUnavailable, HttpError {
+    public void testCreate_Customer_BankAccountId() throws ServiceUnavailable, OpenpayServiceException {
         String customerId = "afk4csrazjp1udezj1po";
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -94,7 +94,7 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_BankAccount() throws ServiceUnavailable, HttpError {
+    public void testCreate_Customer_BankAccount() throws ServiceUnavailable, OpenpayServiceException {
         String customerId = "afk4csrazjp1udezj1po";
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -113,7 +113,7 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_Card() throws ServiceUnavailable, HttpError {
+    public void testCreate_Customer_Card() throws ServiceUnavailable, OpenpayServiceException {
         String customerId = "afk4csrazjp1udezj1po";
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -131,7 +131,7 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testCreate_Merchant_BankAccount() throws ServiceUnavailable, HttpError {
+    public void testCreate_Merchant_BankAccount() throws ServiceUnavailable, OpenpayServiceException {
 
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -150,7 +150,7 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testCreate_Merchant_Card() throws ServiceUnavailable, HttpError {
+    public void testCreate_Merchant_Card() throws ServiceUnavailable, OpenpayServiceException {
 
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";

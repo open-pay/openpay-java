@@ -11,7 +11,7 @@ import java.util.Map;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.serialization.CardAdapterFactory;
 import mx.openpay.client.serialization.CustomerAdapterFactory;
@@ -89,33 +89,33 @@ public class JsonServiceClient {
         this.httpClient.getParams().setParameter("http.connection.timeout", this.connectionTimeout);
     }
 
-    public <T> T get(final String path, final Class<T> clazz) throws HttpError, ServiceUnavailable {
+    public <T> T get(final String path, final Class<T> clazz) throws OpenpayServiceException, ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpGet request = new HttpGet(uri);
         return this.executeOperation(request, clazz, null);
     }
 
-    public <T> T get(final String path, final Map<String, String> map, final Class<T> clazz) throws HttpError,
+    public <T> T get(final String path, final Map<String, String> map, final Class<T> clazz) throws OpenpayServiceException,
             ServiceUnavailable {
         URI uri = this.buildUri(path, map);
         HttpGet request = new HttpGet(uri);
         return this.executeOperation(request, clazz, null);
     }
 
-    public <T> T getList(final String path, final Map<String, String> params, final Type type) throws HttpError,
+    public <T> T getList(final String path, final Map<String, String> params, final Type type) throws OpenpayServiceException,
             ServiceUnavailable {
         URI uri = this.buildUri(path, params);
         HttpGet request = new HttpGet(uri);
         return this.executeOperation(request, null, type);
     }
 
-    public void delete(final String path) throws HttpError, ServiceUnavailable {
+    public void delete(final String path) throws OpenpayServiceException, ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpDelete request = new HttpDelete(uri);
         this.executeOperation(request, null, null);
     }
 
-    public <T> T put(final String path, final Object payload, final Class<T> returnClazz) throws HttpError,
+    public <T> T put(final String path, final Object payload, final Class<T> returnClazz) throws OpenpayServiceException,
             ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpPut request = new HttpPut(uri);
@@ -123,7 +123,7 @@ public class JsonServiceClient {
         return this.executeOperation(request, returnClazz, null);
     }
 
-    public <T> T post(final String path, final Object payload, final Class<T> clazz) throws HttpError,
+    public <T> T post(final String path, final Object payload, final Class<T> clazz) throws OpenpayServiceException,
             ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpPost request = new HttpPost(uri);
@@ -168,7 +168,7 @@ public class JsonServiceClient {
     }
 
     private <T> T executeOperation(final HttpUriRequest request, final Class<T> clazz, final Type type)
-            throws HttpError,
+            throws OpenpayServiceException,
             ServiceUnavailable {
         this.addHeaders(request);
         this.addAuthentication(request);
@@ -204,16 +204,16 @@ public class JsonServiceClient {
 
     private <T> T getDeserializedObject(final StatusLine status, final String contentType, final String body,
             final Class<T> clazz,
-            final Type type) throws HttpError {
+            final Type type) throws OpenpayServiceException {
         boolean isJsonResponse = contentType != null
                 && contentType.startsWith(ContentType.APPLICATION_JSON.getMimeType());
         if (status.getStatusCode() >= 299) {
             if (isJsonResponse) {
-                HttpError error = this.deserialize(body, HttpError.class, null);
+                OpenpayServiceException error = this.deserialize(body, OpenpayServiceException.class, null);
                 throw error;
             } else {
                 log.error("No Json response: {} ", body);
-                throw new HttpError("[" + status.getStatusCode() + "] Internal server error");
+                throw new OpenpayServiceException("[" + status.getStatusCode() + "] Internal server error");
             }
         } else if (isJsonResponse) {
             return this.deserialize(body, clazz, type);

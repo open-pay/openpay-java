@@ -11,7 +11,7 @@ import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.junit.Before;
@@ -25,7 +25,7 @@ public class CustomerOperationsTest {
     }
 
     @Test
-    public void testCreateAndDeleteCustomer() throws ServiceUnavailable, HttpError {
+    public void testCreateAndDeleteCustomer() throws ServiceUnavailable, OpenpayServiceException {
         Address address = this.createAddress();
         Customer customer = Customer.create("Juan", "Perez Perez", "juan.perez@gmail.com",
                 "55-25634013", address);
@@ -35,7 +35,7 @@ public class CustomerOperationsTest {
     }
 
     @Test
-    public void testGetAndUpdateCustomer() throws ServiceUnavailable, HttpError {
+    public void testGetAndUpdateCustomer() throws ServiceUnavailable, OpenpayServiceException {
         String customerId = "afk4csrazjp1udezj1po";
         Customer customer = Customer.get(customerId);
         Assert.assertNotNull(customer);
@@ -48,7 +48,7 @@ public class CustomerOperationsTest {
     }
 
     @Test
-    public void testGetList() throws ServiceUnavailable, HttpError {
+    public void testGetList() throws ServiceUnavailable, OpenpayServiceException {
         List<Customer> customers = Customer.getList(search().offset(0).limit(100));
         Assert.assertNotNull(customers);
         for (Customer customer : customers) {

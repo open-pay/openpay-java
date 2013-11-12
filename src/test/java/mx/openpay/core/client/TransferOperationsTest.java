@@ -26,7 +26,7 @@ import java.util.List;
 import mx.openpay.client.Transfer;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.enums.TransactionType;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -75,7 +75,7 @@ public class TransferOperationsTest {
         try {
             Transfer.get(transactionId, TransactionType.SPEI);
             fail();
-        } catch (HttpError e) {
+        } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
         }
     }

@@ -23,7 +23,7 @@ import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
@@ -40,7 +40,7 @@ public class Sale extends Transaction {
     private static final String REFUND_SALE_PATH = GET_SALE_PATH + REFUND;
 
     public static Sale create(final Card card, final BigDecimal amount, final String description, final String orderId)
-            throws HttpError, ServiceUnavailable {
+            throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(SALES_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
@@ -50,19 +50,19 @@ public class Sale extends Transaction {
         return getJsonClient().post(path, data, Sale.class);
     }
 
-    public static List<Sale> getList(final SearchParams params) throws HttpError, ServiceUnavailable {
+    public static List<Sale> getList(final SearchParams params) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(SALES_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.SALE);
     }
 
-    public static Sale get(final String transactionId) throws HttpError, ServiceUnavailable {
+    public static Sale get(final String transactionId) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(GET_SALE_PATH, getMerchantId(), transactionId);
         return getJsonClient().get(path, Sale.class);
     }
 
     public static Sale refund(final String transactionId, final String description, final String orderId)
-            throws HttpError, ServiceUnavailable {
+            throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(REFUND_SALE_PATH, getMerchantId(), transactionId);
         System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();

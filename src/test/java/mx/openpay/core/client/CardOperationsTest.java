@@ -12,7 +12,7 @@ import java.util.List;
 import mx.openpay.client.Address;
 import mx.openpay.client.Card;
 import mx.openpay.client.core.OpenpayAPI;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.junit.Assert;
@@ -29,7 +29,7 @@ public class CardOperationsTest {
     }
 
     @Test
-    public void testGetList() throws ServiceUnavailable, HttpError {
+    public void testGetList() throws ServiceUnavailable, OpenpayServiceException {
         List<Card> cards = Card.getList(this.customerId, search().offset(0).limit(100));
         Assert.assertNotNull(cards);
         for (Card card : cards) {

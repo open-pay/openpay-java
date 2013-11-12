@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
@@ -41,7 +41,7 @@ public class Withdrawal extends Transaction {
 
     public static Withdrawal createForCustomer(final String customerId, final String destinationId,
             final BigDecimal amount, final String description, final String orderID) throws ServiceUnavailable,
-            HttpError {
+            OpenpayServiceException {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("destination_id", destinationId);
@@ -52,7 +52,7 @@ public class Withdrawal extends Transaction {
     }
 
     public static Withdrawal createForCustomer(final String customerId, final Card card,
-            final BigDecimal amount, final String description, final String orderID) throws HttpError,
+            final BigDecimal amount, final String description, final String orderID) throws OpenpayServiceException,
             ServiceUnavailable {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -64,7 +64,7 @@ public class Withdrawal extends Transaction {
     }
 
     public static Withdrawal createForCustomer(final String customerId, final BankAccount bankAccount,
-            final BigDecimal amount, final String description, final String orderID) throws HttpError,
+            final BigDecimal amount, final String description, final String orderID) throws OpenpayServiceException,
             ServiceUnavailable {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -75,19 +75,19 @@ public class Withdrawal extends Transaction {
         return getJsonClient().post(path, data, Withdrawal.class);
     }
 
-    public static Withdrawal get(final String transactionId) throws HttpError, ServiceUnavailable {
+    public static Withdrawal get(final String transactionId) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(GET_MERCHANT_WITHDRAWAL_PATH, getMerchantId(), transactionId);
         return getJsonClient().get(path, Withdrawal.class);
     }
 
-    public static Withdrawal get(final String customerId, final String transactionId) throws HttpError,
+    public static Withdrawal get(final String customerId, final String transactionId) throws OpenpayServiceException,
             ServiceUnavailable {
         String path = String.format(GET_CUSTOMER_WITHDRAWAL_PATH, getMerchantId(), customerId, transactionId);
         return getJsonClient().get(path, Withdrawal.class);
     }
 
     public static Withdrawal createForMerchant(final Card card, final BigDecimal amount,
-            final String description, final String orderID) throws HttpError, ServiceUnavailable {
+            final String description, final String orderID) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
@@ -98,7 +98,7 @@ public class Withdrawal extends Transaction {
     }
 
     public static Withdrawal createForMerchant(final BankAccount bankAccount, final BigDecimal amount,
-            final String description, final String orderID) throws HttpError, ServiceUnavailable {
+            final String description, final String orderID) throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("bank_account", bankAccount);
@@ -108,7 +108,7 @@ public class Withdrawal extends Transaction {
         return getJsonClient().post(path, data, Withdrawal.class);
     }
 
-    public static List<Withdrawal> getList(final SearchParams params) throws HttpError,
+    public static List<Withdrawal> getList(final SearchParams params) throws OpenpayServiceException,
             ServiceUnavailable {
         String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
@@ -116,7 +116,7 @@ public class Withdrawal extends Transaction {
     }
 
     public static List<Withdrawal> getList(final String customerId, final SearchParams params)
-            throws HttpError, ServiceUnavailable {
+            throws OpenpayServiceException, ServiceUnavailable {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.WITHDRAWAL);

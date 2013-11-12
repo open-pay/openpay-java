@@ -14,7 +14,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
@@ -32,7 +32,7 @@ public class BankAccount {
 
     public static BankAccount create(final String customerId, final String clabe, final String ownerName,
             final String alias)
-            throws ServiceUnavailable, HttpError {
+            throws ServiceUnavailable, OpenpayServiceException {
         String path = String.format(BANK_ACCOUNTS_PATH, getMerchantId(), customerId);
         Map<String, Object> bankData = new HashMap<String, Object>();
         bankData.put("clabe", clabe);
@@ -42,19 +42,19 @@ public class BankAccount {
     }
 
     public static List<BankAccount> getList(final String customerId, final SearchParams params)
-            throws ServiceUnavailable, HttpError {
+            throws ServiceUnavailable, OpenpayServiceException {
         String path = String.format(BANK_ACCOUNTS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.BANK_ACCOUNT);
     }
 
     public static BankAccount get(final String customerId, final String bankId) throws ServiceUnavailable,
-            HttpError {
+            OpenpayServiceException {
         String path = String.format(GET_BANK_ACCOUNT, getMerchantId(), customerId, bankId);
         return getJsonClient().get(path, BankAccount.class);
     }
 
-    public static void delete(final String customerId, final String bankId) throws ServiceUnavailable, HttpError {
+    public static void delete(final String customerId, final String bankId) throws ServiceUnavailable, OpenpayServiceException {
         String path = String.format(GET_BANK_ACCOUNT, getMerchantId(), customerId, bankId);
         getJsonClient().delete(path);
     }

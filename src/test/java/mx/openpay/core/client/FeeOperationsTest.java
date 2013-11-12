@@ -13,7 +13,7 @@ import java.util.List;
 
 import mx.openpay.client.Fee;
 import mx.openpay.client.core.OpenpayAPI;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
 import org.junit.Assert;
@@ -30,7 +30,7 @@ public class FeeOperationsTest {
     }
 
     @Test
-    public void testCreate() throws ServiceUnavailable, HttpError {
+    public void testCreate() throws ServiceUnavailable, OpenpayServiceException {
         String customerId = "afk4csrazjp1udezj1po";
         BigDecimal feeAmount = new BigDecimal("10.00");
         String desc = "Comisión general";

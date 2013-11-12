@@ -14,7 +14,7 @@ import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
-import mx.openpay.client.exceptions.HttpError;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
@@ -31,7 +31,7 @@ public class Card {
 
     public static Card create(final String customerId, final String cardNumber, final String holderName,
             final String cvv2, final String expMonth, final String expYear, final Address address)
-            throws ServiceUnavailable, HttpError {
+            throws ServiceUnavailable, OpenpayServiceException {
         String path = String.format(CARDS_PATH, getMerchantId(), customerId);
         Map<String, Object> cardData = new HashMap<String, Object>();
         cardData.put("card_number", cardNumber);
@@ -44,18 +44,18 @@ public class Card {
     }
 
     public static List<Card> getList(final String customerId, final SearchParams params)
-            throws ServiceUnavailable, HttpError {
+            throws ServiceUnavailable, OpenpayServiceException {
         String path = String.format(CARDS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.CARD);
     }
 
-    public static Card get(final String customerId, final String cardId) throws ServiceUnavailable, HttpError {
+    public static Card get(final String customerId, final String cardId) throws ServiceUnavailable, OpenpayServiceException {
         String path = String.format(GET_CARD_PATH, getMerchantId(), customerId, cardId);
         return getJsonClient().get(path, Card.class);
     }
 
-    public static void delete(final String customerId, final String cardId) throws ServiceUnavailable, HttpError {
+    public static void delete(final String customerId, final String cardId) throws ServiceUnavailable, OpenpayServiceException {
         String path = String.format(GET_CARD_PATH, getMerchantId(), customerId, cardId);
         getJsonClient().delete(path);
     }
