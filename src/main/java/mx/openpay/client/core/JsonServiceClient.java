@@ -13,6 +13,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
+import mx.openpay.client.serialization.CardAdapterFactory;
 import mx.openpay.client.serialization.CustomerAdapterFactory;
 import mx.openpay.client.serialization.DateFormatSerializer;
 
@@ -78,6 +79,7 @@ public class JsonServiceClient {
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateFormatSerializer())
                 .registerTypeAdapterFactory(new CustomerAdapterFactory())
+                .registerTypeAdapterFactory(new CardAdapterFactory())
                 .create();
     }
 
