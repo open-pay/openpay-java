@@ -9,8 +9,8 @@
  */
 package mx.openpay.client;
 
-import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
-import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.core.OpenpayAPI.getJsonClient;
+import static mx.openpay.client.core.OpenpayAPI.getMerchantId;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mx.openpay.client.enums.TransactionType;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.utils.ListTypes;
@@ -42,12 +43,24 @@ public class Transfer extends Transaction {
     public static List<Transfer> getList(final SearchParams params) throws HttpError,
             ServiceUnavailable {
         String path = String.format(MERCHANT_TRANSFERS_PATH, getMerchantId());
-        return getJsonClient().getList(path, params, ListTypes.TRANSFER);
+        return getJsonClient().getList(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);
     }
 
-    public static Transfer get(final String transactionId) throws HttpError, ServiceUnavailable {
+    public static Transfer get(final String transactionId) throws HttpError,
+            ServiceUnavailable {
+        return get(transactionId, TransactionType.TRANSFER_FROM);
+    }
+
+    public static Transfer get(final String transactionId, final TransactionType type) throws HttpError,
+            ServiceUnavailable {
         String path = String.format(GET_MERCHANT_TRANSFER, getMerchantId(), transactionId);
-        return getJsonClient().get(path, Transfer.class);
+        Map<String, String> map = new HashMap<String, String>();
+        if (type == null) {
+            map.put("transaction_type", TransactionType.TRANSFER_FROM.name().toLowerCase());
+        } else {
+            map.put("transaction_type", type.name().toLowerCase());
+        }
+        return getJsonClient().get(path, map, Transfer.class);
     }
 
     public static Transfer create(final String customerId, final String destinationId, final BigDecimal amount,
@@ -65,7 +78,7 @@ public class Transfer extends Transaction {
     public static List<Transfer> getList(final String customerId, final SearchParams params)
             throws HttpError, ServiceUnavailable {
         String path = String.format(CUSTOMER_TRANSFERS_PATH, getMerchantId(), customerId);
-        return getJsonClient().getList(path, params, ListTypes.TRANSFER);
+        return getJsonClient().getList(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);
     }
 
     public static Transfer get(final String customerId, final String transactionId) throws HttpError,

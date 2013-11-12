@@ -14,7 +14,7 @@ import static mx.openpay.client.utils.OpenpayPathComponents.VERSION;
 /**
  * @author elopez
  */
-public class OpenpayApiConfig {
+public class OpenpayAPI {
 
     private static final String HTTP_RESOURCE_SEPARATOR = "/";
 
@@ -27,14 +27,20 @@ public class OpenpayApiConfig {
     private static JsonServiceClient _jsonClient;
 
     public static void configure(final String location, final String apiKey, final String merchantId) {
-        OpenpayApiConfig._location = location;
-        OpenpayApiConfig._merchantId = merchantId;
-        OpenpayApiConfig._apiKey = apiKey;
-        if (location.endsWith(HTTP_RESOURCE_SEPARATOR)) {
-            OpenpayApiConfig._jsonClient = new JsonServiceClient(location + VERSION, apiKey);
+        OpenpayAPI._location = location;
+        OpenpayAPI._merchantId = merchantId;
+        OpenpayAPI._apiKey = apiKey;
+        StringBuilder baseUri = new StringBuilder();
+        if (location.contains("http") || location.contains("https")) {
+            baseUri.append(location.replace("http:", "https:"));
         } else {
-            OpenpayApiConfig._jsonClient = new JsonServiceClient(location + HTTP_RESOURCE_SEPARATOR + VERSION, apiKey);
+            baseUri.append("https://").append(location);
         }
+        if (!location.endsWith(HTTP_RESOURCE_SEPARATOR)) {
+            baseUri.append(HTTP_RESOURCE_SEPARATOR);
+        }
+        baseUri.append(VERSION);
+        OpenpayAPI._jsonClient = new JsonServiceClient(baseUri.toString(), apiKey);
 
     }
 
@@ -55,5 +61,12 @@ public class OpenpayApiConfig {
             throw new IllegalStateException("The client hasn't been configured yet.");
         }
         return _jsonClient;
+    }
+
+    public static void setTimeout(final int timeout) {
+        if (_jsonClient == null) {
+            throw new IllegalStateException("The client hasn't been configured yet.");
+        }
+        _jsonClient.setConnectionTimeout(timeout);
     }
 }

@@ -15,7 +15,6 @@ import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 import mx.openpay.client.serialization.CustomerAdapterFactory;
 import mx.openpay.client.serialization.DateFormatSerializer;
-import mx.openpay.client.utils.SearchParams;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
@@ -50,8 +49,6 @@ public class JsonServiceClient {
 
     private static final String AGENT = "openpay-java/";
 
-    private static final Integer CONNECTION_TIMEOUT = 60000;
-
     private final String root;
 
     private final String key;
@@ -61,6 +58,8 @@ public class JsonServiceClient {
     private final String userAgent;
 
     private final HttpClient httpClient;
+
+    private int connectionTimeout = 60000;
 
     public JsonServiceClient(final String location, final String key) {
         this.root = location;
@@ -72,8 +71,8 @@ public class JsonServiceClient {
         PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
         this.httpClient = new DefaultHttpClient(connMgr);
         this.httpClient.getParams().setParameter("http.protocol.version", HttpVersion.HTTP_1_1);
-        this.httpClient.getParams().setParameter("http.socket.timeout", CONNECTION_TIMEOUT);
-        this.httpClient.getParams().setParameter("http.connection.timeout", CONNECTION_TIMEOUT);
+        this.httpClient.getParams().setParameter("http.socket.timeout", this.connectionTimeout);
+        this.httpClient.getParams().setParameter("http.connection.timeout", this.connectionTimeout);
         this.httpClient.getParams().setParameter("http.protocol.content-charset", "UTF-8");
 
         this.gson = new GsonBuilder()
@@ -82,13 +81,26 @@ public class JsonServiceClient {
                 .create();
     }
 
+    public void setConnectionTimeout(final int timeout) {
+        this.connectionTimeout = timeout;
+        this.httpClient.getParams().setParameter("http.socket.timeout", this.connectionTimeout);
+        this.httpClient.getParams().setParameter("http.connection.timeout", this.connectionTimeout);
+    }
+
     public <T> T get(final String path, final Class<T> clazz) throws HttpError, ServiceUnavailable {
         URI uri = this.buildUri(path);
         HttpGet request = new HttpGet(uri);
         return this.executeOperation(request, clazz, null);
     }
 
-    public <T> T getList(final String path, final SearchParams params, final Type type) throws HttpError,
+    public <T> T get(final String path, final Map<String, String> map, final Class<T> clazz) throws HttpError,
+            ServiceUnavailable {
+        URI uri = this.buildUri(path, map);
+        HttpGet request = new HttpGet(uri);
+        return this.executeOperation(request, clazz, null);
+    }
+
+    public <T> T getList(final String path, final Map<String, String> params, final Type type) throws HttpError,
             ServiceUnavailable {
         URI uri = this.buildUri(path, params);
         HttpGet request = new HttpGet(uri);
@@ -121,13 +133,13 @@ public class JsonServiceClient {
         return this.buildUri(path, null);
     }
 
-    private URI buildUri(final String path, final SearchParams params) {
+    private URI buildUri(final String path, final Map<String, String> params) {
         StringBuilder sb = new StringBuilder();
         sb.append(this.root);
         sb.append(path);
-        if (params != null && params.asMap().size() > 0) {
+        if (params != null && params.size() > 0) {
             sb.append("?");
-            sb.append(this.buildQueryString(params.asMap()));
+            sb.append(this.buildQueryString(params));
         }
         String url = sb.toString();
         log.info("URL: {}", url);

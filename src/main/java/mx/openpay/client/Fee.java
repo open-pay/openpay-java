@@ -9,8 +9,8 @@
  */
 package mx.openpay.client;
 
-import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
-import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.core.OpenpayAPI.getJsonClient;
+import static mx.openpay.client.core.OpenpayAPI.getMerchantId;
 import static mx.openpay.client.utils.OpenpayPathComponents.FEES;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 
@@ -45,7 +45,8 @@ public class Fee extends Transaction {
     public static List<Fee> getList(final SearchParams params) throws ServiceUnavailable,
             HttpError {
         String path = String.format(FEES_PATH, getMerchantId());
-        return getJsonClient().getList(path, params, ListTypes.FEE);
+        Map<String, String> map = params == null ? null : params.asMap();
+        return getJsonClient().getList(path, map, ListTypes.FEE);
     }
 
 }

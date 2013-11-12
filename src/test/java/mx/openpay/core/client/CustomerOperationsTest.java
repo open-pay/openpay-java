@@ -10,7 +10,7 @@ import java.util.List;
 import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
-import mx.openpay.client.core.OpenpayApiConfig;
+import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
@@ -21,11 +21,11 @@ public class CustomerOperationsTest {
 
     @Before
     public void setUp() throws Exception {
-        OpenpayApiConfig.configure(ENDPOINT, API_KEY, MERCHANT_ID);
+        OpenpayAPI.configure(ENDPOINT, API_KEY, MERCHANT_ID);
     }
 
     @Test
-    public void testCreateCustomer() throws ServiceUnavailable, HttpError {
+    public void testCreateAndDeleteCustomer() throws ServiceUnavailable, HttpError {
         Address address = this.createAddress();
         Customer customer = Customer.create("Juan", "Perez Perez", "juan.perez@gmail.com",
                 "55-25634013", address);
@@ -42,6 +42,9 @@ public class CustomerOperationsTest {
         customer.setName("Juanito 2");
         customer = Customer.update(customer);
         Assert.assertEquals("Juanito 2", customer.getName());
+        customer.setName("Juanito");
+        customer = Customer.update(customer);
+        Assert.assertEquals("Juanito", customer.getName());
     }
 
     @Test

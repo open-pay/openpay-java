@@ -1,7 +1,7 @@
 package mx.openpay.client;
 
-import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
-import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.core.OpenpayAPI.getJsonClient;
+import static mx.openpay.client.core.OpenpayAPI.getMerchantId;
 import static mx.openpay.client.utils.OpenpayPathComponents.CARDS;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
@@ -46,7 +46,8 @@ public class Card {
     public static List<Card> getList(final String customerId, final SearchParams params)
             throws ServiceUnavailable, HttpError {
         String path = String.format(CARDS_PATH, getMerchantId(), customerId);
-        return getJsonClient().getList(path, params, ListTypes.CARD);
+        Map<String, String> map = params == null ? null : params.asMap();
+        return getJsonClient().getList(path, map, ListTypes.CARD);
     }
 
     public static Card get(final String customerId, final String cardId) throws ServiceUnavailable, HttpError {
@@ -93,5 +94,7 @@ public class Card {
     private String bankCode;
 
     private String type;
+
+    private String cvv2;
 
 }

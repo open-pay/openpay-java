@@ -9,8 +9,8 @@
  */
 package mx.openpay.client;
 
-import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
-import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.core.OpenpayAPI.getJsonClient;
+import static mx.openpay.client.core.OpenpayAPI.getMerchantId;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.DEPOSITS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
@@ -39,32 +39,33 @@ public class Deposit extends Transaction {
     private static final String REFUND_DEPOSIT_PATH = GET_DEPOSIT_PATH + REFUND;
 
     public static Deposit create(final String customerId, final Card card, final BigDecimal amount,
-            final String description, final String orderID) throws ServiceUnavailable, HttpError {
+            final String description, final String orderId) throws ServiceUnavailable, HttpError {
         String path = String.format(DEPOSITS_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
         data.put("amount", amount);
         data.put("description", description);
-        data.put("order_id", orderID);
+        data.put("order_id", orderId);
         return getJsonClient().post(path, data, Deposit.class);
     }
 
     public static Deposit create(final String customerId, final String sourceId, final BigDecimal amount,
-            final String description, final String orderID) throws ServiceUnavailable, HttpError {
+            final String description, final String orderId) throws ServiceUnavailable, HttpError {
         String path = String.format(DEPOSITS_PATH, getMerchantId(), customerId);
         System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("source_id", sourceId);
         data.put("amount", amount);
         data.put("description", description);
-        data.put("order_id", orderID);
+        data.put("order_id", orderId);
         return getJsonClient().post(path, data, Deposit.class);
     }
 
     public static List<Deposit> getList(final String customerId, final SearchParams params)
             throws HttpError, ServiceUnavailable {
         String path = String.format(DEPOSITS_PATH, getMerchantId(), customerId);
-        return getJsonClient().getList(path, params, ListTypes.DEPOSIT);
+        Map<String, String> map = params == null ? null : params.asMap();
+        return getJsonClient().getList(path, map, ListTypes.DEPOSIT);
     }
 
     public static Deposit get(final String customerId, final String transactionId) throws HttpError, ServiceUnavailable {
@@ -72,14 +73,14 @@ public class Deposit extends Transaction {
         return getJsonClient().get(path, Deposit.class);
     }
 
-    public static void refund(final String customerId, final String transactionId, final String description,
+    public static Transaction refund(final String customerId, final String transactionId, final String description,
             final String orderId) throws HttpError, ServiceUnavailable {
         String path = String.format(REFUND_DEPOSIT_PATH, getMerchantId(), customerId, transactionId);
         System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("description", description);
         data.put("order_id", orderId);
-        getJsonClient().post(path, data, null);
+        return getJsonClient().post(path, data, Transaction.class);
     }
 
 }

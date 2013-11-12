@@ -9,8 +9,8 @@
  */
 package mx.openpay.client;
 
-import static mx.openpay.client.core.OpenpayApiConfig.getJsonClient;
-import static mx.openpay.client.core.OpenpayApiConfig.getMerchantId;
+import static mx.openpay.client.core.OpenpayAPI.getJsonClient;
+import static mx.openpay.client.core.OpenpayAPI.getMerchantId;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
@@ -122,12 +122,14 @@ public class Withdrawal extends Transaction {
     public static List<Withdrawal> getList(final SearchParams params) throws HttpError,
             ServiceUnavailable {
         String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
-        return getJsonClient().getList(path, params, ListTypes.WITHDRAWAL);
+        Map<String, String> map = params == null ? null : params.asMap();
+        return getJsonClient().getList(path, map, ListTypes.WITHDRAWAL);
     }
 
     public static List<Withdrawal> getList(final String customerId, final SearchParams params)
             throws HttpError, ServiceUnavailable {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
-        return getJsonClient().getList(path, params, ListTypes.WITHDRAWAL);
+        Map<String, String> map = params == null ? null : params.asMap();
+        return getJsonClient().getList(path, map, ListTypes.WITHDRAWAL);
     }
 }

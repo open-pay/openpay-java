@@ -22,7 +22,7 @@ import java.util.List;
 import junit.framework.Assert;
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Withdrawal;
-import mx.openpay.client.core.OpenpayApiConfig;
+import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
@@ -38,7 +38,7 @@ public class WithdrawalOperationsTest {
 
     @Before
     public void setUp() throws Exception {
-        OpenpayApiConfig.configure(ENDPOINT, API_KEY, MERCHANT_ID);
+        OpenpayAPI.configure(ENDPOINT, API_KEY, MERCHANT_ID);
     }
 
     @Test

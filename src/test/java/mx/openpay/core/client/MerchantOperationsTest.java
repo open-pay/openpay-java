@@ -4,6 +4,7 @@ import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
+import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -13,7 +14,7 @@ import java.util.List;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Fee;
 import mx.openpay.client.Transaction;
-import mx.openpay.client.core.OpenpayApiConfig;
+import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.exceptions.HttpError;
 import mx.openpay.client.exceptions.ServiceUnavailable;
 
@@ -27,7 +28,7 @@ public class MerchantOperationsTest {
 
     @Before
     public void setUp() throws Exception {
-        OpenpayApiConfig.configure(ENDPOINT, API_KEY, MERCHANT_ID);
+        OpenpayAPI.configure(ENDPOINT, API_KEY, MERCHANT_ID);
     }
 
     @Test
@@ -41,6 +42,12 @@ public class MerchantOperationsTest {
         Assert.assertNotNull(transaction);
         Assert.assertEquals(feeAmount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
+    }
+
+    @Test
+    public void testGetFees() throws Exception {
+        List<Fee> fees = Fee.getList(search().limit(3));
+        assertEquals(3, fees.size());
     }
 
     @Test
