@@ -208,7 +208,7 @@ public class DepositOperationsTest {
             Deposit.create(null, amount, desc, orderId);
             fail();
         } catch (OpenpayServiceException e) {
-            assertEquals(422, e.getHttpCode().intValue());
+            assertEquals(400, e.getHttpCode().intValue());
         }
     }
 
