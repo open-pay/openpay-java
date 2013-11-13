@@ -16,12 +16,18 @@ import java.util.Map;
 
 public class SearchParams {
 
+    private static final int DEFAULT_LIMIT_SIZE = 10;
+
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     private Map<String, String> params = new HashMap<String, String>();
 
     public static SearchParams search() {
         return new SearchParams();
+    }
+
+    public SearchParams() {
+        this.limit(DEFAULT_LIMIT_SIZE);
     }
 
     public SearchParams creation(final Date date) {
