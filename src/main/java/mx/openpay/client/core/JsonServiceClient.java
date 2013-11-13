@@ -5,6 +5,9 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.GeneralSecurityException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -32,6 +35,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -67,10 +73,24 @@ public class JsonServiceClient {
         this.root = location;
         this.key = key;
 
+        SSLSocketFactory sf;
+        try {
+            sf = new SSLSocketFactory(new TrustStrategy() {
+
+                public boolean isTrusted(final X509Certificate[] chain, final String certType)
+                        throws CertificateException {
+                    return true;
+                }
+            }, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalArgumentException(e);
+        }
+        Scheme https = new Scheme("https", 443, sf);
         String version = super.getClass().getPackage().getImplementationVersion();
         this.userAgent = AGENT + version;
 
         PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
+        connMgr.getSchemeRegistry().register(https);
         this.httpClient = new DefaultHttpClient(connMgr);
         this.httpClient.getParams().setParameter("http.protocol.version", HttpVersion.HTTP_1_1);
         this.httpClient.getParams().setParameter("http.socket.timeout", this.connectionTimeout);

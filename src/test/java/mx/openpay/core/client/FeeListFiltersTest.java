@@ -38,128 +38,120 @@ public class FeeListFiltersTest {
 
     @Test
     public void testSearch() throws Exception {
-        List<Fee> bankAccounts = Fee.list(null);
-        assertEquals(10, bankAccounts.size());
-        assertEquals("alsbga3kduomgwyvlrwz", bankAccounts.get(0).getId());
-        assertEquals("agdn58ngcnogqmzruz1i", bankAccounts.get(1).getId());
-        assertEquals("a5woid02joj9zidld8oh", bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Fee> fees = Fee.list(null);
+        assertEquals(10, fees.size());
+        assertEquals("thzktlymz07oecafrw6b", fees.get(0).getId());
+        assertEquals("tmsekzj42hrtf95rgarh", fees.get(1).getId());
+        assertEquals("t4n68tya07icqrlhiqkq", fees.get(2).getId());
+        assertTrue(fees.get(0).getCreationDate().before(fees.get(1).getCreationDate()));
     }
 
     @Test
     public void testSearch_Limit() throws Exception {
-        List<Fee> bankAccounts = Fee.list(search().limit(2));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("alsbga3kduomgwyvlrwz", bankAccounts.get(0).getId());
-        assertEquals("agdn58ngcnogqmzruz1i", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Fee> fees = Fee.list(search().limit(2));
+        assertEquals(2, fees.size());
+        assertEquals("thzktlymz07oecafrw6b", fees.get(0).getId());
+        assertEquals("tmsekzj42hrtf95rgarh", fees.get(1).getId());
+        assertTrue(fees.get(0).getCreationDate().before(fees.get(1).getCreationDate()));
     }
 
     @Test
     public void testSearch_Offset() throws Exception {
-        List<Fee> bankAccounts = Fee.list(search().offset(1));
-        assertEquals(10, bankAccounts.size());
-        assertEquals("agdn58ngcnogqmzruz1i", bankAccounts.get(0).getId());
-        assertEquals("a5woid02joj9zidld8oh", bankAccounts.get(1).getId());
-        assertEquals("atgtivxs16jvpb5qavsa", bankAccounts.get(9).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Fee> fees = Fee.list(search().offset(1));
+        assertEquals(10, fees.size());
+        assertEquals("tmsekzj42hrtf95rgarh", fees.get(0).getId());
+        assertEquals("t4n68tya07icqrlhiqkq", fees.get(1).getId());
+        assertEquals("t9vzrnu17icqkm8z3pfp", fees.get(9).getId());
+        assertTrue(fees.get(0).getCreationDate().before(fees.get(1).getCreationDate()));
     }
 
     @Test
     public void testSearch_Offset_Limit() throws Exception {
-        List<Fee> bankAccounts = Fee.list(search().offset(1).limit(1));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("agdn58ngcnogqmzruz1i", bankAccounts.get(0).getId());
+        List<Fee> fees = Fee.list(search().offset(1).limit(1));
+        assertEquals(1, fees.size());
+        assertEquals("tmsekzj42hrtf95rgarh", fees.get(0).getId());
     }
 
     @Test
-    public void testSearch_Create() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Fee> bankAccounts = Fee.list(search().creation(date));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("axkoqkqckvqd4wpmjj7z", bankAccounts.get(0).getId());
-        assertEquals("aidzidphdseqwhfu0yjo", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testSearch_Create_Offset() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Fee> bankAccounts = Fee.list(search().creation(date).offset(1));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("aidzidphdseqwhfu0yjo", bankAccounts.get(0).getId());
-    }
-
-    @Test
-    public void testSearch_CreateLte() throws Exception {
+    public void testSearch_Creation() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
-        List<Fee> bankAccounts = Fee.list(search().creationLte(date));
-        assertEquals(10, bankAccounts.size());
-        assertEquals("alsbga3kduomgwyvlrwz", bankAccounts.get(0).getId());
-        assertEquals("agdn58ngcnogqmzruz1i", bankAccounts.get(1).getId());
-        assertEquals("a5woid02joj9zidld8oh", bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Fee> fees = Fee.list(search().creation(date));
+        assertEquals(2, fees.size());
+        assertEquals("thzktlymz07oecafrw6b", fees.get(0).getId());
+        assertEquals("tmsekzj42hrtf95rgarh", fees.get(1).getId());
+        assertTrue(fees.get(0).getCreationDate().before(fees.get(1).getCreationDate()));
     }
 
     @Test
-    public void testSearch_CreateLte_NoStartOfNextDay() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-10-31");
-        List<Fee> bankAccounts = Fee.list(search().creationLte(date));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("alsbga3kduomgwyvlrwz", bankAccounts.get(0).getId());
+    public void testSearch_Creation_Offset() throws Exception {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
+        List<Fee> fees = Fee.list(search().creation(date).offset(1));
+        assertEquals(1, fees.size());
+        assertEquals("tmsekzj42hrtf95rgarh", fees.get(0).getId());
     }
 
     @Test
-    public void testSearch_CreateGte() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
-        List<Fee> bankAccounts = Fee.list(search().creationGte(date));
-        assertEquals(4, bankAccounts.size());
-        assertEquals("afk4csrazjp1udezj1po", bankAccounts.get(0).getId());
-        assertEquals("axkoqkqckvqd4wpmjj7z", bankAccounts.get(1).getId());
-        assertEquals("aidzidphdseqwhfu0yjo", bankAccounts.get(2).getId());
-        assertEquals("aip6wu2pujiyfvm3urlp", bankAccounts.get(3).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
-        assertTrue(bankAccounts.get(1).getCreationDate().before(bankAccounts.get(2).getCreationDate()));
-        assertTrue(bankAccounts.get(2).getCreationDate().before(bankAccounts.get(3).getCreationDate()));
+    public void testSearch_CreationLte() throws Exception {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-11");
+        List<Fee> fees = Fee.list(search().creationLte(date));
+        assertEquals(10, fees.size());
+        assertEquals("thzktlymz07oecafrw6b", fees.get(0).getId());
+        assertEquals("tmsekzj42hrtf95rgarh", fees.get(1).getId());
+        assertEquals("t4n68tya07icqrlhiqkq", fees.get(2).getId());
+        assertTrue(fees.get(0).getCreationDate().before(fees.get(1).getCreationDate()));
     }
 
     @Test
-    public void testSearch_CreateGte_StartOfCurrentDay() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Fee> bankAccounts = Fee.list(search().creationGte(date));
-        assertEquals(3, bankAccounts.size());
-        assertEquals("axkoqkqckvqd4wpmjj7z", bankAccounts.get(0).getId());
-        assertEquals("aidzidphdseqwhfu0yjo", bankAccounts.get(1).getId());
-        assertEquals("aip6wu2pujiyfvm3urlp", bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+    public void testSearch_CreationLte_NoStartOfNextDay() throws Exception {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-08");
+        List<Fee> fees = Fee.list(search().creationLte(date));
+        assertEquals(7, fees.size());
+        assertEquals("thzktlymz07oecafrw6b", fees.get(0).getId());
+        assertEquals("tmsekzj42hrtf95rgarh", fees.get(1).getId());
+        assertEquals("tyfsbjhuqhqbicbeneem", fees.get(6).getId());
     }
 
     @Test
-    public void testSearch_Create_Between() throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Fee> bankAccounts = Fee.list(search().between(start, end));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("axkoqkqckvqd4wpmjj7z", bankAccounts.get(0).getId());
-        assertEquals("aidzidphdseqwhfu0yjo", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+    public void testSearch_CreationGte() throws Exception {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-08");
+        List<Fee> fees = Fee.list(search().creationGte(date));
+        assertEquals(10, fees.size());
+        assertEquals("t4n68tya07icqrlhiqkq", fees.get(0).getId());
+        assertEquals("tx2vmjr1bgsf7soqsiyu", fees.get(1).getId());
+        assertEquals("thzjlados5xjbymsiqgz", fees.get(2).getId());
+        assertEquals("twighetvkucgbonp6yko", fees.get(3).getId());
+        assertTrue(fees.get(0).getCreationDate().before(fees.get(1).getCreationDate()));
+        assertTrue(fees.get(1).getCreationDate().before(fees.get(2).getCreationDate()));
+        assertTrue(fees.get(2).getCreationDate().before(fees.get(3).getCreationDate()));
     }
 
     @Test
-    public void testSearch_Create_Between_FirstFee() throws Exception {
+    public void testSearch_Creation_Between() throws Exception {
+        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-08");
+        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-09");
+        List<Fee> fees = Fee.list(search().between(start, end));
+        assertEquals(6, fees.size());
+        assertEquals("t4n68tya07icqrlhiqkq", fees.get(0).getId());
+        assertEquals("tx2vmjr1bgsf7soqsiyu", fees.get(1).getId());
+        assertEquals("twxqhe7catm1j09mpzo6", fees.get(5).getId());
+        assertTrue(fees.get(0).getCreationDate().before(fees.get(1).getCreationDate()));
+    }
+
+    @Test
+    public void testSearch_Creation_Between_SameDay() throws Exception {
+        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-09");
+        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-19");
+        List<Fee> fees = Fee.list(search().between(start, end).limit(1));
+        assertEquals(1, fees.size());
+        assertEquals("twxqhe7catm1j09mpzo6", fees.get(0).getId());
+    }
+
+    @Test
+    public void testSearch_Creation_Between_Inverted() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Fee> bankAccounts = Fee.list(search().between(start, end).limit(1));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("afk4csrazjp1udezj1po", bankAccounts.get(0).getId());
-    }
-
-    @Test
-    public void testSearch_Create_Between_Inverted() throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Fee> bankAccounts = Fee.list(search().between(end, start));
-        assertEquals(0, bankAccounts.size());
+        List<Fee> fees = Fee.list(search().between(end, start));
+        assertEquals(0, fees.size());
     }
 
 }
