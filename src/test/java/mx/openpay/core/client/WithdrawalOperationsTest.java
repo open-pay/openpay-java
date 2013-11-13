@@ -107,7 +107,7 @@ public class WithdrawalOperationsTest {
 
         BankAccount bankAccount = new BankAccount();
         bankAccount.setClabe("012298026516924616");
-        bankAccount.setAccountOwner("Cuenta");
+        bankAccount.setHolderName("Cuenta");
 
         String orderId = this.dateFormat.format(new Date());
         Withdrawal transaction = Withdrawal.createForCustomer(customerId, bankAccount, amount, desc, orderId);
@@ -144,7 +144,7 @@ public class WithdrawalOperationsTest {
 
         BankAccount bankAccount = new BankAccount();
         bankAccount.setClabe("012298026516924616");
-        bankAccount.setAccountOwner("Cuenta");
+        bankAccount.setHolderName("Cuenta");
 
         String orderId = this.dateFormat.format(new Date());
         Withdrawal transaction = Withdrawal.createForMerchant(bankAccount, amount, desc, orderId);

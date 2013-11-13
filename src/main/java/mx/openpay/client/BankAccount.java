@@ -54,7 +54,8 @@ public class BankAccount {
         return getJsonClient().get(path, BankAccount.class);
     }
 
-    public static void delete(final String customerId, final String bankId) throws ServiceUnavailableException, OpenpayServiceException {
+    public static void delete(final String customerId, final String bankId) throws ServiceUnavailableException,
+            OpenpayServiceException {
         String path = String.format(GET_BANK_ACCOUNT, getMerchantId(), customerId, bankId);
         getJsonClient().delete(path);
     }
@@ -65,7 +66,7 @@ public class BankAccount {
     private String bankName;
 
     @SerializedName("holder_name")
-    private String accountOwner;
+    private String holderName;
 
     private String clabe;
 
