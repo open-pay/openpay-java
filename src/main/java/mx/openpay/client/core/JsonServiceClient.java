@@ -6,8 +6,6 @@ import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -37,7 +35,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -75,13 +73,7 @@ public class JsonServiceClient {
 
         SSLSocketFactory sf;
         try {
-            sf = new SSLSocketFactory(new TrustStrategy() {
-
-                public boolean isTrusted(final X509Certificate[] chain, final String certType)
-                        throws CertificateException {
-                    return true;
-                }
-            }, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            sf = new SSLSocketFactory(new TrustSelfSignedStrategy(), SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         } catch (GeneralSecurityException e) {
             throw new IllegalArgumentException(e);
         }
