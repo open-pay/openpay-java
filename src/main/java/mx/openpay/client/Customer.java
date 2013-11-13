@@ -47,7 +47,7 @@ public class Customer {
             ServiceUnavailableException {
         String path = String.format(CUSTOMERS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().getList(path, map, ListTypes.CUSTOMER);
+        return getJsonClient().list(path, map, ListTypes.CUSTOMER);
     }
 
     public static Customer get(final String customerId) throws OpenpayServiceException, ServiceUnavailableException {

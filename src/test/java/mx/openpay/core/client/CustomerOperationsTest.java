@@ -65,7 +65,7 @@ public class CustomerOperationsTest {
     }
 
     @Test
-    public void testGetList() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testList() throws ServiceUnavailableException, OpenpayServiceException {
         List<Customer> customers = Customer.list(search().offset(0).limit(100));
         Assert.assertNotNull(customers);
         assertFalse(customers.isEmpty());
@@ -81,7 +81,7 @@ public class CustomerOperationsTest {
     }
 
     @Test
-    public void testGetList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
         List<Customer> customers = Customer.list(search().offset(1000).limit(1));
         Assert.assertNotNull(customers);
         assertTrue(customers.isEmpty());

@@ -47,19 +47,19 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testGetList_Customer() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testList_Customer() throws ServiceUnavailableException, OpenpayServiceException {
         List<Withdrawal> transactions = Withdrawal.list(search().limit(2));
         assertEquals(2, transactions.size());
     }
 
     @Test
-    public void testGetList_Customer_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testList_Customer_Empty() throws ServiceUnavailableException, OpenpayServiceException {
         List<Withdrawal> transactions = Withdrawal.list(search().limit(2).offset(10000));
         assertEquals(0, transactions.size());
     }
 
     @Test
-    public void testGetList_Merchant() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testList_Merchant() throws ServiceUnavailableException, OpenpayServiceException {
         List<Withdrawal> transactions = Withdrawal.list(this.customerId, search().limit(2));
         assertEquals(2, transactions.size());
     }
@@ -137,7 +137,7 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
-    public void testCreate_Merchant_BankAccount() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Merchant_BankAccount() throws Exception {
 
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -145,6 +145,8 @@ public class WithdrawalOperationsTest {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setClabe("012298026516924616");
         bankAccount.setHolderName("Cuenta");
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2012-10-10");
+        bankAccount.setCreationDate(date);
 
         String orderId = this.dateFormat.format(new Date());
         Withdrawal transaction = Withdrawal.createForMerchant(bankAccount, amount, desc, orderId);
@@ -153,6 +155,7 @@ public class WithdrawalOperationsTest {
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(null, transaction.getCustomerId());
+        Assert.assertFalse(transaction.getCreationDate().equals(date));
     }
 
     @Test

@@ -7,6 +7,7 @@ import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class BankAccount {
             throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(BANK_ACCOUNTS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().getList(path, map, ListTypes.BANK_ACCOUNT);
+        return getJsonClient().list(path, map, ListTypes.BANK_ACCOUNT);
     }
 
     public static BankAccount get(final String customerId, final String bankId) throws ServiceUnavailableException,
@@ -74,5 +75,8 @@ public class BankAccount {
 
     @SerializedName("bank_code")
     private String bankCode;
+
+    @SerializedName("creation_date")
+    private Date creationDate;
 
 }

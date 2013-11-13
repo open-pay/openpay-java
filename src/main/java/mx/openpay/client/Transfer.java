@@ -40,10 +40,10 @@ public class Transfer extends Transaction {
 
     private static final String GET_CUSTOMER_TRANSFER_PATH = CUSTOMER_TRANSFERS_PATH + ID;
 
-    public static List<Transfer> getList(final SearchParams params) throws OpenpayServiceException,
+    public static List<Transfer> list(final SearchParams params) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path = String.format(MERCHANT_TRANSFERS_PATH, getMerchantId());
-        return getJsonClient().getList(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);
+        return getJsonClient().list(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);
     }
 
     public static Transfer get(final String transactionId) throws OpenpayServiceException,
@@ -78,7 +78,7 @@ public class Transfer extends Transaction {
     public static List<Transfer> list(final String customerId, final SearchParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CUSTOMER_TRANSFERS_PATH, getMerchantId(), customerId);
-        return getJsonClient().getList(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);
+        return getJsonClient().list(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);
     }
 
     public static Transfer get(final String customerId, final String transactionId) throws OpenpayServiceException,

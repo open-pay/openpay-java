@@ -46,7 +46,7 @@ public class Fee extends Transaction {
             OpenpayServiceException {
         String path = String.format(FEES_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().getList(path, map, ListTypes.FEE);
+        return getJsonClient().list(path, map, ListTypes.FEE);
     }
 
 }

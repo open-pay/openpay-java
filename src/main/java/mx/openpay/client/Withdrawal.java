@@ -114,13 +114,13 @@ public class Withdrawal extends Transaction {
             ServiceUnavailableException {
         String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().getList(path, map, ListTypes.WITHDRAWAL);
+        return getJsonClient().list(path, map, ListTypes.WITHDRAWAL);
     }
 
     public static List<Withdrawal> list(final String customerId, final SearchParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().getList(path, map, ListTypes.WITHDRAWAL);
+        return getJsonClient().list(path, map, ListTypes.WITHDRAWAL);
     }
 }

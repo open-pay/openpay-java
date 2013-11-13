@@ -39,6 +39,13 @@ public class SearchParams {
         return this;
     }
 
+    /**
+     * Shorthand for creationGte(start).creationLte(end).
+     */
+    public SearchParams between(final Date start, final Date end) {
+        return this.creationGte(start).creationLte(end);
+    }
+
     public SearchParams limit(final int limit) {
         this.params.put("limit", String.valueOf(limit));
         return this;

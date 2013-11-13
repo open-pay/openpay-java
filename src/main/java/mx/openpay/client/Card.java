@@ -47,7 +47,7 @@ public class Card {
             throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(CARDS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().getList(path, map, ListTypes.CARD);
+        return getJsonClient().list(path, map, ListTypes.CARD);
     }
 
     public static Card get(final String customerId, final String cardId) throws ServiceUnavailableException, OpenpayServiceException {

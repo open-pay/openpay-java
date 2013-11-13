@@ -62,7 +62,7 @@ public class Deposit extends Transaction {
             ServiceUnavailableException {
         String path = String.format(MERCHANT_DEPOSITS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().getList(path, map, ListTypes.DEPOSIT);
+        return getJsonClient().list(path, map, ListTypes.DEPOSIT);
     }
 
     public static Deposit get(final String transactionId) throws OpenpayServiceException, ServiceUnavailableException {
@@ -103,11 +103,11 @@ public class Deposit extends Transaction {
         return getJsonClient().post(path, data, Deposit.class);
     }
 
-    public static List<Deposit> getList(final String customerId, final SearchParams params)
+    public static List<Deposit> list(final String customerId, final SearchParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CUSTOMER_DEPOSITS_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().getList(path, map, ListTypes.DEPOSIT);
+        return getJsonClient().list(path, map, ListTypes.DEPOSIT);
     }
 
     public static Deposit get(final String customerId, final String transactionId) throws OpenpayServiceException,

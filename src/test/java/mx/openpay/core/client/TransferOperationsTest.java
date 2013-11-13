@@ -46,14 +46,14 @@ public class TransferOperationsTest {
     }
 
     @Test
-    public void testGetList_Merchant() throws Exception {
-        List<Transfer> transfers = Transfer.getList(search().limit(2));
+    public void testList_Merchant() throws Exception {
+        List<Transfer> transfers = Transfer.list(search().limit(2));
         assertEquals(2, transfers.size());
     }
 
     @Test
-    public void testGetList_Merchant_Empty() throws Exception {
-        List<Transfer> transfers = Transfer.getList(search().limit(2).offset(10000));
+    public void testList_Merchant_Empty() throws Exception {
+        List<Transfer> transfers = Transfer.list(search().limit(2).offset(10000));
         assertEquals(0, transfers.size());
     }
 
@@ -151,13 +151,13 @@ public class TransferOperationsTest {
     }
 
     @Test
-    public void testGetList_Customer() throws Exception {
+    public void testList_Customer() throws Exception {
         List<Transfer> transfers = Transfer.list(this.customerId, search().limit(2));
         assertEquals(2, transfers.size());
     }
 
     @Test
-    public void testGetList_Customer_Empty() throws Exception {
+    public void testList_Customer_Empty() throws Exception {
         List<Transfer> transfers = Transfer.list(this.customerId, search().limit(2).offset(10000));
         assertEquals(0, transfers.size());
     }

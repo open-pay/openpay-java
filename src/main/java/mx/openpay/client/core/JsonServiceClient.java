@@ -13,6 +13,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.serialization.BankAccountAdapterFactory;
 import mx.openpay.client.serialization.CardAdapterFactory;
 import mx.openpay.client.serialization.CustomerAdapterFactory;
 import mx.openpay.client.serialization.DateFormatSerializer;
@@ -80,6 +81,7 @@ public class JsonServiceClient {
                 .registerTypeAdapter(Date.class, new DateFormatSerializer())
                 .registerTypeAdapterFactory(new CustomerAdapterFactory())
                 .registerTypeAdapterFactory(new CardAdapterFactory())
+                .registerTypeAdapterFactory(new BankAccountAdapterFactory())
                 .create();
     }
 
@@ -104,7 +106,7 @@ public class JsonServiceClient {
         return this.executeOperation(request, clazz, null);
     }
 
-    public <T> T getList(final String path, final Map<String, String> params, final Type type)
+    public <T> T list(final String path, final Map<String, String> params, final Type type)
             throws OpenpayServiceException,
             ServiceUnavailableException {
         URI uri = this.buildUri(path, params);
@@ -185,7 +187,6 @@ public class JsonServiceClient {
         } catch (IOException e) {
             throw new ServiceUnavailableException(e);
         }
-
         String body = null;
         String contentType = null;
         HttpEntity entity = response.getEntity();
@@ -198,10 +199,10 @@ public class JsonServiceClient {
             }
         }
         StatusLine status = response.getStatusLine();
-        log.debug("Request Time: " + (System.currentTimeMillis() - init));
+        log.debug("Request Time: {}", (System.currentTimeMillis() - init));
         init = System.currentTimeMillis();
         T payload = this.getDeserializedObject(status, contentType, body, clazz, type);
-        log.debug("Parse Time: " + (System.currentTimeMillis() - init));
+        log.debug("Parse Time: {}", (System.currentTimeMillis() - init));
         return payload;
 
     }
@@ -245,12 +246,12 @@ public class JsonServiceClient {
 
     private String serialize(final Object payload) {
         String data = this.gson.toJson(payload);
-        log.debug("Request: " + data);
+        log.debug("Request: {}", data);
         return data;
     }
 
     private <T> T deserialize(final String body, final Class<T> clazz, final Type type) {
-        log.debug("Response: " + body);
+        log.debug("Response: {}", body);
         if (type == null) {
             return this.gson.fromJson(body, clazz);
         } else {

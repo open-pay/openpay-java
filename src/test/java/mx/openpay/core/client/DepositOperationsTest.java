@@ -146,24 +146,24 @@ public class DepositOperationsTest {
     }
 
     @Test
-    public void testGetList_Customer() throws Exception {
-        List<Deposit> deposits = Deposit.getList(CUSTOMER_ID, search().limit(3));
+    public void testList_Customer() throws Exception {
+        List<Deposit> deposits = Deposit.list(CUSTOMER_ID, search().limit(3));
         assertEquals(3, deposits.size());
 
-        deposits = Deposit.getList(CUSTOMER_ID, search().limit(5));
+        deposits = Deposit.list(CUSTOMER_ID, search().limit(5));
         assertEquals(5, deposits.size());
     }
 
     @Test
-    public void testGetList_Customer_Empty() throws Exception {
-        List<Deposit> deposits = Deposit.getList(CUSTOMER_ID, search().limit(2).offset(10000));
+    public void testList_Customer_Empty() throws Exception {
+        List<Deposit> deposits = Deposit.list(CUSTOMER_ID, search().limit(2).offset(10000));
         assertTrue(deposits.isEmpty());
     }
 
     @Test
-    public void testGetList_CustomerDoesNotExist() throws Exception {
+    public void testList_CustomerDoesNotExist() throws Exception {
         try {
-            Deposit.getList("blahblahblah", search().limit(2));
+            Deposit.list("blahblahblah", search().limit(2));
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
@@ -244,7 +244,7 @@ public class DepositOperationsTest {
     }
 
     @Test
-    public void testGetList_Merchant() throws Exception {
+    public void testList_Merchant() throws Exception {
         List<Deposit> sale = Deposit.list(search().limit(3));
         assertEquals(3, sale.size());
 
