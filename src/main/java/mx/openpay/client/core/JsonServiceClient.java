@@ -53,6 +53,8 @@ import com.google.gson.GsonBuilder;
 @Slf4j
 public class JsonServiceClient {
 
+    private static final int DEFAULT_CONNECTION_TIMEOUT = 60000;
+
     private static final String AGENT = "openpay-java/";
 
     private final String root;
@@ -65,30 +67,12 @@ public class JsonServiceClient {
 
     private final HttpClient httpClient;
 
-    private int connectionTimeout = 60000;
-
-    public JsonServiceClient(final String location, final String key) {
+    public JsonServiceClient(final String location, final String key) throws GeneralSecurityException {
         this.root = location;
         this.key = key;
-
-        SSLSocketFactory sf;
-        try {
-            sf = new SSLSocketFactory(new TrustSelfSignedStrategy(), SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-        } catch (GeneralSecurityException e) {
-            throw new IllegalArgumentException(e);
-        }
-        Scheme https = new Scheme("https", 443, sf);
-        String version = super.getClass().getPackage().getImplementationVersion();
-        this.userAgent = AGENT + version;
-
-        PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
-        connMgr.getSchemeRegistry().register(https);
-        this.httpClient = new DefaultHttpClient(connMgr);
-        this.httpClient.getParams().setParameter("http.protocol.version", HttpVersion.HTTP_1_1);
-        this.httpClient.getParams().setParameter("http.socket.timeout", this.connectionTimeout);
-        this.httpClient.getParams().setParameter("http.connection.timeout", this.connectionTimeout);
-        this.httpClient.getParams().setParameter("http.protocol.content-charset", "UTF-8");
-
+        this.userAgent = AGENT + super.getClass().getPackage().getImplementationVersion();
+        this.httpClient = this.initHttpClient();
+        this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateFormatSerializer())
                 .registerTypeAdapterFactory(new CustomerAdapterFactory())
@@ -97,10 +81,21 @@ public class JsonServiceClient {
                 .create();
     }
 
+    private HttpClient initHttpClient() throws GeneralSecurityException {
+        SSLSocketFactory sf = new SSLSocketFactory(new TrustSelfSignedStrategy(),
+                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        Scheme https = new Scheme("https", 443, sf);
+        PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
+        connMgr.getSchemeRegistry().register(https);
+        HttpClient httpClient = new DefaultHttpClient(connMgr);
+        httpClient.getParams().setParameter("http.protocol.version", HttpVersion.HTTP_1_1);
+        httpClient.getParams().setParameter("http.protocol.content-charset", "UTF-8");
+        return httpClient;
+    }
+
     public void setConnectionTimeout(final int timeout) {
-        this.connectionTimeout = timeout;
-        this.httpClient.getParams().setParameter("http.socket.timeout", this.connectionTimeout);
-        this.httpClient.getParams().setParameter("http.connection.timeout", this.connectionTimeout);
+        this.httpClient.getParams().setParameter("http.socket.timeout", timeout);
+        this.httpClient.getParams().setParameter("http.connection.timeout", timeout);
     }
 
     public <T> T get(final String path, final Class<T> clazz) throws OpenpayServiceException,
@@ -186,8 +181,7 @@ public class JsonServiceClient {
     }
 
     private <T> T executeOperation(final HttpUriRequest request, final Class<T> clazz, final Type type)
-            throws OpenpayServiceException,
-            ServiceUnavailableException {
+            throws OpenpayServiceException, ServiceUnavailableException {
         this.addHeaders(request);
         this.addAuthentication(request);
         long init = System.currentTimeMillis();
@@ -220,8 +214,7 @@ public class JsonServiceClient {
     }
 
     private <T> T getDeserializedObject(final StatusLine status, final String contentType, final String body,
-            final Class<T> clazz,
-            final Type type) throws OpenpayServiceException {
+            final Class<T> clazz, final Type type) throws OpenpayServiceException {
         boolean isJsonResponse = contentType != null
                 && contentType.startsWith(ContentType.APPLICATION_JSON.getMimeType());
         if (status.getStatusCode() >= 299) {

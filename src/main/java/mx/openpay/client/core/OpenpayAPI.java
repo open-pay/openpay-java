@@ -11,6 +11,8 @@ package mx.openpay.client.core;
 
 import static mx.openpay.client.utils.OpenpayPathComponents.VERSION;
 
+import java.security.GeneralSecurityException;
+
 /**
  * @author elopez
  */
@@ -46,8 +48,11 @@ public class OpenpayAPI {
             baseUri.append(HTTP_RESOURCE_SEPARATOR);
         }
         baseUri.append(VERSION);
-        OpenpayAPI._jsonClient = new JsonServiceClient(baseUri.toString(), apiKey);
-
+        try {
+            OpenpayAPI._jsonClient = new JsonServiceClient(baseUri.toString(), apiKey);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException("Can't initialize Openpay Client", e);
+        }
     }
 
     public static String getLocation() {
