@@ -79,18 +79,6 @@ public class CardOperationsTest {
         }
     }
 
-    private Address getAddress() {
-        Address address = new Address();
-        address.setCity("Querétaro");
-        address.setExteriorNumber("11");
-        address.setInteriorNumber("01");
-        address.setPostalCode("76090");
-        address.setRegion("Corregidora");
-        address.setStreet("Camino");
-        address.setState("Queretaro");
-        return address;
-    }
-
     @Test
     public void testGet() throws Exception {
         Card card = Card.get(this.customerId, "kfaq5dm5pq1qefzev1nz");
@@ -107,4 +95,17 @@ public class CardOperationsTest {
             assertNotNull(e.getErrorCode());
         }
     }
+
+    private Address getAddress() {
+        Address address = new Address();
+        address.setCity("Querétaro");
+        address.setExteriorNumber("11");
+        address.setInteriorNumber("01");
+        address.setPostalCode("76090");
+        address.setRegion("Corregidora");
+        address.setStreet("Camino");
+        address.setState("Queretaro");
+        return address;
+    }
+
 }

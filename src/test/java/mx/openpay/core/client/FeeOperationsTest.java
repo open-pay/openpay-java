@@ -43,9 +43,28 @@ public class FeeOperationsTest {
     }
 
     @Test
-    public void testGetList() throws Exception {
+    public void testCreate_ZeroAmount() throws Exception {
+        String customerId = "afk4csrazjp1udezj1po";
+        BigDecimal feeAmount = new BigDecimal("10.00");
+        String desc = "Comisión general";
+        String orderId = this.dateFormat.format(new Date());
+        try {
+            Fee.create(customerId, feeAmount, desc, orderId);
+        } catch (OpenpayServiceException e) {
+            assertEquals(422, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
+    public void testList() throws Exception {
         List<Fee> fees = Fee.list(search().limit(3));
         assertEquals(3, fees.size());
+    }
+
+    @Test
+    public void testList_Empty() throws Exception {
+        List<Fee> fees = Fee.list(search().limit(3).offset(100000));
+        assertEquals(0, fees.size());
     }
 
 }

@@ -52,12 +52,29 @@ public class TransferOperationsTest {
     }
 
     @Test
+    public void testGetList_Merchant_Empty() throws Exception {
+        List<Transfer> transfers = Transfer.getList(search().limit(2).offset(10000));
+        assertEquals(0, transfers.size());
+    }
+
+    @Test
     public void testGet_Merchant() throws Exception {
         String transactionId = "tvyuad0uzf5mtq4uvywd";
         Transfer transfer = Transfer.get(transactionId);
         assertEquals(transactionId, transfer.getId());
         assertEquals("OID12345", transfer.getOrderId());
         assertEquals(TransactionType.TRANSFER_FROM.name().toLowerCase(), transfer.getTransactionType());
+    }
+
+    @Test
+    public void testGet_Merchant_DoesNotExist() throws Exception {
+        String transactionId = "tvyuad0uzf3mdq4uvywd";
+        try {
+            Transfer.get(transactionId);
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
     }
 
     @Test
@@ -93,6 +110,28 @@ public class TransferOperationsTest {
     }
 
     @Test
+    public void testCreate_NoDestination() throws Exception {
+        String orderId = this.dateFormat.format(new Date());
+        try {
+            Transfer.create(this.customerId, null, new BigDecimal("10.0"), "Una descripcion", orderId);
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(400, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
+    public void testCreate_InvalidDestination() throws Exception {
+        String orderId = this.dateFormat.format(new Date());
+        try {
+            Transfer.create(this.customerId, "", new BigDecimal("10.0"), "Una descripcion", orderId);
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
     public void testGet_Customer() throws Exception {
         String transactionId = "tvyuad0uzf5mtq4uvywd";
         Transfer transfer = Transfer.get(this.customerId, transactionId);
@@ -101,8 +140,25 @@ public class TransferOperationsTest {
     }
 
     @Test
+    public void testGet_Customer_NotFound() throws Exception {
+        String transactionId = "tvyua24uzf5mtq4uvywd";
+        try {
+            Transfer.get(this.customerId, transactionId);
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
     public void testGetList_Customer() throws Exception {
         List<Transfer> transfers = Transfer.list(this.customerId, search().limit(2));
         assertEquals(2, transfers.size());
+    }
+
+    @Test
+    public void testGetList_Customer_Empty() throws Exception {
+        List<Transfer> transfers = Transfer.list(this.customerId, search().limit(2).offset(10000));
+        assertEquals(0, transfers.size());
     }
 }

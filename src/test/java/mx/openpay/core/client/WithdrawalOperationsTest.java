@@ -53,6 +53,12 @@ public class WithdrawalOperationsTest {
     }
 
     @Test
+    public void testGetList_Customer_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+        List<Withdrawal> transactions = Withdrawal.list(search().limit(2).offset(10000));
+        assertEquals(0, transactions.size());
+    }
+
+    @Test
     public void testGetList_Merchant() throws ServiceUnavailableException, OpenpayServiceException {
         List<Withdrawal> transactions = Withdrawal.list(this.customerId, search().limit(2));
         assertEquals(2, transactions.size());

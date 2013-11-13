@@ -2,8 +2,14 @@ package mx.openpay.core.client;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
+import static mx.openpay.core.client.TestConstans.CUSTOMER_ID;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -35,8 +41,19 @@ public class CustomerOperationsTest {
     }
 
     @Test
+    public void testDelete_DoesNotExist() throws Exception {
+        try {
+            Customer.delete("blahblahblah");
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+            assertNotNull(e.getErrorCode());
+        }
+    }
+
+    @Test
     public void testGetAndUpdateCustomer() throws ServiceUnavailableException, OpenpayServiceException {
-        String customerId = "afk4csrazjp1udezj1po";
+        String customerId = CUSTOMER_ID;
         Customer customer = Customer.get(customerId);
         Assert.assertNotNull(customer);
         customer.setName("Juanito 2");
@@ -51,6 +68,7 @@ public class CustomerOperationsTest {
     public void testGetList() throws ServiceUnavailableException, OpenpayServiceException {
         List<Customer> customers = Customer.list(search().offset(0).limit(100));
         Assert.assertNotNull(customers);
+        assertFalse(customers.isEmpty());
         for (Customer customer : customers) {
             Assert.assertNotNull(customer.getId());
             Assert.assertNotNull(customer.getBalance());
@@ -59,6 +77,24 @@ public class CustomerOperationsTest {
             Assert.assertNotNull(customer.getName());
             Assert.assertNotNull(customer.getStatus());
             Assert.assertNotNull(customer.getAddress());
+        }
+    }
+
+    @Test
+    public void testGetList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+        List<Customer> customers = Customer.list(search().offset(1000).limit(1));
+        Assert.assertNotNull(customers);
+        assertTrue(customers.isEmpty());
+    }
+
+    @Test
+    public void testGet_DoesNotExist() throws Exception {
+        try {
+            Customer.get("blahblahblah");
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+            assertNotNull(e.getErrorCode());
         }
     }
 

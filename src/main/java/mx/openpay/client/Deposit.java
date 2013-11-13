@@ -16,7 +16,6 @@ import static mx.openpay.client.utils.OpenpayPathComponents.DEPOSITS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.REFUND;
-import static mx.openpay.client.utils.OpenpayPathComponents.SALES;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -35,7 +34,7 @@ import mx.openpay.client.utils.SearchParams;
  */
 public class Deposit extends Transaction {
 
-    private static final String MERCHANT_DEPOSITS_PATH = MERCHANT_ID + SALES;
+    private static final String MERCHANT_DEPOSITS_PATH = MERCHANT_ID + DEPOSITS;
 
     private static final String GET_MERCHANT_DEPOSIT_PATH = MERCHANT_DEPOSITS_PATH + ID;
 
@@ -59,7 +58,8 @@ public class Deposit extends Transaction {
         return getJsonClient().post(path, data, Deposit.class);
     }
 
-    public static List<Deposit> list(final SearchParams params) throws OpenpayServiceException, ServiceUnavailableException {
+    public static List<Deposit> list(final SearchParams params) throws OpenpayServiceException,
+            ServiceUnavailableException {
         String path = String.format(MERCHANT_DEPOSITS_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
         return getJsonClient().getList(path, map, ListTypes.DEPOSIT);

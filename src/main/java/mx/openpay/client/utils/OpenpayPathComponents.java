@@ -32,8 +32,6 @@ public class OpenpayPathComponents {
 
     public static final String FEES = "/fees";
 
-    public static final String SALES = "/sales";
-
     public static final String REFUND = "/refund";
 
     public static final String ID = "/%s";

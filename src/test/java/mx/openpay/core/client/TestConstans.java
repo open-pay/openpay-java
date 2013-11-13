@@ -7,4 +7,6 @@ public class TestConstans {
     public static String MERCHANT_ID = "mm6wzedhck26ccaeznfa";
 
     public static String API_KEY = "a57aad6e9d5b44daab385a30d9267a07";
+
+    public static String CUSTOMER_ID = "afk4csrazjp1udezj1po";
 }
