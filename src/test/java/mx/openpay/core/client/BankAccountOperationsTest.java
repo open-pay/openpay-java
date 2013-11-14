@@ -27,7 +27,7 @@ public class BankAccountOperationsTest {
     public void testCreateBankAccount() throws ServiceUnavailable, HttpError {
         String customerId = "afk4csrazjp1udezj1po";
         try {
-            this.openPayServices.createBank(customerId, "012680012570003085");
+            this.openPayServices.createBank(customerId, "012680012570003085", null);
             Assert.fail("Bank Account should be exists.");
         } catch (HttpError e) {
             Assert.assertEquals(409, e.getHttpCode().intValue());
@@ -55,7 +55,7 @@ public class BankAccountOperationsTest {
     public void testDeleteBankAccount() throws ServiceUnavailable, HttpError {
         String customerId = "afk4csrazjp1udezj1po";
         
-        BankAccount bank = this.openPayServices.createBank(customerId, "012298026516924616");
+        BankAccount bank = this.openPayServices.createBank(customerId, "012298026516924616", null);
         Assert.assertNotNull(bank);
 
         this.openPayServices.deleteBankAccount(customerId, bank.getId());
