@@ -101,12 +101,10 @@ public class CustomerOperationsTest {
     private Address createAddress() {
         Address address = new Address();
         address.setCity("Distrito Federal");
-        address.setExteriorNumber("11");
-        address.setInteriorNumber("01");
+        address.setLine1("Camino Real #01 -11");
         address.setPostalCode("12345");
-        address.setRegion("Naucalpan");
-        address.setStreet("Camino Real");
         address.setState("Queretaro");
+        address.setCountryCode("MX");
         return address;
     }
 

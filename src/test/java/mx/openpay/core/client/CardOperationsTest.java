@@ -99,12 +99,10 @@ public class CardOperationsTest {
     private Address getAddress() {
         Address address = new Address();
         address.setCity("Querétaro");
-        address.setExteriorNumber("11");
-        address.setInteriorNumber("01");
+        address.setLine1("Camino #11 int 15");
         address.setPostalCode("76090");
-        address.setRegion("Corregidora");
-        address.setStreet("Camino");
         address.setState("Queretaro");
+        address.setCountryCode("MX");
         return address;
     }
 

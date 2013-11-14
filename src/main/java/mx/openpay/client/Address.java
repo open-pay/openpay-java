@@ -11,20 +11,20 @@ import com.google.gson.annotations.SerializedName;
 @ToString
 public class Address {
 
-    private String region;
-
     @SerializedName("postal_code")
     private String postalCode;
 
-    private String street;
+    private String line1;
 
-    private String state;
+    private String line2;
 
-    @SerializedName("interior_number")
-    private String interiorNumber;
+    private String line3;
 
     private String city;
 
-    @SerializedName("exterior_number")
-    private String exteriorNumber;
+    private String state;
+
+    @SerializedName("country_code")
+    private String countryCode;
+
 }

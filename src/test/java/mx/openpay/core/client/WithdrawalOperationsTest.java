@@ -179,13 +179,10 @@ public class WithdrawalOperationsTest {
     private Card getCard() {
         Address address = new Address();
         address.setCity("Querétaro");
-        address.setExteriorNumber("11");
-        address.setInteriorNumber("01");
+        address.setLine1("Camino #11 - 01");
         address.setPostalCode("76090");
-        address.setRegion("Corregidora");
-        address.setStreet("Camino");
         address.setState("Queretaro");
-
+        address.setCountryCode("MX");
         Card card = new Card();
         card.setCardNumber("5243385358972033");
         card.setHolderName("Holder");
