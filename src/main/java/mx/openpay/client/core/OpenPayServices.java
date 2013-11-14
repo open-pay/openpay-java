@@ -136,7 +136,7 @@ public class OpenPayServices {
 	
 	public Transaction createCharge(String customerId, Card card, Double amount, String description, String orderID)
 			throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/charge";
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/charges";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("card", card);
 		data.put("amount", amount);
@@ -147,7 +147,7 @@ public class OpenPayServices {
 
 	public Transaction createCharge(String customerId, String sourceId, Double amount, String description, String orderID)
 			throws ServiceUnavailable, HttpError {
-		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/charge";
+		String path = String.format(CUSTOMER_PATH, this.merchantId) + HTTP_RESOURCE_SEPARATOR + customerId + "/charges";
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("source_id", sourceId);
 		data.put("amount", amount);
