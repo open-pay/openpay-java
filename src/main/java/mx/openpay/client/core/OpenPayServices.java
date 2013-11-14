@@ -199,10 +199,11 @@ public class OpenPayServices {
 	
 	// BankAccount
 
-	public BankAccount createBank(String customerId, final String clabe) throws ServiceUnavailable, HttpError {
+	public BankAccount createBank(String customerId, final String clabe, final String alias) throws ServiceUnavailable, HttpError {
 		String path = String.format(BANK_PATH, this.merchantId, customerId);
 		Map<String, Object> bankData = new HashMap<String, Object>();
 		bankData.put("clabe", clabe);
+		bankData.put("alias", alias);
 		return this.serviceClient.post(path, bankData, BankAccount.class);
 	}
 
