@@ -28,6 +28,12 @@ public class Transaction {
     @SerializedName("transaction_type")
     private String transactionType;
 
+    @SerializedName("operation_type")
+    private String operationType;
+
+    @SerializedName("method")
+    private String method;
+
     @SerializedName("error_message")
     private String errorMessage;
 
