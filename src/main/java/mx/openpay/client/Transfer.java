@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mx.openpay.client.enums.TransactionType;
+import mx.openpay.client.enums.OperationType;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -48,15 +48,15 @@ public class Transfer extends Transaction {
 
     public static Transfer get(final String transactionId) throws OpenpayServiceException,
             ServiceUnavailableException {
-        return get(transactionId, TransactionType.TRANSFER_FROM);
+        return get(transactionId, OperationType.OUT);
     }
 
-    public static Transfer get(final String transactionId, final TransactionType type) throws OpenpayServiceException,
+    public static Transfer get(final String transactionId, final OperationType type) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path = String.format(GET_MERCHANT_TRANSFER, getMerchantId(), transactionId);
         Map<String, String> map = new HashMap<String, String>();
         if (type == null) {
-            map.put("transaction_type", TransactionType.TRANSFER_FROM.name().toLowerCase());
+            map.put("transaction_type", OperationType.OUT.name().toLowerCase());
         } else {
             map.put("transaction_type", type.name().toLowerCase());
         }

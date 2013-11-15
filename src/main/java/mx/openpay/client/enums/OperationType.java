@@ -12,36 +12,12 @@ package mx.openpay.client.enums;
 /**
  * @author elopez
  */
-public enum TransactionType {
+public enum OperationType {
 
-    /** Cuando se recibe un pago por SPEI */
-    SPEI,
+    /** Inflow transaction. */
+    IN,
 
-    /** Cargo a tarjeta para agregar a account. */
-    CARD_DEBIT,
-
-    /** Deposito del account hacia un banco. */
-    BANK_DEPOSIT,
-
-    /** Transaccion del account origen en un traspaso entre accounts. */
-    TRANSFER_FROM,
-
-    /** Transaccion del account destino en un traspaso entre accounts. */
-    TRANSFER_TO,
-
-    /** Transaccion del account al que se le esta cobrando una comision. */
-    FEE_FROM,
-
-    /** Cancelacion de cargo a tarjeta */
-    CARD_REFUND,
-
-    /** Transferencia de un account a una tarjeta */
-    CARD_DEPOSIT,
-
-    /** Transaccion del account al que se le esta depositando el cobro de una comision. */
-    FEE_TO,
-
-    /** Cancelacion de un deposito a tarjeta o cuenta de banco */
-    CANCEL_DEPOSIT;
+    /** Outflow transaction. */
+    OUT
 
 }

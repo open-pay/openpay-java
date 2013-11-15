@@ -25,7 +25,7 @@ import java.util.List;
 
 import mx.openpay.client.Transfer;
 import mx.openpay.client.core.OpenpayAPI;
-import mx.openpay.client.enums.TransactionType;
+import mx.openpay.client.enums.OperationType;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 
 import org.junit.Before;
@@ -63,7 +63,7 @@ public class TransferOperationsTest {
         Transfer transfer = Transfer.get(transactionId);
         assertEquals(transactionId, transfer.getId());
         assertEquals("OID12345", transfer.getOrderId());
-        assertEquals(TransactionType.TRANSFER_FROM.name().toLowerCase(), transfer.getTransactionType());
+        assertEquals(OperationType.OUT.name().toLowerCase(), transfer.getOperationType());
     }
 
     @Test
@@ -80,21 +80,10 @@ public class TransferOperationsTest {
     @Test
     public void testGet_MerchantTransferTo() throws Exception {
         String transactionId = "tvyuad0uzf5mtq4uvywd";
-        Transfer transfer = Transfer.get(transactionId, TransactionType.TRANSFER_TO);
+        Transfer transfer = Transfer.get(transactionId, OperationType.IN);
         assertEquals(transactionId, transfer.getId());
         assertNull(transfer.getOrderId());
-        assertEquals(TransactionType.TRANSFER_TO.name().toLowerCase(), transfer.getTransactionType());
-    }
-
-    @Test
-    public void testGet_MerchantTransferInvalidType() throws Exception {
-        String transactionId = "tvyuad0uzf5mtq4uvywd";
-        try {
-            Transfer.get(transactionId, TransactionType.SPEI);
-            fail();
-        } catch (OpenpayServiceException e) {
-            assertEquals(404, e.getHttpCode().intValue());
-        }
+        assertEquals(OperationType.IN.name().toLowerCase(), transfer.getOperationType());
     }
 
     @Test
