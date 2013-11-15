@@ -17,7 +17,7 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.serialization.BankAccountAdapterFactory;
 import mx.openpay.client.serialization.CardAdapterFactory;
 import mx.openpay.client.serialization.CustomerAdapterFactory;
-import mx.openpay.client.serialization.DateFormatSerializer;
+import mx.openpay.client.serialization.DateFormatDeserializer;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
@@ -74,7 +74,7 @@ public class JsonServiceClient {
         this.httpClient = this.initHttpClient();
         this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
         this.gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, new DateFormatSerializer())
+                .registerTypeAdapter(Date.class, new DateFormatDeserializer())
                 .registerTypeAdapterFactory(new CustomerAdapterFactory())
                 .registerTypeAdapterFactory(new CardAdapterFactory())
                 .registerTypeAdapterFactory(new BankAccountAdapterFactory())

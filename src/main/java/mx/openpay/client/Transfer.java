@@ -56,9 +56,9 @@ public class Transfer extends Transaction {
         String path = String.format(GET_MERCHANT_TRANSFER, getMerchantId(), transactionId);
         Map<String, String> map = new HashMap<String, String>();
         if (type == null) {
-            map.put("transaction_type", OperationType.OUT.name().toLowerCase());
+            map.put("operation_type", OperationType.OUT.name().toLowerCase());
         } else {
-            map.put("transaction_type", type.name().toLowerCase());
+            map.put("operation_type", type.name().toLowerCase());
         }
         return getJsonClient().get(path, map, Transfer.class);
     }
