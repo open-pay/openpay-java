@@ -20,6 +20,7 @@ import mx.openpay.client.serialization.CustomerAdapterFactory;
 import mx.openpay.client.serialization.DateFormatDeserializer;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -194,11 +195,11 @@ public class JsonServiceClient {
             throw new ServiceUnavailableException(e);
         }
         String body = null;
-        String contentType = null;
+        Header contentType = null;
         HttpEntity entity = response.getEntity();
         if (entity != null) {
             try {
-                contentType = entity.getContentType().getValue();
+                contentType = entity.getContentType();
                 body = EntityUtils.toString(entity);
             } catch (IOException e) {
                 throw new ServiceUnavailableException(e);
@@ -213,10 +214,10 @@ public class JsonServiceClient {
 
     }
 
-    private <T> T getDeserializedObject(final StatusLine status, final String contentType, final String body,
+    private <T> T getDeserializedObject(final StatusLine status, final Header contentType, final String body,
             final Class<T> clazz, final Type type) throws OpenpayServiceException {
-        boolean isJsonResponse = contentType != null
-                && contentType.startsWith(ContentType.APPLICATION_JSON.getMimeType());
+        boolean isJsonResponse = contentType != null && contentType.getValue() != null
+                && contentType.getValue().startsWith(ContentType.APPLICATION_JSON.getMimeType());
         if (status.getStatusCode() >= 299) {
             if (isJsonResponse) {
                 OpenpayServiceException error = this.deserialize(body, OpenpayServiceException.class, null);
@@ -231,6 +232,8 @@ public class JsonServiceClient {
             }
         } else if (isJsonResponse) {
             return this.deserialize(body, clazz, type);
+        } else if (body != null) {
+            log.debug("Body wasn't returned as JSON: {}", body);
         }
         return null;
     }
