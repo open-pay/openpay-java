@@ -38,123 +38,123 @@ public class CardListFiltersTest {
 
     @Test
     public void testList() throws Exception {
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", null);
-        assertEquals(3, bankAccounts.size());
-        assertEquals("kfaq5dm5pq1qefzev1nz", bankAccounts.get(0).getId());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(1).getId());
-        assertEquals("kvtuyihbf0dwchbfmp7i", bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", null);
+        assertEquals(3, cards.size());
+        assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
+        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(2).getId());
+        assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_Limit() throws Exception {
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().limit(2));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("kfaq5dm5pq1qefzev1nz", bankAccounts.get(0).getId());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().limit(2));
+        assertEquals(2, cards.size());
+        assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
+        assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_Offset() throws Exception {
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().offset(1));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(0).getId());
-        assertEquals("kvtuyihbf0dwchbfmp7i", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().offset(1));
+        assertEquals(2, cards.size());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(0).getId());
+        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(1).getId());
+        assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_Offset_Limit() throws Exception {
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().offset(1).limit(1));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(0).getId());
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().offset(1).limit(1));
+        assertEquals(1, cards.size());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(0).getId());
     }
 
     @Test
     public void testList_Create() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creation(date));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(0).getId());
-        assertEquals("kvtuyihbf0dwchbfmp7i", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().creation(date));
+        assertEquals(2, cards.size());
+        assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
+        assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_Create_Offset() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creation(date).offset(1));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("kvtuyihbf0dwchbfmp7i", bankAccounts.get(0).getId());
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().creation(date).offset(1));
+        assertEquals(1, cards.size());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(0).getId());
     }
 
     @Test
     public void testList_CreateLte() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creationLte(date));
-        assertEquals(3, bankAccounts.size());
-        assertEquals("kfaq5dm5pq1qefzev1nz", bankAccounts.get(0).getId());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(1).getId());
-        assertEquals("kvtuyihbf0dwchbfmp7i", bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().creationLte(date));
+        assertEquals(3, cards.size());
+        assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
+        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(2).getId());
+        assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_CreateLte_NoStartOfNextDay() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creationLte(date));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("kfaq5dm5pq1qefzev1nz", bankAccounts.get(0).getId());
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().creationLte(date));
+        assertEquals(1, cards.size());
+        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(0).getId());
     }
 
     @Test
     public void testList_CreateGte() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creationGte(date));
-        assertEquals(3, bankAccounts.size());
-        assertEquals("kfaq5dm5pq1qefzev1nz", bankAccounts.get(0).getId());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(1).getId());
-        assertEquals("kvtuyihbf0dwchbfmp7i", bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().creationGte(date));
+        assertEquals(3, cards.size());
+        assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
+        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(2).getId());
+        assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_CreateGte_StartOfCurrentDay() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creationGte(date));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(0).getId());
-        assertEquals("kvtuyihbf0dwchbfmp7i", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().creationGte(date));
+        assertEquals(2, cards.size());
+        assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
+        assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_Create_Between() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().between(start, end));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(0).getId());
-        assertEquals("kvtuyihbf0dwchbfmp7i", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().before(bankAccounts.get(1).getCreationDate()));
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().between(start, end));
+        assertEquals(2, cards.size());
+        assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
+        assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
+        assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_Create_Between_FirstCard() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().between(start, end));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("kfaq5dm5pq1qefzev1nz", bankAccounts.get(0).getId());
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().between(start, end));
+        assertEquals(1, cards.size());
+        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(0).getId());
     }
 
     @Test
     public void testList_Create_Between_Inverted() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().between(end, start));
-        assertEquals(0, bankAccounts.size());
+        List<Card> cards = Card.list("afk4csrazjp1udezj1po", search().between(end, start));
+        assertEquals(0, cards.size());
     }
 
 }
