@@ -37,7 +37,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch() throws Exception {
+    public void testList() throws Exception {
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", null);
         assertEquals(3, bankAccounts.size());
         assertEquals("kfaq5dm5pq1qefzev1nz", bankAccounts.get(0).getId());
@@ -47,7 +47,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_Limit() throws Exception {
+    public void testList_Limit() throws Exception {
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().limit(2));
         assertEquals(2, bankAccounts.size());
         assertEquals("kfaq5dm5pq1qefzev1nz", bankAccounts.get(0).getId());
@@ -56,7 +56,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_Offset() throws Exception {
+    public void testList_Offset() throws Exception {
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().offset(1));
         assertEquals(2, bankAccounts.size());
         assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(0).getId());
@@ -65,14 +65,14 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_Offset_Limit() throws Exception {
+    public void testList_Offset_Limit() throws Exception {
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().offset(1).limit(1));
         assertEquals(1, bankAccounts.size());
         assertEquals("kpyru4zjk8jaqloojc3q", bankAccounts.get(0).getId());
     }
 
     @Test
-    public void testSearch_Create() throws Exception {
+    public void testList_Create() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creation(date));
         assertEquals(2, bankAccounts.size());
@@ -82,7 +82,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_Create_Offset() throws Exception {
+    public void testList_Create_Offset() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creation(date).offset(1));
         assertEquals(1, bankAccounts.size());
@@ -90,7 +90,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_CreateLte() throws Exception {
+    public void testList_CreateLte() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creationLte(date));
         assertEquals(3, bankAccounts.size());
@@ -101,7 +101,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_CreateLte_NoStartOfNextDay() throws Exception {
+    public void testList_CreateLte_NoStartOfNextDay() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creationLte(date));
         assertEquals(1, bankAccounts.size());
@@ -109,7 +109,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_CreateGte() throws Exception {
+    public void testList_CreateGte() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creationGte(date));
         assertEquals(3, bankAccounts.size());
@@ -120,7 +120,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_CreateGte_StartOfCurrentDay() throws Exception {
+    public void testList_CreateGte_StartOfCurrentDay() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().creationGte(date));
         assertEquals(2, bankAccounts.size());
@@ -130,7 +130,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_Create_Between() throws Exception {
+    public void testList_Create_Between() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().between(start, end));
@@ -141,7 +141,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_Create_Between_FirstCard() throws Exception {
+    public void testList_Create_Between_FirstCard() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().between(start, end));
@@ -150,7 +150,7 @@ public class CardListFiltersTest {
     }
 
     @Test
-    public void testSearch_Create_Between_Inverted() throws Exception {
+    public void testList_Create_Between_Inverted() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
         List<Card> bankAccounts = Card.list("afk4csrazjp1udezj1po", search().between(end, start));

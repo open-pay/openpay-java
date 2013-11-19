@@ -14,7 +14,7 @@ import static mx.openpay.client.core.OpenpayAPI.getMerchantId;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
-import static mx.openpay.client.utils.OpenpayPathComponents.WITHDRAWALS;
+import static mx.openpay.client.utils.OpenpayPathComponents.PAYOUTS;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -29,98 +29,98 @@ import mx.openpay.client.utils.SearchParams;
 /**
  * @author elopez
  */
-public class Withdrawal extends Transaction {
+public class Payout extends Transaction {
 
-    private static final String MERCHANT_WITHDRAWALS_PATH = MERCHANT_ID + WITHDRAWALS;
+    private static final String FOR_MERCHANT_PATH = MERCHANT_ID + PAYOUTS;
 
-    private static final String GET_MERCHANT_WITHDRAWAL_PATH = MERCHANT_WITHDRAWALS_PATH + ID;
+    private static final String GET_FOR_MERCHANT_PATH = FOR_MERCHANT_PATH + ID;
 
-    private static final String CUSTOMER_WITHDRAWALS_PATH = MERCHANT_ID + CUSTOMERS + ID + WITHDRAWALS;
+    private static final String FOR_CUSTOMER_PATH = MERCHANT_ID + CUSTOMERS + ID + PAYOUTS;
 
-    private static final String GET_CUSTOMER_WITHDRAWAL_PATH = CUSTOMER_WITHDRAWALS_PATH + ID;
+    private static final String GET_FOR_CUSTOMER_PATH = FOR_CUSTOMER_PATH + ID;
 
-    public static Withdrawal createForCustomer(final String customerId, final String destinationId,
+    public static Payout createForCustomer(final String customerId, final String destinationId,
             final BigDecimal amount, final String description, final String orderID)
             throws ServiceUnavailableException,
             OpenpayServiceException {
-        String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
+        String path = String.format(FOR_CUSTOMER_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("destination_id", destinationId);
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
-        return getJsonClient().post(path, data, Withdrawal.class);
+        return getJsonClient().post(path, data, Payout.class);
     }
 
-    public static Withdrawal createForCustomer(final String customerId, final Card card,
+    public static Payout createForCustomer(final String customerId, final Card card,
             final BigDecimal amount, final String description, final String orderID) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
+        String path = String.format(FOR_CUSTOMER_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
-        return getJsonClient().post(path, data, Withdrawal.class);
+        return getJsonClient().post(path, data, Payout.class);
     }
 
-    public static Withdrawal createForCustomer(final String customerId, final BankAccount bankAccount,
+    public static Payout createForCustomer(final String customerId, final BankAccount bankAccount,
             final BigDecimal amount, final String description, final String orderID) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
+        String path = String.format(FOR_CUSTOMER_PATH, getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("bank_account", bankAccount);
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
-        return getJsonClient().post(path, data, Withdrawal.class);
+        return getJsonClient().post(path, data, Payout.class);
     }
 
-    public static Withdrawal get(final String transactionId) throws OpenpayServiceException,
+    public static Payout get(final String transactionId) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(GET_MERCHANT_WITHDRAWAL_PATH, getMerchantId(), transactionId);
-        return getJsonClient().get(path, Withdrawal.class);
+        String path = String.format(GET_FOR_MERCHANT_PATH, getMerchantId(), transactionId);
+        return getJsonClient().get(path, Payout.class);
     }
 
-    public static Withdrawal get(final String customerId, final String transactionId) throws OpenpayServiceException,
+    public static Payout get(final String customerId, final String transactionId) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(GET_CUSTOMER_WITHDRAWAL_PATH, getMerchantId(), customerId, transactionId);
-        return getJsonClient().get(path, Withdrawal.class);
+        String path = String.format(GET_FOR_CUSTOMER_PATH, getMerchantId(), customerId, transactionId);
+        return getJsonClient().get(path, Payout.class);
     }
 
-    public static Withdrawal createForMerchant(final Card card, final BigDecimal amount,
+    public static Payout createForMerchant(final Card card, final BigDecimal amount,
             final String description, final String orderID) throws OpenpayServiceException, ServiceUnavailableException {
-        String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
+        String path = String.format(FOR_MERCHANT_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
-        return getJsonClient().post(path, data, Withdrawal.class);
+        return getJsonClient().post(path, data, Payout.class);
     }
 
-    public static Withdrawal createForMerchant(final BankAccount bankAccount, final BigDecimal amount,
+    public static Payout createForMerchant(final BankAccount bankAccount, final BigDecimal amount,
             final String description, final String orderID) throws OpenpayServiceException, ServiceUnavailableException {
-        String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
+        String path = String.format(FOR_MERCHANT_PATH, getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("bank_account", bankAccount);
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
-        return getJsonClient().post(path, data, Withdrawal.class);
+        return getJsonClient().post(path, data, Payout.class);
     }
 
-    public static List<Withdrawal> list(final SearchParams params) throws OpenpayServiceException,
+    public static List<Payout> list(final SearchParams params) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(MERCHANT_WITHDRAWALS_PATH, getMerchantId());
+        String path = String.format(FOR_MERCHANT_PATH, getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().list(path, map, ListTypes.WITHDRAWAL);
+        return getJsonClient().list(path, map, ListTypes.PAYOUT);
     }
 
-    public static List<Withdrawal> list(final String customerId, final SearchParams params)
+    public static List<Payout> list(final String customerId, final SearchParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
-        String path = String.format(CUSTOMER_WITHDRAWALS_PATH, getMerchantId(), customerId);
+        String path = String.format(FOR_CUSTOMER_PATH, getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
-        return getJsonClient().list(path, map, ListTypes.WITHDRAWAL);
+        return getJsonClient().list(path, map, ListTypes.PAYOUT);
     }
 }

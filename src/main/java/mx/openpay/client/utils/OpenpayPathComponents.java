@@ -24,9 +24,9 @@ public class OpenpayPathComponents {
 
     public static final String CARDS = "/cards";
 
-    public static final String DEPOSITS = "/deposits";
+    public static final String CHARGES = "/charges";
 
-    public static final String WITHDRAWALS = "/withdrawals";
+    public static final String PAYOUTS = "/payouts";
 
     public static final String TRANSFERS = "/transfers";
 
