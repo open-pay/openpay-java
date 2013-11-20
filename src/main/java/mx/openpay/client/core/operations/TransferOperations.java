@@ -45,7 +45,6 @@ public class TransferOperations extends ServiceOperations {
      */
     public TransferOperations(final JsonServiceClient client, final String merchantId) {
         super(client, merchantId);
-        // TODO Auto-generated constructor stub
     }
 
     public List<Transfer> list(final SearchParams params) throws OpenpayServiceException,

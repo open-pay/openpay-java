@@ -14,7 +14,7 @@ import mx.openpay.client.core.JsonServiceClient;
 /**
  * @author elopez
  */
-public class ServiceOperations {
+public abstract class ServiceOperations {
 
     private final String merchantId;
 
