@@ -17,6 +17,7 @@ import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.operations.CustomerOperations;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -25,17 +26,19 @@ import org.junit.Test;
 
 public class CustomerOperationsTest {
 
+    CustomerOperations ops;
+
     @Before
     public void setUp() throws Exception {
-        OpenpayAPI.configure(ENDPOINT, API_KEY, MERCHANT_ID);
+        this.ops = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).customers();
     }
 
     @Test
     public void testCreateAndDeleteCustomer() throws ServiceUnavailableException, OpenpayServiceException {
         Address address = this.createAddress();
-        Customer customer = Customer.create("Juan", "Perez Perez", "juan.perez@gmail.com",
+        Customer customer = this.ops.create("Juan", "Perez Perez", "juan.perez@gmail.com",
                 "55-25634013", address);
-        Customer.delete(customer.getId());
+        this.ops.delete(customer.getId());
         Assert.assertNotNull(customer);
         Assert.assertNotNull(customer.getId());
     }
@@ -43,7 +46,7 @@ public class CustomerOperationsTest {
     @Test
     public void testDelete_DoesNotExist() throws Exception {
         try {
-            Customer.delete("blahblahblah");
+            this.ops.delete("blahblahblah");
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
@@ -54,19 +57,19 @@ public class CustomerOperationsTest {
     @Test
     public void testGetAndUpdateCustomer() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
-        Customer customer = Customer.get(customerId);
+        Customer customer = this.ops.get(customerId);
         Assert.assertNotNull(customer);
         customer.setName("Juanito 2");
-        customer = Customer.update(customer);
+        customer = this.ops.update(customer);
         Assert.assertEquals("Juanito 2", customer.getName());
         customer.setName("Juanito");
-        customer = Customer.update(customer);
+        customer = this.ops.update(customer);
         Assert.assertEquals("Juanito", customer.getName());
     }
 
     @Test
     public void testList() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Customer> customers = Customer.list(search().offset(0).limit(100));
+        List<Customer> customers = this.ops.list(search().offset(0).limit(100));
         Assert.assertNotNull(customers);
         assertFalse(customers.isEmpty());
         for (Customer customer : customers) {
@@ -82,7 +85,7 @@ public class CustomerOperationsTest {
 
     @Test
     public void testList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Customer> customers = Customer.list(search().offset(1000).limit(1));
+        List<Customer> customers = this.ops.list(search().offset(1000).limit(1));
         Assert.assertNotNull(customers);
         assertTrue(customers.isEmpty());
     }
@@ -90,7 +93,7 @@ public class CustomerOperationsTest {
     @Test
     public void testGet_DoesNotExist() throws Exception {
         try {
-            Customer.get("blahblahblah");
+            this.ops.get("blahblahblah");
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());

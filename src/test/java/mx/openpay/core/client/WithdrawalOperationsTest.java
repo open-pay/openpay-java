@@ -26,6 +26,7 @@ import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.operations.PayoutOperations;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -41,33 +42,38 @@ public class WithdrawalOperationsTest {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
+    OpenpayAPI api;
+
+    PayoutOperations ops;
+
     @Before
     public void setUp() throws Exception {
-        OpenpayAPI.configure(ENDPOINT, API_KEY, MERCHANT_ID);
+        this.api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
+        this.ops = this.api.payouts();
     }
 
     @Test
     public void testList_Customer() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Payout> transactions = Payout.list(search().limit(2));
+        List<Payout> transactions = this.ops.list(search().limit(2));
         assertEquals(2, transactions.size());
     }
 
     @Test
     public void testList_Customer_Empty() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Payout> transactions = Payout.list(search().limit(2).offset(10000));
+        List<Payout> transactions = this.ops.list(search().limit(2).offset(10000));
         assertEquals(0, transactions.size());
     }
 
     @Test
     public void testList_Merchant() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Payout> transactions = Payout.list(this.customerId, search().limit(2));
+        List<Payout> transactions = this.ops.list(this.customerId, search().limit(2));
         assertEquals(2, transactions.size());
     }
 
     @Test
     public void testGet_Merchant() throws ServiceUnavailableException, OpenpayServiceException {
         String transactionId = "tf1wjucai0gj7awz0uvf";
-        Payout transaction = Payout.get(transactionId);
+        Payout transaction = this.ops.get(transactionId);
         Assert.assertNotNull(transaction.getId());
         Assert.assertNotNull(transaction.getAmount());
     }
@@ -75,7 +81,7 @@ public class WithdrawalOperationsTest {
     @Test
     public void testGet_Customer() throws ServiceUnavailableException, OpenpayServiceException {
         String transactionId = "tf1wjucai0gj7awz0uvf";
-        Payout transaction = Payout.get(this.customerId, transactionId);
+        Payout transaction = this.ops.get(this.customerId, transactionId);
         Assert.assertNotNull(transaction.getId());
         Assert.assertNotNull(transaction.getAmount());
     }
@@ -86,11 +92,11 @@ public class WithdrawalOperationsTest {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
-        List<BankAccount> bankAccounts = BankAccount.list(customerId, search().offset(0).limit(10));
+        List<BankAccount> bankAccounts = this.api.bankAccounts().list(customerId, search().offset(0).limit(10));
         Assert.assertNotNull(bankAccounts);
 
         String orderId = this.dateFormat.format(new Date());
-        Payout transaction = Payout.createForCustomer(customerId, bankAccounts.get(0).getId(),
+        Payout transaction = this.ops.createForCustomer(customerId, bankAccounts.get(0).getId(),
                 amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
@@ -110,7 +116,7 @@ public class WithdrawalOperationsTest {
         bankAccount.setHolderName("Cuenta");
 
         String orderId = this.dateFormat.format(new Date());
-        Payout transaction = Payout.createForCustomer(customerId, bankAccount, amount, desc, orderId);
+        Payout transaction = this.ops.createForCustomer(customerId, bankAccount, amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertEquals(amount, transaction.getAmount());
@@ -128,7 +134,7 @@ public class WithdrawalOperationsTest {
         card.setBankCode("012");
 
         String orderId = this.dateFormat.format(new Date());
-        Payout transaction = Payout.createForCustomer(customerId, card, amount, desc, orderId);
+        Payout transaction = this.ops.createForCustomer(customerId, card, amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertEquals(amount, transaction.getAmount());
@@ -149,7 +155,7 @@ public class WithdrawalOperationsTest {
         bankAccount.setCreationDate(date);
 
         String orderId = this.dateFormat.format(new Date());
-        Payout transaction = Payout.createForMerchant(bankAccount, amount, desc, orderId);
+        Payout transaction = this.ops.createForMerchant(bankAccount, amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertEquals(amount, transaction.getAmount());
@@ -168,7 +174,7 @@ public class WithdrawalOperationsTest {
         card.setBankCode("012");
 
         String orderId = this.dateFormat.format(new Date());
-        Payout transaction = Payout.createForMerchant(card, amount, desc, orderId);
+        Payout transaction = this.ops.createForMerchant(card, amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertEquals(amount, transaction.getAmount());

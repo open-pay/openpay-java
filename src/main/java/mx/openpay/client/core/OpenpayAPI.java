@@ -13,6 +13,15 @@ import static mx.openpay.client.utils.OpenpayPathComponents.VERSION;
 
 import java.security.GeneralSecurityException;
 
+import lombok.Getter;
+import mx.openpay.client.core.operations.BankAccountOperations;
+import mx.openpay.client.core.operations.CardOperations;
+import mx.openpay.client.core.operations.ChargeOperations;
+import mx.openpay.client.core.operations.CustomerOperations;
+import mx.openpay.client.core.operations.FeeOperations;
+import mx.openpay.client.core.operations.PayoutOperations;
+import mx.openpay.client.core.operations.TransferOperations;
+
 /**
  * @author elopez
  */
@@ -20,24 +29,52 @@ public class OpenpayAPI {
 
     private static final String HTTP_RESOURCE_SEPARATOR = "/";
 
-    private static String _location;
+    @Getter
+    private final String location;
 
-    private static String _merchantId;
+    @Getter
+    private final String merchantId;
 
-    private static String _apiKey;
+    @Getter
+    private final String apiKey;
 
-    private static JsonServiceClient _jsonClient;
+    private final JsonServiceClient jsonClient;
 
-    public static void configure(final String location, final String apiKey, final String merchantId) {
+    private final BankAccountOperations bankAccountOperations;
+
+    private final CustomerOperations customerOperations;
+
+    private final CardOperations cardOperations;
+
+    private final ChargeOperations chargeOperations;
+
+    private final FeeOperations feeOperations;
+
+    private final PayoutOperations payoutOperations;
+
+    private final TransferOperations transferOperations;
+
+    public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
         if (location == null) {
             throw new IllegalArgumentException("Location can't be null");
         }
         if (merchantId == null) {
             throw new IllegalArgumentException("Merchant ID can't be null");
         }
-        OpenpayAPI._location = location;
-        OpenpayAPI._merchantId = merchantId;
-        OpenpayAPI._apiKey = apiKey;
+        this.location = location;
+        this.merchantId = merchantId;
+        this.apiKey = apiKey;
+        this.jsonClient = this.initJsonClient(location, apiKey);
+        this.bankAccountOperations = new BankAccountOperations(this.jsonClient, merchantId);
+        this.customerOperations = new CustomerOperations(this.jsonClient, merchantId);
+        this.cardOperations = new CardOperations(this.jsonClient, merchantId);
+        this.chargeOperations = new ChargeOperations(this.jsonClient, merchantId);
+        this.feeOperations = new FeeOperations(this.jsonClient, merchantId);
+        this.payoutOperations = new PayoutOperations(this.jsonClient, merchantId);
+        this.transferOperations = new TransferOperations(this.jsonClient, merchantId);
+    }
+
+    private JsonServiceClient initJsonClient(final String location, final String apiKey) {
         StringBuilder baseUri = new StringBuilder();
         if (location.contains("http") || location.contains("https")) {
             baseUri.append(location.replace("http:", "https:"));
@@ -49,35 +86,41 @@ public class OpenpayAPI {
         }
         baseUri.append(VERSION);
         try {
-            OpenpayAPI._jsonClient = new JsonServiceClient(baseUri.toString(), apiKey);
+            return new JsonServiceClient(baseUri.toString(), apiKey);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException("Can't initialize Openpay Client", e);
         }
     }
 
-    public static String getLocation() {
-        return _location;
+    public void setTimeout(final int timeout) {
+        this.jsonClient.setConnectionTimeout(timeout);
     }
 
-    public static String getMerchantId() {
-        return _merchantId;
+    public CustomerOperations customers() {
+        return this.customerOperations;
     }
 
-    public static String getAPIKey() {
-        return _apiKey;
+    public CardOperations cards() {
+        return this.cardOperations;
     }
 
-    public static JsonServiceClient getJsonClient() {
-        if (_jsonClient == null) {
-            throw new IllegalStateException("The client hasn't been configured yet.");
-        }
-        return _jsonClient;
+    public ChargeOperations charges() {
+        return this.chargeOperations;
     }
 
-    public static void setTimeout(final int timeout) {
-        if (_jsonClient == null) {
-            throw new IllegalStateException("The client hasn't been configured yet.");
-        }
-        _jsonClient.setConnectionTimeout(timeout);
+    public FeeOperations fees() {
+        return this.feeOperations;
+    }
+
+    public PayoutOperations payouts() {
+        return this.payoutOperations;
+    }
+
+    public TransferOperations transfers() {
+        return this.transferOperations;
+    }
+
+    public BankAccountOperations bankAccounts() {
+        return this.bankAccountOperations;
     }
 }

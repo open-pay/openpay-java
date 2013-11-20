@@ -15,7 +15,6 @@ import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -27,11 +26,13 @@ import org.junit.Test;
  */
 public class ConfigurationTest {
 
+    ;
+
     @Test
     public void testNoAPIKey() throws Exception {
-        OpenpayAPI.configure(ENDPOINT, null, MERCHANT_ID);
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT, null, MERCHANT_ID);
         try {
-            Customer.list(null);
+            api.customers().list(null);
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(401, e.getHttpCode().intValue());
@@ -40,32 +41,32 @@ public class ConfigurationTest {
 
     @Test
     public void testForceHttps() throws Exception {
-        OpenpayAPI.configure(ENDPOINT.replace("https", "http"), API_KEY, MERCHANT_ID);
-        assertNotNull(Customer.list(null));
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https", "http"), API_KEY, MERCHANT_ID);
+        assertNotNull(api.customers().list(null));
     }
 
     @Test(expected = ServiceUnavailableException.class)
     public void testNoConnection() throws Exception {
-        OpenpayAPI.configure("http://localhost:9090", API_KEY, MERCHANT_ID);
-        Customer.list(null);
+        OpenpayAPI api = new OpenpayAPI("http://localhost:9090", API_KEY, MERCHANT_ID);
+        api.customers().list(null);
     }
 
     @Test
     public void testAddHttps() throws Exception {
-        OpenpayAPI.configure(ENDPOINT.replace("https://", ""), API_KEY, MERCHANT_ID);
-        assertNotNull(Customer.list(null));
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https://", ""), API_KEY, MERCHANT_ID);
+        assertNotNull(api.customers().list(null));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullMerchant() throws Exception {
-        OpenpayAPI.configure(ENDPOINT.replace("https://", ""), API_KEY, null);
+        new OpenpayAPI(ENDPOINT.replace("https://", ""), API_KEY, null);
     }
 
     @Test
     public void testWrongMerchant() throws Exception {
-        OpenpayAPI.configure(ENDPOINT, API_KEY, "notexists");
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, "notexists");
         try {
-            Customer.list(null);
+            api.customers().list(null);
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(401, e.getHttpCode().intValue());
@@ -74,7 +75,7 @@ public class ConfigurationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullLocation() throws Exception {
-        OpenpayAPI.configure(null, API_KEY, MERCHANT_ID);
+        new OpenpayAPI(null, API_KEY, MERCHANT_ID);
     }
 
 }

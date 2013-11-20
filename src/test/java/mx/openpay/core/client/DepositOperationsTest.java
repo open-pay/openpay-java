@@ -30,6 +30,7 @@ import mx.openpay.client.Address;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.operations.ChargeOperations;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -43,9 +44,14 @@ public class DepositOperationsTest {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
+    OpenpayAPI api;
+
+    ChargeOperations ops;
+
     @Before
     public void setUp() throws Exception {
-        OpenpayAPI.configure(ENDPOINT, API_KEY, MERCHANT_ID);
+        this.api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
+        this.ops = this.api.charges();
     }
 
     @Test
@@ -53,11 +59,11 @@ public class DepositOperationsTest {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
 
-        List<Card> cards = Card.list(CUSTOMER_ID, search().offset(0).limit(10));
+        List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
         Assert.assertNotNull(cards);
 
         String orderId = this.dateFormat.format(new Date());
-        Charge transaction = Charge.create(CUSTOMER_ID, cards.get(0).getId(), amount, desc, orderId);
+        Charge transaction = this.ops.create(CUSTOMER_ID, cards.get(0).getId(), amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
@@ -78,7 +84,7 @@ public class DepositOperationsTest {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         String orderId = this.dateFormat.format(new Date());
-        Charge deposit = Charge.create(CUSTOMER_ID, card, amount, desc, orderId);
+        Charge deposit = this.ops.create(CUSTOMER_ID, card, amount, desc, orderId);
         assertNotNull(deposit);
         assertNotNull(deposit.getCard());
         assertNull(deposit.getCard().getCvv2());
@@ -91,7 +97,7 @@ public class DepositOperationsTest {
         String desc = "Pago de taxi";
         String orderId = this.dateFormat.format(new Date());
         try {
-            Charge.create(CUSTOMER_ID, (Card) null, amount, desc, orderId);
+            this.ops.create(CUSTOMER_ID, (Card) null, amount, desc, orderId);
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(422, e.getHttpCode().intValue());
@@ -104,7 +110,7 @@ public class DepositOperationsTest {
         String desc = "Pago de taxi";
         String orderId = this.dateFormat.format(new Date());
         try {
-            Charge.create(CUSTOMER_ID, (String) null, amount, desc, orderId);
+            this.ops.create(CUSTOMER_ID, (String) null, amount, desc, orderId);
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(422, e.getHttpCode().intValue());
@@ -115,48 +121,48 @@ public class DepositOperationsTest {
     public void testRefund_Customer() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
-        List<Card> cards = Card.list(CUSTOMER_ID, search().offset(0).limit(10));
+        List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
         Assert.assertNotNull(cards);
         String orderId = this.dateFormat.format(new Date());
 
-        Charge transaction = Charge.create(CUSTOMER_ID, cards.get(0).getId(), amount, desc, orderId);
+        Charge transaction = this.ops.create(CUSTOMER_ID, cards.get(0).getId(), amount, desc, orderId);
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = Charge.refund(CUSTOMER_ID, transaction.getId(), "cancelacion", null);
+        transaction = this.ops.refund(CUSTOMER_ID, transaction.getId(), "cancelacion", null);
         Assert.assertNotNull(transaction.getRefund());
         Assert.assertEquals("cancelacion", transaction.getRefund().getDescription());
 
-        transaction = Charge.get(CUSTOMER_ID, originalTransactionId);
+        transaction = this.ops.get(CUSTOMER_ID, originalTransactionId);
         assertNotNull(transaction.getRefund());
     }
 
     @Test
     public void testGet_Customer() throws Exception {
-        Charge deposit = Charge.get(CUSTOMER_ID, "t2eqcqtb1uq2k746eiti");
+        Charge deposit = this.ops.get(CUSTOMER_ID, "t2eqcqtb1uq2k746eiti");
         assertNotNull(deposit);
     }
 
     @Test
     public void testList_Customer() throws Exception {
-        List<Charge> deposits = Charge.list(CUSTOMER_ID, search().limit(3));
+        List<Charge> deposits = this.ops.list(CUSTOMER_ID, search().limit(3));
         assertEquals(3, deposits.size());
 
-        deposits = Charge.list(CUSTOMER_ID, search().limit(5));
+        deposits = this.ops.list(CUSTOMER_ID, search().limit(5));
         assertEquals(5, deposits.size());
     }
 
     @Test
     public void testList_Customer_Empty() throws Exception {
-        List<Charge> deposits = Charge.list(CUSTOMER_ID, search().limit(2).offset(10000));
+        List<Charge> deposits = this.ops.list(CUSTOMER_ID, search().limit(2).offset(10000));
         assertTrue(deposits.isEmpty());
     }
 
     @Test
     public void testList_CustomerDoesNotExist() throws Exception {
         try {
-            Charge.list("blahblahblah", search().limit(2));
+            this.ops.list("blahblahblah", search().limit(2));
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
@@ -178,7 +184,7 @@ public class DepositOperationsTest {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         String orderId = this.dateFormat.format(new Date());
-        Charge deposit = Charge.create(card, amount, desc, orderId);
+        Charge deposit = this.ops.create(card, amount, desc, orderId);
         assertNotNull(deposit);
         assertNotNull(deposit.getCard());
         assertNull(deposit.getCard().getCvv2());
@@ -201,7 +207,7 @@ public class DepositOperationsTest {
         String desc = "Pago de taxi";
         String orderId = this.dateFormat.format(new Date());
         try {
-            Charge.create(null, amount, desc, orderId);
+            this.ops.create(null, amount, desc, orderId);
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(400, e.getHttpCode().intValue());
@@ -214,37 +220,37 @@ public class DepositOperationsTest {
         String desc = "Pago de taxi";
         String orderId = this.dateFormat.format(new Date());
 
-        Charge transaction = Charge.create(this.getCard(), amount, desc, orderId);
+        Charge transaction = this.ops.create(this.getCard(), amount, desc, orderId);
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = Charge.refund(transaction.getId(), "cancelacion", null);
+        transaction = this.ops.refund(transaction.getId(), "cancelacion", null);
         Assert.assertNotNull(transaction.getRefund());
         Assert.assertEquals("cancelacion", transaction.getRefund().getDescription());
 
-        transaction = Charge.get(originalTransactionId);
+        transaction = this.ops.get(originalTransactionId);
         assertNotNull(transaction.getRefund());
     }
 
     @Test
     public void testGet_Merchant() throws Exception {
-        Charge sale = Charge.get("txvdd6sjzcrvbiragy66");
+        Charge sale = this.ops.get("txvdd6sjzcrvbiragy66");
         assertNotNull(sale);
     }
 
     @Test
     public void testGet_MerchantForCustomer() throws Exception {
-        Charge sale = Charge.get("t2eqcqtb1uq2k746eiti");
+        Charge sale = this.ops.get("t2eqcqtb1uq2k746eiti");
         assertNotNull(sale);
     }
 
     @Test
     public void testList_Merchant() throws Exception {
-        List<Charge> sale = Charge.list(search().limit(3));
+        List<Charge> sale = this.ops.list(search().limit(3));
         assertEquals(3, sale.size());
 
-        sale = Charge.list(search().limit(5));
+        sale = this.ops.list(search().limit(5));
         assertEquals(5, sale.size());
     }
 

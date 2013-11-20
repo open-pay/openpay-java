@@ -22,6 +22,7 @@ import java.util.List;
 
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.operations.CustomerOperations;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,14 +32,16 @@ import org.junit.Test;
  */
 public class CustomerListFiltersTest {
 
+    CustomerOperations ops;
+
     @Before
     public void setUp() throws Exception {
-        OpenpayAPI.configure(ENDPOINT, API_KEY, MERCHANT_ID);
+        this.ops = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).customers();
     }
 
     @Test
     public void testList() throws Exception {
-        List<Customer> customers = Customer.list(null);
+        List<Customer> customers = this.ops.list(null);
         assertEquals(10, customers.size());
         assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
         assertEquals("aidzidphdseqwhfu0yjo", customers.get(1).getId());
@@ -48,7 +51,7 @@ public class CustomerListFiltersTest {
 
     @Test
     public void testList_Limit() throws Exception {
-        List<Customer> customers = Customer.list(search().limit(2));
+        List<Customer> customers = this.ops.list(search().limit(2));
         assertEquals(2, customers.size());
         assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
         assertEquals("aidzidphdseqwhfu0yjo", customers.get(1).getId());
@@ -57,7 +60,7 @@ public class CustomerListFiltersTest {
 
     @Test
     public void testList_Offset() throws Exception {
-        List<Customer> customers = Customer.list(search().offset(1));
+        List<Customer> customers = this.ops.list(search().offset(1));
         assertEquals(10, customers.size());
         assertEquals("aidzidphdseqwhfu0yjo", customers.get(0).getId());
         assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(1).getId());
@@ -67,7 +70,7 @@ public class CustomerListFiltersTest {
 
     @Test
     public void testList_Offset_Limit() throws Exception {
-        List<Customer> customers = Customer.list(search().offset(1).limit(1));
+        List<Customer> customers = this.ops.list(search().offset(1).limit(1));
         assertEquals(1, customers.size());
         assertEquals("aidzidphdseqwhfu0yjo", customers.get(0).getId());
     }
@@ -75,7 +78,7 @@ public class CustomerListFiltersTest {
     @Test
     public void testList_Create() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Customer> customers = Customer.list(search().creation(date));
+        List<Customer> customers = this.ops.list(search().creation(date));
         assertEquals(2, customers.size());
         assertEquals("aidzidphdseqwhfu0yjo", customers.get(0).getId());
         assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(1).getId());
@@ -85,7 +88,7 @@ public class CustomerListFiltersTest {
     @Test
     public void testList_Create_Offset() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Customer> customers = Customer.list(search().creation(date).offset(1));
+        List<Customer> customers = this.ops.list(search().creation(date).offset(1));
         assertEquals(1, customers.size());
         assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(0).getId());
     }
@@ -93,7 +96,7 @@ public class CustomerListFiltersTest {
     @Test
     public void testList_CreateLte() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
-        List<Customer> customers = Customer.list(search().creationLte(date));
+        List<Customer> customers = this.ops.list(search().creationLte(date));
         assertEquals(10, customers.size());
         assertEquals("afvuzdsmeia7ykvcdygz", customers.get(0).getId());
         assertEquals("amgwgxv6ovtopljapecc", customers.get(1).getId());
@@ -104,7 +107,7 @@ public class CustomerListFiltersTest {
     @Test
     public void testList_CreateLte_NoStartOfNextDay() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-10-31");
-        List<Customer> customers = Customer.list(search().creationLte(date));
+        List<Customer> customers = this.ops.list(search().creationLte(date));
         assertEquals(1, customers.size());
         assertEquals("alsbga3kduomgwyvlrwz", customers.get(0).getId());
     }
@@ -112,7 +115,7 @@ public class CustomerListFiltersTest {
     @Test
     public void testList_CreateGte() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
-        List<Customer> customers = Customer.list(search().creationGte(date));
+        List<Customer> customers = this.ops.list(search().creationGte(date));
         assertEquals(4, customers.size());
         assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
         assertEquals("aidzidphdseqwhfu0yjo", customers.get(1).getId());
@@ -126,7 +129,7 @@ public class CustomerListFiltersTest {
     @Test
     public void testList_CreateGte_StartOfCurrentDay() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Customer> customers = Customer.list(search().creationGte(date));
+        List<Customer> customers = this.ops.list(search().creationGte(date));
         assertEquals(3, customers.size());
         assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
         assertEquals("aidzidphdseqwhfu0yjo", customers.get(1).getId());
@@ -138,7 +141,7 @@ public class CustomerListFiltersTest {
     public void testList_Create_Between() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Customer> customers = Customer.list(search().between(start, end));
+        List<Customer> customers = this.ops.list(search().between(start, end));
         assertEquals(2, customers.size());
         assertEquals("aidzidphdseqwhfu0yjo", customers.get(0).getId());
         assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(1).getId());
@@ -149,7 +152,7 @@ public class CustomerListFiltersTest {
     public void testList_Create_Between_FirstCustomer() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Customer> customers = Customer.list(search().between(start, end).limit(1));
+        List<Customer> customers = this.ops.list(search().between(start, end).limit(1));
         assertEquals(1, customers.size());
         assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
     }
@@ -158,7 +161,7 @@ public class CustomerListFiltersTest {
     public void testList_Create_Between_Inverted() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Customer> customers = Customer.list(search().between(end, start));
+        List<Customer> customers = this.ops.list(search().between(end, start));
         assertEquals(0, customers.size());
     }
 

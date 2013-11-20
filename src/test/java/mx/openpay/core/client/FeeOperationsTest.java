@@ -13,6 +13,7 @@ import java.util.List;
 
 import mx.openpay.client.Fee;
 import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.operations.FeeOperations;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -24,9 +25,11 @@ public class FeeOperationsTest {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
+    FeeOperations ops;
+
     @Before
     public void setUp() throws Exception {
-        OpenpayAPI.configure(ENDPOINT, API_KEY, MERCHANT_ID);
+        this.ops = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).fees();
     }
 
     @Test
@@ -36,7 +39,7 @@ public class FeeOperationsTest {
         String desc = "Comisión general";
         String orderId = this.dateFormat.format(new Date());
 
-        Fee transaction = Fee.create(customerId, feeAmount, desc, orderId);
+        Fee transaction = this.ops.create(customerId, feeAmount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertEquals(feeAmount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
@@ -49,7 +52,7 @@ public class FeeOperationsTest {
         String desc = "Comisión general";
         String orderId = this.dateFormat.format(new Date());
         try {
-            Fee.create(customerId, feeAmount, desc, orderId);
+            this.ops.create(customerId, feeAmount, desc, orderId);
         } catch (OpenpayServiceException e) {
             assertEquals(422, e.getHttpCode().intValue());
         }
@@ -57,13 +60,13 @@ public class FeeOperationsTest {
 
     @Test
     public void testList() throws Exception {
-        List<Fee> fees = Fee.list(search().limit(3));
+        List<Fee> fees = this.ops.list(search().limit(3));
         assertEquals(3, fees.size());
     }
 
     @Test
     public void testList_Empty() throws Exception {
-        List<Fee> fees = Fee.list(search().limit(3).offset(100000));
+        List<Fee> fees = this.ops.list(search().limit(3).offset(100000));
         assertEquals(0, fees.size());
     }
 
