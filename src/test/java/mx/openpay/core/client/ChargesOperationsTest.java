@@ -40,7 +40,7 @@ import org.junit.Test;
 /**
  * @author elopez
  */
-public class DepositOperationsTest {
+public class ChargesOperationsTest {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 

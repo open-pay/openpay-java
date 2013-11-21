@@ -36,7 +36,7 @@ import org.junit.Test;
 /**
  * @author elopez
  */
-public class WithdrawalOperationsTest {
+public class PayoutsOperationsTest {
 
     String customerId = "afk4csrazjp1udezj1po";
 
