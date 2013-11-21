@@ -26,8 +26,8 @@ public class CardAdapterFactory extends OpenpayTypeAdapterFactory<Card> {
     @Override
     protected void beforeWrite(final Card value, final JsonElement tree) {
         if (tree.isJsonObject()) {
-            tree.getAsJsonObject().remove("allows_withdrawals");
-            tree.getAsJsonObject().remove("allows_deposits");
+            tree.getAsJsonObject().remove("allows_charges");
+            tree.getAsJsonObject().remove("allows_payouts");
             tree.getAsJsonObject().remove("creation_date");
         }
     }
