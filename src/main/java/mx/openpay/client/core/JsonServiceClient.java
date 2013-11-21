@@ -43,6 +43,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
@@ -89,14 +91,14 @@ public class JsonServiceClient {
         PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
         connMgr.getSchemeRegistry().register(https);
         HttpClient httpClient = new DefaultHttpClient(connMgr);
-        httpClient.getParams().setParameter("http.protocol.version", HttpVersion.HTTP_1_1);
-        httpClient.getParams().setParameter("http.protocol.content-charset", "UTF-8");
+        httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+        httpClient.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
         return httpClient;
     }
 
     public void setConnectionTimeout(final int timeout) {
-        this.httpClient.getParams().setParameter("http.socket.timeout", timeout);
-        this.httpClient.getParams().setParameter("http.connection.timeout", timeout);
+        this.httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
+        this.httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
     }
 
     public <T> T get(final String path, final Class<T> clazz) throws OpenpayServiceException,

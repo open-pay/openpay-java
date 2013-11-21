@@ -19,8 +19,8 @@ public class Card {
     @SerializedName("bank_name")
     private String bankName;
 
-    @SerializedName("allows_deposits")
-    private boolean allowsDeposits;
+    @SerializedName("allows_payouts")
+    private boolean allowsPayouts;
 
     @SerializedName("holder_name")
     private String holderName;
@@ -38,8 +38,8 @@ public class Card {
     @SerializedName("expiration_year")
     private String expirationYear;
 
-    @SerializedName("allows_withdrawals")
-    private boolean allowsWithdrawals;
+    @SerializedName("allows_charges")
+    private boolean allowsCharges;
 
     @SerializedName("bank_code")
     private String bankCode;

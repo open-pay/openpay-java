@@ -26,6 +26,7 @@ import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
 /**
+ * Allowed operations for the customer's bank accounts.
  * @author elopez
  */
 public class BankAccountOperations extends ServiceOperations {
@@ -38,8 +39,7 @@ public class BankAccountOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public BankAccount create(final String customerId, final String clabe, final String ownerName,
-            final String alias)
+    public BankAccount create(final String customerId, final String clabe, final String ownerName, final String alias)
             throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(BANK_ACCOUNTS_PATH, this.getMerchantId(), customerId);
         Map<String, Object> bankData = new HashMap<String, Object>();
