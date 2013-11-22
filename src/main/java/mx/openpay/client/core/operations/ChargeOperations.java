@@ -23,6 +23,7 @@ import java.util.Map;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -58,6 +59,7 @@ public class ChargeOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderId);
+        data.put("method", ChargeMethods.CARD.name().toLowerCase());
         return this.getJsonClient().post(path, data, Charge.class);
     }
 
@@ -91,6 +93,7 @@ public class ChargeOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderId);
+        data.put("method", ChargeMethods.CARD.name().toLowerCase());
         return this.getJsonClient().post(path, data, Charge.class);
     }
 
@@ -103,6 +106,7 @@ public class ChargeOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderId);
+        data.put("method", ChargeMethods.ID.name().toLowerCase());
         return this.getJsonClient().post(path, data, Charge.class);
     }
 
