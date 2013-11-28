@@ -72,6 +72,26 @@ public class CardOperationsTest {
     }
 
     @Test
+    public void testCreateAndDelete_NoAddress() throws Exception {
+        Card card = this.ops.create(this.customerId, "5243385358972033", "Juanito Pérez Nuñez", "111", "09",
+                "14", null);
+        assertEquals("2033", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+
+        card = this.ops.get(this.customerId, card.getId());
+        assertEquals("2033", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+
+        this.ops.delete(this.customerId, card.getId());
+        try {
+            card = this.ops.get(this.customerId, card.getId());
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
     public void testDelete_DoesNotExist() throws Exception {
         try {
             this.ops.delete(this.customerId, "kfaq5dm5pq1qefzev3nz");

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.exceptions.OpenpayServiceException;
@@ -18,6 +19,7 @@ import mx.openpay.client.serialization.BankAccountAdapterFactory;
 import mx.openpay.client.serialization.CardAdapterFactory;
 import mx.openpay.client.serialization.CustomerAdapterFactory;
 import mx.openpay.client.serialization.DateFormatDeserializer;
+import mx.openpay.client.utils.OpenpayPathComponents;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
@@ -58,7 +60,7 @@ public class JsonServiceClient {
 
     private static final int DEFAULT_CONNECTION_TIMEOUT = 60000;
 
-    private static final String AGENT = "openpay-java/";
+    private static final String AGENT = "openpay-java/" + OpenpayPathComponents.VERSION + ".";
 
     private final String root;
 
@@ -66,6 +68,7 @@ public class JsonServiceClient {
 
     private final Gson gson;
 
+    @Getter
     private final String userAgent;
 
     private final HttpClient httpClient;
@@ -73,7 +76,11 @@ public class JsonServiceClient {
     public JsonServiceClient(final String location, final String key) throws GeneralSecurityException {
         this.root = location;
         this.key = key;
-        this.userAgent = AGENT + super.getClass().getPackage().getImplementationVersion();
+        String version = this.getClass().getPackage().getImplementationVersion();
+        if (version == null) {
+            version = "0-UNKNOWN";
+        }
+        this.userAgent = AGENT + version;
         this.httpClient = this.initHttpClient();
         this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
         this.gson = new GsonBuilder()

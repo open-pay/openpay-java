@@ -15,6 +15,7 @@ import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -26,7 +27,11 @@ import org.junit.Test;
  */
 public class ConfigurationTest {
 
-    ;
+    @Test
+    public void testImplementationVersionUnknown() throws Exception {
+        JsonServiceClient serviceClient = new JsonServiceClient(ENDPOINT, null);
+        assertEquals("openpay-java/v1.0-UNKNOWN", serviceClient.getUserAgent());
+    }
 
     @Test
     public void testNoAPIKey() throws Exception {
