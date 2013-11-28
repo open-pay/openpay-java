@@ -27,6 +27,7 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.PayoutOperations;
+import mx.openpay.client.enums.PayoutMethod;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -96,8 +97,8 @@ public class PayoutsOperationsTest {
         Assert.assertNotNull(bankAccounts);
 
         String orderId = this.dateFormat.format(new Date());
-        Payout transaction = this.ops.createForCustomer(customerId, bankAccounts.get(0).getId(),
-                amount, desc, orderId);
+        Payout transaction = this.ops.createForCustomer(customerId, PayoutMethod.BANK_ACCOUNT, bankAccounts.get(0)
+                .getId(), amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertEquals(amount, transaction.getAmount());

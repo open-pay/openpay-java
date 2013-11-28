@@ -23,6 +23,7 @@ import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.enums.PayoutMethod;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -48,7 +49,7 @@ public class PayoutOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Payout createForCustomer(final String customerId, final String destinationId,
+    public Payout createForCustomer(final String customerId, PayoutMethod method, final String destinationId,
             final BigDecimal amount, final String description, final String orderID)
             throws ServiceUnavailableException,
             OpenpayServiceException {
@@ -58,6 +59,7 @@ public class PayoutOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
+        data.put("method", method.name().toLowerCase());
         return this.getJsonClient().post(path, data, Payout.class);
     }
 
@@ -70,6 +72,7 @@ public class PayoutOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
+        data.put("method", PayoutMethod.CARD.name().toLowerCase());
         return this.getJsonClient().post(path, data, Payout.class);
     }
 
@@ -82,6 +85,7 @@ public class PayoutOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
+        data.put("method", PayoutMethod.BANK_ACCOUNT.name().toLowerCase());
         return this.getJsonClient().post(path, data, Payout.class);
     }
 
@@ -105,6 +109,7 @@ public class PayoutOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
+        data.put("method", PayoutMethod.CARD.name().toLowerCase());
         return this.getJsonClient().post(path, data, Payout.class);
     }
 
@@ -116,6 +121,7 @@ public class PayoutOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderID);
+        data.put("method", PayoutMethod.BANK_ACCOUNT.name().toLowerCase());
         return this.getJsonClient().post(path, data, Payout.class);
     }
 
