@@ -85,11 +85,7 @@ public class JsonServiceClient {
     }
 
     private HttpClient initHttpClient() throws GeneralSecurityException {
-        SSLSocketFactory sf = new SSLSocketFactory(new TrustSelfSignedStrategy(),
-                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-        Scheme https = new Scheme("https", 443, sf);
         PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
-        connMgr.getSchemeRegistry().register(https);
         HttpClient httpClient = new DefaultHttpClient(connMgr);
         httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
         httpClient.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
