@@ -7,11 +7,21 @@
  * You shall not disclose such Confidential Information and shall use it only
  * in accordance with the company policy.
  */
-package mx.openpay.client.enums;
+package mx.openpay.client;
+
+import lombok.Getter;
 
 /**
  * @author elopez
  */
-public enum ChargeMethods {
-    CARD, BANK_ACCOUNT;
+@Getter
+public class PaymentMethod {
+
+    private String type;
+
+    private String bank;
+
+    private String clabe;
+
+    private String name;
 }

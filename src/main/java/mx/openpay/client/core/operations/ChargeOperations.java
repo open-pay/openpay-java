@@ -51,8 +51,7 @@ public class ChargeOperations extends ServiceOperations {
     }
 
     public Charge create(final Card card, final BigDecimal amount, final String description,
-            final String orderId)
-            throws OpenpayServiceException, ServiceUnavailableException {
+            final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("card", card);
@@ -60,6 +59,17 @@ public class ChargeOperations extends ServiceOperations {
         data.put("description", description);
         data.put("order_id", orderId);
         data.put("method", ChargeMethods.CARD.name().toLowerCase());
+        return this.getJsonClient().post(path, data, Charge.class);
+    }
+
+    public Charge createMerchantBankTransfer(final BigDecimal amount, final String description, final String orderId)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("amount", amount);
+        data.put("description", description);
+        data.put("order_id", orderId);
+        data.put("method", ChargeMethods.BANK_ACCOUNT.name().toLowerCase());
         return this.getJsonClient().post(path, data, Charge.class);
     }
 
@@ -106,12 +116,25 @@ public class ChargeOperations extends ServiceOperations {
         data.put("amount", amount);
         data.put("description", description);
         data.put("order_id", orderId);
-        data.put("method", ChargeMethods.ID.name().toLowerCase());
+        data.put("method", ChargeMethods.CARD.name().toLowerCase());
         return this.getJsonClient().post(path, data, Charge.class);
     }
 
-    public List<Charge> list(final String customerId, final SearchParams params)
-            throws OpenpayServiceException, ServiceUnavailableException {
+    public Charge createCustomerBankTransfer(final String customerId, final BigDecimal amount,
+            final String description,
+            final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
+        String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
+        System.out.println(path);
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("amount", amount);
+        data.put("description", description);
+        data.put("order_id", orderId);
+        data.put("method", ChargeMethods.BANK_ACCOUNT.name().toLowerCase());
+        return this.getJsonClient().post(path, data, Charge.class);
+    }
+
+    public List<Charge> list(final String customerId, final SearchParams params) throws OpenpayServiceException,
+            ServiceUnavailableException {
         String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
         return this.getJsonClient().list(path, map, ListTypes.CHARGE);
