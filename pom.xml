@@ -1,86 +1,201 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>mx.opencard</groupId>
-  <artifactId>services-client</artifactId>
-  <version>0.0.6-SNAPSHOT</version>
-  <name>openpay-java</name>
-  <description>Java client for openpay services</description>
-  <dependencies>
-  	<dependency>
-		<groupId>com.google.code.gson</groupId>
-		<artifactId>gson</artifactId>
-		<version>2.2.4</version>
-		<scope>compile</scope>
-  	</dependency>
-  	<dependency>
-	    <groupId>org.apache.httpcomponents</groupId>
-	    <artifactId>httpclient-osgi</artifactId>
-	    <version>4.2.5</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.commons</groupId>
-		<artifactId>commons-lang3</artifactId>
-		<version>3.1</version>
-    </dependency>
-	<dependency>
-	    <groupId>commons-codec</groupId>
-	    <artifactId>commons-codec</artifactId>
-	    <version>1.8</version>
-	</dependency>
-  	<dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.10</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-		<groupId>org.projectlombok</groupId>
-		<artifactId>lombok</artifactId>
-		<version>0.11.8</version>
-		<scope>provided</scope>
-	</dependency>
-	<dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>mx.openpay</groupId>
+	<artifactId>services-client</artifactId>
+	<packaging>jar</packaging>
+	<name>openpay-java</name>
+	<version>1.0.0-SNAPSHOT</version>
+	<description>Java client for Openpay Services</description>
+	<url>http://github.com/open-pay/openpay-java</url>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>http://github.com/open-pay/openpay-java</url>
+		  <connection>scm:git:git://github.com/open-pay/openpay-java</connection>
+		<developerConnection>scm:git:git@github.com:open-pay/openpay-java.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>Heber Lazcano</name>
+			<email>heber.lazcano@opencard.mx</email>
+		</developer>
+		<developer>
+			<name>Eli Lopez</name>
+			<email>eli.lopez@opencard.mx</email>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-osgi</artifactId>
+			<version>4.2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>0.11.8</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.5</version>
 		</dependency>
-  </dependencies>
-  
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <archive>
-            <index>true</index>
-            <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-          	</manifest>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  
-  <distributionManagement>
-		<!-- Publish the versioned releases here -->
-		<repository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
-		</repository>
-		<!-- Publish the snapshots here -->
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}</directory>
+				<includes>
+					<include>README*</include>
+					<include>NOTICE*</include>
+					<include>LICENSE*</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+
+                                        <!-- Automated passphrase entry: -->
+
+                                        <!-- To pass your passphrase to the build automatically, so avoiding 
+                                                manual interaction, you'll need to put the passphrase into settings.xml. 
+                                                You don't really want that to be in plain text, so you'll want to follow: 
+                                                http://maven.apache.org/guides/mini/guide-encryption.html -->
+					<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<distributionManagement>
 		<snapshotRepository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
+			<id>localhost-nexus-snapshots</id>
+			<name>Local Nexus snapshot repository</name>
+			<url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
+		<repository>
+			<id>localhost-nexus-staging</id>
+			<name>Local Nexus release repository</name>
+			<url>http://localhost:8081/nexus/content/repositories/releases/</url>
+		</repository>
 	</distributionManagement>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<organization>
-		<name>OpenCard Inc.</name>
+		<name>Opencard Inc.</name>
 		<url>www.opencard.mx</url>
 	</organization>
 </project>
