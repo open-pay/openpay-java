@@ -19,8 +19,8 @@
 
 	<scm>
 		<url>http://github.com/open-pay/openpay-java</url>
-		  <connection>scm:git:git://github.com/open-pay/openpay-java</connection>
-		<developerConnection>scm:git:git@github.com:open-pay/openpay-java.git</developerConnection>
+		  <connection>scm:git:git@github.com/open-pay/openpay-java.git</connection>
+		<developerConnection>scm:git:git@//github.com:open-pay/openpay-java.git</developerConnection>
 	</scm>
 
 	<developers>
