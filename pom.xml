@@ -141,7 +141,7 @@
                                                 manual interaction, you'll need to put the passphrase into settings.xml. 
                                                 You don't really want that to be in plain text, so you'll want to follow: 
                                                 http://maven.apache.org/guides/mini/guide-encryption.html -->
-					<arguments>-Dgpg.passphrase=${gpgpassphrase}</arguments>
+					<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
 				</configuration>
 			</plugin>
 			<plugin>
