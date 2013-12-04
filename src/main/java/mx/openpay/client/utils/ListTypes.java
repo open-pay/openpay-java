@@ -1,12 +1,3 @@
-/*
- * COPYRIGHT © 2012-2013. OPENPAY.
- * PATENT PENDING. ALL RIGHTS RESERVED.
- * OPENPAY & OPENCARD IS A REGISTERED TRADEMARK OF OPENCARD INC.
- *
- * This software is confidential and proprietary information of OPENCARD INC.
- * You shall not disclose such Confidential Information and shall use it only
- * in accordance with the company policy.
- */
 package mx.openpay.client.utils;
 
 import java.lang.reflect.Type;
@@ -14,11 +5,11 @@ import java.util.Collection;
 
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
-import mx.openpay.client.Customer;
 import mx.openpay.client.Charge;
+import mx.openpay.client.Customer;
 import mx.openpay.client.Fee;
-import mx.openpay.client.Transfer;
 import mx.openpay.client.Payout;
+import mx.openpay.client.Transfer;
 
 import com.google.gson.reflect.TypeToken;
 
