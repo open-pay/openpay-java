@@ -11,6 +11,8 @@ package mx.openpay.core.client;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
+import static mx.openpay.core.client.TestConstans.CUSTOMER_CARD_ID;
+import static mx.openpay.core.client.TestConstans.CUSTOMER_ID;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
@@ -41,17 +43,17 @@ public class CardListFiltersTest {
 
     @Test
     public void testList() throws Exception {
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", null);
+        List<Card> cards = this.ops.list(CUSTOMER_ID, null);
         assertEquals(3, cards.size());
         assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
-        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(2).getId());
+        assertEquals(CUSTOMER_CARD_ID, cards.get(2).getId());
         assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_Limit() throws Exception {
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().limit(2));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().limit(2));
         assertEquals(2, cards.size());
         assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
@@ -60,16 +62,16 @@ public class CardListFiltersTest {
 
     @Test
     public void testList_Offset() throws Exception {
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().offset(1));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().offset(1));
         assertEquals(2, cards.size());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(0).getId());
-        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(1).getId());
+        assertEquals(CUSTOMER_CARD_ID, cards.get(1).getId());
         assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_Offset_Limit() throws Exception {
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().offset(1).limit(1));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().offset(1).limit(1));
         assertEquals(1, cards.size());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(0).getId());
     }
@@ -77,7 +79,7 @@ public class CardListFiltersTest {
     @Test
     public void testList_Create() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().creation(date));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().creation(date));
         assertEquals(2, cards.size());
         assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
@@ -87,7 +89,7 @@ public class CardListFiltersTest {
     @Test
     public void testList_Create_Offset() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().creation(date).offset(1));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().creation(date).offset(1));
         assertEquals(1, cards.size());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(0).getId());
     }
@@ -95,37 +97,37 @@ public class CardListFiltersTest {
     @Test
     public void testList_CreateLte() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().creationLte(date));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().creationLte(date));
         assertEquals(3, cards.size());
         assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
-        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(2).getId());
+        assertEquals(CUSTOMER_CARD_ID, cards.get(2).getId());
         assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_CreateLte_NoStartOfNextDay() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().creationLte(date));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().creationLte(date));
         assertEquals(1, cards.size());
-        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(0).getId());
+        assertEquals(CUSTOMER_CARD_ID, cards.get(0).getId());
     }
 
     @Test
     public void testList_CreateGte() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().creationGte(date));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().creationGte(date));
         assertEquals(3, cards.size());
         assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
-        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(2).getId());
+        assertEquals(CUSTOMER_CARD_ID, cards.get(2).getId());
         assertTrue(cards.get(0).getCreationDate().after(cards.get(1).getCreationDate()));
     }
 
     @Test
     public void testList_CreateGte_StartOfCurrentDay() throws Exception {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().creationGte(date));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().creationGte(date));
         assertEquals(2, cards.size());
         assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
@@ -136,7 +138,7 @@ public class CardListFiltersTest {
     public void testList_Create_Between() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().between(start, end));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().between(start, end));
         assertEquals(2, cards.size());
         assertEquals("kvtuyihbf0dwchbfmp7i", cards.get(0).getId());
         assertEquals("kpyru4zjk8jaqloojc3q", cards.get(1).getId());
@@ -147,16 +149,16 @@ public class CardListFiltersTest {
     public void testList_Create_Between_FirstCard() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().between(start, end));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().between(start, end));
         assertEquals(1, cards.size());
-        assertEquals("kfaq5dm5pq1qefzev1nz", cards.get(0).getId());
+        assertEquals(CUSTOMER_CARD_ID, cards.get(0).getId());
     }
 
     @Test
     public void testList_Create_Between_Inverted() throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Card> cards = this.ops.list("afk4csrazjp1udezj1po", search().between(end, start));
+        List<Card> cards = this.ops.list(CUSTOMER_ID, search().between(end, start));
         assertEquals(0, cards.size());
     }
 

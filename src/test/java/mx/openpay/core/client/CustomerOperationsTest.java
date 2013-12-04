@@ -2,7 +2,6 @@ package mx.openpay.core.client;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
-import static mx.openpay.core.client.TestConstans.CUSTOMER_ID;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
@@ -38,9 +37,18 @@ public class CustomerOperationsTest {
         Address address = this.createAddress();
         Customer customer = this.ops.create("Juan", "Perez Perez", "juan.perez@gmail.com",
                 "55-25634013", address);
-        this.ops.delete(customer.getId());
-        Assert.assertNotNull(customer);
-        Assert.assertNotNull(customer.getId());
+        try {
+            Assert.assertNotNull(customer);
+            Assert.assertNotNull(customer.getId());
+            customer.setName("Juanito 2");
+            customer = this.ops.update(customer);
+            Assert.assertEquals("Juanito 2", customer.getName());
+            customer.setName("Juanito");
+            customer = this.ops.update(customer);
+            Assert.assertEquals("Juanito", customer.getName());
+        } finally {
+            this.ops.delete(customer.getId());
+        }
     }
 
     @Test
@@ -52,19 +60,6 @@ public class CustomerOperationsTest {
             assertEquals(404, e.getHttpCode().intValue());
             assertNotNull(e.getErrorCode());
         }
-    }
-
-    @Test
-    public void testGetAndUpdateCustomer() throws ServiceUnavailableException, OpenpayServiceException {
-        String customerId = CUSTOMER_ID;
-        Customer customer = this.ops.get(customerId);
-        Assert.assertNotNull(customer);
-        customer.setName("Juanito 2");
-        customer = this.ops.update(customer);
-        Assert.assertEquals("Juanito 2", customer.getName());
-        customer.setName("Juanito");
-        customer = this.ops.update(customer);
-        Assert.assertEquals("Juanito", customer.getName());
     }
 
     @Test

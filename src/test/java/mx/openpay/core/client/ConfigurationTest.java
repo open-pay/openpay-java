@@ -30,7 +30,7 @@ public class ConfigurationTest {
     @Test
     public void testImplementationVersionUnknown() throws Exception {
         JsonServiceClient serviceClient = new JsonServiceClient(ENDPOINT, null);
-        assertEquals("openpay-java/v1.0-UNKNOWN", serviceClient.getUserAgent());
+        assertEquals("openpay-java/1.0-UNKNOWN", serviceClient.getUserAgent());
     }
 
     @Test

@@ -14,154 +14,116 @@ import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.CustomerOperations;
+import mx.openpay.core.client.test.TestUtils;
 
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
  * @author elopez
  */
+@Slf4j
 public class CustomerListFiltersTest {
 
-    CustomerOperations ops;
+    static CustomerOperations customerOps;
 
-    @Before
-    public void setUp() throws Exception {
-        this.ops = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).customers();
+    static List<Customer> createdCustomers;
+
+    private static final int customersToCreate = 10;
+
+    @BeforeClass
+    public static void setUp() throws Exception {
+        customerOps = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).customers();
+        createdCustomers = new ArrayList<Customer>();
+        for (int i = 0; i < customersToCreate; i++) {
+            createdCustomers.add(customerOps.create("Nombre", "Last name", "customer" + System.currentTimeMillis()
+                    + "@opencard.mx", "0000000000", TestUtils.prepareAddress()));
+            Thread.sleep(1000);
+        }
+        Collections.reverse(createdCustomers);
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        for (Customer customer : createdCustomers) {
+            try {
+                customerOps.delete(customer.getId());
+            } catch (Exception e) {
+                log.warn("Could not delete customer " + customer.getId());
+            }
+        }
     }
 
     @Test
     public void testList() throws Exception {
-        List<Customer> customers = this.ops.list(null);
+        List<Customer> customers = customerOps.list(null);
         assertEquals(10, customers.size());
-        assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
-        assertEquals("aidzidphdseqwhfu0yjo", customers.get(1).getId());
-        assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(2).getId());
-        assertTrue(customers.get(0).getCreationDate().after(customers.get(1).getCreationDate()));
+        for (int i = 0; i < customers.size(); i++) {
+            assertEquals(createdCustomers.get(i).getId(), customers.get(i).getId());
+        }
     }
 
     @Test
     public void testList_Limit() throws Exception {
-        List<Customer> customers = this.ops.list(search().limit(2));
+        List<Customer> customers = customerOps.list(search().limit(2));
         assertEquals(2, customers.size());
-        assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
-        assertEquals("aidzidphdseqwhfu0yjo", customers.get(1).getId());
-        assertTrue(customers.get(0).getCreationDate().after(customers.get(1).getCreationDate()));
+        for (int i = 0; i < customers.size(); i++) {
+            assertEquals(createdCustomers.get(i).getId(), customers.get(i).getId());
+        }
     }
 
     @Test
     public void testList_Offset() throws Exception {
-        List<Customer> customers = this.ops.list(search().offset(1));
+        List<Customer> customers = customerOps.list(search().offset(1));
         assertEquals(10, customers.size());
-        assertEquals("aidzidphdseqwhfu0yjo", customers.get(0).getId());
-        assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(1).getId());
-        assertEquals("a7tluhknpei4h0j04krq", customers.get(9).getId());
-        assertTrue(customers.get(0).getCreationDate().after(customers.get(1).getCreationDate()));
+        for (int i = 1; i < createdCustomers.size(); i++) {
+            assertEquals(createdCustomers.get(i).getId(), customers.get(i - 1).getId());
+        }
     }
 
     @Test
     public void testList_Offset_Limit() throws Exception {
-        List<Customer> customers = this.ops.list(search().offset(1).limit(1));
+        List<Customer> customers = customerOps.list(search().offset(1).limit(1));
         assertEquals(1, customers.size());
-        assertEquals("aidzidphdseqwhfu0yjo", customers.get(0).getId());
+        assertEquals(createdCustomers.get(1).getId(), customers.get(0).getId());
     }
 
     @Test
     public void testList_Create() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Customer> customers = this.ops.list(search().creation(date));
-        assertEquals(2, customers.size());
-        assertEquals("aidzidphdseqwhfu0yjo", customers.get(0).getId());
-        assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(1).getId());
-        assertTrue(customers.get(0).getCreationDate().after(customers.get(1).getCreationDate()));
+        List<Customer> customers = customerOps.list(search().creation(new Date()));
+        assertEquals(10, customers.size());
+        for (int i = 0; i < customers.size(); i++) {
+            assertEquals(createdCustomers.get(i).getId(), customers.get(i).getId());
+        }
     }
 
     @Test
     public void testList_Create_Offset() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Customer> customers = this.ops.list(search().creation(date).offset(1));
-        assertEquals(1, customers.size());
-        assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(0).getId());
-    }
-
-    @Test
-    public void testList_CreateLte() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
-        List<Customer> customers = this.ops.list(search().creationLte(date));
-        assertEquals(10, customers.size());
-        assertEquals("afvuzdsmeia7ykvcdygz", customers.get(0).getId());
-        assertEquals("amgwgxv6ovtopljapecc", customers.get(1).getId());
-        assertEquals("ah2gsusecghutbxkdesr", customers.get(2).getId());
-        assertTrue(customers.get(0).getCreationDate().after(customers.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testList_CreateLte_NoStartOfNextDay() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-10-31");
-        List<Customer> customers = this.ops.list(search().creationLte(date));
-        assertEquals(1, customers.size());
-        assertEquals("alsbga3kduomgwyvlrwz", customers.get(0).getId());
-    }
-
-    @Test
-    public void testList_CreateGte() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
-        List<Customer> customers = this.ops.list(search().creationGte(date));
-        assertEquals(4, customers.size());
-        assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
-        assertEquals("aidzidphdseqwhfu0yjo", customers.get(1).getId());
-        assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(2).getId());
-        assertEquals("afk4csrazjp1udezj1po", customers.get(3).getId());
-        assertTrue(customers.get(0).getCreationDate().after(customers.get(1).getCreationDate()));
-        assertTrue(customers.get(1).getCreationDate().after(customers.get(2).getCreationDate()));
-        assertTrue(customers.get(2).getCreationDate().after(customers.get(3).getCreationDate()));
-    }
-
-    @Test
-    public void testList_CreateGte_StartOfCurrentDay() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Customer> customers = this.ops.list(search().creationGte(date));
-        assertEquals(3, customers.size());
-        assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
-        assertEquals("aidzidphdseqwhfu0yjo", customers.get(1).getId());
-        assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(2).getId());
-        assertTrue(customers.get(0).getCreationDate().after(customers.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testList_Create_Between() throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-05");
-        List<Customer> customers = this.ops.list(search().between(start, end));
-        assertEquals(2, customers.size());
-        assertEquals("aidzidphdseqwhfu0yjo", customers.get(0).getId());
-        assertEquals("axkoqkqckvqd4wpmjj7z", customers.get(1).getId());
-        assertTrue(customers.get(0).getCreationDate().after(customers.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testList_Create_Between_FirstCustomer() throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Customer> customers = this.ops.list(search().between(start, end).limit(1));
-        assertEquals(1, customers.size());
-        assertEquals("aip6wu2pujiyfvm3urlp", customers.get(0).getId());
+        List<Customer> customers = customerOps.list(search().creation(new Date()).offset(1));
+        for (int i = 1; i < createdCustomers.size(); i++) {
+            assertEquals(createdCustomers.get(i).getId(), customers.get(i - 1).getId());
+        }
     }
 
     @Test
     public void testList_Create_Between_Inverted() throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-03");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<Customer> customers = this.ops.list(search().between(end, start));
+        Date start = new Date();
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 1);
+        Date end = c.getTime();
+        List<Customer> customers = customerOps.list(search().between(end, start));
         assertEquals(0, customers.size());
     }
 

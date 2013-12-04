@@ -2,6 +2,7 @@ package mx.openpay.core.client;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
+import static mx.openpay.core.client.TestConstans.CUSTOMER_ID;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
@@ -34,7 +35,7 @@ public class FeeOperationsTest {
 
     @Test
     public void testCreate() throws ServiceUnavailableException, OpenpayServiceException {
-        String customerId = "afk4csrazjp1udezj1po";
+        String customerId = CUSTOMER_ID;
         BigDecimal feeAmount = new BigDecimal("10.00");
         String desc = "Comisión general";
         String orderId = this.dateFormat.format(new Date());
@@ -47,7 +48,7 @@ public class FeeOperationsTest {
 
     @Test
     public void testCreate_ZeroAmount() throws Exception {
-        String customerId = "afk4csrazjp1udezj1po";
+        String customerId = CUSTOMER_ID;
         BigDecimal feeAmount = new BigDecimal("10.00");
         String desc = "Comisión general";
         String orderId = this.dateFormat.format(new Date());

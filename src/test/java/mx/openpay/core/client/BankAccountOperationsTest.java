@@ -2,6 +2,8 @@ package mx.openpay.core.client;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
+import static mx.openpay.core.client.TestConstans.CUSTOMER_BANK_ACCOUNT;
+import static mx.openpay.core.client.TestConstans.CUSTOMER_ID;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
@@ -31,7 +33,7 @@ public class BankAccountOperationsTest {
 
     @Test
     public void testCreateAndDeleteBankAccount() throws ServiceUnavailableException, OpenpayServiceException {
-        String customerId = "afk4csrazjp1udezj1po";
+        String customerId = CUSTOMER_ID;
         BankAccount bank = this.bankAccountOps.create(customerId, "012298026516924616", "Mi nombre", null);
         Assert.assertNotNull(bank);
         this.bankAccountOps.delete(customerId, bank.getId());
@@ -40,7 +42,7 @@ public class BankAccountOperationsTest {
     @Test
     public void testDelete_DoesNotExist() throws Exception {
         try {
-            this.bankAccountOps.delete("afk4csrazjp1udezj1po", "fesf4fcsdf");
+            this.bankAccountOps.delete(CUSTOMER_ID, "fesf4fcsdf");
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
@@ -49,7 +51,7 @@ public class BankAccountOperationsTest {
 
     @Test
     public void testList() throws ServiceUnavailableException, OpenpayServiceException {
-        String customerId = "afk4csrazjp1udezj1po";
+        String customerId = CUSTOMER_ID;
         List<BankAccount> banksAccounts = this.bankAccountOps.list(customerId, search().offset(0).limit(100));
         Assert.assertNotNull(banksAccounts);
         Assert.assertTrue(banksAccounts.size() > 0);
@@ -61,7 +63,7 @@ public class BankAccountOperationsTest {
 
     @Test
     public void testList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
-        String customerId = "afk4csrazjp1udezj1po";
+        String customerId = CUSTOMER_ID;
         List<BankAccount> banksAccounts = this.bankAccountOps.list(customerId, search().offset(1000).limit(3));
         Assert.assertNotNull(banksAccounts);
         Assert.assertTrue(banksAccounts.isEmpty());
@@ -81,9 +83,9 @@ public class BankAccountOperationsTest {
 
     @Test
     public void testGet() throws Exception {
-        BankAccount bankAccount = this.bankAccountOps.get("afk4csrazjp1udezj1po", "b6bhqhlewbbtqz1ga7aq");
+        BankAccount bankAccount = this.bankAccountOps.get(CUSTOMER_ID, CUSTOMER_BANK_ACCOUNT);
         assertNotNull(bankAccount);
-        assertEquals("012680012570003085", bankAccount.getClabe());
+        assertEquals("012680026840227260", bankAccount.getClabe());
     }
 
     @Test
@@ -99,13 +101,13 @@ public class BankAccountOperationsTest {
 
     @Test
     public void testCreateBankAccount_ClabeAlreadyExists() throws ServiceUnavailableException, OpenpayServiceException {
-        String customerId = "afk4csrazjp1udezj1po";
+        String customerId = CUSTOMER_ID;
         try {
             this.bankAccountOps.create(customerId, "012680012570003085", "mi nombre", null);
             Assert.fail("Bank Account should be exists.");
         } catch (OpenpayServiceException e) {
             Assert.assertEquals(409, e.getHttpCode().intValue());
-            String bankId = "b6bhqhlewbbtqz1ga7aq";
+            String bankId = CUSTOMER_BANK_ACCOUNT;
             BankAccount account = this.bankAccountOps.get(customerId, bankId);
             Assert.assertNotNull(account);
             Assert.assertNotNull(account.getId());
