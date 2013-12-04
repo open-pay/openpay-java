@@ -10,11 +10,11 @@
 	<description>Java client for Openpay Services</description>
 	<url>http://github.com/open-pay/openpay-java</url>
 
-<!-- 	<parent> -->
-<!-- 		<groupId>org.sonatype.oss</groupId> -->
-<!-- 		<artifactId>oss-parent</artifactId> -->
-<!-- 		<version>7</version> -->
-<!-- 	</parent> -->
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 
 	<licenses>
 		<license>
@@ -88,20 +88,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
-	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
-		</repository>
-	</distributionManagement>
-	
 
 	<build>
 		<resources>
