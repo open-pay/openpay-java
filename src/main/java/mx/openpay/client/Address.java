@@ -1,29 +1,40 @@
 package mx.openpay.client;
 
-import com.google.gson.annotations.SerializedName;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.google.gson.annotations.SerializedName;
 
+/**
+ * Represents an Address object.
+ */
 @Getter
 @Setter
 @ToString
 public class Address {
 
-    private String city;
-
-    private String region;
-
+    /** Postal code. Required. */
     @SerializedName("postal_code")
     private String postalCode;
 
-    private String street;
+    /** First line of address. Required. */
+    private String line1;
 
-    @SerializedName("interior_number")
-    private String interiorNumber;
+    /** Second line of address. Optional. */
+    private String line2;
 
-    @SerializedName("exterior_number")
-    private String exteriorNumber;
+    /** Third line of address. Optional. */
+    private String line3;
+
+    /** City. Required. */
+    private String city;
+
+    /** State. Required. */
+    private String state;
+
+    /** Two-letter ISO 3166-1 country code. Optional. */
+    @SerializedName("country_code")
+    private String countryCode;
+
 }

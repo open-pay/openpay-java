@@ -11,40 +11,41 @@ import com.google.gson.annotations.SerializedName;
 @Setter
 public class Card {
 
+    @SerializedName("creation_date")
+    private Date creationDate;
+
     private String id;
-
-    @SerializedName("card_number")
-    private String number;
-
-    @SerializedName("expiration_year")
-    private String expirationYear;
-
-    @SerializedName("expiration_month")
-    private String expirationMonth;
-
-    @SerializedName("holder_name")
-    private String holderName;
-
-    @SerializedName("allows_withdrawals")
-    private boolean allowsWithdrawals;
-
-    @SerializedName("allows_deposits")
-    private boolean allowsDeposits;
-
-    private String type;
-
-    private String brand;
-    
-    private String cvv2;
 
     @SerializedName("bank_name")
     private String bankName;
 
+    @SerializedName("allows_payouts")
+    private boolean allowsPayouts;
+
+    @SerializedName("holder_name")
+    private String holderName;
+
+    @SerializedName("expiration_month")
+    private String expirationMonth;
+
+    private Address address;
+
+    @SerializedName("card_number")
+    private String cardNumber;
+
+    private String brand;
+
+    @SerializedName("expiration_year")
+    private String expirationYear;
+
+    @SerializedName("allows_charges")
+    private boolean allowsCharges;
+
     @SerializedName("bank_code")
     private String bankCode;
 
-    private Address address;
-    
-    @SerializedName("creation_date")
-    private Date creationDate;
+    private String type;
+
+    private String cvv2;
+
 }

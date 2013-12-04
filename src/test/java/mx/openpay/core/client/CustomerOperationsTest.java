@@ -1,110 +1,109 @@
 package mx.openpay.core.client;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static mx.openpay.client.utils.SearchParams.search;
+import static mx.openpay.core.client.TestConstans.API_KEY;
+import static mx.openpay.core.client.TestConstans.ENDPOINT;
+import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.List;
 
 import junit.framework.Assert;
 import mx.openpay.client.Address;
-import mx.openpay.client.BankAccount;
-import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
-import mx.openpay.client.Transaction;
-import mx.openpay.client.core.OpenPayServices;
-import mx.openpay.client.exceptions.HttpError;
-import mx.openpay.client.exceptions.ServiceUnavailable;
+import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.operations.CustomerOperations;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static mx.openpay.core.client.TestConstans.*;
-
 public class CustomerOperationsTest {
 
-	private OpenPayServices openPayServices;
+    CustomerOperations ops;
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    @Before
+    public void setUp() throws Exception {
+        this.ops = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).customers();
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		this.openPayServices = new OpenPayServices(ENDPOINT, API_KEY, MERCHANT_ID);
-	}
+    @Test
+    public void testCreateAndDeleteCustomer() throws ServiceUnavailableException, OpenpayServiceException {
+        Address address = this.createAddress();
+        Customer customer = this.ops.create("Juan", "Perez Perez", "juan.perez@gmail.com",
+                "55-25634013", address);
+        try {
+            Assert.assertNotNull(customer);
+            Assert.assertNotNull(customer.getId());
+            customer.setName("Juanito 2");
+            customer = this.ops.update(customer);
+            Assert.assertEquals("Juanito 2", customer.getName());
+            customer.setName("Juanito");
+            customer = this.ops.update(customer);
+            Assert.assertEquals("Juanito", customer.getName());
+        } finally {
+            this.ops.delete(customer.getId());
+        }
+    }
 
-	@Test
-	public void testCollectFunds() throws ServiceUnavailable, HttpError {
-		String customerId = "afk4csrazjp1udezj1po";
-		Double amount = 10000.00;
-		String desc = "Pago de taxi";
+    @Test
+    public void testDelete_DoesNotExist() throws Exception {
+        try {
+            this.ops.delete("blahblahblah");
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+            assertNotNull(e.getErrorCode());
+        }
+    }
 
-		List<Card> cards = this.openPayServices.getCards(customerId, 0, 10);
-		Assert.assertNotNull(cards);
+    @Test
+    public void testList() throws ServiceUnavailableException, OpenpayServiceException {
+        List<Customer> customers = this.ops.list(search().offset(0).limit(100));
+        Assert.assertNotNull(customers);
+        assertFalse(customers.isEmpty());
+        for (Customer customer : customers) {
+            Assert.assertNotNull(customer.getId());
+            Assert.assertNotNull(customer.getBalance());
+            Assert.assertNotNull(customer.getCreationDate());
+            Assert.assertNotNull(customer.getEmail());
+            Assert.assertNotNull(customer.getName());
+            Assert.assertNotNull(customer.getStatus());
+            Assert.assertNotNull(customer.getAddress());
+        }
+    }
 
-		String orderId = this.dateFormat.format(new Date());
-		Transaction transaction = this.openPayServices.createCharge(customerId, cards.get(0).getId(), amount, desc, orderId);
-		Assert.assertNotNull(transaction);
-		Assert.assertEquals(amount, transaction.getAmount());
-		Assert.assertEquals(desc, transaction.getDescription());
-	}
+    @Test
+    public void testList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+        List<Customer> customers = this.ops.list(search().offset(1000).limit(1));
+        Assert.assertNotNull(customers);
+        assertTrue(customers.isEmpty());
+    }
 
-	@Test
-	public void testSendFunds() throws ServiceUnavailable, HttpError {
-		String customerId = "afk4csrazjp1udezj1po";
-		Double amount = 1.00;
-		String desc = "Ganancias";
+    @Test
+    public void testGet_DoesNotExist() throws Exception {
+        try {
+            this.ops.get("blahblahblah");
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+            assertNotNull(e.getErrorCode());
+        }
+    }
 
-		List<BankAccount> bankAccounts = this.openPayServices.getBankAccounts(customerId, 0, 10);
-		Assert.assertNotNull(bankAccounts);
+    private Address createAddress() {
+        Address address = new Address();
+        address.setCity("Distrito Federal");
+        address.setLine1("Camino Real #01 -11");
+        address.setPostalCode("12345");
+        address.setState("Queretaro");
+        address.setCountryCode("MX");
+        return address;
+    }
 
-		String orderId = this.dateFormat.format(new Date());
-		Transaction transaction = this.openPayServices.createWithdrawal(customerId, bankAccounts.get(0).getId(), amount, desc, orderId);
-		Assert.assertNotNull(transaction);
-		Assert.assertNotNull(transaction.getCreationDate());
-		Assert.assertEquals(amount, transaction.getAmount());
-		Assert.assertEquals(desc, transaction.getDescription());
-		Assert.assertEquals(customerId, transaction.getCustomer().getId());
-	}
-
-	@Test
-	public void testGetCustomers() throws ServiceUnavailable, HttpError {
-		List<Customer> customers = this.openPayServices.getCustomers(0, 100);
-		Assert.assertNotNull(customers);
-		for (Customer customer : customers) {
-			Assert.assertNotNull(customer.getId());
-			Assert.assertNotNull(customer.getBalance());
-			Assert.assertNotNull(customer.getCreationDate());
-			Assert.assertNotNull(customer.getEmail());
-			Assert.assertNotNull(customer.getName());
-			Assert.assertNotNull(customer.getStatus());
-			Assert.assertNotNull(customer.getAddress());
-		}
-	}
-
-	@Test
-	public void testGetAndUpdateCustomer() throws ServiceUnavailable, HttpError {
-		String customerId = "afk4csrazjp1udezj1po";
-		Customer customer = this.openPayServices.getCustomer(customerId);
-		Assert.assertNotNull(customer);
-
-		customer.setName("Juanito 2");
-		customer.setCreationDate(null);
-		customer.setBalance(null);
-		customer = this.openPayServices.updateCustomer(customer);
-		Assert.assertEquals("Juanito 2", customer.getName());
-	}
-
-	@Test
-	public void testCreateCustomer() throws ServiceUnavailable, HttpError {
-		Address address = new Address();
-		address.setCity("Distrito Federal");
-		address.setExteriorNumber("11");
-		address.setInteriorNumber("01");
-		address.setPostalCode("12345");
-		address.setRegion("Naucalpan");
-		address.setStreet("Camino Real");
-		Customer customer = this.openPayServices.createCustomer("Juan", "Perez Perez", "juan.perez@gmail.com", "55-25634013", address);
-		Assert.assertNotNull(customer);
-		Assert.assertNotNull(customer.getId());
-		
-		this.openPayServices.deleteCustomer(customer.getId());
-	}
 }
