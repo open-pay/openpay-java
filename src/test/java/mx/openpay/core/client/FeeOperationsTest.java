@@ -49,9 +49,9 @@ public class FeeOperationsTest {
     @Test
     public void testCreate_ZeroAmount() throws Exception {
         String customerId = CUSTOMER_ID;
-        BigDecimal feeAmount = new BigDecimal("10.00");
+        BigDecimal feeAmount = new BigDecimal("0.00");
         String desc = "Comisión general";
-        String orderId = this.dateFormat.format(new Date());
+        String orderId = String.valueOf(System.currentTimeMillis());
         try {
             this.ops.create(customerId, feeAmount, desc, orderId);
         } catch (OpenpayServiceException e) {

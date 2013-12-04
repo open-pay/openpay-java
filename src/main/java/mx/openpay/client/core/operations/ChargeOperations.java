@@ -88,7 +88,6 @@ public class ChargeOperations extends ServiceOperations {
     public Charge refund(final String transactionId, final String description, final String orderId)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(REFUND_FOR_MERCHANT_PATH, this.getMerchantId(), transactionId);
-        System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("description", description);
         data.put("order_id", orderId);
@@ -110,7 +109,6 @@ public class ChargeOperations extends ServiceOperations {
     public Charge create(final String customerId, final String sourceId, final BigDecimal amount,
             final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
-        System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("source_id", sourceId);
         data.put("amount", amount);
@@ -124,7 +122,6 @@ public class ChargeOperations extends ServiceOperations {
             final String description,
             final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
-        System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("amount", amount);
         data.put("description", description);
@@ -149,7 +146,6 @@ public class ChargeOperations extends ServiceOperations {
     public Charge refund(final String customerId, final String transactionId, final String description,
             final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(REFUND_FOR_CUSTOMER_PATH, this.getMerchantId(), customerId, transactionId);
-        System.out.println(path);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("description", description);
         data.put("order_id", orderId);

@@ -159,7 +159,7 @@ public class JsonServiceClient {
             sb.append(this.buildQueryString(params));
         }
         String url = sb.toString();
-        log.info("URL: {}", url);
+        log.debug("Calling URL: {}", url);
         try {
             return new URI(url);
         } catch (URISyntaxException e) {
@@ -224,7 +224,7 @@ public class JsonServiceClient {
                 OpenpayServiceException error = this.deserialize(body, OpenpayServiceException.class, null);
                 throw error;
             } else {
-                log.error("No Json response: {} ", body);
+                log.error("Not a Json response: {} ", body);
                 OpenpayServiceException openpayServiceException = new OpenpayServiceException("["
                         + status.getStatusCode() + "] Internal server error");
                 openpayServiceException.setHttpCode(status.getStatusCode());

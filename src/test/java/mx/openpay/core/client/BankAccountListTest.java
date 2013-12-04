@@ -11,15 +11,12 @@ package mx.openpay.core.client;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static mx.openpay.core.client.TestConstans.API_KEY;
-import static mx.openpay.core.client.TestConstans.CUSTOMER_BANK_ACCOUNT;
 import static mx.openpay.core.client.TestConstans.CUSTOMER_ID;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import mx.openpay.client.BankAccount;
@@ -44,123 +41,27 @@ public class BankAccountListTest {
     @Test
     public void testList() throws Exception {
         List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, null);
-        assertEquals(3, bankAccounts.size());
-        assertEquals("bnaadrgz6ql9b3xw4pxa", bankAccounts.get(0).getId());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(1).getId());
-        assertEquals(CUSTOMER_BANK_ACCOUNT, bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().after(bankAccounts.get(1).getCreationDate()));
+        assertEquals(2, bankAccounts.size());
+        assertTrue(bankAccounts.get(0).getCreationDate().compareTo(bankAccounts.get(1).getCreationDate()) >= 0);
     }
 
     @Test
     public void testList_Limit() throws Exception {
         List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().limit(2));
         assertEquals(2, bankAccounts.size());
-        assertEquals("bnaadrgz6ql9b3xw4pxa", bankAccounts.get(0).getId());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().after(bankAccounts.get(1).getCreationDate()));
+        assertTrue(bankAccounts.get(0).getCreationDate().compareTo(bankAccounts.get(1).getCreationDate()) >= 0);
     }
 
     @Test
     public void testList_Offset() throws Exception {
         List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().offset(1));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(0).getId());
-        assertEquals(CUSTOMER_BANK_ACCOUNT, bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().after(bankAccounts.get(1).getCreationDate()));
+        assertEquals(1, bankAccounts.size());
     }
 
     @Test
     public void testList_Offset_Limit() throws Exception {
         List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().offset(1).limit(1));
         assertEquals(1, bankAccounts.size());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(0).getId());
-    }
-
-    @Test
-    public void testList_Create() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().creation(date));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("bnaadrgz6ql9b3xw4pxa", bankAccounts.get(0).getId());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().after(bankAccounts.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testList_Create_Offset() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID,
-                search().creation(date).offset(1));
-        assertEquals(1, bankAccounts.size());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(0).getId());
-    }
-
-    @Test
-    public void testList_CreateLte() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().creationLte(date));
-        assertEquals(3, bankAccounts.size());
-        assertEquals("bnaadrgz6ql9b3xw4pxa", bankAccounts.get(0).getId());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(1).getId());
-        assertEquals(CUSTOMER_BANK_ACCOUNT, bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().after(bankAccounts.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testList_CreateLte_NoStartOfNextDay() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().creationLte(date));
-        assertEquals(1, bankAccounts.size());
-        assertEquals(CUSTOMER_BANK_ACCOUNT, bankAccounts.get(0).getId());
-    }
-
-    @Test
-    public void testList_CreateGte() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().creationGte(date));
-        assertEquals(3, bankAccounts.size());
-        assertEquals("bnaadrgz6ql9b3xw4pxa", bankAccounts.get(0).getId());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(1).getId());
-        assertEquals(CUSTOMER_BANK_ACCOUNT, bankAccounts.get(2).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().after(bankAccounts.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testList_CreateGte_StartOfCurrentDay() throws Exception {
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().creationGte(date));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("bnaadrgz6ql9b3xw4pxa", bankAccounts.get(0).getId());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().after(bankAccounts.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testList_Create_Between() throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-13");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().between(start, end));
-        assertEquals(2, bankAccounts.size());
-        assertEquals("bnaadrgz6ql9b3xw4pxa", bankAccounts.get(0).getId());
-        assertEquals("bbpfsaibpuk56cyvx2k6", bankAccounts.get(1).getId());
-        assertTrue(bankAccounts.get(0).getCreationDate().after(bankAccounts.get(1).getCreationDate()));
-    }
-
-    @Test
-    public void testList_Create_Between_FirstBankAccount() throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().between(start, end));
-        assertEquals(1, bankAccounts.size());
-        assertEquals(CUSTOMER_BANK_ACCOUNT, bankAccounts.get(0).getId());
-    }
-
-    @Test
-    public void testList_Create_Between_Inverted() throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-01");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2013-11-12");
-        List<BankAccount> bankAccounts = this.bankAccountOps.list(CUSTOMER_ID, search().between(end, start));
-        assertEquals(0, bankAccounts.size());
     }
 
 }
