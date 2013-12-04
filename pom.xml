@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
@@ -8,6 +9,12 @@
 	<name>openpay-api-client</name>
 	<description>Java client for Openpay Services</description>
 	<url>http://github.com/open-pay/openpay-java</url>
+
+<!-- 	<parent> -->
+<!-- 		<groupId>org.sonatype.oss</groupId> -->
+<!-- 		<artifactId>oss-parent</artifactId> -->
+<!-- 		<version>7</version> -->
+<!-- 	</parent> -->
 
 	<licenses>
 		<license>
@@ -81,6 +88,20 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>nexus-facelend</id>
+			<name>RepositoryProxy</name>
+			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>nexus-facelend</id>
+			<name>RepositoryProxy</name>
+			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
+		</repository>
+	</distributionManagement>
+	
 
 	<build>
 		<resources>
@@ -145,29 +166,16 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.4.1</version>
-				<configuration>
-					<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
-				</configuration>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-release-plugin</artifactId> -->
+<!-- 				<version>2.4.1</version> -->
+<!-- 				<configuration> -->
+<!-- 					<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
 		</plugins>
 	</build>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
-		</repository>
-	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -189,6 +197,7 @@
 						<artifactId>maven-gpg-plugin</artifactId>
 						<version>1.4</version>
 						<configuration>
+							<keyname>${gpg.keyname}</keyname>
 							<passphrase>${gpg.passphrase}</passphrase>
 						</configuration>
 						<executions>
