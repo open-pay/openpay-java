@@ -31,7 +31,7 @@ import com.google.gson.JsonParseException;
  */
 public class DateFormatDeserializer implements JsonDeserializer<Date> {
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
     // Synchronized becase SimpleDateFormat is not thread-safe.
     public synchronized Date deserialize(final JsonElement json, final Type paramType,
