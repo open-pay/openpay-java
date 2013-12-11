@@ -40,6 +40,10 @@ Examples
         card.setExpirationMonth("09");					// Month to two digits
         card.setExpirationYear("14");
 		
+		String description = "Service charge";
+		String orderId = "Charge0001";					// Optional transaction identifier
+		BigDecimal amount = new BigDecimal("200.00");
+		
 		Charge charge = api.charges()
 					.create(customer.getId(), card, amount, description, orderId);
 	    
@@ -53,9 +57,10 @@ Currently Payouts are only allowed to bank accounts within Mexico.
         bankAccount.setAlias("Juan's deposit account");	// Optional
         
         
-		String description = "Service payment";
-		String orderId = "OID0001";						// Optional transaction identifier
+		String description = "Payment to Juan";
+		String orderId = "Payout0001";					// Optional transaction identifier
 		BigDecimal amount = new BigDecimal("150.00");
+		
 		Payout transaction = api.payouts()
 					.createForCustomer(customer.getId(), bankAccount, amount, description, orderId);
 
