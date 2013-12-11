@@ -31,7 +31,7 @@ Examples
 		Customer customer = api.customers()
 					.create("John", "Doe", "johndoe@example.com", "554-170-3567", address);
 
-#### Charging a customer ####
+#### Charging ####
 		
 		Card card = new Card();
 		card.setCardNumber("5555555555554444");			// No dashes or spaces
@@ -53,7 +53,7 @@ Currently Payouts are only allowed to bank accounts within Mexico.
         bankAccount.setAlias("Juan's deposit account");	// Optional
 				
 		Payout transaction = api.payouts()
-					.createForCustomer(customerId, bankAccount, amount, desc, orderId);
+					.createForCustomer(customer.getId(), bankAccount, amount, desc, orderId);
 
 
 Installation
