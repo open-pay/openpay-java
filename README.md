@@ -51,9 +51,13 @@ Currently Payouts are only allowed to bank accounts within Mexico.
 	  	bankAccount.setClabe("032180000118359719");		// Clave Bancaria Estandarizada
         bankAccount.setHolderName("Juan Pérez");
         bankAccount.setAlias("Juan's deposit account");	// Optional
-				
+        
+        
+		String description = "Service payment";
+		String orderId = "OID0001";						// Optional transaction identifier
+		BigDecimal amount = new BigDecimal("150.00");
 		Payout transaction = api.payouts()
-					.createForCustomer(customer.getId(), bankAccount, amount, desc, orderId);
+					.createForCustomer(customer.getId(), bankAccount, amount, description, orderId);
 
 
 Installation
