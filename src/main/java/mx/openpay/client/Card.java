@@ -43,15 +43,15 @@ public class Card {
     @SerializedName("expiration_month")
     private String expirationMonth;
 
+    @SerializedName("expiration_year")
+    private String expirationYear;
+
     private Address address;
 
     @SerializedName("card_number")
     private String cardNumber;
 
     private String brand;
-
-    @SerializedName("expiration_year")
-    private String expirationYear;
 
     @SerializedName("allows_charges")
     private boolean allowsCharges;
@@ -62,5 +62,13 @@ public class Card {
     private String type;
 
     private String cvv2;
+
+    public void setExpirationMonth(int expirationMonth) {
+        this.expirationMonth = String.valueOf(expirationMonth);
+    }
+
+    public void setExpirationYear(int expirationYear) {
+        this.expirationMonth = String.valueOf(expirationYear);
+    }
 
 }

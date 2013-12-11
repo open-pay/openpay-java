@@ -49,8 +49,8 @@ Examples
 		card.setCardNumber("0000000000000000");			// No dashes or spaces
         card.setHolderName("Juan Pérez Nuñez");
         card.setCvv2("000");
-        card.setExpirationMonth("09");					// Month to two digits
-        card.setExpirationYear("14");
+        card.setExpirationMonth("9");
+        card.setExpirationYear("14");					// Expiration year to two or four digits
         card.setAddress(address);
 		
 		Charge charge = api.charges().create(customer.getId(), card, amount, description, orderId);
