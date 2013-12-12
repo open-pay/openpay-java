@@ -63,12 +63,4 @@ public class Card {
 
     private String cvv2;
 
-    public void setExpirationMonth(int expirationMonth) {
-        this.expirationMonth = String.valueOf(expirationMonth);
-    }
-
-    public void setExpirationYear(int expirationYear) {
-        this.expirationMonth = String.valueOf(expirationYear);
-    }
-
 }
