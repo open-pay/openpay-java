@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,6 @@ import java.util.Map;
 
 import mx.openpay.client.Transfer;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.enums.OperationType;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -51,29 +50,6 @@ public class TransferOperations extends ServiceOperations {
      */
     public TransferOperations(final JsonServiceClient client, final String merchantId) {
         super(client, merchantId);
-    }
-
-    public List<Transfer> list(final SearchParams params) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(MERCHANT_TRANSFERS_PATH, this.getMerchantId());
-        return this.getJsonClient().list(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);
-    }
-
-    public Transfer get(final String transactionId) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        return this.get(transactionId, OperationType.OUT);
-    }
-
-    public Transfer get(final String transactionId, final OperationType type) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(GET_MERCHANT_TRANSFER, this.getMerchantId(), transactionId);
-        Map<String, String> map = new HashMap<String, String>();
-        if (type == null) {
-            map.put("operation_type", OperationType.OUT.name().toLowerCase());
-        } else {
-            map.put("operation_type", type.name().toLowerCase());
-        }
-        return this.getJsonClient().get(path, map, Transfer.class);
     }
 
     public Transfer create(final String customerId, final String destinationId, final BigDecimal amount,
