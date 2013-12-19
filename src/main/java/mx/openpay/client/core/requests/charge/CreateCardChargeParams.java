@@ -19,37 +19,37 @@ import mx.openpay.client.enums.ChargeMethods;
 /**
  * @author elopez
  */
-public class CreateCardCharge extends RequestBuilder {
+public class CreateCardChargeParams extends RequestBuilder {
 
     @Getter
     private String customerId;
 
-    public CreateCardCharge() {
+    public CreateCardChargeParams() {
         this.with("method", ChargeMethods.CARD.name().toLowerCase());
     }
 
-    public CreateCardCharge withCustomerId(final String customerId) {
+    public CreateCardChargeParams customerId(final String customerId) {
         this.customerId = customerId;
         return this;
     }
 
-    public CreateCardCharge withCard(final Card card) {
+    public CreateCardChargeParams card(final Card card) {
         return this.with("card", card);
     }
 
-    public CreateCardCharge withCardId(final String cardId) {
+    public CreateCardChargeParams cardId(final String cardId) {
         return this.with("source_id", cardId);
     }
 
-    public CreateCardCharge withAmount(final BigDecimal amount) {
+    public CreateCardChargeParams amount(final BigDecimal amount) {
         return this.with("amount", amount);
     }
 
-    public CreateCardCharge withDescription(final String description) {
+    public CreateCardChargeParams description(final String description) {
         return this.with("description", description);
     }
 
-    public CreateCardCharge withOrderId(final String orderId) {
+    public CreateCardChargeParams orderId(final String orderId) {
         return this.with("order_id", orderId);
     }
 

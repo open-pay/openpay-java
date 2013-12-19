@@ -25,7 +25,7 @@ import java.util.Map;
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.customer.CreateCustomer;
+import mx.openpay.client.core.requests.customer.CreateCustomerParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -44,7 +44,7 @@ public class CustomerOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Customer create(final CreateCustomer create) throws OpenpayServiceException, ServiceUnavailableException {
+    public Customer create(final CreateCustomerParams create) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CUSTOMERS_PATH, this.getMerchantId());
         return this.getJsonClient().post(path, create.asMap(), Customer.class);
     }
@@ -53,12 +53,12 @@ public class CustomerOperations extends ServiceOperations {
     public Customer create(final String name, final String lastName, final String email,
             final String phoneNumber, final Address address) throws OpenpayServiceException,
             ServiceUnavailableException {
-        CreateCustomer params = new CreateCustomer()
-                .withName(name)
-                .withLastName(lastName)
-                .withEmail(email)
-                .withPhoneNumber(phoneNumber)
-                .withAddress(address);
+        CreateCustomerParams params = new CreateCustomerParams()
+                .name(name)
+                .lastName(lastName)
+                .email(email)
+                .phoneNumber(phoneNumber)
+                .address(address);
         return this.create(params);
     };
 

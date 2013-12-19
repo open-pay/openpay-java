@@ -29,8 +29,8 @@ import java.util.Map;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.charge.CreateBankTransferCharge;
-import mx.openpay.client.core.requests.charge.CreateCardCharge;
+import mx.openpay.client.core.requests.charge.CreateBankChargeParams;
+import mx.openpay.client.core.requests.charge.CreateCardChargeParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -57,7 +57,7 @@ public class ChargeOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Charge create(final CreateCardCharge request) throws OpenpayServiceException, ServiceUnavailableException {
+    public Charge create(final CreateCardChargeParams request) throws OpenpayServiceException, ServiceUnavailableException {
         String path;
         if (request.getCustomerId() == null) {
             path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
@@ -70,37 +70,37 @@ public class ChargeOperations extends ServiceOperations {
     @Deprecated
     public Charge create(final Card card, final BigDecimal amount, final String description,
             final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
-        CreateCardCharge chargeRequest = new CreateCardCharge()
-                .withCard(card).withAmount(amount)
-                .withDescription(description).withOrderId(orderId);
+        CreateCardChargeParams chargeRequest = new CreateCardChargeParams()
+                .card(card).amount(amount)
+                .description(description).orderId(orderId);
         return this.create(chargeRequest);
     }
 
     @Deprecated
     public Charge create(final String customerId, final Card card, final BigDecimal amount,
             final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
-        CreateCardCharge charge = new CreateCardCharge()
-                .withCustomerId(customerId)
-                .withCard(card)
-                .withAmount(amount)
-                .withDescription(description)
-                .withOrderId(orderId);
+        CreateCardChargeParams charge = new CreateCardChargeParams()
+                .customerId(customerId)
+                .card(card)
+                .amount(amount)
+                .description(description)
+                .orderId(orderId);
         return this.create(charge);
     }
 
     @Deprecated
     public Charge create(final String customerId, final String sourceId, final BigDecimal amount,
             final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
-        CreateCardCharge charge = new CreateCardCharge()
-                .withCustomerId(customerId)
-                .withCardId(sourceId)
-                .withAmount(amount)
-                .withDescription(description)
-                .withOrderId(orderId);
+        CreateCardChargeParams charge = new CreateCardChargeParams()
+                .customerId(customerId)
+                .cardId(sourceId)
+                .amount(amount)
+                .description(description)
+                .orderId(orderId);
         return this.create(charge);
     }
 
-    public Charge create(final CreateBankTransferCharge request) throws OpenpayServiceException,
+    public Charge create(final CreateBankChargeParams request) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path;
         if (request.getCustomerId() == null) {
@@ -114,10 +114,10 @@ public class ChargeOperations extends ServiceOperations {
     @Deprecated
     public Charge createMerchantBankTransfer(final BigDecimal amount, final String description, final String orderId)
             throws OpenpayServiceException, ServiceUnavailableException {
-        CreateBankTransferCharge request = new CreateBankTransferCharge()
-                .withAmount(amount)
-                .withDescription(description)
-                .withOrderId(orderId);
+        CreateBankChargeParams request = new CreateBankChargeParams()
+                .amount(amount)
+                .description(description)
+                .orderId(orderId);
         return this.create(request);
     }
 
@@ -125,11 +125,11 @@ public class ChargeOperations extends ServiceOperations {
     public Charge createCustomerBankTransfer(final String customerId, final BigDecimal amount,
             final String description,
             final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
-        CreateBankTransferCharge request = new CreateBankTransferCharge()
-                .withCustomerId(customerId)
-                .withAmount(amount)
-                .withDescription(description)
-                .withOrderId(orderId);
+        CreateBankChargeParams request = new CreateBankChargeParams()
+                .customerId(customerId)
+                .amount(amount)
+                .description(description)
+                .orderId(orderId);
         return this.create(request);
     }
 

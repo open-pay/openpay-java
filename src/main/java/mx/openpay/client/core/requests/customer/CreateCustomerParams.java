@@ -15,25 +15,25 @@ import mx.openpay.client.core.requests.RequestBuilder;
 /**
  * @author elopez
  */
-public class CreateCustomer extends RequestBuilder {
+public class CreateCustomerParams extends RequestBuilder {
 
-    public CreateCustomer withName(final String name) {
+    public CreateCustomerParams name(final String name) {
         return this.with("name", name);
     }
 
-    public CreateCustomer withLastName(final String lastName) {
+    public CreateCustomerParams lastName(final String lastName) {
         return this.with("last_name", lastName);
     }
 
-    public CreateCustomer withEmail(final String email) {
+    public CreateCustomerParams email(final String email) {
         return this.with("email", email);
     }
 
-    public CreateCustomer withPhoneNumber(final String phoneNumber) {
+    public CreateCustomerParams phoneNumber(final String phoneNumber) {
         return this.with("phone_number", phoneNumber);
     }
 
-    public CreateCustomer withAddress(final Address address) {
+    public CreateCustomerParams address(final Address address) {
         return this.with("address", address);
     }
 

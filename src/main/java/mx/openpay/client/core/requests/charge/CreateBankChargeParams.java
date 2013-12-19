@@ -18,29 +18,29 @@ import mx.openpay.client.enums.ChargeMethods;
 /**
  * @author elopez
  */
-public class CreateBankTransferCharge extends RequestBuilder {
+public class CreateBankChargeParams extends RequestBuilder {
 
     @Getter
     private String customerId;
 
-    public CreateBankTransferCharge() {
+    public CreateBankChargeParams() {
         this.with("method", ChargeMethods.BANK_ACCOUNT.name().toLowerCase());
     }
 
-    public CreateBankTransferCharge withCustomerId(final String customerId) {
+    public CreateBankChargeParams customerId(final String customerId) {
         this.customerId = customerId;
         return this;
     }
 
-    public CreateBankTransferCharge withAmount(final BigDecimal amount) {
+    public CreateBankChargeParams amount(final BigDecimal amount) {
         return this.with("amount", amount);
     }
 
-    public CreateBankTransferCharge withDescription(final String description) {
+    public CreateBankChargeParams description(final String description) {
         return this.with("description", description);
     }
 
-    public CreateBankTransferCharge withOrderId(final String orderId) {
+    public CreateBankChargeParams orderId(final String orderId) {
         return this.with("order_id", orderId);
     }
 }
