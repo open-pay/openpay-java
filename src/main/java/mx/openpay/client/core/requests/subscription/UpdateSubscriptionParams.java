@@ -19,7 +19,7 @@ import mx.openpay.client.core.requests.RequestBuilder;
 /**
  * @author elopez
  */
-public class UpdateSubscription extends RequestBuilder {
+public class UpdateSubscriptionParams extends RequestBuilder {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -29,12 +29,12 @@ public class UpdateSubscription extends RequestBuilder {
     @Getter
     private final String subscriptionId;
 
-    public UpdateSubscription(final String customerId, final String subscriptionId) {
+    public UpdateSubscriptionParams(final String customerId, final String subscriptionId) {
         this.customerId = customerId;
         this.subscriptionId = subscriptionId;
     }
 
-    public UpdateSubscription withTrialEndDate(final Date trialEndDate) {
+    public UpdateSubscriptionParams trialEndDate(final Date trialEndDate) {
         if (trialEndDate == null) {
             return this.with("trial_end_date", null);
         } else {
@@ -42,15 +42,15 @@ public class UpdateSubscription extends RequestBuilder {
         }
     }
 
-    public UpdateSubscription withCancelAtPeriodEnd(final Boolean cancelAtPeriodEnd) {
+    public UpdateSubscriptionParams cancelAtPeriodEnd(final Boolean cancelAtPeriodEnd) {
         return this.with("cancel_at_period_end", cancelAtPeriodEnd);
     }
 
-    public UpdateSubscription withCard(final Card card) {
+    public UpdateSubscriptionParams card(final Card card) {
         return this.with("card", card);
     }
 
-    public UpdateSubscription withCardId(final String cardId) {
+    public UpdateSubscriptionParams cardId(final String cardId) {
         return this.with("card_id", cardId);
     }
 

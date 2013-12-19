@@ -18,8 +18,8 @@ import java.util.Map;
 
 import mx.openpay.client.Plan;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.plan.CreatePlan;
-import mx.openpay.client.core.requests.plan.UpdatePlan;
+import mx.openpay.client.core.requests.plan.CreatePlanParams;
+import mx.openpay.client.core.requests.plan.UpdatePlanParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -38,12 +38,12 @@ public class PlanOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Plan create(final CreatePlan createPlan) throws OpenpayServiceException, ServiceUnavailableException {
+    public Plan create(final CreatePlanParams createPlan) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(PLANS_PATH, this.getMerchantId());
         return this.getJsonClient().post(path, createPlan.asMap(), Plan.class);
     };
 
-    public Plan update(final UpdatePlan updatePlan) throws OpenpayServiceException, ServiceUnavailableException {
+    public Plan update(final UpdatePlanParams updatePlan) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(GET_PLAN_PATH, this.getMerchantId(), updatePlan.getPlanId());
         return this.getJsonClient().put(path, updatePlan.asMap(), Plan.class);
     };

@@ -17,28 +17,28 @@ import mx.openpay.client.core.requests.RequestBuilder;
  * Request builder to create a new subscription.
  * @author elopez
  */
-public class CreateSubscription extends RequestBuilder {
+public class CreateSubscriptionParams extends RequestBuilder {
 
     @Getter
     private final String customerId;
 
-    public CreateSubscription(final String customerId) {
+    public CreateSubscriptionParams(final String customerId) {
         this.customerId = customerId;
     }
 
-    public CreateSubscription withPlanId(final String planId) {
+    public CreateSubscriptionParams planId(final String planId) {
         return this.with("plan_id", planId);
     }
 
-    public CreateSubscription withCardId(final String cardId) {
+    public CreateSubscriptionParams cardId(final String cardId) {
         return this.with("card_id", cardId);
     }
 
-    public CreateSubscription withTrialDays(final Integer trialDays) {
+    public CreateSubscriptionParams trialDays(final Integer trialDays) {
         return this.with("trial_days", trialDays);
     }
 
-    public CreateSubscription withCard(final Card card) {
+    public CreateSubscriptionParams card(final Card card) {
         return this.with("card", card);
     }
 

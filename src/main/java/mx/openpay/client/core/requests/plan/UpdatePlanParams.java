@@ -15,20 +15,20 @@ import mx.openpay.client.core.requests.RequestBuilder;
 /**
  * @author elopez
  */
-public class UpdatePlan extends RequestBuilder {
+public class UpdatePlanParams extends RequestBuilder {
 
     @Getter
     private final String planId;
 
-    public UpdatePlan(final String planId) {
+    public UpdatePlanParams(final String planId) {
         this.planId = planId;
     }
 
-    public UpdatePlan withName(final String name) {
+    public UpdatePlanParams name(final String name) {
         return this.with("name", name);
     }
 
-    public UpdatePlan withTrialDays(final Integer trialDays) {
+    public UpdatePlanParams trialDays(final Integer trialDays) {
         return this.with("trial_days", trialDays);
     }
 }

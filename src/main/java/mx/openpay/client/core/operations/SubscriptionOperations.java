@@ -19,8 +19,8 @@ import java.util.Map;
 
 import mx.openpay.client.Subscription;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.subscription.CreateSubscription;
-import mx.openpay.client.core.requests.subscription.UpdateSubscription;
+import mx.openpay.client.core.requests.subscription.CreateSubscriptionParams;
+import mx.openpay.client.core.requests.subscription.UpdateSubscriptionParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -39,13 +39,13 @@ public class SubscriptionOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Subscription create(final CreateSubscription request) throws OpenpayServiceException,
+    public Subscription create(final CreateSubscriptionParams request) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path = String.format(CUSTOMER_SUBSCRIPTIONS_PATH, this.getMerchantId(), request.getCustomerId());
         return this.getJsonClient().post(path, request.asMap(), Subscription.class);
     };
 
-    public Subscription update(final UpdateSubscription request) throws OpenpayServiceException,
+    public Subscription update(final UpdateSubscriptionParams request) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path = String.format(GET_CUSTOMER_SUBSCRIPTION_PATH, this.getMerchantId(), request.getCustomerId(),
                 request.getSubscriptionId());

@@ -19,42 +19,14 @@ import mx.openpay.client.enums.PlanStatusAfterRetry;
  * Request parameters to create a plan.
  * @author elopez
  */
-public class CreatePlan extends RequestBuilder {
+public class CreatePlanParams extends RequestBuilder {
 
-    public CreatePlan withName(final String name) {
+    public CreatePlanParams name(final String name) {
         return this.with("name", name);
     }
 
-    public CreatePlan withAmount(final BigDecimal amount) {
+    public CreatePlanParams amount(final BigDecimal amount) {
         return this.with("amount", amount);
-    }
-
-    public CreatePlan withRepeatEvery(final Integer repeatEvery) {
-        return this.with("repeat_every", repeatEvery);
-    }
-
-    public CreatePlan withRepeatUnit(final PlanRepeatUnit unit) {
-        if (unit == null) {
-            return this.with("repeat_unit", null);
-        } else {
-            return this.with("repeat_unit", unit.name().toLowerCase());
-        }
-    }
-
-    public CreatePlan withTrialDays(final Integer trialDays) {
-        return this.with("trial_days", trialDays);
-    }
-
-    public CreatePlan withRetryTimes(final Integer retryTimes) {
-        return this.with("retry_times", retryTimes);
-    }
-
-    public CreatePlan withStatusAfterRetry(final PlanStatusAfterRetry statusAfterRetry) {
-        if (statusAfterRetry == null) {
-            return this.with("status_after_retry", null);
-        } else {
-            return this.with("status_after_retry", statusAfterRetry.name().toLowerCase());
-        }
     }
 
     /**
@@ -63,8 +35,36 @@ public class CreatePlan extends RequestBuilder {
      * @param unit
      * @return
      */
-    public CreatePlan withRepeatEvery(final Integer repeatEvery, final PlanRepeatUnit unit) {
-        return this.withRepeatEvery(repeatEvery).withRepeatUnit(unit);
+    public CreatePlanParams repeatEvery(final Integer repeatEvery, final PlanRepeatUnit unit) {
+        return this.repeatEvery(repeatEvery).repeatUnit(unit);
+    }
+
+    public CreatePlanParams trialDays(final Integer trialDays) {
+        return this.with("trial_days", trialDays);
+    }
+
+    public CreatePlanParams retryTimes(final Integer retryTimes) {
+        return this.with("retry_times", retryTimes);
+    }
+
+    public CreatePlanParams statusAfterRetry(final PlanStatusAfterRetry statusAfterRetry) {
+        if (statusAfterRetry == null) {
+            return this.with("status_after_retry", null);
+        } else {
+            return this.with("status_after_retry", statusAfterRetry.name().toLowerCase());
+        }
+    }
+
+    private CreatePlanParams repeatEvery(final Integer repeatEvery) {
+        return this.with("repeat_every", repeatEvery);
+    }
+
+    private CreatePlanParams repeatUnit(final PlanRepeatUnit unit) {
+        if (unit == null) {
+            return this.with("repeat_unit", null);
+        } else {
+            return this.with("repeat_unit", unit.name().toLowerCase());
+        }
     }
 
 }
