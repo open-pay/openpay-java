@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,13 +19,13 @@ import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.core.requests.customer.CreateCustomer;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -44,17 +44,22 @@ public class CustomerOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
+    public Customer create(final CreateCustomer create) throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(CUSTOMERS_PATH, this.getMerchantId());
+        return this.getJsonClient().post(path, create.asMap(), Customer.class);
+    }
+
+    @Deprecated
     public Customer create(final String name, final String lastName, final String email,
             final String phoneNumber, final Address address) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(CUSTOMERS_PATH, this.getMerchantId());
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("name", name);
-        data.put("last_name", lastName);
-        data.put("email", email);
-        data.put("phone_number", phoneNumber);
-        data.put("address", address);
-        return this.getJsonClient().post(path, data, Customer.class);
+        CreateCustomer params = new CreateCustomer()
+                .withName(name)
+                .withLastName(lastName)
+                .withEmail(email)
+                .withPhoneNumber(phoneNumber)
+                .withAddress(address);
+        return this.create(params);
     };
 
     public List<Customer> list(final SearchParams params) throws OpenpayServiceException,
