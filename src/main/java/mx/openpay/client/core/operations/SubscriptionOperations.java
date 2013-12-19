@@ -14,15 +14,13 @@ import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.SUBSCRIPTIONS;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mx.openpay.client.Card;
 import mx.openpay.client.Subscription;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.core.requests.subscription.CreateSubscription;
+import mx.openpay.client.core.requests.subscription.UpdateSubscription;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -41,49 +39,17 @@ public class SubscriptionOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Subscription create(final String customerId, final String planId, final String cardId,
-            final Integer trialDays) throws OpenpayServiceException, ServiceUnavailableException {
-        String path = String.format(CUSTOMER_SUBSCRIPTIONS_PATH, this.getMerchantId(), customerId);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("plan_id", planId);
-        data.put("card_id", cardId);
-        data.put("trial_days", trialDays);
-        return this.getJsonClient().post(path, data, Subscription.class);
-    };
-
-    public Subscription create(final String customerId, final String planId, final Card card,
-            final Integer trialDays) throws OpenpayServiceException, ServiceUnavailableException {
-        String path = String.format(CUSTOMER_SUBSCRIPTIONS_PATH, this.getMerchantId(), customerId);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("plan_id", planId);
-        data.put("card", card);
-        data.put("trial_days", trialDays);
-        return this.getJsonClient().post(path, data, Subscription.class);
-    };
-
-    public Subscription update(final String customerId, final String subscriptionId, final Date trialEndDate,
-            final Boolean cancelAtPeriodEnd, final String cardId) throws OpenpayServiceException,
+    public Subscription create(final CreateSubscription request) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(GET_CUSTOMER_SUBSCRIPTION_PATH, this.getMerchantId(), customerId, subscriptionId);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("trial_end_date", trialEndDate);
-        data.put("cancel_at_period_end", cancelAtPeriodEnd);
-        data.put("card_id", cardId);
-        return this.getJsonClient().put(path, data, Subscription.class);
+        String path = String.format(CUSTOMER_SUBSCRIPTIONS_PATH, this.getMerchantId(), request.getCustomerId());
+        return this.getJsonClient().post(path, request.asMap(), Subscription.class);
     };
 
-    public Subscription update(final String customerId, final String subscriptionId, final Date trialEndDate,
-            final Boolean cancelAtPeriodEnd, final Card card) throws OpenpayServiceException,
+    public Subscription update(final UpdateSubscription request) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(GET_CUSTOMER_SUBSCRIPTION_PATH, this.getMerchantId(), customerId, subscriptionId);
-        Map<String, Object> data = new HashMap<String, Object>();
-        if (trialEndDate != null) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            data.put("trial_end_date", format.format(trialEndDate));
-        }
-        data.put("cancel_at_period_end", cancelAtPeriodEnd);
-        data.put("card", card);
-        return this.getJsonClient().put(path, data, Subscription.class);
+        String path = String.format(GET_CUSTOMER_SUBSCRIPTION_PATH, this.getMerchantId(), request.getCustomerId(),
+                request.getSubscriptionId());
+        return this.getJsonClient().put(path, request.asMap(), Subscription.class);
     };
 
     public void delete(final String customerId, final String subscriptionId) throws OpenpayServiceException,

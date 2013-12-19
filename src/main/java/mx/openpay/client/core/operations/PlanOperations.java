@@ -13,15 +13,13 @@ import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.PLANS;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.Plan;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.enums.PlanRepeatUnit;
-import mx.openpay.client.enums.PlanStatusAfterRetry;
+import mx.openpay.client.core.requests.plan.CreatePlan;
+import mx.openpay.client.core.requests.plan.UpdatePlan;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -40,33 +38,14 @@ public class PlanOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Plan create(final String name, final BigDecimal amount, final String currency, final Integer repeatEvery,
-            final PlanRepeatUnit repeatUnit, final Integer retryTimes, final PlanStatusAfterRetry statusAfterRetry,
-            final Integer trialDays) throws OpenpayServiceException, ServiceUnavailableException {
+    public Plan create(final CreatePlan createPlan) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(PLANS_PATH, this.getMerchantId());
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("name", name);
-        data.put("amount", amount);
-        data.put("currency", currency);
-        data.put("repeat_every", repeatEvery);
-        if (repeatUnit != null) {
-            data.put("repeat_unit", repeatUnit.name().toLowerCase());
-        }
-        data.put("retry_times", retryTimes);
-        if (statusAfterRetry != null) {
-            data.put("status_after_retry", statusAfterRetry.name().toLowerCase());
-        }
-        data.put("trial_days", trialDays);
-        return this.getJsonClient().post(path, data, Plan.class);
+        return this.getJsonClient().post(path, createPlan.asMap(), Plan.class);
     };
 
-    public Plan update(final String planId, final String name, final Integer trialDays) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(GET_PLAN_PATH, this.getMerchantId(), planId);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("name", name);
-        data.put("trial_days", trialDays);
-        return this.getJsonClient().put(path, data, Plan.class);
+    public Plan update(final UpdatePlan updatePlan) throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(GET_PLAN_PATH, this.getMerchantId(), updatePlan.getPlanId());
+        return this.getJsonClient().put(path, updatePlan.asMap(), Plan.class);
     };
 
     public void delete(final String planId) throws OpenpayServiceException, ServiceUnavailableException {
