@@ -48,7 +48,7 @@ CreateCustomer params = new CreateCustomer()
         .withPhoneNumber("554-170-3567")
         .withAddress(address);
 
-Customer customer = this.ops.create(params);
+Customer customer = api.customers().create(params);
 ```
 
 #### Charging ####
