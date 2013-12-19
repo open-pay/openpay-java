@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,8 +57,7 @@ public class PayoutOperations extends ServiceOperations {
 
     public Payout createForCustomer(final String customerId, final PayoutMethod method, final String destinationId,
             final BigDecimal amount, final String description, final String orderID)
-            throws ServiceUnavailableException,
-            OpenpayServiceException {
+            throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("destination_id", destinationId);
