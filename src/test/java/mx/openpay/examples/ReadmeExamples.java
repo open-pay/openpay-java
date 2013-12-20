@@ -30,8 +30,11 @@ import mx.openpay.client.core.requests.customer.CreateCustomerParams;
 import mx.openpay.client.core.requests.subscription.CreatePlanParams;
 import mx.openpay.client.core.requests.subscription.CreateSubscriptionParams;
 import mx.openpay.client.core.requests.subscription.UpdateSubscriptionParams;
+import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
+import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.enums.PlanRepeatUnit;
 import mx.openpay.client.enums.PlanStatusAfterRetry;
 
@@ -90,6 +93,39 @@ public class ReadmeExamples {
                     .amount(new BigDecimal("200.00")) // Amount is in MXN
                     .orderId("Charge0001") // Optional transaction identifier
                     .card(card));
+
+            Charge refundedCharge = api.charges().refund(new RefundParams()
+                    .customerId(customer.getId())
+                    .chargeId(charge.getId()));
+            System.out.println("refunded: " + refundedCharge);
+
+        }
+
+        api.charges().create(new CreateCardChargeParams()
+                .customerId(customer.getId())
+                .description("Test charge")
+                .amount(new BigDecimal("5000.00")) // Amount is in MXN
+                .card(new CreateCardParams()
+                        .cardNumber("5555555555554444") // No dashes or spaces
+                        .holderName("Juan Pérez Nuñez")
+                        .cvv2("422")
+                        .expirationMonth(9)
+                        .expirationYear(14)));
+
+        {
+            CreateBankAccountParams bankAccount = new CreateBankAccountParams()
+                    .clabe("032180000118359719") // CLABE
+                    .holderName("Juan Pérez")
+                    .alias("Juan's deposit account"); // Optional
+
+            Charge charge = api.charges().create(new CreateBankChargeParams()
+                    .customerId(customer.getId())
+                    .description("Service charge")
+                    .amount(new BigDecimal("100.00"))
+                    .orderId("Charge0002"));
+            System.out.println("bank charge: " + charge);
+            System.out.println("bank charge payment" + charge.getPaymentMethod());
+
         }
 
         // #### Payout ####
@@ -100,12 +136,28 @@ public class ReadmeExamples {
                     .holderName("Juan Pérez")
                     .alias("Juan's deposit account"); // Optional
 
-            Payout transaction = api.payouts().create(new CreateBankPayoutParams()
+            Payout payout = api.payouts().create(new CreateBankPayoutParams()
                     .customerId(customer.getId())
                     .bankAccount(bankAccount)
                     .amount(new BigDecimal("150.00"))
                     .description("Payment to Juan")
                     .orderId("Payout00001")); // Optional transaction identifier
+        }
+
+        {
+            CreateCardParams card = new CreateCardParams()
+                    .cardNumber("5555555555554444") // No dashes or spaces
+                    .holderName("Juan Pérez Nuñez")
+                    .bankCode("012");
+
+            Payout payout = api.payouts().create(new CreateCardPayoutParams()
+                    .customerId(customer.getId())
+                    .card(card)
+                    .amount(new BigDecimal("150.00"))
+                    .description("Payment to Juan")
+                    .orderId("Payout00002")); // Optional transaction identifier
+
+            System.out.println("card payout: " + payout);
         }
 
         // #### Subscriptions ####

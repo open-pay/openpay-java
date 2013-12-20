@@ -51,7 +51,9 @@ Customer customer = api.customers().create(new CreateCustomerParams()
 ```
 
 #### Charging ####
-		
+
+Charging a credit card:		
+
 ```java
 CreateCardParams card = new CreateCardParams()
 		.cardNumber("5555555555554444")          // No dashes or spaces
@@ -68,9 +70,29 @@ Charge charge = api.charges().create(new CreateCardChargeParams()
 		.card(card));
 ```
 
+Refunding a card charge:
+
+```java
+Charge refundedCharge = api.charges().refund(new RefundParams()
+		.customerId(customer.getId())
+		.chargeId(charge.getId()));
+```
+
+Create a charge to be paid by bank transfer:
+
+```java
+Charge charge = api.charges().create(new CreateBankChargeParams()
+		.customerId(customer.getId())
+		.description("Service charge")
+		.amount(new BigDecimal("100.00"))
+		.orderId("Charge0002"));
+```
+
 #### Payout ####
 
-Currently Payouts are only allowed to bank accounts within Mexico.
+Currently Payouts are only allowed to accounts in Mexico.
+
+Bank payout:
 
 ```java
 CreateBankAccountParams bankAccount = new CreateBankAccountParams()
@@ -78,13 +100,30 @@ CreateBankAccountParams bankAccount = new CreateBankAccountParams()
 		.holderName("Juan Pérez")
 		.alias("Juan's deposit account");       // Optional
 
-Payout transaction = api.payouts().create(new CreateBankPayoutParams()
+Payout payout = api.payouts().create(new CreateBankPayoutParams()
 	    .customerId(customer.getId())
 	    .bankAccount(bankAccount)
 	    .amount(new BigDecimal("150.00"))
 	    .description("Payment to Juan")
 	    .orderId("Payout00001"));               // Optional transaction identifier
 ```
+
+Debit card payout:
+
+```java
+CreateCardParams card = new CreateCardParams()
+        .cardNumber("5555555555554444")         // No dashes or spaces
+        .holderName("Juan Pérez Nuñez")
+        .bankCode("012");
+
+Payout payout = api.payouts().create(new CreateCardPayoutParams()
+        .customerId(customer.getId())
+        .card(card)
+        .amount(new BigDecimal("150.00"))
+        .description("Payment to Juan")
+        .orderId("Payout00002"));               // Optional transaction identifier
+```
+
 
 #### Subscriptions ####
 

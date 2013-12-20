@@ -19,7 +19,7 @@ import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
 
 /**
- * Parameters to refund a completed charge.
+ * Parameters to refund a completed charge. Currently only card charges can be refunded this way.
  * @author elopez
  */
 public class RefundParams extends RequestBuilder {
