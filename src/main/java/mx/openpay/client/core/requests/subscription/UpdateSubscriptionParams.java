@@ -1,11 +1,17 @@
 /*
- * COPYRIGHT © 2012-2013. OPENPAY.
- * PATENT PENDING. ALL RIGHTS RESERVED.
- * OPENPAY & OPENCARD IS A REGISTERED TRADEMARK OF OPENCARD INC.
+ * Copyright 2013 Opencard Inc.
  *
- * This software is confidential and proprietary information of OPENCARD INC.
- * You shall not disclose such Confidential Information and shall use it only
- * in accordance with the company policy.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package mx.openpay.client.core.requests.subscription;
 
@@ -39,6 +45,9 @@ public class UpdateSubscriptionParams extends RequestBuilder {
         return this;
     }
 
+    /**
+     * A new date to end the user's trial period. This overrides the starting trial days set.
+     */
     public UpdateSubscriptionParams trialEndDate(final Date trialEndDate) {
         if (trialEndDate == null) {
             return this.with("trial_end_date", null);
@@ -47,10 +56,18 @@ public class UpdateSubscriptionParams extends RequestBuilder {
         }
     }
 
+    /**
+     * Whether to cancel the subscription when the current cycle ends. Can be set to false to undo the change before the
+     * subscription is cancelled.
+     */
     public UpdateSubscriptionParams cancelAtPeriodEnd(final Boolean cancelAtPeriodEnd) {
         return this.with("cancel_at_period_end", cancelAtPeriodEnd);
     }
 
+    /**
+     * Change the card to which this subscription is charged to a completely new card. If the subscription is in unpaid
+     * status, it will change to past_due and charges will be attempted again with the new information.
+     */
     public UpdateSubscriptionParams card(final CreateCardParams card) {
         if (card == null) {
             return this.with("card", null);
@@ -59,6 +76,10 @@ public class UpdateSubscriptionParams extends RequestBuilder {
         }
     }
 
+    /**
+     * Change the card to which this subscription is charged to a preregistered card. If the subscription is in unpaid
+     * status, it will change to past_due and charges will be attempted again with the new information.
+     */
     public UpdateSubscriptionParams cardId(final String cardId) {
         return this.with("card_id", cardId);
     }

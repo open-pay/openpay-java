@@ -1,11 +1,17 @@
 /*
- * COPYRIGHT © 2012-2013. OPENPAY.
- * PATENT PENDING. ALL RIGHTS RESERVED.
- * OPENPAY & OPENCARD IS A REGISTERED TRADEMARK OF OPENCARD INC.
+ * Copyright 2013 Opencard Inc.
  *
- * This software is confidential and proprietary information of OPENCARD INC.
- * You shall not disclose such Confidential Information and shall use it only
- * in accordance with the company policy.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package mx.openpay.client.core.impl;
 
@@ -13,6 +19,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.UnsupportedCharsetException;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +35,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
@@ -46,7 +54,9 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 
 /**
+ * Uses Apache HttpClient to call the web service and retrieve the response information.
  * @author elopez
+ * @see HttpServiceClient
  */
 @Slf4j
 public class DefaultHttpServiceClient implements HttpServiceClient {
@@ -65,16 +75,25 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
     public DefaultHttpServiceClient() throws GeneralSecurityException {
         this.httpClient = this.initHttpClient();
         this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
+        this.setSocketTimeout(DEFAULT_CONNECTION_TIMEOUT);
         String version = this.getClass().getPackage().getImplementationVersion();
         if (version == null) {
-            version = "1.0-UNKNOWN";
+            version = "1.0.1-UNKNOWN";
         }
         this.userAgent = AGENT + version;
     }
 
+    /**
+     * @see mx.openpay.client.core.HttpServiceClient#setConnectionTimeout(int)
+     */
+    @Override
     public void setConnectionTimeout(final int timeout) {
-        this.httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
         this.httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
+    }
+
+    @Override
+    public void setSocketTimeout(final int timeout) {
+        this.httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
     }
 
     private HttpClient initHttpClient() throws GeneralSecurityException {
@@ -95,30 +114,38 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
     }
 
     /**
-     * @throws ServiceUnavailableException
      * @see mx.openpay.client.core.HttpServiceClient#get(java.lang.String, java.util.Map)
      */
     @Override
     public HttpServiceResponse get(final String url, final Map<String, String> queryParams)
             throws ServiceUnavailableException {
+        URI uri;
+        if (queryParams == null) {
+            uri = URI.create(url);
+        } else {
+            uri = this.createUriWithParams(url, queryParams);
+        }
+        HttpGet request = new HttpGet(uri);
+        return this.executeOperation(request);
+
+    }
+
+    private URI createUriWithParams(final String url, final Map<String, String> queryParams)
+            throws IllegalArgumentException {
         URIBuilder builder = new URIBuilder(URI.create(url));
-        if (queryParams != null) {
-            for (Entry<String, String> entry : queryParams.entrySet()) {
-                if (entry.getValue() != null) {
-                    builder.addParameter(entry.getKey(), entry.getValue());
-                }
+        for (Entry<String, String> entry : queryParams.entrySet()) {
+            if (entry.getValue() != null) {
+                builder.addParameter(entry.getKey(), entry.getValue());
             }
         }
         try {
-            HttpGet request = new HttpGet(builder.build());
-            return this.executeOperation(request);
+            return builder.build();
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     /**
-     * @throws ServiceUnavailableException
      * @see mx.openpay.client.core.HttpServiceClient#delete(java.lang.String)
      */
     @Override
@@ -128,7 +155,6 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
     }
 
     /**
-     * @throws ServiceUnavailableException
      * @see mx.openpay.client.core.HttpServiceClient#put(java.lang.String, java.lang.String)
      */
     @Override
@@ -139,7 +165,6 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
     }
 
     /**
-     * @throws ServiceUnavailableException
      * @see mx.openpay.client.core.HttpServiceClient#post(java.lang.String, java.lang.String)
      */
     @Override
@@ -153,25 +178,8 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
         this.addHeaders(request);
         this.addAuthentication(request);
         long init = System.currentTimeMillis();
-        HttpResponse response;
-        try {
-            response = this.httpClient.execute(request);
-        } catch (ClientProtocolException e) {
-            throw new ServiceUnavailableException(e);
-        } catch (IOException e) {
-            throw new ServiceUnavailableException(e);
-        }
-        HttpServiceResponse serviceResponse = new HttpServiceResponse();
-        serviceResponse.setStatusCode(response.getStatusLine().getStatusCode());
-        HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            try {
-                serviceResponse.setBody(EntityUtils.toString(entity));
-                serviceResponse.setContentType(ContentType.getOrDefault(entity).getMimeType());
-            } catch (IOException e) {
-                throw new ServiceUnavailableException(e);
-            }
-        }
+        HttpResponse response = this.callService(request);
+        HttpServiceResponse serviceResponse = this.createResult(response);
         log.trace("Request Time: {}", (System.currentTimeMillis() - init));
         return serviceResponse;
     }
@@ -195,13 +203,34 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
         return Base64.encodeBase64String(auth);
     }
 
-    /**
-     * @see mx.openpay.client.core.HttpServiceClient#setConnectionTimeout(long)
-     */
-    @Override
-    public void setConnectionTimeout(final long timeoutMillis) {
-        // TODO Auto-generated method stub
+    private HttpResponse callService(final HttpUriRequest request) throws ServiceUnavailableException {
+        HttpResponse response;
+        try {
+            response = this.httpClient.execute(request);
+        } catch (ClientProtocolException e) {
+            throw new ServiceUnavailableException(e);
+        } catch (IOException e) {
+            throw new ServiceUnavailableException(e);
+        }
+        return response;
+    }
 
+    private HttpServiceResponse createResult(final HttpResponse response) throws ParseException,
+            UnsupportedCharsetException {
+        HttpServiceResponse serviceResponse = new HttpServiceResponse();
+        serviceResponse.setStatusCode(response.getStatusLine().getStatusCode());
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            try {
+                serviceResponse.setBody(EntityUtils.toString(entity));
+            } catch (IOException e) {
+                log.error("Could not get body request", e);
+            }
+            if (entity.getContentType() != null) {
+                serviceResponse.setContentType(entity.getContentType().getValue());
+            }
+        }
+        return serviceResponse;
     }
 
 }

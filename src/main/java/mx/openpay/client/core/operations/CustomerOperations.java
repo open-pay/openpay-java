@@ -32,6 +32,7 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.SearchParams;
 
 /**
+ * Operations for managing Customers.
  * @author elopez
  */
 public class CustomerOperations extends ServiceOperations {

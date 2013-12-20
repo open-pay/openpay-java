@@ -28,6 +28,7 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Heber Lazcano
+ * @author elopez
  */
 @Slf4j
 public class JsonServiceClient {
@@ -93,6 +94,7 @@ public class JsonServiceClient {
             if (response.isJson()) {
                 OpenpayServiceException error = this.serializer.deserialize(response.getBody(),
                         OpenpayServiceException.class);
+                error.setBody(response.getBody());
                 throw error;
             } else {
                 log.error("Not a Json response: {} ", response.getBody());
@@ -100,13 +102,13 @@ public class JsonServiceClient {
                         + response.getStatusCode() + "] Internal server error");
                 openpayServiceException.setHttpCode(response.getStatusCode());
                 openpayServiceException.setErrorCode(1000);
+                openpayServiceException.setBody(response.getBody());
                 throw openpayServiceException;
             }
         }
     }
 
-    private <T> T deserializeObject(final HttpServiceResponse response, final Class<T> clazz)
-            throws OpenpayServiceException {
+    private <T> T deserializeObject(final HttpServiceResponse response, final Class<T> clazz) {
         if (response.isJson()) {
             return this.serializer.deserialize(response.getBody(), clazz);
         } else if (response.getBody() != null) {
@@ -115,8 +117,7 @@ public class JsonServiceClient {
         return null;
     }
 
-    private <T> List<T> deserializeList(final HttpServiceResponse response, final Class<T> clazz)
-            throws OpenpayServiceException {
+    private <T> List<T> deserializeList(final HttpServiceResponse response, final Class<T> clazz) {
         if (response.isJson()) {
             return this.serializer.deserializeList(response.getBody(), clazz);
         } else {

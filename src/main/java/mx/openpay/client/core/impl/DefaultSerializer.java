@@ -1,11 +1,17 @@
 /*
- * COPYRIGHT © 2012-2013. OPENPAY.
- * PATENT PENDING. ALL RIGHTS RESERVED.
- * OPENPAY & OPENCARD IS A REGISTERED TRADEMARK OF OPENCARD INC.
- *
- * This software is confidential and proprietary information of OPENCARD INC.
- * You shall not disclose such Confidential Information and shall use it only
- * in accordance with the company policy.
+ * Copyright 2013 Opencard Inc.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package mx.openpay.client.core.impl;
 
@@ -15,16 +21,15 @@ import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.core.JsonSerializer;
-import mx.openpay.client.serialization.BankAccountAdapterFactory;
-import mx.openpay.client.serialization.CardAdapterFactory;
-import mx.openpay.client.serialization.CustomerAdapterFactory;
 import mx.openpay.client.serialization.DateFormatDeserializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
+ * Serializes and deserializes the values using Gson.
  * @author elopez
+ * @see JsonSerializer
  */
 public class DefaultSerializer implements JsonSerializer {
 
@@ -33,9 +38,6 @@ public class DefaultSerializer implements JsonSerializer {
     public DefaultSerializer() {
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateFormatDeserializer())
-                .registerTypeAdapterFactory(new CustomerAdapterFactory())
-                .registerTypeAdapterFactory(new CardAdapterFactory())
-                .registerTypeAdapterFactory(new BankAccountAdapterFactory())
                 .create();
     }
 
