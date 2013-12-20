@@ -53,11 +53,11 @@ Customer customer = api.customers().create(new CreateCustomerParams()
 #### Charging ####
 		
 ```java
-CreateCardParams card = new CreateCardParams();
-		.cardNumber("5555555555554444");         // No dashes or spaces
-		.holderName("Juan Pérez Nuñez");         
-		.cvv2("422");                            
-		.expirationMonth(9);
+CreateCardParams card = new CreateCardParams()
+		.cardNumber("5555555555554444")          // No dashes or spaces
+		.holderName("Juan Pérez Nuñez")         
+		.cvv2("422")            
+		.expirationMonth(9)
 		.expirationYear(14);
 
 Charge charge = api.charges().create(new CreateCardChargeParams()
@@ -76,7 +76,7 @@ Currently Payouts are only allowed to bank accounts within Mexico.
 CreateBankAccountParams bankAccount = new CreateBankAccountParams()
 		.clabe("032180000118359719")            // CLABE
 		.holderName("Juan Pérez")
-		.alias("Juan's deposit account")        // Optional
+		.alias("Juan's deposit account");       // Optional
 
 Payout transaction = api.payouts().create(new CreateBankPayoutParams()
 	    .customerId(customer.getId())
@@ -102,11 +102,11 @@ Plan plan = api.plans().create(new CreatePlanParams()
 After you have your plan created, you can subscribe customers to it:
 
 ```java
-CreateCardParams card = new CreateCardParams();
-		.cardNumber("5555555555554444");         
-		.holderName("Juan Pérez Nuñez");
-		.cvv2("422");
-		.expirationMonth(9);                  
+CreateCardParams card = new CreateCardParams()
+		.cardNumber("5555555555554444")         
+		.holderName("Juan Pérez Nuñez")
+		.cvv2("422")
+		.expirationMonth(9)                  
 		.expirationYear(14);
 
 Subscription subscription = api.subscriptions().create(new CreateSubscriptionParams()
