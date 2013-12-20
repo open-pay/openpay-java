@@ -10,6 +10,7 @@ What's new
 
 - **API incompatibility**: Removed the option to look a transfer up using only the transactionId.
 - **API incompatibility**: Customer charges can't be looked up only with the transactionId anymore, customerId is required. 
+- **API incompatibility**: Refunds no longer accept a description or an order Id. 
 - Added management of plans and subscriptions.
 - Fixed bug that made Java 7 required.
 - Parameters are now set into a request object to reduce method signatures.
@@ -32,14 +33,14 @@ OpenpayAPI api = new OpenpayAPI("https://sandbox-api.openpay.mx", privateKey, me
 #### Creating a customer ####
 
 ```java
-Address address = new Address();
-address.setLine1("Calle Morelos #12 - 11");
-address.setLine2("Colonia Centro");             // Optional
-address.setLine3("Cuauhtémoc");                 // Optional
-address.setCity("Distrito Federal");
-address.setPostalCode("12345");	
-address.setState("Queretaro");
-address.setCountryCode("MX");                   // ISO 3166-1 two-letter code
+Address address = new Address()
+		.line1("Calle Morelos #12 - 11")
+		.line2("Colonia Centro")             // Optional
+		.line3("Cuauhtémoc")                 // Optional
+		.city("Distrito Federal")
+		.postalCode("12345")	
+		.state("Queretaro")
+		.countryCode("MX");                  // ISO 3166-1 two-letter code
 		    
 Customer customer = api.customers().create(new CreateCustomerParams()
         .name("John")
@@ -52,12 +53,12 @@ Customer customer = api.customers().create(new CreateCustomerParams()
 #### Charging ####
 		
 ```java
-Card card = new Card();
-card.setCardNumber("5555555555554444");         // No dashes or spaces
-card.setHolderName("Juan Pérez Nuñez");         
-card.setCvv2("422");                            
-card.setExpirationMonth("09");                  // Month to two digits
-card.setExpirationYear("14");
+CreateCardParams card = new CreateCardParams();
+		.cardNumber("5555555555554444");         // No dashes or spaces
+		.holderName("Juan Pérez Nuñez");         
+		.cvv2("422");                            
+		.expirationMonth(9);
+		.expirationYear(14);
 
 Charge charge = api.charges().create(new CreateCardChargeParams()
 		.customerId(customer.getId())
@@ -72,14 +73,12 @@ Charge charge = api.charges().create(new CreateCardChargeParams()
 Currently Payouts are only allowed to bank accounts within Mexico.
 
 ```java
-BankAccount bankAccount = new BankAccount();
-bankAccount.setClabe("032180000118359719");     // CLABE
-bankAccount.setHolderName("Juan Pérez");
-bankAccount.setAlias("Juan's deposit account"); // Optional
+CreateBankAccountParams bankAccount = new CreateBankAccountParams()
+		.clabe("032180000118359719")            // CLABE
+		.holderName("Juan Pérez")
+		.alias("Juan's deposit account")        // Optional
 
-CreatePayout params = ;            
-
-Payout transaction = api.payouts().create(new CreatePayoutParams()
+Payout transaction = api.payouts().create(new CreateBankPayoutParams()
 	    .customerId(customer.getId())
 	    .bankAccount(bankAccount)
 	    .amount(new BigDecimal("150.00"))
@@ -103,12 +102,12 @@ Plan plan = api.plans().create(new CreatePlanParams()
 After you have your plan created, you can subscribe customers to it:
 
 ```java
-Card card = new Card();
-card.setCardNumber("5555555555554444");         
-card.setHolderName("Juan Pérez Nuñez");
-card.setCvv2("422");
-card.setExpirationMonth("09");                  
-card.setExpirationYear("14");
+CreateCardParams card = new CreateCardParams();
+		.cardNumber("5555555555554444");         
+		.holderName("Juan Pérez Nuñez");
+		.cvv2("422");
+		.expirationMonth(9);                  
+		.expirationYear(14);
 
 Subscription subscription = api.subscriptions()
 		.create(new CreateSubscriptionParams()
@@ -131,8 +130,6 @@ You can also cancel the subscription immediately:
 ```java
 api.subscriptions().delete(customer.getId(), subscription.getId());
 ```
-
-_(TODO)_
 
 Installation
 ----------------

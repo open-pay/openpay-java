@@ -57,20 +57,6 @@ public class CardOperations extends ServiceOperations {
         return this.getJsonClient().post(path, params.asMap(), Card.class);
     }
 
-    @Deprecated
-    public Card create(final String customerId, final String cardNumber, final String holderName,
-            final String cvv2, final String expMonth, final String expYear, final Address address)
-            throws ServiceUnavailableException, OpenpayServiceException {
-        return this.create(new CreateCardParams()
-                .customerId(customerId)
-                .cardNumber(cardNumber)
-                .cvv2(cvv2)
-                .holderName(holderName)
-                .address(address)
-                .expirationMonth(expMonth)
-                .expirationYear(expYear));
-    }
-
     public List<Card> list(final String customerId, final SearchParams params)
             throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(CUSTOMER_CARDS_PATH, this.getMerchantId(), customerId);
@@ -88,6 +74,20 @@ public class CardOperations extends ServiceOperations {
             OpenpayServiceException {
         String path = String.format(GET_CARD_PATH, this.getMerchantId(), customerId, cardId);
         this.getJsonClient().delete(path);
+    }
+
+    @Deprecated
+    public Card create(final String customerId, final String cardNumber, final String holderName,
+            final String cvv2, final String expMonth, final String expYear, final Address address)
+            throws ServiceUnavailableException, OpenpayServiceException {
+        return this.create(new CreateCardParams()
+                .customerId(customerId)
+                .cardNumber(cardNumber)
+                .cvv2(cvv2)
+                .holderName(holderName)
+                .address(address)
+                .expirationMonth(expMonth)
+                .expirationYear(expYear));
     }
 
 }

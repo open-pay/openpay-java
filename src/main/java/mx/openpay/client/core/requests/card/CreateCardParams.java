@@ -38,14 +38,16 @@ public class CreateCardParams extends RequestBuilder {
         return this.with("expiration_month", String.format("%02d", expirationMonth));
     }
 
-    public CreateCardParams expirationMonth(final String expirationMonth) {
-        return this.with("expiration_month", expirationMonth);
-    }
-
     public CreateCardParams expirationYear(final Integer expirationYear) {
         return this.with("expiration_year", String.format("%02d", expirationYear));
     }
 
+    @Deprecated
+    public CreateCardParams expirationMonth(final String expirationMonth) {
+        return this.with("expiration_month", expirationMonth);
+    }
+
+    @Deprecated
     public CreateCardParams expirationYear(final String expirationYear) {
         return this.with("expiration_year", expirationYear);
     }

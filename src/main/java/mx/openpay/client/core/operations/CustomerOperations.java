@@ -44,23 +44,11 @@ public class CustomerOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Customer create(final CreateCustomerParams create) throws OpenpayServiceException, ServiceUnavailableException {
+    public Customer create(final CreateCustomerParams create) throws OpenpayServiceException,
+            ServiceUnavailableException {
         String path = String.format(CUSTOMERS_PATH, this.getMerchantId());
         return this.getJsonClient().post(path, create.asMap(), Customer.class);
     }
-
-    @Deprecated
-    public Customer create(final String name, final String lastName, final String email,
-            final String phoneNumber, final Address address) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        CreateCustomerParams params = new CreateCustomerParams()
-                .name(name)
-                .lastName(lastName)
-                .email(email)
-                .phoneNumber(phoneNumber)
-                .address(address);
-        return this.create(params);
-    };
 
     public List<Customer> list(final SearchParams params) throws OpenpayServiceException,
             ServiceUnavailableException {
@@ -84,4 +72,16 @@ public class CustomerOperations extends ServiceOperations {
         this.getJsonClient().delete(path);
     }
 
+    @Deprecated
+    public Customer create(final String name, final String lastName, final String email,
+            final String phoneNumber, final Address address) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        CreateCustomerParams params = new CreateCustomerParams()
+                .name(name)
+                .lastName(lastName)
+                .email(email)
+                .phoneNumber(phoneNumber)
+                .address(address);
+        return this.create(params);
+    };
 }
