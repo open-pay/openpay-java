@@ -14,26 +14,30 @@ import java.math.BigDecimal;
 import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.core.requests.card.CreateCardParams;
-import mx.openpay.client.enums.ChargeMethods;
+import mx.openpay.client.enums.PayoutMethod;
 
 /**
  * @author elopez
  */
-public class CreateCardChargeParams extends RequestBuilder {
+public class CreateCardPayoutParams extends RequestBuilder {
 
     @Getter
     private String customerId;
 
-    public CreateCardChargeParams() {
-        this.with("method", ChargeMethods.CARD.name().toLowerCase());
+    public CreateCardPayoutParams() {
+        this.with("method", PayoutMethod.CARD.name().toLowerCase());
     }
 
-    public CreateCardChargeParams customerId(final String customerId) {
+    public CreateCardPayoutParams customerId(final String customerId) {
         this.customerId = customerId;
         return this;
     }
 
-    public CreateCardChargeParams card(final CreateCardParams card) {
+    public CreateCardPayoutParams cardId(final String cardId) {
+        return this.with("destination_id", cardId);
+    }
+
+    public CreateCardPayoutParams card(final CreateCardParams card) {
         if (card == null) {
             return this.with("card", null);
         } else {
@@ -41,19 +45,15 @@ public class CreateCardChargeParams extends RequestBuilder {
         }
     }
 
-    public CreateCardChargeParams cardId(final String cardId) {
-        return this.with("source_id", cardId);
-    }
-
-    public CreateCardChargeParams amount(final BigDecimal amount) {
-        return this.with("amount", amount);
-    }
-
-    public CreateCardChargeParams description(final String description) {
+    public CreateCardPayoutParams description(final String description) {
         return this.with("description", description);
     }
 
-    public CreateCardChargeParams orderId(final String orderId) {
+    public CreateCardPayoutParams amount(final BigDecimal amount) {
+        return this.with("amount", amount);
+    }
+
+    public CreateCardPayoutParams orderId(final String orderId) {
         return this.with("order_id", orderId);
     }
 

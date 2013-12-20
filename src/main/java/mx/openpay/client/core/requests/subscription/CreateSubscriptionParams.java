@@ -10,8 +10,8 @@
 package mx.openpay.client.core.requests.subscription;
 
 import lombok.Getter;
-import mx.openpay.client.Card;
 import mx.openpay.client.core.requests.RequestBuilder;
+import mx.openpay.client.core.requests.card.CreateCardParams;
 
 /**
  * Request builder to create a new subscription.
@@ -39,8 +39,12 @@ public class CreateSubscriptionParams extends RequestBuilder {
         return this.with("trial_days", trialDays);
     }
 
-    public CreateSubscriptionParams card(final Card card) {
-        return this.with("card", card);
+    public CreateSubscriptionParams card(final CreateCardParams card) {
+        if (card == null) {
+            return this.with("card", null);
+        } else {
+            return this.with("card", card.asMap());
+        }
     }
 
 }

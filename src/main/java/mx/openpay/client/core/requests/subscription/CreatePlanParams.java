@@ -7,7 +7,7 @@
  * You shall not disclose such Confidential Information and shall use it only
  * in accordance with the company policy.
  */
-package mx.openpay.client.core.requests.plan;
+package mx.openpay.client.core.requests.subscription;
 
 import java.math.BigDecimal;
 

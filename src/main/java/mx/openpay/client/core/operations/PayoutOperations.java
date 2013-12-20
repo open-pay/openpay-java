@@ -28,7 +28,10 @@ import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.payout.CreatePayoutParams;
+import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
+import mx.openpay.client.core.requests.card.CreateCardParams;
+import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
+import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
 import mx.openpay.client.enums.PayoutMethod;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -55,7 +58,19 @@ public class PayoutOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Payout create(final CreatePayoutParams request) throws OpenpayServiceException, ServiceUnavailableException {
+    public Payout create(final CreateBankPayoutParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path;
+        if (request.getCustomerId() == null) {
+            path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
+        } else {
+            path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), request.getCustomerId());
+        }
+        return this.getJsonClient().post(path, request.asMap(), Payout.class);
+    }
+
+    public Payout create(final CreateCardPayoutParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
         String path;
         if (request.getCustomerId() == null) {
             path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
@@ -95,34 +110,42 @@ public class PayoutOperations extends ServiceOperations {
     public Payout createForCustomer(final String customerId, final PayoutMethod method, final String destinationId,
             final BigDecimal amount, final String description, final String orderID)
             throws ServiceUnavailableException, OpenpayServiceException {
-        CreatePayoutParams request = new CreatePayoutParams()
-                .customerId(customerId)
-                .description(description)
-                .amount(amount)
-                .orderId(orderID);
         switch (method) {
         case BANK_ACCOUNT:
-            request.bankAccountId(destinationId);
-            break;
+            return this.create(new CreateBankPayoutParams()
+                    .customerId(customerId)
+                    .description(description)
+                    .amount(amount)
+                    .orderId(orderID)
+                    .bankAccountId(destinationId));
         case CARD:
-            request.cardId(destinationId);
-            break;
+            return this.create(new CreateCardPayoutParams()
+                    .customerId(customerId)
+                    .description(description)
+                    .amount(amount)
+                    .orderId(orderID)
+                    .cardId(destinationId));
         default:
             throw new IllegalArgumentException();
         }
-        return this.create(request);
     }
 
     @Deprecated
     public Payout createForCustomer(final String customerId, final Card card,
             final BigDecimal amount, final String description, final String orderID) throws OpenpayServiceException,
             ServiceUnavailableException {
-        CreatePayoutParams request = new CreatePayoutParams()
+        CreateCardPayoutParams request = new CreateCardPayoutParams()
                 .customerId(customerId)
                 .description(description)
                 .amount(amount)
                 .orderId(orderID)
-                .card(card);
+                .card(new CreateCardParams()
+                        .address(card.getAddress())
+                        .cardNumber(card.getCardNumber())
+                        .cvv2(card.getCvv2())
+                        .expirationMonth(card.getExpirationMonth())
+                        .expirationYear(card.getExpirationYear())
+                        .holderName(card.getHolderName()));
         return this.create(request);
     }
 
@@ -130,34 +153,46 @@ public class PayoutOperations extends ServiceOperations {
     public Payout createForCustomer(final String customerId, final BankAccount bankAccount,
             final BigDecimal amount, final String description, final String orderID) throws OpenpayServiceException,
             ServiceUnavailableException {
-        CreatePayoutParams request = new CreatePayoutParams()
+        CreateBankPayoutParams request = new CreateBankPayoutParams()
                 .customerId(customerId)
                 .description(description)
                 .amount(amount)
                 .orderId(orderID)
-                .bankAccount(bankAccount);
+                .bankAccount(new CreateBankAccountParams()
+                        .clabe(bankAccount.getClabe())
+                        .alias(bankAccount.getAlias())
+                        .holderName(bankAccount.getHolderName()));
         return this.create(request);
     }
 
     @Deprecated
     public Payout createForMerchant(final Card card, final BigDecimal amount,
             final String description, final String orderID) throws OpenpayServiceException, ServiceUnavailableException {
-        CreatePayoutParams request = new CreatePayoutParams()
+        CreateCardPayoutParams request = new CreateCardPayoutParams()
                 .description(description)
                 .amount(amount)
                 .orderId(orderID)
-                .card(card);
+                .card(new CreateCardParams()
+                        .address(card.getAddress())
+                        .cardNumber(card.getCardNumber())
+                        .cvv2(card.getCvv2())
+                        .expirationMonth(card.getExpirationMonth())
+                        .expirationYear(card.getExpirationYear())
+                        .holderName(card.getHolderName()));
         return this.create(request);
     }
 
     @Deprecated
     public Payout createForMerchant(final BankAccount bankAccount, final BigDecimal amount,
             final String description, final String orderID) throws OpenpayServiceException, ServiceUnavailableException {
-        CreatePayoutParams request = new CreatePayoutParams()
+        CreateBankPayoutParams request = new CreateBankPayoutParams()
                 .description(description)
                 .amount(amount)
                 .orderId(orderID)
-                .bankAccount(bankAccount);
+                .bankAccount(new CreateBankAccountParams()
+                        .clabe(bankAccount.getClabe())
+                        .alias(bankAccount.getAlias())
+                        .holderName(bankAccount.getHolderName()));
         return this.create(request);
     }
 

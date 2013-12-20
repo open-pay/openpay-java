@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,5 +51,40 @@ public class Address {
     /** Two-letter ISO 3166-1 country code. Optional. */
     @SerializedName("country_code")
     private String countryCode;
+
+    public Address postalCode(final String postalCode) {
+        this.postalCode = postalCode;
+        return this;
+    }
+
+    public Address line1(final String line1) {
+        this.line1 = line1;
+        return this;
+    }
+
+    public Address line2(final String line2) {
+        this.line2 = line2;
+        return this;
+    }
+
+    public Address line3(final String line3) {
+        this.line3 = line3;
+        return this;
+    }
+
+    public Address city(final String city) {
+        this.city = city;
+        return this;
+    }
+
+    public Address state(final String state) {
+        this.state = state;
+        return this;
+    }
+
+    public Address countryCode(final String countryCode) {
+        this.countryCode = countryCode;
+        return this;
+    }
 
 }

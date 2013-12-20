@@ -29,8 +29,9 @@ import java.util.Map;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.charge.CreateBankChargeParams;
-import mx.openpay.client.core.requests.charge.CreateCardChargeParams;
+import mx.openpay.client.core.requests.card.CreateCardParams;
+import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -57,7 +58,8 @@ public class ChargeOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Charge create(final CreateCardChargeParams request) throws OpenpayServiceException, ServiceUnavailableException {
+    public Charge create(final CreateCardChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
         String path;
         if (request.getCustomerId() == null) {
             path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
@@ -71,7 +73,14 @@ public class ChargeOperations extends ServiceOperations {
     public Charge create(final Card card, final BigDecimal amount, final String description,
             final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
         CreateCardChargeParams chargeRequest = new CreateCardChargeParams()
-                .card(card).amount(amount)
+                .card(new CreateCardParams()
+                        .address(card.getAddress())
+                        .cardNumber(card.getCardNumber())
+                        .cvv2(card.getCvv2())
+                        .expirationMonth(card.getExpirationMonth())
+                        .expirationYear(card.getExpirationYear())
+                        .holderName(card.getHolderName()))
+                .amount(amount)
                 .description(description).orderId(orderId);
         return this.create(chargeRequest);
     }
@@ -81,7 +90,13 @@ public class ChargeOperations extends ServiceOperations {
             final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
         CreateCardChargeParams charge = new CreateCardChargeParams()
                 .customerId(customerId)
-                .card(card)
+                .card(new CreateCardParams()
+                        .address(card.getAddress())
+                        .cardNumber(card.getCardNumber())
+                        .cvv2(card.getCvv2())
+                        .expirationMonth(card.getExpirationMonth())
+                        .expirationYear(card.getExpirationYear())
+                        .holderName(card.getHolderName()))
                 .amount(amount)
                 .description(description)
                 .orderId(orderId);

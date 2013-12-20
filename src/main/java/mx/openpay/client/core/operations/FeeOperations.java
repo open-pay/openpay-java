@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,12 +19,12 @@ import static mx.openpay.client.utils.OpenpayPathComponents.FEES;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.Fee;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.core.requests.transactions.CreateFeeParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -41,15 +41,18 @@ public class FeeOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Fee create(final String customerId, final BigDecimal amount, final String desc,
-            final String orderID) throws ServiceUnavailableException, OpenpayServiceException {
+    public Fee create(final CreateFeeParams params) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(FEES_PATH, this.getMerchantId());
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("customer_id", customerId);
-        data.put("amount", amount);
-        data.put("description", desc);
-        data.put("order_id", orderID);
-        return this.getJsonClient().post(path, data, Fee.class);
+        return this.getJsonClient().post(path, params.asMap(), Fee.class);
+    }
+
+    public Fee create(final String customerId, final BigDecimal amount, final String description,
+            final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
+        return this.create(new CreateFeeParams()
+                .customerId(customerId)
+                .amount(amount)
+                .description(description)
+                .orderId(orderId));
     }
 
     public List<Fee> list(final SearchParams params) throws ServiceUnavailableException,

@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +32,7 @@ import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.CustomerOperations;
+import mx.openpay.client.core.requests.customer.CreateCustomerParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -48,7 +49,7 @@ public class CustomerOperationsTest {
     }
 
     @Test
-    public void testCreateAndDeleteCustomer() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreateAndDeleteCustomer_Old() throws ServiceUnavailableException, OpenpayServiceException {
         Address address = this.createAddress();
         Customer customer = this.ops.create("Juan", "Perez Perez", "juan.perez@gmail.com",
                 "55-25634013", address);
@@ -64,6 +65,44 @@ public class CustomerOperationsTest {
         } finally {
             this.ops.delete(customer.getId());
         }
+    }
+
+    @Test
+    public void testCreateAndDeleteCustomer() throws ServiceUnavailableException, OpenpayServiceException {
+        Address address = this.createAddress();
+        CreateCustomerParams params = new CreateCustomerParams()
+                .name("Juan")
+                .lastName("Perez Perez")
+                .email("juan.perez@gmail.com")
+                .phoneNumber("55-25634013")
+                .address(address);
+        Customer customer = this.ops.create(params);
+        try {
+            Assert.assertNotNull(customer);
+            Assert.assertNotNull(customer.getId());
+            customer.setName("Juanito 2");
+            customer = this.ops.update(customer);
+            Assert.assertEquals("Juanito 2", customer.getName());
+            customer.setName("Juanito");
+            customer = this.ops.update(customer);
+            Assert.assertEquals("Juanito", customer.getName());
+        } finally {
+            this.ops.delete(customer.getId());
+        }
+    }
+
+    @Test
+    public void testname() throws Exception {
+        Address address = null;
+        CreateCustomerParams params = new CreateCustomerParams()
+                .name("John")
+                .lastName("Doe")
+                .email("johndoe@example.com")
+                .phoneNumber("554-170-3567")
+                .address(address);
+
+        Customer customer1 = this.ops.create(params);
+
     }
 
     @Test

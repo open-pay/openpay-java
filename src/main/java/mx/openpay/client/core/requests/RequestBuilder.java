@@ -29,7 +29,7 @@ public abstract class RequestBuilder {
      * @return This same object
      */
     @SuppressWarnings("unchecked")
-    protected <T extends RequestBuilder> T with(final String jsonParam, final Object obj) {
+    public <T extends RequestBuilder> T with(final String jsonParam, final Object obj) {
         this.parameters.put(jsonParam, obj);
         return (T) this;
     }

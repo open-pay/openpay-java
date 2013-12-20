@@ -18,8 +18,8 @@ import java.util.Map;
 
 import mx.openpay.client.Plan;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.plan.CreatePlanParams;
-import mx.openpay.client.core.requests.plan.UpdatePlanParams;
+import mx.openpay.client.core.requests.subscription.CreatePlanParams;
+import mx.openpay.client.core.requests.subscription.UpdatePlanParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;

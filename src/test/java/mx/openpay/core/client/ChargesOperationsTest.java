@@ -37,6 +37,7 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.ChargeOperations;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -59,7 +60,7 @@ public class ChargesOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_WithId() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Customer_WithId_Old() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
 
@@ -68,6 +69,27 @@ public class ChargesOperationsTest {
 
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.charges.create(CUSTOMER_ID, cards.get(0).getId(), amount, desc, orderId);
+        Assert.assertNotNull(transaction);
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+    }
+
+    @Test
+    public void testCreate_Customer_WithId() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("10000.00");
+        String desc = "Pago de taxi";
+
+        List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
+        Assert.assertNotNull(cards);
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        CreateCardChargeParams charge = new CreateCardChargeParams()
+                .customerId(CUSTOMER_ID)
+                .cardId(cards.get(0).getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId);
+        Charge transaction = this.charges.create(charge);
         Assert.assertNotNull(transaction);
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());

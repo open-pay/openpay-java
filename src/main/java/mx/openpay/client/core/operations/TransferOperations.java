@@ -21,12 +21,11 @@ import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.TRANSFERS;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mx.openpay.client.Transfer;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.core.requests.transactions.CreateTransferParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -36,10 +35,6 @@ import mx.openpay.client.utils.SearchParams;
  * @author elopez
  */
 public class TransferOperations extends ServiceOperations {
-
-    private static final String MERCHANT_TRANSFERS_PATH = MERCHANT_ID + TRANSFERS;
-
-    private static final String GET_MERCHANT_TRANSFER = MERCHANT_TRANSFERS_PATH + ID;
 
     private static final String CUSTOMER_TRANSFERS_PATH = MERCHANT_ID + CUSTOMERS + ID + TRANSFERS;
 
@@ -52,16 +47,21 @@ public class TransferOperations extends ServiceOperations {
         super(client, merchantId);
     }
 
-    public Transfer create(final String customerId, final String destinationId, final BigDecimal amount,
-            final String description, final String orderID)
-            throws ServiceUnavailableException, OpenpayServiceException {
-        String path = String.format(CUSTOMER_TRANSFERS_PATH, this.getMerchantId(), customerId);
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("customer_id", destinationId);
-        data.put("amount", amount);
-        data.put("description", description);
-        data.put("order_id", orderID);
-        return this.getJsonClient().post(path, data, Transfer.class);
+    public Transfer create(final CreateTransferParams params) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(CUSTOMER_TRANSFERS_PATH, this.getMerchantId(), params.getFromCustomerId());
+        return this.getJsonClient().post(path, params.asMap(), Transfer.class);
+    }
+
+    @Deprecated
+    public Transfer create(final String fromCustomerId, final String toCustomerId, final BigDecimal amount,
+            final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
+        return this.create(new CreateTransferParams()
+                .fromCustomerId(fromCustomerId)
+                .toCustomerId(toCustomerId)
+                .amount(amount)
+                .description(description)
+                .orderId(orderId));
     }
 
     public List<Transfer> list(final String customerId, final SearchParams params)

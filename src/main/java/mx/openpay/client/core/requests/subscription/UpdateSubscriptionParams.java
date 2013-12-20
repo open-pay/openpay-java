@@ -13,8 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.Getter;
-import mx.openpay.client.Card;
 import mx.openpay.client.core.requests.RequestBuilder;
+import mx.openpay.client.core.requests.card.CreateCardParams;
 
 /**
  * @author elopez
@@ -51,8 +51,12 @@ public class UpdateSubscriptionParams extends RequestBuilder {
         return this.with("cancel_at_period_end", cancelAtPeriodEnd);
     }
 
-    public UpdateSubscriptionParams card(final Card card) {
-        return this.with("card", card);
+    public UpdateSubscriptionParams card(final CreateCardParams card) {
+        if (card == null) {
+            return this.with("card", null);
+        } else {
+            return this.with("card", card.asMap());
+        }
     }
 
     public UpdateSubscriptionParams cardId(final String cardId) {

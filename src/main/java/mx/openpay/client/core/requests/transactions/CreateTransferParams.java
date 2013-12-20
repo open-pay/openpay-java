@@ -13,34 +13,34 @@ import java.math.BigDecimal;
 
 import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
-import mx.openpay.client.enums.ChargeMethods;
 
 /**
  * @author elopez
  */
-public class CreateBankChargeParams extends RequestBuilder {
+public class CreateTransferParams extends RequestBuilder {
 
     @Getter
-    private String customerId;
+    private String fromCustomerId;
 
-    public CreateBankChargeParams() {
-        this.with("method", ChargeMethods.BANK_ACCOUNT.name().toLowerCase());
-    }
-
-    public CreateBankChargeParams customerId(final String customerId) {
-        this.customerId = customerId;
+    public CreateTransferParams fromCustomerId(final String fromCustomerId) {
+        this.fromCustomerId = fromCustomerId;
         return this;
     }
 
-    public CreateBankChargeParams amount(final BigDecimal amount) {
+    public CreateTransferParams toCustomerId(final String toCustomerId) {
+        return this.with("customer_id", toCustomerId);
+    }
+
+    public CreateTransferParams amount(final BigDecimal amount) {
         return this.with("amount", amount);
     }
 
-    public CreateBankChargeParams description(final String description) {
+    public CreateTransferParams description(final String description) {
         return this.with("description", description);
     }
 
-    public CreateBankChargeParams orderId(final String orderId) {
+    public CreateTransferParams orderId(final String orderId) {
         return this.with("order_id", orderId);
     }
+
 }
