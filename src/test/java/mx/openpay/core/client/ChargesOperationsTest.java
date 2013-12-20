@@ -236,7 +236,7 @@ public class ChargesOperationsTest {
             this.charges.create(null, amount, desc, orderId);
             fail();
         } catch (OpenpayServiceException e) {
-            assertEquals(400, e.getHttpCode().intValue());
+            assertEquals(422, e.getHttpCode().intValue());
         }
     }
 

@@ -35,11 +35,19 @@ public class CreateCardParams extends RequestBuilder {
     }
 
     public CreateCardParams expirationMonth(final Integer expirationMonth) {
-        return this.with("expiration_month", String.format("%02d", expirationMonth));
+        if (expirationMonth == null) {
+            return this.with("expiration_month", null);
+        } else {
+            return this.with("expiration_month", String.format("%02d", expirationMonth));
+        }
     }
 
     public CreateCardParams expirationYear(final Integer expirationYear) {
-        return this.with("expiration_year", String.format("%02d", expirationYear));
+        if (expirationYear == null) {
+            return this.with("expiration_year", null);
+        } else {
+            return this.with("expiration_year", String.format("%02d", expirationYear));
+        }
     }
 
     @Deprecated
@@ -58,6 +66,18 @@ public class CreateCardParams extends RequestBuilder {
 
     public CreateCardParams address(final Address address) {
         return this.with("address", address);
+    }
+
+    public CreateCardParams bankCode(final Integer bankCode) {
+        if (bankCode == null) {
+            return this.with("bank_code", null);
+        } else {
+            return this.with("bank_code", String.format("%03d", bankCode));
+        }
+    }
+
+    public CreateCardParams bankCode(final String bankCode) {
+        return this.with("bank_code", bankCode);
     }
 
 }

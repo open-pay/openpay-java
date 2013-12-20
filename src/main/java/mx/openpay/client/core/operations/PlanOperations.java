@@ -22,7 +22,6 @@ import mx.openpay.client.core.requests.subscription.CreatePlanParams;
 import mx.openpay.client.core.requests.subscription.UpdatePlanParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
 /**
@@ -61,7 +60,7 @@ public class PlanOperations extends ServiceOperations {
     public List<Plan> list(final SearchParams params) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(PLANS_PATH, this.getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
-        return this.getJsonClient().list(path, map, ListTypes.PLANS);
+        return this.getJsonClient().list(path, map, Plan.class);
     };
 
 }

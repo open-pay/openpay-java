@@ -35,7 +35,6 @@ import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
 import mx.openpay.client.enums.PayoutMethod;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
 /**
@@ -96,14 +95,14 @@ public class PayoutOperations extends ServiceOperations {
             ServiceUnavailableException {
         String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
-        return this.getJsonClient().list(path, map, ListTypes.PAYOUT);
+        return this.getJsonClient().list(path, map, Payout.class);
     }
 
     public List<Payout> list(final String customerId, final SearchParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
-        return this.getJsonClient().list(path, map, ListTypes.PAYOUT);
+        return this.getJsonClient().list(path, map, Payout.class);
     }
 
     @Deprecated
@@ -138,14 +137,17 @@ public class PayoutOperations extends ServiceOperations {
                 .customerId(customerId)
                 .description(description)
                 .amount(amount)
-                .orderId(orderID)
-                .card(new CreateCardParams()
-                        .address(card.getAddress())
-                        .cardNumber(card.getCardNumber())
-                        .cvv2(card.getCvv2())
-                        .expirationMonth(card.getExpirationMonth())
-                        .expirationYear(card.getExpirationYear())
-                        .holderName(card.getHolderName()));
+                .orderId(orderID);
+        if (card != null) {
+            request.card(new CreateCardParams()
+                    .address(card.getAddress())
+                    .cardNumber(card.getCardNumber())
+                    .cvv2(card.getCvv2())
+                    .expirationMonth(card.getExpirationMonth())
+                    .expirationYear(card.getExpirationYear())
+                    .holderName(card.getHolderName())
+                    .bankCode(card.getBankCode()));
+        }
         return this.create(request);
     }
 
@@ -171,14 +173,17 @@ public class PayoutOperations extends ServiceOperations {
         CreateCardPayoutParams request = new CreateCardPayoutParams()
                 .description(description)
                 .amount(amount)
-                .orderId(orderID)
-                .card(new CreateCardParams()
-                        .address(card.getAddress())
-                        .cardNumber(card.getCardNumber())
-                        .cvv2(card.getCvv2())
-                        .expirationMonth(card.getExpirationMonth())
-                        .expirationYear(card.getExpirationYear())
-                        .holderName(card.getHolderName()));
+                .orderId(orderID);
+        if (card != null) {
+            request.card(new CreateCardParams()
+                    .address(card.getAddress())
+                    .cardNumber(card.getCardNumber())
+                    .cvv2(card.getCvv2())
+                    .expirationMonth(card.getExpirationMonth())
+                    .expirationYear(card.getExpirationYear())
+                    .holderName(card.getHolderName())
+                    .bankCode(card.getBankCode()));
+        }
         return this.create(request);
     }
 

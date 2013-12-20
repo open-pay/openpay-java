@@ -92,20 +92,6 @@ public class CustomerOperationsTest {
     }
 
     @Test
-    public void testname() throws Exception {
-        Address address = null;
-        CreateCustomerParams params = new CreateCustomerParams()
-                .name("John")
-                .lastName("Doe")
-                .email("johndoe@example.com")
-                .phoneNumber("554-170-3567")
-                .address(address);
-
-        Customer customer1 = this.ops.create(params);
-
-    }
-
-    @Test
     public void testDelete_DoesNotExist() throws Exception {
         try {
             this.ops.delete("blahblahblah");

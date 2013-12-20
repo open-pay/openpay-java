@@ -28,7 +28,6 @@ import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.requests.transactions.CreateTransferParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
 /**
@@ -67,7 +66,7 @@ public class TransferOperations extends ServiceOperations {
     public List<Transfer> list(final String customerId, final SearchParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CUSTOMER_TRANSFERS_PATH, this.getMerchantId(), customerId);
-        return this.getJsonClient().list(path, params == null ? null : params.asMap(), ListTypes.TRANSFER);
+        return this.getJsonClient().list(path, params == null ? null : params.asMap(), Transfer.class);
     }
 
     public Transfer get(final String customerId, final String transactionId) throws OpenpayServiceException,

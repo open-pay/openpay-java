@@ -31,7 +31,6 @@ import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
-import mx.openpay.client.Customer;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.PayoutOperations;
@@ -134,22 +133,6 @@ public class PayoutsOperationsTest {
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(customerId, transaction.getCustomerId());
-    }
-
-    @Test
-    public void testname() throws Exception {
-        Customer customer = null;
-        String description = "Payment to Juan";
-        String orderId = "Payout0001";
-        BigDecimal amount = new BigDecimal("150.00");
-
-        CreateBankPayoutParams createPayout = new CreateBankPayoutParams()
-                .customerId(customer.getId())
-                .amount(new BigDecimal("150.00"))
-                .description("Payment to Juan")
-                .orderId("Payout00001"); // Optional transaction identifier
-
-        Payout transaction = this.api.payouts().create(createPayout);
     }
 
     @Test

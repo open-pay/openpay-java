@@ -11,7 +11,6 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 
-import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
 
 /**
@@ -19,12 +18,8 @@ import mx.openpay.client.core.requests.RequestBuilder;
  */
 public class CreateFeeParams extends RequestBuilder {
 
-    @Getter
-    private String customerId;
-
     public CreateFeeParams customerId(final String customerId) {
-        this.customerId = customerId;
-        return this;
+        return this.with("customer_id", customerId);
     }
 
     public CreateFeeParams amount(final BigDecimal amount) {

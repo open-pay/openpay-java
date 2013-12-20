@@ -28,7 +28,6 @@ import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
 /**
@@ -72,7 +71,7 @@ public class BankAccountOperations extends ServiceOperations {
             throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(BANK_ACCOUNTS_PATH, this.getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
-        return this.getJsonClient().list(path, map, ListTypes.BANK_ACCOUNT);
+        return this.getJsonClient().list(path, map, BankAccount.class);
     }
 
     public BankAccount get(final String customerId, final String bankId) throws ServiceUnavailableException,

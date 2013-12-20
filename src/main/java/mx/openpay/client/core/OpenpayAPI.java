@@ -107,7 +107,7 @@ public class OpenpayAPI {
     }
 
     public void setTimeout(final int timeout) {
-        this.jsonClient.setConnectionTimeout(timeout);
+        this.jsonClient.getHttpClient().setConnectionTimeout(timeout);
     }
 
     public CustomerOperations customers() {

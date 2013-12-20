@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.openpay.client.utils;
+package mx.openpay.client.core.impl;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
@@ -35,31 +38,33 @@ import com.google.gson.reflect.TypeToken;
  */
 public class ListTypes {
 
-    public static final Type BANK_ACCOUNT = new TypeToken<Collection<BankAccount>>() {
-    }.getType();
+    private static final Map<Class<?>, Type> TYPES_MAP;
 
-    public static final Type CARD = new TypeToken<Collection<Card>>() {
-    }.getType();
+    static {
+        Map<Class<?>, Type> map = new HashMap<Class<?>, Type>();
+        map.put(BankAccount.class, new TypeToken<List<BankAccount>>() {
+        }.getType());
+        map.put(Card.class, new TypeToken<List<Card>>() {
+        }.getType());
+        map.put(Customer.class, new TypeToken<List<Customer>>() {
+        }.getType());
+        map.put(Charge.class, new TypeToken<List<Charge>>() {
+        }.getType());
+        map.put(Fee.class, new TypeToken<List<Fee>>() {
+        }.getType());
+        map.put(Transfer.class, new TypeToken<List<Transfer>>() {
+        }.getType());
+        map.put(Payout.class, new TypeToken<List<Payout>>() {
+        }.getType());
+        map.put(Plan.class, new TypeToken<List<Plan>>() {
+        }.getType());
+        map.put(Subscription.class, new TypeToken<List<Subscription>>() {
+        }.getType());
+        TYPES_MAP = Collections.unmodifiableMap(map);
+    }
 
-    public static final Type CUSTOMER = new TypeToken<Collection<Customer>>() {
-    }.getType();
-
-    public static final Type CHARGE = new TypeToken<Collection<Charge>>() {
-    }.getType();
-
-    public static final Type FEE = new TypeToken<Collection<Fee>>() {
-    }.getType();
-
-    public static final Type TRANSFER = new TypeToken<Collection<Transfer>>() {
-    }.getType();
-
-    public static final Type PAYOUT = new TypeToken<Collection<Payout>>() {
-    }.getType();
-
-    public static final Type PLANS = new TypeToken<Collection<Plan>>() {
-    }.getType();
-
-    public static final Type SUBSCRIPTIONS = new TypeToken<Collection<Subscription>>() {
-    }.getType();;
+    static Type getType(final Class<?> clazz) {
+        return TYPES_MAP.get(clazz);
+    }
 
 }

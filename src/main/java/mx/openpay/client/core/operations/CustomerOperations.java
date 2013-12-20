@@ -29,7 +29,6 @@ import mx.openpay.client.core.requests.customer.CreateCustomerParams;
 import mx.openpay.client.core.requests.customer.UpdateCustomerParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
 /**
@@ -55,7 +54,7 @@ public class CustomerOperations extends ServiceOperations {
             ServiceUnavailableException {
         String path = String.format(CUSTOMERS_PATH, this.getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
-        return this.getJsonClient().list(path, map, ListTypes.CUSTOMER);
+        return this.getJsonClient().list(path, map, Customer.class);
     }
 
     public Customer get(final String customerId) throws OpenpayServiceException, ServiceUnavailableException {

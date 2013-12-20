@@ -23,7 +23,6 @@ import mx.openpay.client.core.requests.subscription.CreateSubscriptionParams;
 import mx.openpay.client.core.requests.subscription.UpdateSubscriptionParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-import mx.openpay.client.utils.ListTypes;
 import mx.openpay.client.utils.SearchParams;
 
 /**
@@ -68,7 +67,7 @@ public class SubscriptionOperations extends ServiceOperations {
             ServiceUnavailableException {
         String path = String.format(CUSTOMER_SUBSCRIPTIONS_PATH, this.getMerchantId(), customerId);
         Map<String, String> map = params == null ? null : params.asMap();
-        return this.getJsonClient().list(path, map, ListTypes.SUBSCRIPTIONS);
+        return this.getJsonClient().list(path, map, Subscription.class);
     };
 
 }
