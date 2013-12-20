@@ -18,10 +18,11 @@ import mx.openpay.client.core.requests.RequestBuilder;
 public class UpdatePlanParams extends RequestBuilder {
 
     @Getter
-    private final String planId;
+    private String planId;
 
-    public UpdatePlanParams(final String planId) {
+    public UpdatePlanParams planId(final String planId) {
         this.planId = planId;
+        return this;
     }
 
     public UpdatePlanParams name(final String name) {

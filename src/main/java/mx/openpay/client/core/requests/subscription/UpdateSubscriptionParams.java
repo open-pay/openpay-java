@@ -24,14 +24,19 @@ public class UpdateSubscriptionParams extends RequestBuilder {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Getter
-    private final String customerId;
+    private String customerId;
 
     @Getter
-    private final String subscriptionId;
+    private String subscriptionId;
 
-    public UpdateSubscriptionParams(final String customerId, final String subscriptionId) {
+    public UpdateSubscriptionParams customerId(final String customerId) {
         this.customerId = customerId;
+        return this;
+    }
+
+    public UpdateSubscriptionParams subscriptionId(final String subscriptionId) {
         this.subscriptionId = subscriptionId;
+        return this;
     }
 
     public UpdateSubscriptionParams trialEndDate(final Date trialEndDate) {

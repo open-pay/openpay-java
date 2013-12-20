@@ -20,10 +20,11 @@ import mx.openpay.client.core.requests.RequestBuilder;
 public class CreateSubscriptionParams extends RequestBuilder {
 
     @Getter
-    private final String customerId;
+    private String customerId;
 
-    public CreateSubscriptionParams(final String customerId) {
+    public CreateSubscriptionParams customerId(final String customerId) {
         this.customerId = customerId;
+        return this;
     }
 
     public CreateSubscriptionParams planId(final String planId) {
