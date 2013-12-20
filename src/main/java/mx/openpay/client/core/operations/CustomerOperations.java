@@ -26,6 +26,7 @@ import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.requests.customer.CreateCustomerParams;
+import mx.openpay.client.core.requests.customer.UpdateCustomerParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.ListTypes;
@@ -62,9 +63,10 @@ public class CustomerOperations extends ServiceOperations {
         return this.getJsonClient().get(path, Customer.class);
     };
 
-    public Customer update(final Customer customer) throws OpenpayServiceException, ServiceUnavailableException {
-        String path = String.format(GET_CUSTOMER_PATH, this.getMerchantId(), customer.getId());
-        return this.getJsonClient().put(path, customer, Customer.class);
+    public Customer update(final UpdateCustomerParams params) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(GET_CUSTOMER_PATH, this.getMerchantId(), params.getCustomerId());
+        return this.getJsonClient().put(path, params.asMap(), Customer.class);
     }
 
     public void delete(final String customerId) throws OpenpayServiceException, ServiceUnavailableException {
@@ -84,4 +86,15 @@ public class CustomerOperations extends ServiceOperations {
                 .address(address);
         return this.create(params);
     };
+
+    @Deprecated
+    public Customer update(final Customer customer) throws OpenpayServiceException, ServiceUnavailableException {
+        return this.update(new UpdateCustomerParams()
+                .customerId(customer.getId())
+                .email(customer.getEmail())
+                .address(customer.getAddress())
+                .lastName(customer.getLastName())
+                .name(customer.getName())
+                .phoneNumber(customer.getPhoneNumber()));
+    }
 }

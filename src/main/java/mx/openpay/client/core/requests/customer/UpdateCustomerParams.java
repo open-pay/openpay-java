@@ -9,6 +9,7 @@
  */
 package mx.openpay.client.core.requests.customer;
 
+import lombok.Getter;
 import mx.openpay.client.Address;
 import mx.openpay.client.core.requests.RequestBuilder;
 
@@ -17,23 +18,31 @@ import mx.openpay.client.core.requests.RequestBuilder;
  */
 public class UpdateCustomerParams extends RequestBuilder {
 
-    public CreateCustomerParams name(final String name) {
+    @Getter
+    private String customerId;
+
+    public UpdateCustomerParams customerId(final String customerId) {
+        this.customerId = customerId;
+        return this;
+    }
+
+    public UpdateCustomerParams name(final String name) {
         return this.with("name", name);
     }
 
-    public CreateCustomerParams lastName(final String lastName) {
+    public UpdateCustomerParams lastName(final String lastName) {
         return this.with("last_name", lastName);
     }
 
-    public CreateCustomerParams email(final String email) {
+    public UpdateCustomerParams email(final String email) {
         return this.with("email", email);
     }
 
-    public CreateCustomerParams phoneNumber(final String phoneNumber) {
+    public UpdateCustomerParams phoneNumber(final String phoneNumber) {
         return this.with("phone_number", phoneNumber);
     }
 
-    public CreateCustomerParams address(final Address address) {
+    public UpdateCustomerParams address(final Address address) {
         return this.with("address", address);
     }
 }

@@ -109,11 +109,10 @@ CreateCardParams card = new CreateCardParams();
 		.expirationMonth(9);                  
 		.expirationYear(14);
 
-Subscription subscription = api.subscriptions()
-		.create(new CreateSubscriptionParams()
-				.customerId(customer.getId())
-				.planId(plan.getId())
-				.card(card));      // You can also use withCardId to use a pre-registered card.
+Subscription subscription = api.subscriptions().create(new CreateSubscriptionParams()
+		.customerId(customer.getId())
+		.planId(plan.getId())
+		.card(card));      // You can also use withCardId to use a pre-registered card.
 ```
 
 To cancel the subscription at the end of the current period, you can update its cancelAtPeriodEnd property to true:
