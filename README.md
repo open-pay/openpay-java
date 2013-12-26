@@ -1,4 +1,4 @@
-openpay-java
+Openpay Java bindings [![Build Status](https://travis-ci.org/open-pay/openpay-java.png?branch=master)](https://travis-ci.org/open-pay/openpay-java)
 ===============
 
 Java client for Openpay services
