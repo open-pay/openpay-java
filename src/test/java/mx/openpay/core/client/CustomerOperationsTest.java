@@ -114,7 +114,6 @@ public class CustomerOperationsTest {
             Assert.assertNotNull(customer.getEmail());
             Assert.assertNotNull(customer.getName());
             Assert.assertNotNull(customer.getStatus());
-            Assert.assertNotNull(customer.getAddress());
         }
     }
 

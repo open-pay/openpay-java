@@ -46,18 +46,18 @@ import org.junit.Test;
  * correct.
  * @author elopez
  */
-@Ignore("Not actually meant to run")
+@Ignore("Not actually meant to run everytime, just to check the readme examples are ok")
 @SuppressWarnings("unused")
 public class ReadmeExamples {
 
     @Test
     public void testReadmeExamples() throws Exception {
-        String merchantId = "";
-        String apiKey = "";
+        String merchantId = "mtfsdeoulmcoj0xofpfc";
+        String apiKey = "sk_4ec3ef18cd01471487ca719f566d4d3f";
 
         // #### Starting the API ####
 
-        OpenpayAPI api = new OpenpayAPI("https://sandbox-api.openpay.mx/", apiKey, merchantId);
+        OpenpayAPI api = new OpenpayAPI("https://dev-api.openpay.mx/", apiKey, merchantId);
 
         Address address = new Address()
                 .line1("Calle Morelos #12 - 11")

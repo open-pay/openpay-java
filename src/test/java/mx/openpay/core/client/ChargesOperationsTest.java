@@ -144,7 +144,7 @@ public class ChargesOperationsTest {
     }
 
     @Test
-    public void testRefund_Customer() throws Exception {
+    public void testRefund_Customer_Old() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
@@ -156,9 +156,8 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = this.charges.refund(CUSTOMER_ID, transaction.getId(), "cancelacion", null);
+        transaction = this.charges.refund(CUSTOMER_ID, transaction.getId(), "cancelacion (ignored description)", null);
         Assert.assertNotNull(transaction.getRefund());
-        Assert.assertEquals("cancelacion", transaction.getRefund().getDescription());
 
         transaction = this.charges.get(CUSTOMER_ID, originalTransactionId);
         assertNotNull(transaction.getRefund());
@@ -251,9 +250,8 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = this.charges.refund(transaction.getId(), "cancelacion", null);
+        transaction = this.charges.refund(transaction.getId(), "cancelacion (ignored description)", null);
         Assert.assertNotNull(transaction.getRefund());
-        Assert.assertEquals("cancelacion", transaction.getRefund().getDescription());
 
         transaction = this.charges.get(originalTransactionId);
         assertNotNull(transaction.getRefund());
