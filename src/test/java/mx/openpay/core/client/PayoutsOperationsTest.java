@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,6 +34,7 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.PayoutOperations;
+import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
 import mx.openpay.client.enums.PayoutMethod;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -91,7 +92,7 @@ public class PayoutsOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_BankAccountId() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Customer_BankAccountId_Old() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -102,6 +103,31 @@ public class PayoutsOperationsTest {
         String orderId = String.valueOf(System.currentTimeMillis());
         Payout transaction = this.payouts.createForCustomer(customerId, PayoutMethod.BANK_ACCOUNT, bankAccounts.get(0)
                 .getId(), amount, desc, orderId);
+        Assert.assertNotNull(transaction);
+        Assert.assertNotNull(transaction.getCreationDate());
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertEquals(customerId, transaction.getCustomerId());
+    }
+
+    @Test
+    public void testCreate_Customer_BankAccountId() throws ServiceUnavailableException, OpenpayServiceException {
+        String customerId = CUSTOMER_ID;
+        BigDecimal amount = new BigDecimal("1.00");
+        String desc = "Ganancias";
+
+        List<BankAccount> bankAccounts = this.api.bankAccounts().list(customerId, search().offset(0).limit(10));
+        Assert.assertNotNull(bankAccounts);
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        CreateBankPayoutParams createPayout = new CreateBankPayoutParams()
+                .customerId(customerId)
+                .bankAccountId(bankAccounts.get(0).getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId);
+
+        Payout transaction = this.payouts.create(createPayout);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertEquals(amount, transaction.getAmount());

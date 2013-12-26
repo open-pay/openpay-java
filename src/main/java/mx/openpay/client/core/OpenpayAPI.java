@@ -26,6 +26,8 @@ import mx.openpay.client.core.operations.ChargeOperations;
 import mx.openpay.client.core.operations.CustomerOperations;
 import mx.openpay.client.core.operations.FeeOperations;
 import mx.openpay.client.core.operations.PayoutOperations;
+import mx.openpay.client.core.operations.PlanOperations;
+import mx.openpay.client.core.operations.SubscriptionOperations;
 import mx.openpay.client.core.operations.TransferOperations;
 
 /**
@@ -60,6 +62,10 @@ public class OpenpayAPI {
 
     private final TransferOperations transferOperations;
 
+    private final PlanOperations planOperations;
+
+    private final SubscriptionOperations subscriptionsOperations;
+
     public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
         if (location == null) {
             throw new IllegalArgumentException("Location can't be null");
@@ -78,6 +84,8 @@ public class OpenpayAPI {
         this.feeOperations = new FeeOperations(this.jsonClient, merchantId);
         this.payoutOperations = new PayoutOperations(this.jsonClient, merchantId);
         this.transferOperations = new TransferOperations(this.jsonClient, merchantId);
+        this.planOperations = new PlanOperations(this.jsonClient, merchantId);
+        this.subscriptionsOperations = new SubscriptionOperations(this.jsonClient, merchantId);
     }
 
     private JsonServiceClient initJsonClient(final String location, final String apiKey) {
@@ -99,7 +107,7 @@ public class OpenpayAPI {
     }
 
     public void setTimeout(final int timeout) {
-        this.jsonClient.setConnectionTimeout(timeout);
+        this.jsonClient.getHttpClient().setConnectionTimeout(timeout);
     }
 
     public CustomerOperations customers() {
@@ -128,5 +136,13 @@ public class OpenpayAPI {
 
     public BankAccountOperations bankAccounts() {
         return this.bankAccountOperations;
+    }
+
+    public PlanOperations plans() {
+        return this.planOperations;
+    }
+
+    public SubscriptionOperations subscriptions() {
+        return this.subscriptionsOperations;
     }
 }

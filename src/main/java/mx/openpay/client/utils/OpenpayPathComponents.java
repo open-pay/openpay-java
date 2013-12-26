@@ -42,4 +42,9 @@ public class OpenpayPathComponents {
 
     public static final String ID = "/%s";
 
+    public static final String PLANS = "/plans";
+
+    public static final String SUBSCRIPTIONS = "/subscriptions";
+
+
 }

@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,6 +37,7 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.ChargeOperations;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -59,7 +60,7 @@ public class ChargesOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_WithId() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Customer_WithId_Old() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
 
@@ -68,6 +69,27 @@ public class ChargesOperationsTest {
 
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.charges.create(CUSTOMER_ID, cards.get(0).getId(), amount, desc, orderId);
+        Assert.assertNotNull(transaction);
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+    }
+
+    @Test
+    public void testCreate_Customer_WithId() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("10000.00");
+        String desc = "Pago de taxi";
+
+        List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
+        Assert.assertNotNull(cards);
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        CreateCardChargeParams charge = new CreateCardChargeParams()
+                .customerId(CUSTOMER_ID)
+                .cardId(cards.get(0).getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId);
+        Charge transaction = this.charges.create(charge);
         Assert.assertNotNull(transaction);
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
@@ -122,7 +144,7 @@ public class ChargesOperationsTest {
     }
 
     @Test
-    public void testRefund_Customer() throws Exception {
+    public void testRefund_Customer_Old() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
@@ -134,9 +156,8 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = this.charges.refund(CUSTOMER_ID, transaction.getId(), "cancelacion", null);
+        transaction = this.charges.refund(CUSTOMER_ID, transaction.getId(), "cancelacion (ignored description)", null);
         Assert.assertNotNull(transaction.getRefund());
-        Assert.assertEquals("cancelacion", transaction.getRefund().getDescription());
 
         transaction = this.charges.get(CUSTOMER_ID, originalTransactionId);
         assertNotNull(transaction.getRefund());
@@ -214,7 +235,7 @@ public class ChargesOperationsTest {
             this.charges.create(null, amount, desc, orderId);
             fail();
         } catch (OpenpayServiceException e) {
-            assertEquals(400, e.getHttpCode().intValue());
+            assertEquals(422, e.getHttpCode().intValue());
         }
     }
 
@@ -229,9 +250,8 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = this.charges.refund(transaction.getId(), "cancelacion", null);
+        transaction = this.charges.refund(transaction.getId(), "cancelacion (ignored description)", null);
         Assert.assertNotNull(transaction.getRefund());
-        Assert.assertEquals("cancelacion", transaction.getRefund().getDescription());
 
         transaction = this.charges.get(originalTransactionId);
         assertNotNull(transaction.getRefund());
@@ -245,8 +265,11 @@ public class ChargesOperationsTest {
 
     @Test
     public void testGet_MerchantForCustomer() throws Exception {
-        Charge sale = this.charges.get(CUSTOMER_CHARGE_ID);
-        assertNotNull(sale);
+        try {
+            this.charges.get(CUSTOMER_CHARGE_ID);
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
     }
 
     @Test

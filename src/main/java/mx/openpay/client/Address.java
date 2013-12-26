@@ -52,4 +52,39 @@ public class Address {
     @SerializedName("country_code")
     private String countryCode;
 
+    public Address postalCode(final String postalCode) {
+        this.postalCode = postalCode;
+        return this;
+    }
+
+    public Address line1(final String line1) {
+        this.line1 = line1;
+        return this;
+    }
+
+    public Address line2(final String line2) {
+        this.line2 = line2;
+        return this;
+    }
+
+    public Address line3(final String line3) {
+        this.line3 = line3;
+        return this;
+    }
+
+    public Address city(final String city) {
+        this.city = city;
+        return this;
+    }
+
+    public Address state(final String state) {
+        this.state = state;
+        return this;
+    }
+
+    public Address countryCode(final String countryCode) {
+        this.countryCode = countryCode;
+        return this;
+    }
+
 }
