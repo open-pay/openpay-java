@@ -28,14 +28,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
 import mx.openpay.client.Transfer;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.TransferOperations;
+import mx.openpay.client.core.requests.transactions.CreateTransferParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 
 import org.junit.Before;
@@ -46,8 +45,6 @@ import org.junit.Test;
  */
 public class TransferOperationsTest {
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
     TransferOperations ops;
 
     @Before
@@ -56,9 +53,10 @@ public class TransferOperationsTest {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
-    public void testCreate() throws Exception {
-        String orderId = this.dateFormat.format(new Date());
+    public void testCreate_Old() throws Exception {
+        String orderId = String.valueOf(System.currentTimeMillis());
         Transfer transfer = this.ops.create(CUSTOMER_ID, TRANSFER_TO_CUSTOMER_ID, new BigDecimal("10.0"),
                 "Una descripcion", orderId);
         assertNotNull(transfer.getId());
@@ -69,8 +67,25 @@ public class TransferOperationsTest {
     }
 
     @Test
-    public void testCreate_NoDestination() throws Exception {
-        String orderId = this.dateFormat.format(new Date());
+    public void testCreate() throws Exception {
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Transfer transfer = this.ops.create(new CreateTransferParams()
+                .fromCustomerId(CUSTOMER_ID)
+                .toCustomerId(TRANSFER_TO_CUSTOMER_ID)
+                .amount(BigDecimal.TEN)
+                .description("Una descripcion")
+                .orderId(orderId));
+        assertNotNull(transfer.getId());
+        assertNotNull(transfer.getCreationDate());
+        assertNull(transfer.getCard());
+        assertNull(transfer.getBankAccount());
+        assertEquals(orderId, transfer.getOrderId());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testCreate_NoDestination_Old() throws Exception {
+        String orderId = String.valueOf(System.currentTimeMillis());
         try {
             this.ops.create(CUSTOMER_ID, null, new BigDecimal("10.0"), "Una descripcion", orderId);
             fail();
@@ -80,10 +95,42 @@ public class TransferOperationsTest {
     }
 
     @Test
-    public void testCreate_InvalidDestination() throws Exception {
-        String orderId = this.dateFormat.format(new Date());
+    public void testCreate_NoDestination() throws Exception {
+        String orderId = String.valueOf(System.currentTimeMillis());
+        try {
+            this.ops.create(new CreateTransferParams()
+                    .fromCustomerId(CUSTOMER_ID)
+                    .amount(new BigDecimal("10.0"))
+                    .description("Una descripcion")
+                    .orderId(orderId));
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(400, e.getHttpCode().intValue());
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testCreate_InvalidDestination_Old() throws Exception {
+        String orderId = String.valueOf(System.currentTimeMillis());
         try {
             this.ops.create(CUSTOMER_ID, "", new BigDecimal("10.0"), "Una descripcion", orderId);
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
+    public void testCreate_InvalidDestination() throws Exception {
+        String orderId = String.valueOf(System.currentTimeMillis());
+        try {
+            this.ops.create(new CreateTransferParams()
+                    .fromCustomerId(CUSTOMER_ID)
+                    .toCustomerId("")
+                    .amount(new BigDecimal("10.0"))
+                    .description("Una descripcion")
+                    .orderId(orderId));
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());

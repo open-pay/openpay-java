@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.Getter;
+import mx.openpay.client.Subscription;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.core.requests.card.CreateCardParams;
 
@@ -35,14 +36,16 @@ public class UpdateSubscriptionParams extends RequestBuilder {
     @Getter
     private String subscriptionId;
 
-    public UpdateSubscriptionParams customerId(final String customerId) {
-        this.customerId = customerId;
-        return this;
-    }
-
-    public UpdateSubscriptionParams subscriptionId(final String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
+    /**
+     * Initializes the Subscription update parameters with the values of the current subscription. The only exception is
+     * the Card information, which needs to be set into the params if the card must be updated.
+     * @param subscription
+     */
+    public UpdateSubscriptionParams(final Subscription subscription) {
+        this.customerId = subscription.getCustomerId();
+        this.subscriptionId = subscription.getId();
+        this.trialEndDate(subscription.getTrialEndDate());
+        this.cancelAtPeriodEnd(subscription.getCancelAtPeriodEnd());
     }
 
     /**

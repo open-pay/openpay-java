@@ -34,6 +34,7 @@ import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.CustomerOperations;
 import mx.openpay.client.core.requests.customer.CreateCustomerParams;
+import mx.openpay.client.core.requests.customer.UpdateCustomerParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -50,6 +51,7 @@ public class CustomerOperationsTest {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testCreateAndDeleteCustomer_Old() throws ServiceUnavailableException, OpenpayServiceException {
         Address address = this.createAddress();
@@ -82,11 +84,11 @@ public class CustomerOperationsTest {
         try {
             Assert.assertNotNull(customer);
             Assert.assertNotNull(customer.getId());
-            customer.setName("Juanito 2");
-            customer = this.ops.update(customer);
+            customer = this.ops.update(new UpdateCustomerParams(customer)
+                    .name("Juanito 2"));
             Assert.assertEquals("Juanito 2", customer.getName());
-            customer.setName("Juanito");
-            customer = this.ops.update(customer);
+            customer = this.ops.update(new UpdateCustomerParams(customer)
+                    .name("Juanito"));
             Assert.assertEquals("Juanito", customer.getName());
         } finally {
             this.ops.delete(customer.getId());

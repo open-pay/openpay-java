@@ -157,9 +157,7 @@ Subscription subscription = api.subscriptions().create(new CreateSubscriptionPar
 To cancel the subscription at the end of the current period, you can update its cancelAtPeriodEnd property to true:
 
 ```java
-api.subscriptions().update(new UpdateSubscriptionParams()
-		.customerId(customer.getId())
-		.subscriptionId(subscription.getId())
+api.subscriptions().update(new UpdateSubscriptionParams(subscription)
 		.cancelAtPeriodEnd(true));
 ```
 

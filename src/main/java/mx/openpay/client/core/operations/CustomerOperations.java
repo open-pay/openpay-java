@@ -89,12 +89,6 @@ public class CustomerOperations extends ServiceOperations {
 
     @Deprecated
     public Customer update(final Customer customer) throws OpenpayServiceException, ServiceUnavailableException {
-        return this.update(new UpdateCustomerParams()
-                .customerId(customer.getId())
-                .email(customer.getEmail())
-                .address(customer.getAddress())
-                .lastName(customer.getLastName())
-                .name(customer.getName())
-                .phoneNumber(customer.getPhoneNumber()));
+        return this.update(new UpdateCustomerParams(customer));
     }
 }

@@ -152,9 +152,10 @@ public class PlanOperationsTest {
 
     @Test
     public void testUpdate() throws Exception {
-        UpdatePlanParams updatePlan = new UpdatePlanParams().planId(UPDATE_PLAN_ID);
+        Plan plan = this.plans.get(UPDATE_PLAN_ID);
+        UpdatePlanParams updatePlan = new UpdatePlanParams(plan);
         updatePlan.name("nombre").trialDays(5);
-        Plan plan = this.plans.update(updatePlan);
+        plan = this.plans.update(updatePlan);
         assertThat(plan.getId(), is(UPDATE_PLAN_ID));
         assertThat(plan.getName(), is("nombre"));
         assertThat(plan.getTrialDays(), is(5));

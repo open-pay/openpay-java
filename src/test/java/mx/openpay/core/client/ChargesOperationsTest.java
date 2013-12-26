@@ -38,7 +38,9 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.ChargeOperations;
+import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -61,6 +63,7 @@ public class ChargesOperationsTest {
         this.charges = this.api.charges();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testCreate_Customer_WithId_Old() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("10000.00");
@@ -101,18 +104,23 @@ public class ChargesOperationsTest {
     public void testCreate_Customer_WithCard() throws Exception {
         Address address = this.createAddress();
 
-        Card card = new Card();
-        card.setCardNumber("5243385358972033");
-        card.setHolderName("Juanito Pérez Nuñez");
-        card.setCvv2("111");
-        card.setExpirationMonth("09");
-        card.setExpirationYear("14");
-        card.setAddress(address);
+        CreateCardParams card = new CreateCardParams()
+                .cardNumber("5243385358972033")
+                .holderName("Juanito Pérez Nuñez")
+                .cvv2("111")
+                .expirationMonth(9)
+                .expirationYear(14)
+                .address(address);
 
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
-        Charge deposit = this.charges.create(CUSTOMER_ID, card, amount, desc, orderId);
+        Charge deposit = this.charges.create(new CreateCardChargeParams()
+                .customerId(CUSTOMER_ID)
+                .card(card)
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId));
         assertNotNull(deposit);
         assertNotNull(deposit.getCard());
         assertNull(deposit.getCard().getCvv2());
@@ -120,20 +128,25 @@ public class ChargesOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_NoCard() throws Exception {
+    public void testCreate_Customer_NoCardOrId() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         try {
-            this.charges.create(CUSTOMER_ID, (Card) null, amount, desc, orderId);
+            this.charges.create(new CreateCardChargeParams()
+                    .customerId(CUSTOMER_ID)
+                    .amount(amount)
+                    .description(desc)
+                    .orderId(orderId));
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(422, e.getHttpCode().intValue());
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Test
-    public void testCreate_Customer_NoId() throws Exception {
+    public void testCreate_Customer_NoId_Old() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -145,6 +158,7 @@ public class ChargesOperationsTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testRefund_Customer_Old() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
@@ -153,12 +167,44 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(cards);
         String orderId = String.valueOf(System.currentTimeMillis());
 
-        Charge transaction = this.charges.create(CUSTOMER_ID, cards.get(0).getId(), amount, desc, orderId);
+        Charge transaction = this.charges.create(new CreateCardChargeParams()
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .customerId(CUSTOMER_ID)
+                .cardId(cards.get(0).getId()));
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
         transaction = this.charges.refund(CUSTOMER_ID, transaction.getId(), "cancelacion (ignored description)", null);
+        Assert.assertNotNull(transaction.getRefund());
+
+        transaction = this.charges.get(CUSTOMER_ID, originalTransactionId);
+        assertNotNull(transaction.getRefund());
+    }
+
+    @Test
+    public void testRefund_Customer() throws Exception {
+        BigDecimal amount = new BigDecimal("10000.00");
+        String desc = "Pago de taxi";
+        List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
+        Assert.assertNotNull(cards);
+        String orderId = String.valueOf(System.currentTimeMillis());
+
+        Charge transaction = this.charges.create(new CreateCardChargeParams()
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .customerId(CUSTOMER_ID)
+                .cardId(cards.get(0).getId()));
+        String originalTransactionId = transaction.getId();
+        Assert.assertNotNull(transaction);
+        assertNull(transaction.getRefund());
+
+        transaction = this.charges.refund(new RefundParams()
+                .customerId(CUSTOMER_ID)
+                .chargeId(transaction.getId()));
         Assert.assertNotNull(transaction.getRefund());
 
         transaction = this.charges.get(CUSTOMER_ID, originalTransactionId);
@@ -200,18 +246,22 @@ public class ChargesOperationsTest {
     public void testCreate_Merchant_WithCard() throws Exception {
         Address address = this.createAddress();
 
-        Card card = new Card();
-        card.setCardNumber("5243385358972033");
-        card.setHolderName("Juanito Pérez Nuñez");
-        card.setCvv2("111");
-        card.setExpirationMonth("09");
-        card.setExpirationYear("14");
-        card.setAddress(address);
+        CreateCardParams card = new CreateCardParams();
+        card.cardNumber("5243385358972033");
+        card.holderName("Juanito Pérez Nuñez");
+        card.cvv2("111");
+        card.expirationMonth(9);
+        card.expirationYear(14);
+        card.address(address);
 
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
-        Charge deposit = this.charges.create(card, amount, desc, orderId);
+        Charge deposit = this.charges.create(new CreateCardChargeParams()
+                .card(card)
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId));
         assertNotNull(deposit);
         assertNotNull(deposit.getCard());
         assertNull(deposit.getCard().getCvv2());
@@ -234,15 +284,19 @@ public class ChargesOperationsTest {
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         try {
-            this.charges.create(null, amount, desc, orderId);
+            this.charges.create(new CreateCardChargeParams()
+                    .amount(amount)
+                    .description(desc)
+                    .orderId(orderId));
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(422, e.getHttpCode().intValue());
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Test
-    public void testRefund_Merchant() throws Exception {
+    public void testRefund_Merchant_Old() throws Exception {
         BigDecimal amount = new BigDecimal("10000.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -253,6 +307,28 @@ public class ChargesOperationsTest {
         assertNull(transaction.getRefund());
 
         transaction = this.charges.refund(transaction.getId(), "cancelacion (ignored description)", null);
+        Assert.assertNotNull(transaction.getRefund());
+
+        transaction = this.charges.get(originalTransactionId);
+        assertNotNull(transaction.getRefund());
+    }
+
+    @Test
+    public void testRefund_Merchant() throws Exception {
+        BigDecimal amount = new BigDecimal("10000.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+
+        Charge transaction = this.charges.create(new CreateCardChargeParams()
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .card(this.getCreateCard()));
+        String originalTransactionId = transaction.getId();
+        Assert.assertNotNull(transaction);
+        assertNull(transaction.getRefund());
+
+        transaction = this.charges.refund(new RefundParams().chargeId(transaction.getId()));
         Assert.assertNotNull(transaction.getRefund());
 
         transaction = this.charges.get(originalTransactionId);
@@ -295,4 +371,20 @@ public class ChargesOperationsTest {
         card.setAddress(address);
         return card;
     }
+
+    /**
+     * @return
+     */
+    private CreateCardParams getCreateCard() {
+        Address address = this.createAddress();
+        CreateCardParams card = new CreateCardParams();
+        card.cardNumber("5243385358972033");
+        card.holderName("Holder");
+        card.expirationMonth(12);
+        card.expirationYear(15);
+        card.cvv2("123");
+        card.address(address);
+        return card;
+    }
+
 }

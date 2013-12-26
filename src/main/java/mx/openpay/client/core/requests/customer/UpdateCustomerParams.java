@@ -17,6 +17,7 @@ package mx.openpay.client.core.requests.customer;
 
 import lombok.Getter;
 import mx.openpay.client.Address;
+import mx.openpay.client.Customer;
 import mx.openpay.client.core.requests.RequestBuilder;
 
 /**
@@ -26,6 +27,22 @@ public class UpdateCustomerParams extends RequestBuilder {
 
     @Getter
     private String customerId;
+
+    /**
+     * Copies the customer values to this object.
+     * <p>
+     * Changes made to the parameters after initialization won't affect the customer object.
+     * </p>
+     * @param customer The Customer to update
+     */
+    public UpdateCustomerParams(final Customer customer) {
+        this.customerId(customer.getId())
+                .email(customer.getEmail())
+                .address(customer.getAddress())
+                .lastName(customer.getLastName())
+                .name(customer.getName())
+                .phoneNumber(customer.getPhoneNumber());
+    }
 
     /**
      * ID of the customer to update. Required.

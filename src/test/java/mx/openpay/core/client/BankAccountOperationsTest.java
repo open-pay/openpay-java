@@ -130,11 +130,33 @@ public class BankAccountOperationsTest {
         }
     }
 
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testCreateBankAccount_ClabeAlreadyExists_Old() throws ServiceUnavailableException,
+            OpenpayServiceException {
+        String customerId = CUSTOMER_ID;
+        try {
+            this.bankAccountOps.create(customerId, "012680012570003085", "mi nombre", null);
+            Assert.fail("Bank Account should be exists.");
+        } catch (OpenpayServiceException e) {
+            Assert.assertEquals(409, e.getHttpCode().intValue());
+            String bankId = CUSTOMER_BANK_ACCOUNT;
+            BankAccount account = this.bankAccountOps.get(customerId, bankId);
+            Assert.assertNotNull(account);
+            Assert.assertNotNull(account.getId());
+            Assert.assertNotNull(account.getBankName());
+            Assert.assertEquals("BANCOMER", account.getBankName());
+        }
+    }
+
     @Test
     public void testCreateBankAccount_ClabeAlreadyExists() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
         try {
-            this.bankAccountOps.create(customerId, "012680012570003085", "mi nombre", null);
+            this.bankAccountOps.create(new CreateBankAccountParams()
+                    .customerId(customerId)
+                    .clabe("012680012570003085")
+                    .holderName("mi nombre"));
             Assert.fail("Bank Account should be exists.");
         } catch (OpenpayServiceException e) {
             Assert.assertEquals(409, e.getHttpCode().intValue());

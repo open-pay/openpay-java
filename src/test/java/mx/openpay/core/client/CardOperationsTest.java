@@ -32,6 +32,7 @@ import mx.openpay.client.Address;
 import mx.openpay.client.Card;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.CardOperations;
+import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -67,8 +68,9 @@ public class CardOperationsTest {
         Assert.assertTrue(cards.isEmpty());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
-    public void testCreateAndDelete() throws Exception {
+    public void testCreateAndDelete_Old() throws Exception {
         Address address = this.getAddress();
         Card card = this.ops.create(CUSTOMER_ID, "5243385358972033", "Juanito Pérez Nuñez", "111", "09", "14", address);
         assertEquals("2033", card.getCardNumber());
@@ -88,8 +90,61 @@ public class CardOperationsTest {
     }
 
     @Test
-    public void testCreateAndDelete_NoAddress() throws Exception {
+    public void testCreateAndDelete() throws Exception {
+        Address address = this.getAddress();
+        Card card = this.ops.create(
+                new CreateCardParams()
+                        .customerId(CUSTOMER_ID).cardNumber("5243385358972033")
+                        .holderName("Juanito Pérez Nuñez")
+                        .cvv2("111")
+                        .expirationMonth(9)
+                        .expirationYear(14)
+                        .address(address));
+        assertEquals("2033", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+
+        card = this.ops.get(CUSTOMER_ID, card.getId());
+        assertEquals("2033", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+
+        this.ops.delete(CUSTOMER_ID, card.getId());
+        try {
+            card = this.ops.get(CUSTOMER_ID, card.getId());
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testCreateAndDelete_NoAddress_Old() throws Exception {
         Card card = this.ops.create(CUSTOMER_ID, "5243385358972033", "Juanito Pérez Nuñez", "111", "09", "14", null);
+        assertEquals("2033", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+
+        card = this.ops.get(CUSTOMER_ID, card.getId());
+        assertEquals("2033", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+
+        this.ops.delete(CUSTOMER_ID, card.getId());
+        try {
+            card = this.ops.get(CUSTOMER_ID, card.getId());
+            fail();
+        } catch (OpenpayServiceException e) {
+            assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
+    public void testCreateAndDelete_NoAddress() throws Exception {
+        Card card = this.ops.create(
+                new CreateCardParams()
+                        .customerId(CUSTOMER_ID).cardNumber("5243385358972033")
+                        .holderName("Juanito Pérez Nuñez")
+                        .cvv2("111")
+                        .expirationMonth(9)
+                        .expirationYear(14));
         assertEquals("2033", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
 

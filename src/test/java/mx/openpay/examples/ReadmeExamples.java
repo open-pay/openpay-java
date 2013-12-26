@@ -187,9 +187,7 @@ public class ReadmeExamples {
             // To cancel the subscription at the end of the current period, you can update its cancelAtPeriodEnd
             // property to true:
 
-            api.subscriptions().update(new UpdateSubscriptionParams()
-                    .customerId(customer.getId())
-                    .subscriptionId(subscription.getId())
+            api.subscriptions().update(new UpdateSubscriptionParams(subscription)
                     .cancelAtPeriodEnd(true));
 
             // You can also cancel the subscription immediately:

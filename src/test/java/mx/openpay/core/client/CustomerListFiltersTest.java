@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.CustomerOperations;
+import mx.openpay.client.core.requests.customer.CreateCustomerParams;
 import mx.openpay.core.client.test.TestUtils;
 
 import org.junit.AfterClass;
@@ -55,8 +56,13 @@ public class CustomerListFiltersTest {
         customerOps = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).customers();
         createdCustomers = new ArrayList<Customer>();
         for (int i = 0; i < customersToCreate; i++) {
-            createdCustomers.add(customerOps.create("Nombre", "Last name", "customer" + System.currentTimeMillis()
-                    + "@opencard.mx", "0000000000", TestUtils.prepareAddress()));
+            createdCustomers.add(customerOps.create(
+                    new CreateCustomerParams()
+                            .name("Nombre")
+                            .lastName("Last name")
+                            .email("customer" + System.currentTimeMillis() + "@opencard.mx")
+                            .phoneNumber("0000000000")
+                            .address(TestUtils.prepareAddress())));
             Thread.sleep(1000);
         }
         Collections.reverse(createdCustomers);

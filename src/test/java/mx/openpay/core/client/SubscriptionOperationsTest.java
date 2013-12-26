@@ -139,14 +139,14 @@ public class SubscriptionOperationsTest {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date trialEndDate = simpleDateFormat.parse("2015-03-16 01:12:55");
         Date trialEndDateNoMinutes = simpleDateFormat.parse("2015-03-16 00:00:00");
-        UpdateSubscriptionParams request = new UpdateSubscriptionParams()
-                .customerId(TestConstans.CUSTOMER_ID)
-                .subscriptionId(UPDATE_SUBSCRIPTION_ID)
+        Subscription subscription = this.subscriptions.get(TestConstans.CUSTOMER_ID, UPDATE_SUBSCRIPTION_ID);
+
+        UpdateSubscriptionParams request = new UpdateSubscriptionParams(subscription)
                 .trialEndDate(trialEndDate)
                 .cancelAtPeriodEnd(true)
                 .card(this.getCard());
 
-        Subscription subscription = this.subscriptions.update(request);
+        subscription = this.subscriptions.update(request);
 
         assertThat(subscription.getId(), is(UPDATE_SUBSCRIPTION_ID));
         assertNull(subscription.getCardId());

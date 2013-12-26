@@ -35,7 +35,10 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.PayoutOperations;
+import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
+import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
+import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
 import mx.openpay.client.enums.PayoutMethod;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -93,6 +96,7 @@ public class PayoutsOperationsTest {
         Assert.assertNotNull(transaction.getAmount());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testCreate_Customer_BankAccountId_Old() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
@@ -137,8 +141,9 @@ public class PayoutsOperationsTest {
         Assert.assertEquals(customerId, transaction.getCustomerId());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
-    public void testCreate_Customer_BankAccount() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Customer_BankAccount_Old() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -157,7 +162,32 @@ public class PayoutsOperationsTest {
     }
 
     @Test
-    public void testCreate_Customer_Card() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Customer_BankAccount() throws ServiceUnavailableException, OpenpayServiceException {
+        String customerId = CUSTOMER_ID;
+        BigDecimal amount = new BigDecimal("1.00");
+        String desc = "Ganancias";
+
+        CreateBankAccountParams bankAccount = new CreateBankAccountParams();
+        bankAccount.clabe("012298026516924616");
+        bankAccount.holderName("Cuenta");
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Payout transaction = this.payouts.create(new CreateBankPayoutParams()
+                .customerId(customerId)
+                .bankAccount(bankAccount)
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId));
+        Assert.assertNotNull(transaction);
+        Assert.assertNotNull(transaction.getCreationDate());
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertEquals(customerId, transaction.getCustomerId());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testCreate_Customer_Card_Old() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -175,7 +205,31 @@ public class PayoutsOperationsTest {
     }
 
     @Test
-    public void testCreate_Merchant_BankAccount() throws Exception {
+    public void testCreate_Customer_Card() throws ServiceUnavailableException, OpenpayServiceException {
+        String customerId = CUSTOMER_ID;
+        BigDecimal amount = new BigDecimal("1.00");
+        String desc = "Ganancias";
+
+        CreateCardParams card = this.getCreateCard();
+        card.bankCode("012");
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Payout transaction = this.payouts.create(new CreateCardPayoutParams()
+                .customerId(customerId)
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .card(card));
+        Assert.assertNotNull(transaction);
+        Assert.assertNotNull(transaction.getCreationDate());
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertEquals(customerId, transaction.getCustomerId());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testCreate_Merchant_BankAccount_Old() throws Exception {
 
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -197,7 +251,32 @@ public class PayoutsOperationsTest {
     }
 
     @Test
-    public void testCreate_Merchant_Card() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Merchant_BankAccount() throws Exception {
+
+        BigDecimal amount = new BigDecimal("1.00");
+        String desc = "Ganancias";
+
+        CreateBankAccountParams bankAccount = new CreateBankAccountParams();
+        bankAccount.clabe("012298026516924616");
+        bankAccount.holderName("Cuenta");
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Payout transaction = this.payouts.create(
+                new CreateBankPayoutParams()
+                        .bankAccount(bankAccount)
+                        .amount(amount)
+                        .description(desc)
+                        .orderId(orderId));
+        Assert.assertNotNull(transaction);
+        Assert.assertNotNull(transaction.getCreationDate());
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertEquals(null, transaction.getCustomerId());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testCreate_Merchant_Card_Old() throws ServiceUnavailableException, OpenpayServiceException {
 
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -212,6 +291,48 @@ public class PayoutsOperationsTest {
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(null, transaction.getCustomerId());
+    }
+
+    @Test
+    public void testCreate_Merchant_Card() throws ServiceUnavailableException, OpenpayServiceException {
+
+        BigDecimal amount = new BigDecimal("1.00");
+        String desc = "Ganancias";
+
+        CreateCardParams card = this.getCreateCard();
+        card.bankCode("012");
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Payout transaction = this.payouts.create(
+                new CreateCardPayoutParams()
+                        .amount(amount)
+                        .description(desc)
+                        .orderId(orderId)
+                        .card(card));
+        Assert.assertNotNull(transaction);
+        Assert.assertNotNull(transaction.getCreationDate());
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertEquals(null, transaction.getCustomerId());
+    }
+
+    /**
+     * @return
+     */
+    private CreateCardParams getCreateCard() {
+        CreateCardParams card = new CreateCardParams()
+                .cardNumber("5243385358972033")
+                .holderName("Holder")
+                .expirationMonth(12)
+                .expirationYear(15)
+                .cvv2("123")
+                .address(new Address()
+                        .city("Querétaro")
+                        .line1("Camino #11 - 01")
+                        .postalCode("76090")
+                        .state("Queretaro")
+                        .countryCode("MX"));
+        return card;
     }
 
     private Card getCard() {
