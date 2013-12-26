@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Address;
@@ -60,8 +61,10 @@ public class SubscriptionOperationsTest {
 
     @Before
     public void setUp() throws Exception {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         this.api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
         this.subscriptions = this.api.subscriptions();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
     @Test
@@ -117,7 +120,7 @@ public class SubscriptionOperationsTest {
         assertNull(subscription.getCard().getId());
         assertThat(subscription.getCard().getCardNumber(), is("1881"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = simpleDateFormat.parse("2013-12-26 10:53:04");
+        Date date = simpleDateFormat.parse("2013-12-26 16:53:04");
         assertThat(subscription.getCreationDate(), is(date));
         Date chargeDate = simpleDateFormat.parse("2014-08-26 00:00:00");
         assertThat(subscription.getChargeDate(), is(chargeDate));

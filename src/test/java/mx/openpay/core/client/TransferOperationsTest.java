@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import mx.openpay.client.Transfer;
 import mx.openpay.client.core.OpenpayAPI;
@@ -52,6 +53,7 @@ public class TransferOperationsTest {
     @Before
     public void setUp() throws Exception {
         this.ops = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).transfers();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
     @Test

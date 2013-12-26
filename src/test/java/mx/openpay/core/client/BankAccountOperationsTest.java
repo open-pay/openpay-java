@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,10 +26,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.BankAccountOperations;
+import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -44,12 +46,26 @@ public class BankAccountOperationsTest {
     @Before
     public void setUp() throws Exception {
         this.bankAccountOps = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).bankAccounts();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testCreateAndDeleteBankAccount_Old() throws ServiceUnavailableException, OpenpayServiceException {
+        String customerId = CUSTOMER_ID;
+        BankAccount bank = this.bankAccountOps.create(customerId, "012298026516924616", "Mi nombre", null);
+        Assert.assertNotNull(bank);
+        this.bankAccountOps.delete(customerId, bank.getId());
     }
 
     @Test
     public void testCreateAndDeleteBankAccount() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
-        BankAccount bank = this.bankAccountOps.create(customerId, "012298026516924616", "Mi nombre", null);
+        BankAccount bank = this.bankAccountOps.create(
+                new CreateBankAccountParams()
+                        .customerId(customerId)
+                        .clabe("012298026516924616")
+                        .holderName("Mi nombre"));
         Assert.assertNotNull(bank);
         this.bankAccountOps.delete(customerId, bank.getId());
     }
