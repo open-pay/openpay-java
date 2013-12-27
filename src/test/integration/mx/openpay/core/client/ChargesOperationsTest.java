@@ -58,7 +58,7 @@ public class ChargesOperationsTest {
 
     @Before
     public void setUp() throws Exception {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
         this.api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
         this.charges = this.api.charges();
     }

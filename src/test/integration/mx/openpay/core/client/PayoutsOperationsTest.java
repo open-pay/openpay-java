@@ -59,7 +59,7 @@ public class PayoutsOperationsTest {
     public void setUp() throws Exception {
         this.api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
         this.payouts = this.api.payouts();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 
     @Test

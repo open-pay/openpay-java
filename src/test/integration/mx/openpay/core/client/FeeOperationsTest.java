@@ -47,7 +47,7 @@ public class FeeOperationsTest {
     @Before
     public void setUp() throws Exception {
         this.ops = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID).fees();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 
     @Test

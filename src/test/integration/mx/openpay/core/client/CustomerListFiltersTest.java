@@ -66,7 +66,7 @@ public class CustomerListFiltersTest {
             Thread.sleep(1000);
         }
         Collections.reverse(createdCustomers);
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 
     @AfterClass
@@ -126,6 +126,7 @@ public class CustomerListFiltersTest {
     @Test
     public void testList_Create_Offset() throws Exception {
         List<Customer> customers = customerOps.list(search().creation(new Date()).offset(1));
+        assertEquals(9, customers.size());
         for (int i = 1; i < createdCustomers.size(); i++) {
             assertEquals(createdCustomers.get(i).getId(), customers.get(i - 1).getId());
         }

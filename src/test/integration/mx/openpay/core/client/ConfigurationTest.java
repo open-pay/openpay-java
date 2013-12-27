@@ -44,7 +44,7 @@ public class ConfigurationTest {
         } catch (OpenpayServiceException e) {
             assertEquals(401, e.getHttpCode().intValue());
         }
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 
     @Test

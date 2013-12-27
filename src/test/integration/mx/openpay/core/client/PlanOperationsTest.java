@@ -63,7 +63,7 @@ public class PlanOperationsTest {
     public void setUp() throws Exception {
         this.api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
         this.plans = this.api.plans();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 
     @Test
@@ -128,7 +128,7 @@ public class PlanOperationsTest {
         log.info("{}", plan);
         assertThat(plan.getId(), is(EXISTING_PLAN_ID));
 
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2013-12-26 16:25:42");
+        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2013-12-26 10:25:42");
         assertThat(plan.getCreationDate(), is(date));
         assertThat(plan.getStatus(), is("active"));
         assertTrue(new BigDecimal("12.34").compareTo(plan.getAmount()) == 0);

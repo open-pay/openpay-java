@@ -61,10 +61,9 @@ public class SubscriptionOperationsTest {
 
     @Before
     public void setUp() throws Exception {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
         this.api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
         this.subscriptions = this.api.subscriptions();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
     @Test
@@ -120,7 +119,7 @@ public class SubscriptionOperationsTest {
         assertNull(subscription.getCard().getId());
         assertThat(subscription.getCard().getCardNumber(), is("1881"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = simpleDateFormat.parse("2013-12-26 16:53:04");
+        Date date = simpleDateFormat.parse("2013-12-26 10:53:04");
         assertThat(subscription.getCreationDate(), is(date));
         Date chargeDate = simpleDateFormat.parse("2014-08-26 00:00:00");
         assertThat(subscription.getChargeDate(), is(chargeDate));
