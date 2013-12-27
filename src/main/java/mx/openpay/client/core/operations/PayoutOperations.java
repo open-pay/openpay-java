@@ -28,8 +28,6 @@ import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
-import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
 import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
 import mx.openpay.client.enums.PayoutMethod;
@@ -137,17 +135,8 @@ public class PayoutOperations extends ServiceOperations {
                 .customerId(customerId)
                 .description(description)
                 .amount(amount)
-                .orderId(orderID);
-        if (card != null) {
-            request.card(new CreateCardParams()
-                    .address(card.getAddress())
-                    .cardNumber(card.getCardNumber())
-                    .cvv2(card.getCvv2())
-                    .expirationMonth(card.getExpirationMonth())
-                    .expirationYear(card.getExpirationYear())
-                    .holderName(card.getHolderName())
-                    .bankCode(card.getBankCode()));
-        }
+                .orderId(orderID)
+                .card(card);
         return this.create(request);
     }
 
@@ -160,10 +149,7 @@ public class PayoutOperations extends ServiceOperations {
                 .description(description)
                 .amount(amount)
                 .orderId(orderID)
-                .bankAccount(new CreateBankAccountParams()
-                        .clabe(bankAccount.getClabe())
-                        .alias(bankAccount.getAlias())
-                        .holderName(bankAccount.getHolderName()));
+                .bankAccount(bankAccount);
         return this.create(request);
     }
 
@@ -173,17 +159,8 @@ public class PayoutOperations extends ServiceOperations {
         CreateCardPayoutParams request = new CreateCardPayoutParams()
                 .description(description)
                 .amount(amount)
-                .orderId(orderID);
-        if (card != null) {
-            request.card(new CreateCardParams()
-                    .address(card.getAddress())
-                    .cardNumber(card.getCardNumber())
-                    .cvv2(card.getCvv2())
-                    .expirationMonth(card.getExpirationMonth())
-                    .expirationYear(card.getExpirationYear())
-                    .holderName(card.getHolderName())
-                    .bankCode(card.getBankCode()));
-        }
+                .orderId(orderID)
+                .card(card);
         return this.create(request);
     }
 
@@ -194,10 +171,7 @@ public class PayoutOperations extends ServiceOperations {
                 .description(description)
                 .amount(amount)
                 .orderId(orderID)
-                .bankAccount(new CreateBankAccountParams()
-                        .clabe(bankAccount.getClabe())
-                        .alias(bankAccount.getAlias())
-                        .holderName(bankAccount.getHolderName()));
+                .bankAccount(bankAccount);
         return this.create(request);
     }
 

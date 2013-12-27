@@ -33,8 +33,6 @@ import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.CustomerOperations;
-import mx.openpay.client.core.requests.customer.CreateCustomerParams;
-import mx.openpay.client.core.requests.customer.UpdateCustomerParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -74,7 +72,7 @@ public class CustomerOperationsTest {
     @Test
     public void testCreateAndDeleteCustomer() throws ServiceUnavailableException, OpenpayServiceException {
         Address address = this.createAddress();
-        CreateCustomerParams params = new CreateCustomerParams()
+        Customer params = new Customer()
                 .name("Juan")
                 .lastName("Perez Perez")
                 .email("juan.perez@gmail.com")
@@ -84,11 +82,11 @@ public class CustomerOperationsTest {
         try {
             Assert.assertNotNull(customer);
             Assert.assertNotNull(customer.getId());
-            customer = this.ops.update(new UpdateCustomerParams(customer)
-                    .name("Juanito 2"));
+            customer.setName("Juanito 2");
+            customer = this.ops.update(customer);
             Assert.assertEquals("Juanito 2", customer.getName());
-            customer = this.ops.update(new UpdateCustomerParams(customer)
-                    .name("Juanito"));
+            customer.setName("Juanito");
+            customer = this.ops.update(customer);
             Assert.assertEquals("Juanito", customer.getName());
         } finally {
             this.ops.delete(customer.getId());

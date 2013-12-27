@@ -18,8 +18,8 @@ package mx.openpay.client.core.requests.transactions;
 import java.math.BigDecimal;
 
 import lombok.Getter;
+import mx.openpay.client.Card;
 import mx.openpay.client.core.requests.RequestBuilder;
-import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.enums.PayoutMethod;
 
 /**
@@ -55,12 +55,8 @@ public class CreateCardPayoutParams extends RequestBuilder {
      * A new card to send the funds to. Required if no card id is given. The card must have a bank code to allow
      * payouts.
      */
-    public CreateCardPayoutParams card(final CreateCardParams card) {
-        if (card == null) {
-            return this.with("card", null);
-        } else {
-            return this.with("card", card.asMap());
-        }
+    public CreateCardPayoutParams card(final Card card) {
+        return this.with("card", card);
     }
 
     /**

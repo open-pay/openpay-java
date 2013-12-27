@@ -38,7 +38,6 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.ChargeOperations;
-import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
@@ -104,7 +103,7 @@ public class ChargesOperationsTest {
     public void testCreate_Customer_WithCard() throws Exception {
         Address address = this.createAddress();
 
-        CreateCardParams card = new CreateCardParams()
+        Card card = new Card()
                 .cardNumber("5243385358972033")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
@@ -246,7 +245,7 @@ public class ChargesOperationsTest {
     public void testCreate_Merchant_WithCard() throws Exception {
         Address address = this.createAddress();
 
-        CreateCardParams card = new CreateCardParams();
+        Card card = new Card();
         card.cardNumber("5243385358972033");
         card.holderName("Juanito Pérez Nuñez");
         card.cvv2("111");
@@ -323,7 +322,7 @@ public class ChargesOperationsTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .card(this.getCreateCard()));
+                .card(this.getCard()));
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
@@ -369,21 +368,6 @@ public class ChargesOperationsTest {
         card.setExpirationYear("15");
         card.setCvv2("123");
         card.setAddress(address);
-        return card;
-    }
-
-    /**
-     * @return
-     */
-    private CreateCardParams getCreateCard() {
-        Address address = this.createAddress();
-        CreateCardParams card = new CreateCardParams();
-        card.cardNumber("5243385358972033");
-        card.holderName("Holder");
-        card.expirationMonth(12);
-        card.expirationYear(15);
-        card.cvv2("123");
-        card.address(address);
         return card;
     }
 

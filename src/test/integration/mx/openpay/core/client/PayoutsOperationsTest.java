@@ -35,8 +35,6 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Payout;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.PayoutOperations;
-import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
-import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
 import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
 import mx.openpay.client.enums.PayoutMethod;
@@ -167,7 +165,7 @@ public class PayoutsOperationsTest {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
-        CreateBankAccountParams bankAccount = new CreateBankAccountParams();
+        BankAccount bankAccount = new BankAccount();
         bankAccount.clabe("012298026516924616");
         bankAccount.holderName("Cuenta");
 
@@ -210,7 +208,7 @@ public class PayoutsOperationsTest {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
-        CreateCardParams card = this.getCreateCard();
+        Card card = this.getCard();
         card.bankCode("012");
 
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -256,7 +254,7 @@ public class PayoutsOperationsTest {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
-        CreateBankAccountParams bankAccount = new CreateBankAccountParams();
+        BankAccount bankAccount = new BankAccount();
         bankAccount.clabe("012298026516924616");
         bankAccount.holderName("Cuenta");
 
@@ -299,7 +297,7 @@ public class PayoutsOperationsTest {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
-        CreateCardParams card = this.getCreateCard();
+        Card card = this.getCard();
         card.bankCode("012");
 
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -314,25 +312,6 @@ public class PayoutsOperationsTest {
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(null, transaction.getCustomerId());
-    }
-
-    /**
-     * @return
-     */
-    private CreateCardParams getCreateCard() {
-        CreateCardParams card = new CreateCardParams()
-                .cardNumber("5243385358972033")
-                .holderName("Holder")
-                .expirationMonth(12)
-                .expirationYear(15)
-                .cvv2("123")
-                .address(new Address()
-                        .city("Querétaro")
-                        .line1("Camino #11 - 01")
-                        .postalCode("76090")
-                        .state("Queretaro")
-                        .countryCode("MX"));
-        return card;
     }
 
     private Card getCard() {

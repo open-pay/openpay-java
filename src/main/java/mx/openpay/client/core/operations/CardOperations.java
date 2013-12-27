@@ -26,7 +26,6 @@ import java.util.Map;
 import mx.openpay.client.Address;
 import mx.openpay.client.Card;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.SearchParams;
@@ -46,14 +45,15 @@ public class CardOperations extends ServiceOperations {
         super(client);
     }
 
-    public Card create(final CreateCardParams params) throws OpenpayServiceException, ServiceUnavailableException {
-        String path;
-        if (params.getCustomerId() == null) {
-            path = String.format(MERCHANT_CARDS_PATH, this.getMerchantId());
-        } else {
-            path = String.format(CUSTOMER_CARDS_PATH, this.getMerchantId(), params.getCustomerId());
-        }
-        return this.getJsonClient().post(path, params.asMap(), Card.class);
+    public Card create(final Card card) throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(MERCHANT_CARDS_PATH, this.getMerchantId());
+        return this.getJsonClient().post(path, card, Card.class);
+    }
+
+    public Card create(final String customerId, final Card card) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(CUSTOMER_CARDS_PATH, this.getMerchantId(), customerId);
+        return this.getJsonClient().post(path, card, Card.class);
     }
 
     public List<Card> list(final String customerId, final SearchParams params)
@@ -79,14 +79,13 @@ public class CardOperations extends ServiceOperations {
     public Card create(final String customerId, final String cardNumber, final String holderName,
             final String cvv2, final String expMonth, final String expYear, final Address address)
             throws ServiceUnavailableException, OpenpayServiceException {
-        return this.create(new CreateCardParams()
-                .customerId(customerId)
+        Card card = new Card()
                 .cardNumber(cardNumber)
                 .cvv2(cvv2)
                 .holderName(holderName)
-                .address(address)
-                .expirationMonth(expMonth)
-                .expirationYear(expYear));
+                .address(address);
+        card.setExpirationMonth(expMonth);
+        card.setExpirationYear(expYear);
+        return this.create(customerId, card);
     }
-
 }

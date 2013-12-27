@@ -32,7 +32,6 @@ import mx.openpay.client.Address;
 import mx.openpay.client.Card;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.CardOperations;
-import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -92,14 +91,13 @@ public class CardOperationsTest {
     @Test
     public void testCreateAndDelete() throws Exception {
         Address address = this.getAddress();
-        Card card = this.ops.create(
-                new CreateCardParams()
-                        .customerId(CUSTOMER_ID).cardNumber("5243385358972033")
-                        .holderName("Juanito Pérez Nuñez")
-                        .cvv2("111")
-                        .expirationMonth(9)
-                        .expirationYear(14)
-                        .address(address));
+        Card card = this.ops.create(CUSTOMER_ID, new Card()
+                .cardNumber("5243385358972033")
+                .holderName("Juanito Pérez Nuñez")
+                .cvv2("111")
+                .expirationMonth(9)
+                .expirationYear(14)
+                .address(address));
         assertEquals("2033", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
 
@@ -138,13 +136,12 @@ public class CardOperationsTest {
 
     @Test
     public void testCreateAndDelete_NoAddress() throws Exception {
-        Card card = this.ops.create(
-                new CreateCardParams()
-                        .customerId(CUSTOMER_ID).cardNumber("5243385358972033")
-                        .holderName("Juanito Pérez Nuñez")
-                        .cvv2("111")
-                        .expirationMonth(9)
-                        .expirationYear(14));
+        Card card = this.ops.create(CUSTOMER_ID, new Card()
+                .cardNumber("5243385358972033")
+                .holderName("Juanito Pérez Nuñez")
+                .cvv2("111")
+                .expirationMonth(9)
+                .expirationYear(14));
         assertEquals("2033", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
 

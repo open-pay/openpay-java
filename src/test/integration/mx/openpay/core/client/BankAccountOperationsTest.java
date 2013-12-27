@@ -31,7 +31,6 @@ import java.util.TimeZone;
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.BankAccountOperations;
-import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -61,11 +60,9 @@ public class BankAccountOperationsTest {
     @Test
     public void testCreateAndDeleteBankAccount() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
-        BankAccount bank = this.bankAccountOps.create(
-                new CreateBankAccountParams()
-                        .customerId(customerId)
-                        .clabe("012298026516924616")
-                        .holderName("Mi nombre"));
+        BankAccount bank = this.bankAccountOps.create(customerId, new BankAccount()
+                .clabe("012298026516924616")
+                .holderName("Mi nombre"));
         Assert.assertNotNull(bank);
         this.bankAccountOps.delete(customerId, bank.getId());
     }
@@ -153,8 +150,7 @@ public class BankAccountOperationsTest {
     public void testCreateBankAccount_ClabeAlreadyExists() throws ServiceUnavailableException, OpenpayServiceException {
         String customerId = CUSTOMER_ID;
         try {
-            this.bankAccountOps.create(new CreateBankAccountParams()
-                    .customerId(customerId)
+            this.bankAccountOps.create(customerId, new BankAccount()
                     .clabe("012680012570003085")
                     .holderName("mi nombre"));
             Assert.fail("Bank Account should be exists.");

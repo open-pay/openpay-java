@@ -16,7 +16,6 @@
 package mx.openpay.client.core;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Serializes the parameters for the requests, and deserializes the server response.
@@ -25,12 +24,12 @@ import java.util.Map;
 public interface JsonSerializer {
 
     /**
-     * Serialize the given map into a JSON string. If an object is {@code null} it should be ignored and ommited from
+     * Serialize the given object into a JSON string. If an object is {@code null} it should be ignored and ommited from
      * the serialized string.
      * @param values The parameters to serialize.
      * @return The serialized string
      */
-    public String serialize(final Map<String, Object> values);
+    public String serialize(final Object values);
 
     /**
      * Deserializes the JSON string into a list of objects of the given class. The list may be empty but it must never

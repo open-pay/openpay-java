@@ -31,12 +31,10 @@ import java.util.TimeZone;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Address;
+import mx.openpay.client.Card;
 import mx.openpay.client.Subscription;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.SubscriptionOperations;
-import mx.openpay.client.core.requests.card.CreateCardParams;
-import mx.openpay.client.core.requests.subscription.CreateSubscriptionParams;
-import mx.openpay.client.core.requests.subscription.UpdateSubscriptionParams;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -68,12 +66,11 @@ public class SubscriptionOperationsTest {
 
     @Test
     public void testCreate_Trial() throws Exception {
-        CreateCardParams card = this.getCard();
-        CreateSubscriptionParams createSubscription = new CreateSubscriptionParams()
-                .customerId(TestConstans.CUSTOMER_ID)
+        Card card = this.getCard();
+        Subscription createSubscription = new Subscription()
                 .planId(TRIAL_PLAN_ID)
                 .card(card);
-        Subscription subscription = this.subscriptions.create(createSubscription);
+        Subscription subscription = this.subscriptions.create(TestConstans.CUSTOMER_ID, createSubscription);
         this.subscriptions.delete(TestConstans.CUSTOMER_ID, subscription.getId());
         log.info("{}", subscription);
         assertNotNull(subscription.getId());
@@ -91,11 +88,10 @@ public class SubscriptionOperationsTest {
 
     @Test
     public void testCreate_NoTrial() throws Exception {
-        CreateCardParams card = this.getCard();
-        CreateSubscriptionParams createSubscription = new CreateSubscriptionParams()
-                .customerId(TestConstans.CUSTOMER_ID)
+        Card card = this.getCard();
+        Subscription createSubscription = new Subscription()
                 .planId(NO_TRIAL_PLAN_ID).card(card);
-        Subscription subscription = this.subscriptions.create(createSubscription);
+        Subscription subscription = this.subscriptions.create(TestConstans.CUSTOMER_ID, createSubscription);
         this.subscriptions.delete(TestConstans.CUSTOMER_ID, subscription.getId());
         log.info("{}", subscription);
         assertNotNull(subscription.getId());
@@ -135,17 +131,18 @@ public class SubscriptionOperationsTest {
 
     @Test
     public void testUpdate() throws Exception {
+
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date trialEndDate = simpleDateFormat.parse("2015-03-16 01:12:55");
         Date trialEndDateNoMinutes = simpleDateFormat.parse("2015-03-16 00:00:00");
         Subscription subscription = this.subscriptions.get(TestConstans.CUSTOMER_ID, UPDATE_SUBSCRIPTION_ID);
 
-        UpdateSubscriptionParams request = new UpdateSubscriptionParams(subscription)
-                .trialEndDate(trialEndDate)
-                .cancelAtPeriodEnd(true)
-                .card(this.getCard());
+        subscription.setTrialEndDate(trialEndDate);
+        subscription.setCancelAtPeriodEnd(true);
+        subscription.setCard(this.getCard());
 
-        subscription = this.subscriptions.update(request);
+        subscription = this.subscriptions.update(subscription);
 
         assertThat(subscription.getId(), is(UPDATE_SUBSCRIPTION_ID));
         assertNull(subscription.getCardId());
@@ -156,8 +153,8 @@ public class SubscriptionOperationsTest {
 
         trialEndDate = simpleDateFormat.parse("2017-05-21 06:12:55");
         trialEndDateNoMinutes = simpleDateFormat.parse("2017-05-21 00:00:00");
-        request.trialEndDate(trialEndDate).card(null).cancelAtPeriodEnd(null);
-        subscription = this.subscriptions.update(request);
+        subscription.setTrialEndDate(trialEndDate);
+        subscription = this.subscriptions.update(subscription);
 
         assertThat(subscription.getId(), is(UPDATE_SUBSCRIPTION_ID));
         assertNull(subscription.getCardId());
@@ -166,8 +163,8 @@ public class SubscriptionOperationsTest {
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(true));
 
-        request.trialEndDate(null).card(null).cancelAtPeriodEnd(false);
-        subscription = this.subscriptions.update(request);
+        subscription.setCancelAtPeriodEnd(false);
+        subscription = this.subscriptions.update(subscription);
 
         assertThat(subscription.getId(), is(UPDATE_SUBSCRIPTION_ID));
         assertNull(subscription.getCardId());
@@ -176,8 +173,9 @@ public class SubscriptionOperationsTest {
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(false));
 
-        request.trialEndDate(null).cardId("kerxkwvyldyzcw05pv7k").cancelAtPeriodEnd(null);
-        subscription = this.subscriptions.update(request);
+        subscription.setCardId("kerxkwvyldyzcw05pv7k");
+        subscription.setCard(null);
+        subscription = this.subscriptions.update(subscription);
 
         assertThat(subscription.getId(), is(UPDATE_SUBSCRIPTION_ID));
         assertThat(subscription.getCardId(), is("kerxkwvyldyzcw05pv7k"));
@@ -193,9 +191,9 @@ public class SubscriptionOperationsTest {
         assertTrue(subscription.size() > 0);
     }
 
-    private CreateCardParams getCard() {
+    private Card getCard() {
         Address address = this.createAddress();
-        CreateCardParams card = new CreateCardParams()
+        Card card = new Card()
                 .cardNumber("5243385358972033")
                 .holderName("Holder")
                 .expirationMonth(12)

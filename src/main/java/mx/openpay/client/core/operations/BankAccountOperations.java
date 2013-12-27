@@ -25,7 +25,6 @@ import java.util.Map;
 
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.SearchParams;
@@ -46,22 +45,22 @@ public class BankAccountOperations extends ServiceOperations {
         super(client);
     }
 
-    public BankAccount create(final CreateBankAccountParams params) throws OpenpayServiceException,
+    public BankAccount create(final BankAccount bankAccount) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path;
-        if (params.getCustomerId() == null) {
-            path = String.format(MERCHANT_BANK_ACCOUNTS_PATH, this.getMerchantId());
-        } else {
-            path = String.format(BANK_ACCOUNTS_PATH, this.getMerchantId(), params.getCustomerId());
-        }
-        return this.getJsonClient().post(path, params.asMap(), BankAccount.class);
+        String path = String.format(MERCHANT_BANK_ACCOUNTS_PATH, this.getMerchantId());
+        return this.getJsonClient().post(path, bankAccount, BankAccount.class);
+    }
+
+    public BankAccount create(final String customerId, final BankAccount bankAccount) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(BANK_ACCOUNTS_PATH, this.getMerchantId(), customerId);
+        return this.getJsonClient().post(path, bankAccount, BankAccount.class);
     }
 
     @Deprecated
     public BankAccount create(final String customerId, final String clabe, final String ownerName, final String alias)
             throws ServiceUnavailableException, OpenpayServiceException {
-        return this.create(new CreateBankAccountParams()
-                .customerId(customerId)
+        return this.create(customerId, new BankAccount()
                 .clabe(clabe)
                 .holderName(ownerName)
                 .alias(alias));

@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -56,5 +56,29 @@ public class BankAccount {
     /** The date the Bank Account was registered in Openpay. This field is filled by Openpay. */
     @SerializedName("creation_date")
     private Date creationDate;
+
+    /**
+     * Name of the bank account's owner. Required.
+     */
+    public BankAccount holderName(final String holderName) {
+        this.holderName = holderName;
+        return this;
+    }
+
+    /**
+     * Bank account's CLABE. Required. See <a href="http://es.wikipedia.org/wiki/CLABE">this</a> for an explanation.
+     */
+    public BankAccount clabe(final String clabe) {
+        this.clabe = clabe;
+        return this;
+    }
+
+    /**
+     * An alias to identify the bank account. Optional.
+     */
+    public BankAccount alias(final String alias) {
+        this.alias = alias;
+        return this;
+    }
 
 }

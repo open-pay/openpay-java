@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,5 +63,39 @@ public class Subscription {
     private String cardId;
 
     private Card card;
+
+    /**
+     * The ID of the plan to use for the subscription. Required.
+     */
+    public Subscription planId(final String planId) {
+        this.planId = planId;
+        return this;
+    }
+
+    /**
+     * The ID of the customer's pre-registered card to which the charge will be made each cycle. Required if no card is
+     * specified to be created.
+     */
+    public Subscription cardId(final String cardId) {
+        this.cardId = cardId;
+        return this;
+    }
+
+    /**
+     * The day to end the trial, overriding the default trial_days. Optional. A past date means the subscription won't
+     * have any trial days. The time part is ignored.
+     */
+    public Subscription trialEndDate(final Date trialEndDate) {
+        this.trialEndDate = trialEndDate;
+        return this;
+    }
+
+    /**
+     * The card to which the charge will be made each cycle. Required if no pre-registered card id is specified.
+     */
+    public Subscription card(final Card card) {
+        this.card = card;
+        return this;
+    }
 
 }

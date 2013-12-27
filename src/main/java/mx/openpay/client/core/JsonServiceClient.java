@@ -104,7 +104,7 @@ public class JsonServiceClient {
         this.checkForErrors(response);
     }
 
-    public <T> T put(final String path, final Map<String, Object> params, final Class<T> clazz)
+    public <T> T put(final String path, final T params, final Class<T> clazz)
             throws OpenpayServiceException, ServiceUnavailableException {
         HttpServiceResponse response = this.httpClient.put(this.buildUri(path), this.serializer.serialize(params));
         this.checkForErrors(response);
@@ -113,6 +113,13 @@ public class JsonServiceClient {
 
     public <T> T post(final String path, final Map<String, Object> params, final Class<T> clazz)
             throws OpenpayServiceException, ServiceUnavailableException {
+        HttpServiceResponse response = this.httpClient.post(this.buildUri(path), this.serializer.serialize(params));
+        this.checkForErrors(response);
+        return this.deserializeObject(response, clazz);
+    }
+
+    public <T> T post(final String path, final T params, final Class<T> clazz) throws OpenpayServiceException,
+            ServiceUnavailableException {
         HttpServiceResponse response = this.httpClient.post(this.buildUri(path), this.serializer.serialize(params));
         this.checkForErrors(response);
         return this.deserializeObject(response, clazz);

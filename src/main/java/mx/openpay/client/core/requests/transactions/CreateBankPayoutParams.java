@@ -18,8 +18,8 @@ package mx.openpay.client.core.requests.transactions;
 import java.math.BigDecimal;
 
 import lombok.Getter;
+import mx.openpay.client.BankAccount;
 import mx.openpay.client.core.requests.RequestBuilder;
-import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
 import mx.openpay.client.enums.PayoutMethod;
 
 /**
@@ -75,12 +75,8 @@ public class CreateBankPayoutParams extends RequestBuilder {
     /**
      * A new Bank Account to deposit the amount to. Required if no existing bank account id is given.
      */
-    public CreateBankPayoutParams bankAccount(final CreateBankAccountParams bankAccount) {
-        if (bankAccount == null) {
-            return this.with("bank_account", null);
-        } else {
-            return this.with("bank_account", bankAccount.asMap());
-        }
+    public CreateBankPayoutParams bankAccount(final BankAccount bankAccount) {
+        return this.with("bank_account", bankAccount);
     }
 
 }

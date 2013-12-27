@@ -25,8 +25,6 @@ import java.util.Map;
 
 import mx.openpay.client.Subscription;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.subscription.CreateSubscriptionParams;
-import mx.openpay.client.core.requests.subscription.UpdateSubscriptionParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.SearchParams;
@@ -44,17 +42,17 @@ public class SubscriptionOperations extends ServiceOperations {
         super(client);
     }
 
-    public Subscription create(final CreateSubscriptionParams request) throws OpenpayServiceException,
+    public Subscription create(final String customerId, final Subscription request) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(CUSTOMER_SUBSCRIPTIONS_PATH, this.getMerchantId(), request.getCustomerId());
-        return this.getJsonClient().post(path, request.asMap(), Subscription.class);
+        String path = String.format(CUSTOMER_SUBSCRIPTIONS_PATH, this.getMerchantId(), customerId);
+        return this.getJsonClient().post(path, request, Subscription.class);
     };
 
-    public Subscription update(final UpdateSubscriptionParams request) throws OpenpayServiceException,
+    public Subscription update(final Subscription subscription) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(GET_CUSTOMER_SUBSCRIPTION_PATH, this.getMerchantId(), request.getCustomerId(),
-                request.getSubscriptionId());
-        return this.getJsonClient().put(path, request.asMap(), Subscription.class);
+        String path = String.format(GET_CUSTOMER_SUBSCRIPTION_PATH, this.getMerchantId(), subscription.getCustomerId(),
+                subscription.getId());
+        return this.getJsonClient().put(path, subscription, Subscription.class);
     };
 
     public void delete(final String customerId, final String subscriptionId) throws OpenpayServiceException,

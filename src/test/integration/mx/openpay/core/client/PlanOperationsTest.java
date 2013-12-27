@@ -35,8 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Plan;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.PlanOperations;
-import mx.openpay.client.core.requests.subscription.CreatePlanParams;
-import mx.openpay.client.core.requests.subscription.UpdatePlanParams;
 import mx.openpay.client.enums.PlanRepeatUnit;
 import mx.openpay.client.enums.PlanStatusAfterRetry;
 import mx.openpay.client.exceptions.OpenpayServiceException;
@@ -69,7 +67,7 @@ public class PlanOperationsTest {
     @Test
     public void testCreate() throws Exception {
         String name = "Plan de prueba junit " + System.currentTimeMillis();
-        CreatePlanParams request = new CreatePlanParams()
+        Plan request = new Plan()
                 .name(name)
                 .amount(BigDecimal.TEN)
                 .repeatEvery(3, PlanRepeatUnit.WEEK)
@@ -100,7 +98,7 @@ public class PlanOperationsTest {
 
     @Test
     public void testCreateNoTrialDays() throws Exception {
-        CreatePlanParams request = new CreatePlanParams()
+        Plan request = new Plan()
                 .name("somsodms")
                 .amount(BigDecimal.TEN)
                 .repeatEvery(3, PlanRepeatUnit.WEEK)
@@ -112,7 +110,7 @@ public class PlanOperationsTest {
 
     @Test
     public void testCreateExample() throws OpenpayServiceException, ServiceUnavailableException {
-        CreatePlanParams request = new CreatePlanParams()
+        Plan request = new Plan()
                 .name("Premium Subscriptions")
                 .amount(new BigDecimal("1200.00"))
                 .repeatEvery(1, PlanRepeatUnit.MONTH)
@@ -153,34 +151,29 @@ public class PlanOperationsTest {
     @Test
     public void testUpdate() throws Exception {
         Plan plan = this.plans.get(UPDATE_PLAN_ID);
-        UpdatePlanParams updatePlan = new UpdatePlanParams(plan);
-        updatePlan.name("nombre").trialDays(5);
-        plan = this.plans.update(updatePlan);
+        plan.setName("nombre");
+        plan.setTrialDays(5);
+        plan = this.plans.update(plan);
         assertThat(plan.getId(), is(UPDATE_PLAN_ID));
         assertThat(plan.getName(), is("nombre"));
         assertThat(plan.getTrialDays(), is(5));
 
-        updatePlan.name("nombre nuevo").trialDays(null);
-        plan = this.plans.update(updatePlan);
+        plan.setName("nombre nuevo");
+        plan = this.plans.update(plan);
         assertThat(plan.getId(), is(UPDATE_PLAN_ID));
         assertThat(plan.getName(), is("nombre nuevo"));
         assertThat(plan.getTrialDays(), is(5));
 
-        updatePlan.name(null).trialDays(3);
-        plan = this.plans.update(updatePlan);
+        plan.setTrialDays(3);
+        plan = this.plans.update(plan);
         assertThat(plan.getId(), is(UPDATE_PLAN_ID));
         assertThat(plan.getName(), is("nombre nuevo"));
         assertThat(plan.getTrialDays(), is(3));
 
-        updatePlan.name(null).trialDays(null);
-        plan = this.plans.update(updatePlan);
+        plan = this.plans.update(plan);
         assertThat(plan.getId(), is(UPDATE_PLAN_ID));
         assertThat(plan.getName(), is("nombre nuevo"));
         assertThat(plan.getTrialDays(), is(3));
 
-        plan = this.plans.get(UPDATE_PLAN_ID);
-        assertThat(plan.getId(), is(UPDATE_PLAN_ID));
-        assertThat(plan.getName(), is("nombre nuevo"));
-        assertThat(plan.getTrialDays(), is(3));
     }
 }

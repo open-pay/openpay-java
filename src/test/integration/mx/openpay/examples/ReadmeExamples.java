@@ -18,18 +18,14 @@ package mx.openpay.examples;
 import java.math.BigDecimal;
 
 import mx.openpay.client.Address;
+import mx.openpay.client.BankAccount;
+import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Payout;
 import mx.openpay.client.Plan;
 import mx.openpay.client.Subscription;
 import mx.openpay.client.core.OpenpayAPI;
-import mx.openpay.client.core.requests.bank.CreateBankAccountParams;
-import mx.openpay.client.core.requests.card.CreateCardParams;
-import mx.openpay.client.core.requests.customer.CreateCustomerParams;
-import mx.openpay.client.core.requests.subscription.CreatePlanParams;
-import mx.openpay.client.core.requests.subscription.CreateSubscriptionParams;
-import mx.openpay.client.core.requests.subscription.UpdateSubscriptionParams;
 import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
@@ -38,7 +34,6 @@ import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.enums.PlanRepeatUnit;
 import mx.openpay.client.enums.PlanStatusAfterRetry;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -46,7 +41,7 @@ import org.junit.Test;
  * correct.
  * @author elopez
  */
-@Ignore("Not actually meant to run everytime, just to check the readme examples are ok")
+// @Ignore("Not actually meant to run everytime, just to check the readme examples are ok")
 @SuppressWarnings("unused")
 public class ReadmeExamples {
 
@@ -70,7 +65,7 @@ public class ReadmeExamples {
 
         // #### Creating a customer ####
 
-        Customer customer = api.customers().create(new CreateCustomerParams()
+        Customer customer = api.customers().create(new Customer()
                 .name("John")
                 .lastName("Doe")
                 .email("johndoe@example.com")
@@ -80,7 +75,7 @@ public class ReadmeExamples {
         // #### Charging ####
 
         {
-            CreateCardParams card = new CreateCardParams()
+            Card card = new Card()
                     .cardNumber("5555555555554444") // No dashes or spaces
                     .holderName("Juan Pérez Nuñez")
                     .cvv2("422")
@@ -105,7 +100,7 @@ public class ReadmeExamples {
                 .customerId(customer.getId())
                 .description("Test charge")
                 .amount(new BigDecimal("5000.00")) // Amount is in MXN
-                .card(new CreateCardParams()
+                .card(new Card()
                         .cardNumber("5555555555554444") // No dashes or spaces
                         .holderName("Juan Pérez Nuñez")
                         .cvv2("422")
@@ -113,11 +108,6 @@ public class ReadmeExamples {
                         .expirationYear(14)));
 
         {
-            CreateBankAccountParams bankAccount = new CreateBankAccountParams()
-                    .clabe("032180000118359719") // CLABE
-                    .holderName("Juan Pérez")
-                    .alias("Juan's deposit account"); // Optional
-
             Charge charge = api.charges().create(new CreateBankChargeParams()
                     .customerId(customer.getId())
                     .description("Service charge")
@@ -131,7 +121,7 @@ public class ReadmeExamples {
         // #### Payout ####
 
         {
-            CreateBankAccountParams bankAccount = new CreateBankAccountParams()
+            BankAccount bankAccount = new BankAccount()
                     .clabe("032180000118359719") // CLABE
                     .holderName("Juan Pérez")
                     .alias("Juan's deposit account"); // Optional
@@ -145,7 +135,7 @@ public class ReadmeExamples {
         }
 
         {
-            CreateCardParams card = new CreateCardParams()
+            Card card = new Card()
                     .cardNumber("5555555555554444") // No dashes or spaces
                     .holderName("Juan Pérez Nuñez")
                     .bankCode("012");
@@ -163,7 +153,7 @@ public class ReadmeExamples {
         // #### Subscriptions ####
 
         {
-            Plan plan = api.plans().create(new CreatePlanParams()
+            Plan plan = api.plans().create(new Plan()
                     .name("Premium Subscriptions")
                     .amount(new BigDecimal("1200.00")) // Amount is in MXN
                     .repeatEvery(1, PlanRepeatUnit.MONTH)
@@ -172,23 +162,22 @@ public class ReadmeExamples {
 
             // After you have your plan created, you can subscribe customers to it:
 
-            CreateCardParams card = new CreateCardParams()
+            Card card = new Card()
                     .cardNumber("5555555555554444")
                     .holderName("Juan Pérez Nuñez")
                     .cvv2("422")
                     .expirationMonth(9)
                     .expirationYear(14);
 
-            Subscription subscription = api.subscriptions().create(new CreateSubscriptionParams()
-                    .customerId(customer.getId())
+            Subscription subscription = api.subscriptions().create(customer.getId(), new Subscription()
                     .planId(plan.getId())
                     .card(card)); // You can also use withCardId to use a pre-registered card.
 
             // To cancel the subscription at the end of the current period, you can update its cancelAtPeriodEnd
             // property to true:
 
-            api.subscriptions().update(new UpdateSubscriptionParams(subscription)
-                    .cancelAtPeriodEnd(true));
+            subscription.setCancelAtPeriodEnd(true);
+            api.subscriptions().update(subscription);
 
             // You can also cancel the subscription immediately:
 

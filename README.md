@@ -42,7 +42,7 @@ Address address = new Address()
 		.state("Queretaro")
 		.countryCode("MX");                  // ISO 3166-1 two-letter code
 		    
-Customer customer = api.customers().create(new CreateCustomerParams()
+Customer customer = api.customers().create(new Customer()
         .name("John")
         .lastName("Doe")
         .email("johndoe@example.com")
@@ -55,7 +55,7 @@ Customer customer = api.customers().create(new CreateCustomerParams()
 Charging a credit card:		
 
 ```java
-CreateCardParams card = new CreateCardParams()
+Card card = new Card()
 		.cardNumber("5555555555554444")          // No dashes or spaces
 		.holderName("Juan Pérez Nuñez")         
 		.cvv2("422")            
@@ -95,7 +95,7 @@ Currently Payouts are only allowed to accounts in Mexico.
 Bank payout:
 
 ```java
-CreateBankAccountParams bankAccount = new CreateBankAccountParams()
+BankAccount bankAccount = new BankAccount()
 		.clabe("032180000118359719")            // CLABE
 		.holderName("Juan Pérez")
 		.alias("Juan's deposit account");       // Optional
@@ -111,7 +111,7 @@ Payout payout = api.payouts().create(new CreateBankPayoutParams()
 Debit card payout:
 
 ```java
-CreateCardParams card = new CreateCardParams()
+Card card = new Card()
         .cardNumber("5555555555554444")         // No dashes or spaces
         .holderName("Juan Pérez Nuñez")
         .bankCode("012");
@@ -130,7 +130,7 @@ Payout payout = api.payouts().create(new CreateCardPayoutParams()
 Subscriptions allow you to make recurrent charges to your customers. First you need to define a subscription plan:
 
 ```java
-Plan plan = api.plans().create(new CreatePlanParams()
+Plan plan = api.plans().create(new Plan()
 		.name("Premium Subscriptions")
 		.amount(new BigDecimal("1200.00"))       // Amount is in MXN
 		.repeatEvery(1, PlanRepeatUnit.MONTH)           
@@ -141,15 +141,14 @@ Plan plan = api.plans().create(new CreatePlanParams()
 After you have your plan created, you can subscribe customers to it:
 
 ```java
-CreateCardParams card = new CreateCardParams()
+Card card = new Card()
 		.cardNumber("5555555555554444")         
 		.holderName("Juan Pérez Nuñez")
 		.cvv2("422")
 		.expirationMonth(9)                  
 		.expirationYear(14);
 
-Subscription subscription = api.subscriptions().create(new CreateSubscriptionParams()
-		.customerId(customer.getId())
+Subscription subscription = api.subscriptions().create(customer.getId(), new Subscription()
 		.planId(plan.getId())
 		.card(card));      // You can also use withCardId to use a pre-registered card.
 ```
@@ -157,8 +156,8 @@ Subscription subscription = api.subscriptions().create(new CreateSubscriptionPar
 To cancel the subscription at the end of the current period, you can update its cancelAtPeriodEnd property to true:
 
 ```java
-api.subscriptions().update(new UpdateSubscriptionParams(subscription)
-		.cancelAtPeriodEnd(true));
+subscription.setCancelAtPeriodEnd(true);
+api.subscriptions().update(subscription);
 ```
 
 You can also cancel the subscription immediately:

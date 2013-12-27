@@ -28,7 +28,6 @@ import java.util.Map;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.JsonServiceClient;
-import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
@@ -120,16 +119,8 @@ public class ChargeOperations extends ServiceOperations {
             final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
         CreateCardChargeParams charge = new CreateCardChargeParams()
                 .amount(amount)
-                .description(description).orderId(orderId);
-        if (card != null) {
-            charge.card(new CreateCardParams()
-                    .address(card.getAddress())
-                    .cardNumber(card.getCardNumber())
-                    .cvv2(card.getCvv2())
-                    .expirationMonth(card.getExpirationMonth())
-                    .expirationYear(card.getExpirationYear())
-                    .holderName(card.getHolderName()));
-        }
+                .description(description).orderId(orderId)
+                .card(card);
         return this.create(charge);
     }
 
@@ -140,16 +131,8 @@ public class ChargeOperations extends ServiceOperations {
                 .customerId(customerId)
                 .amount(amount)
                 .description(description)
-                .orderId(orderId);
-        if (card != null) {
-            charge.card(new CreateCardParams()
-                    .address(card.getAddress())
-                    .cardNumber(card.getCardNumber())
-                    .cvv2(card.getCvv2())
-                    .expirationMonth(card.getExpirationMonth())
-                    .expirationYear(card.getExpirationYear())
-                    .holderName(card.getHolderName()));
-        }
+                .orderId(orderId)
+                .card(card);
         return this.create(charge);
     }
 

@@ -18,8 +18,8 @@ package mx.openpay.client.core.requests.transactions;
 import java.math.BigDecimal;
 
 import lombok.Getter;
+import mx.openpay.client.Card;
 import mx.openpay.client.core.requests.RequestBuilder;
-import mx.openpay.client.core.requests.card.CreateCardParams;
 import mx.openpay.client.enums.ChargeMethods;
 
 /**
@@ -47,12 +47,8 @@ public class CreateCardChargeParams extends RequestBuilder {
     /**
      * A new card to use only for this charge. Required if no card Id is given.
      */
-    public CreateCardChargeParams card(final CreateCardParams card) {
-        if (card == null) {
-            return this.with("card", null);
-        } else {
-            return this.with("card", card.asMap());
-        }
+    public CreateCardChargeParams card(final Card card) {
+        return this.with("card", card);
     }
 
     /**
