@@ -15,7 +15,8 @@
  */
 package mx.openpay.client.core;
 
-import java.security.GeneralSecurityException;
+import static mx.openpay.client.utils.OpenpayPathComponents.VERSION;
+
 import java.util.List;
 import java.util.Map;
 
@@ -33,19 +34,54 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 @Slf4j
 public class JsonServiceClient {
 
+    private static final String HTTP_RESOURCE_SEPARATOR = "/";
+
     private final String root;
 
     @Getter
-    private JsonSerializer serializer;
+    private final JsonSerializer serializer;
 
     @Getter
-    private HttpServiceClient httpClient;
+    private final HttpServiceClient httpClient;
 
-    public JsonServiceClient(final String location, final String key) throws GeneralSecurityException {
-        this.root = location;
+    @Getter
+    private final String merchantId;
+
+    public JsonServiceClient(final String location, final String merchantId, final String key) {
+        this.validateParameters(location, merchantId);
+        String url = this.getUrl(location);
+        this.root = url;
+        this.merchantId = merchantId;
         this.serializer = new DefaultSerializer();
         this.httpClient = new DefaultHttpServiceClient();
         this.httpClient.setKey(key);
+    }
+
+    /**
+     * @param location
+     * @param merchantId2
+     */
+    private void validateParameters(final String location, final String merchantId) {
+        if (location == null) {
+            throw new IllegalArgumentException("Location can't be null");
+        }
+        if (merchantId == null) {
+            throw new IllegalArgumentException("Merchant ID can't be null");
+        }
+    }
+
+    private String getUrl(final String location) {
+        StringBuilder baseUri = new StringBuilder();
+        if (location.contains("http") || location.contains("https")) {
+            baseUri.append(location.replace("http:", "https:"));
+        } else {
+            baseUri.append("https://").append(location);
+        }
+        if (!location.endsWith(HTTP_RESOURCE_SEPARATOR)) {
+            baseUri.append(HTTP_RESOURCE_SEPARATOR);
+        }
+        baseUri.append(VERSION);
+        return baseUri.toString();
     }
 
     public <T> T get(final String path, final Class<T> clazz) throws OpenpayServiceException,

@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,11 +15,6 @@
  */
 package mx.openpay.client.core;
 
-import static mx.openpay.client.utils.OpenpayPathComponents.VERSION;
-
-import java.security.GeneralSecurityException;
-
-import lombok.Getter;
 import mx.openpay.client.core.operations.BankAccountOperations;
 import mx.openpay.client.core.operations.CardOperations;
 import mx.openpay.client.core.operations.ChargeOperations;
@@ -34,17 +29,6 @@ import mx.openpay.client.core.operations.TransferOperations;
  * @author elopez
  */
 public class OpenpayAPI {
-
-    private static final String HTTP_RESOURCE_SEPARATOR = "/";
-
-    @Getter
-    private final String location;
-
-    @Getter
-    private final String merchantId;
-
-    @Getter
-    private final String apiKey;
 
     private final JsonServiceClient jsonClient;
 
@@ -67,43 +51,20 @@ public class OpenpayAPI {
     private final SubscriptionOperations subscriptionsOperations;
 
     public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
-        if (location == null) {
-            throw new IllegalArgumentException("Location can't be null");
-        }
-        if (merchantId == null) {
-            throw new IllegalArgumentException("Merchant ID can't be null");
-        }
-        this.location = location;
-        this.merchantId = merchantId;
-        this.apiKey = apiKey;
-        this.jsonClient = this.initJsonClient(location, apiKey);
-        this.bankAccountOperations = new BankAccountOperations(this.jsonClient, merchantId);
-        this.customerOperations = new CustomerOperations(this.jsonClient, merchantId);
-        this.cardOperations = new CardOperations(this.jsonClient, merchantId);
-        this.chargeOperations = new ChargeOperations(this.jsonClient, merchantId);
-        this.feeOperations = new FeeOperations(this.jsonClient, merchantId);
-        this.payoutOperations = new PayoutOperations(this.jsonClient, merchantId);
-        this.transferOperations = new TransferOperations(this.jsonClient, merchantId);
-        this.planOperations = new PlanOperations(this.jsonClient, merchantId);
-        this.subscriptionsOperations = new SubscriptionOperations(this.jsonClient, merchantId);
+        this(new JsonServiceClient(location, merchantId, apiKey));
     }
 
-    private JsonServiceClient initJsonClient(final String location, final String apiKey) {
-        StringBuilder baseUri = new StringBuilder();
-        if (location.contains("http") || location.contains("https")) {
-            baseUri.append(location.replace("http:", "https:"));
-        } else {
-            baseUri.append("https://").append(location);
-        }
-        if (!location.endsWith(HTTP_RESOURCE_SEPARATOR)) {
-            baseUri.append(HTTP_RESOURCE_SEPARATOR);
-        }
-        baseUri.append(VERSION);
-        try {
-            return new JsonServiceClient(baseUri.toString(), apiKey);
-        } catch (GeneralSecurityException e) {
-            throw new IllegalStateException("Can't initialize Openpay Client", e);
-        }
+    public OpenpayAPI(final JsonServiceClient client) {
+        this.jsonClient = client;
+        this.bankAccountOperations = new BankAccountOperations(this.jsonClient);
+        this.customerOperations = new CustomerOperations(this.jsonClient);
+        this.cardOperations = new CardOperations(this.jsonClient);
+        this.chargeOperations = new ChargeOperations(this.jsonClient);
+        this.feeOperations = new FeeOperations(this.jsonClient);
+        this.payoutOperations = new PayoutOperations(this.jsonClient);
+        this.transferOperations = new TransferOperations(this.jsonClient);
+        this.planOperations = new PlanOperations(this.jsonClient);
+        this.subscriptionsOperations = new SubscriptionOperations(this.jsonClient);
     }
 
     public void setTimeout(final int timeout) {

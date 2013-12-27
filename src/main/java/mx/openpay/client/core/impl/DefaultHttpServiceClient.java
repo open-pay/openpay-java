@@ -20,7 +20,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.UnsupportedCharsetException;
-import java.security.GeneralSecurityException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -72,7 +71,7 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
     @Setter
     private String key;
 
-    public DefaultHttpServiceClient() throws GeneralSecurityException {
+    public DefaultHttpServiceClient() {
         this.httpClient = this.initHttpClient();
         this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
         this.setSocketTimeout(DEFAULT_CONNECTION_TIMEOUT);
@@ -96,7 +95,7 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
         this.httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
     }
 
-    private HttpClient initHttpClient() throws GeneralSecurityException {
+    private HttpClient initHttpClient() {
         PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
         HttpClient httpClient = new DefaultHttpClient(connMgr);
         httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);

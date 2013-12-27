@@ -41,8 +41,8 @@ public class CustomerOperations extends ServiceOperations {
 
     private static final String GET_CUSTOMER_PATH = CUSTOMERS_PATH + ID;
 
-    public CustomerOperations(final JsonServiceClient client, final String merchantId) {
-        super(client, merchantId);
+    public CustomerOperations(final JsonServiceClient client) {
+        super(client);
     }
 
     public Customer create(final CreateCustomerParams create) throws OpenpayServiceException,
