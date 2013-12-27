@@ -65,7 +65,7 @@ public class ChargesOperationsTest {
     @SuppressWarnings("deprecation")
     @Test
     public void testCreate_Customer_WithId_Old() throws ServiceUnavailableException, OpenpayServiceException {
-        BigDecimal amount = new BigDecimal("10000.00");
+        BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
 
         List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
@@ -80,7 +80,7 @@ public class ChargesOperationsTest {
 
     @Test
     public void testCreate_Customer_WithId() throws ServiceUnavailableException, OpenpayServiceException {
-        BigDecimal amount = new BigDecimal("10000.00");
+        BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
 
         List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
@@ -111,7 +111,7 @@ public class ChargesOperationsTest {
                 .expirationYear(14)
                 .address(address);
 
-        BigDecimal amount = new BigDecimal("10000.00");
+        BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge deposit = this.charges.create(new CreateCardChargeParams()
@@ -160,7 +160,7 @@ public class ChargesOperationsTest {
     @SuppressWarnings("deprecation")
     @Test
     public void testRefund_Customer_Old() throws Exception {
-        BigDecimal amount = new BigDecimal("10000.00");
+        BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
         Assert.assertNotNull(cards);
@@ -185,7 +185,7 @@ public class ChargesOperationsTest {
 
     @Test
     public void testRefund_Customer() throws Exception {
-        BigDecimal amount = new BigDecimal("10000.00");
+        BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
         Assert.assertNotNull(cards);
@@ -253,7 +253,7 @@ public class ChargesOperationsTest {
         card.expirationYear(14);
         card.address(address);
 
-        BigDecimal amount = new BigDecimal("10000.00");
+        BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge deposit = this.charges.create(new CreateCardChargeParams()
@@ -296,7 +296,7 @@ public class ChargesOperationsTest {
     @SuppressWarnings("deprecation")
     @Test
     public void testRefund_Merchant_Old() throws Exception {
-        BigDecimal amount = new BigDecimal("10000.00");
+        BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
 
@@ -314,7 +314,7 @@ public class ChargesOperationsTest {
 
     @Test
     public void testRefund_Merchant() throws Exception {
-        BigDecimal amount = new BigDecimal("10000.00");
+        BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
 

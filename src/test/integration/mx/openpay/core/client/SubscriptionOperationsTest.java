@@ -19,6 +19,7 @@ import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -178,7 +179,7 @@ public class SubscriptionOperationsTest {
         subscription = this.subscriptions.update(subscription);
 
         assertThat(subscription.getId(), is(UPDATE_SUBSCRIPTION_ID));
-        assertThat(subscription.getCardId(), is("kerxkwvyldyzcw05pv7k"));
+        assertThat(subscription.getCardId(), is(nullValue()));
         assertThat(subscription.getCard().getId(), is("kerxkwvyldyzcw05pv7k"));
         assertThat(subscription.getCard().getCardNumber(), is("1883"));
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));

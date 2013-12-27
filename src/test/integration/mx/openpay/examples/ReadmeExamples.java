@@ -100,7 +100,7 @@ public class ReadmeExamples {
         api.charges().create(new CreateCardChargeParams()
                 .customerId(customer.getId())
                 .description("Test charge")
-                .amount(new BigDecimal("5000.00")) // Amount is in MXN
+                .amount(new BigDecimal("2000.00")) // Amount is in MXN
                 .card(new Card()
                         .cardNumber("5555555555554444") // No dashes or spaces
                         .holderName("Juan Pérez Nuñez")
