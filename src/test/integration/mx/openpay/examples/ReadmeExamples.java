@@ -34,6 +34,7 @@ import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.enums.PlanRepeatUnit;
 import mx.openpay.client.enums.PlanStatusAfterRetry;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -41,7 +42,7 @@ import org.junit.Test;
  * correct.
  * @author elopez
  */
-// @Ignore("Not actually meant to run everytime, just to check the readme examples are ok")
+@Ignore("Not actually meant to run everytime, just to check the readme examples are ok")
 @SuppressWarnings("unused")
 public class ReadmeExamples {
 
