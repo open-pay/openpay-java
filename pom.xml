@@ -11,25 +11,25 @@
 	<url>http://github.com/open-pay/openpay-java</url>
 	
 <!-- Para publicar en Sonatype -->
-<!-- 	<parent> -->
-<!-- 		<groupId>org.sonatype.oss</groupId> -->
-<!-- 		<artifactId>oss-parent</artifactId> -->
-<!-- 		<version>7</version> -->
-<!-- 	</parent> -->
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 
 <!-- Para publicar en repositorio local -->
-	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
-		</repository>
-	</distributionManagement>
+<!-- 	<distributionManagement> -->
+<!-- 		<snapshotRepository> -->
+<!-- 			<id>nexus-facelend</id> -->
+<!-- 			<name>RepositoryProxy</name> -->
+<!-- 			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url> -->
+<!-- 		</snapshotRepository> -->
+<!-- 		<repository> -->
+<!-- 			<id>nexus-facelend</id> -->
+<!-- 			<name>RepositoryProxy</name> -->
+<!-- 			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url> -->
+<!-- 		</repository> -->
+<!-- 	</distributionManagement> -->
 
 
 	<licenses>
@@ -101,6 +101,12 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.skyscreamer</groupId>
+			<artifactId>jsonassert</artifactId>
+			<version>1.2.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
