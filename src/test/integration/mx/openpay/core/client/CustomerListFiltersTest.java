@@ -125,7 +125,7 @@ public class CustomerListFiltersTest {
     @Test
     public void testList_Create_Offset() throws Exception {
         List<Customer> customers = customerOps.list(search().creation(new Date()).offset(1));
-        assertEquals(10, customers.size());
+        assertEquals(9, customers.size());
         for (int i = 1; i < createdCustomers.size(); i++) {
             assertEquals(createdCustomers.get(i).getId(), customers.get(i - 1).getId());
         }
