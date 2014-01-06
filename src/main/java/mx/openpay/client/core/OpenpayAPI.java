@@ -32,39 +32,50 @@ public class OpenpayAPI {
 
     private final JsonServiceClient jsonClient;
 
-    private final BankAccountOperations bankAccountOperations;
+    private BankAccountOperations bankAccountOperations;
 
-    private final CustomerOperations customerOperations;
+    private CustomerOperations customerOperations;
 
     private final CardOperations cardOperations;
 
-    private final ChargeOperations chargeOperations;
+    private ChargeOperations chargeOperations;
 
-    private final FeeOperations feeOperations;
+    private FeeOperations feeOperations;
 
-    private final PayoutOperations payoutOperations;
+    private PayoutOperations payoutOperations;
 
-    private final TransferOperations transferOperations;
+    private TransferOperations transferOperations;
 
-    private final PlanOperations planOperations;
+    private PlanOperations planOperations;
 
-    private final SubscriptionOperations subscriptionsOperations;
+    private SubscriptionOperations subscriptionsOperations;
 
     public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
-        this(new JsonServiceClient(location, merchantId, apiKey));
+        this(new JsonServiceClient(location, merchantId, apiKey, true));
+    }
+
+    public OpenpayAPI(final String location, final String apiKey, final String merchantId, final boolean fullInitialization) {
+        this(new JsonServiceClient(location, merchantId, apiKey, false));
     }
 
     public OpenpayAPI(final JsonServiceClient client) {
+    	this(client, true);
+    }
+    
+    public OpenpayAPI(final JsonServiceClient client, final boolean fullInitialization) {
         this.jsonClient = client;
-        this.bankAccountOperations = new BankAccountOperations(this.jsonClient);
-        this.customerOperations = new CustomerOperations(this.jsonClient);
+        
         this.cardOperations = new CardOperations(this.jsonClient);
-        this.chargeOperations = new ChargeOperations(this.jsonClient);
-        this.feeOperations = new FeeOperations(this.jsonClient);
-        this.payoutOperations = new PayoutOperations(this.jsonClient);
-        this.transferOperations = new TransferOperations(this.jsonClient);
-        this.planOperations = new PlanOperations(this.jsonClient);
-        this.subscriptionsOperations = new SubscriptionOperations(this.jsonClient);
+        if (fullInitialization) {
+	        this.bankAccountOperations = new BankAccountOperations(this.jsonClient);
+	        this.customerOperations = new CustomerOperations(this.jsonClient);
+	        this.chargeOperations = new ChargeOperations(this.jsonClient);
+	        this.feeOperations = new FeeOperations(this.jsonClient);
+	        this.payoutOperations = new PayoutOperations(this.jsonClient);
+	        this.transferOperations = new TransferOperations(this.jsonClient);
+	        this.planOperations = new PlanOperations(this.jsonClient);
+	        this.subscriptionsOperations = new SubscriptionOperations(this.jsonClient);
+        }
     }
 
     public void setTimeout(final int timeout) {

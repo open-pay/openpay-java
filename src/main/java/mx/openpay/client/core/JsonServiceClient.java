@@ -47,13 +47,13 @@ public class JsonServiceClient {
     @Getter
     private final String merchantId;
 
-    public JsonServiceClient(final String location, final String merchantId, final String key) {
+    public JsonServiceClient(final String location, final String merchantId, final String key, final Boolean fullInitialization) {
         this.validateParameters(location, merchantId);
         String url = this.getUrl(location);
         this.root = url;
         this.merchantId = merchantId;
         this.serializer = new DefaultSerializer();
-        this.httpClient = new DefaultHttpServiceClient();
+        this.httpClient = new DefaultHttpServiceClient(fullInitialization);
         this.httpClient.setKey(key);
     }
 
