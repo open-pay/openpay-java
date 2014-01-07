@@ -73,7 +73,7 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
     @Setter
     private String key;
 
-    public DefaultHttpServiceClient(final Boolean requirePoolManager) {
+    public DefaultHttpServiceClient(final boolean requirePoolManager) {
         this.httpClient = this.initHttpClient(requirePoolManager);
         this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
         this.setSocketTimeout(DEFAULT_CONNECTION_TIMEOUT);
@@ -97,7 +97,7 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
         this.httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
     }
 
-    protected HttpClient initHttpClient(final Boolean requirePoolManager) {
+    protected HttpClient initHttpClient(final boolean requirePoolManager) {
     	HttpClient httpClient;
     	if (requirePoolManager) {
     		PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
@@ -105,7 +105,7 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
     	} else {
     		httpClient = new DefaultHttpClient();
     	}
-    	
+
         httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
         httpClient.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
         return httpClient;

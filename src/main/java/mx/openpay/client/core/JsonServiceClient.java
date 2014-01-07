@@ -47,7 +47,7 @@ public class JsonServiceClient {
     @Getter
     private final String merchantId;
 
-    public JsonServiceClient(final String location, final String merchantId, final String key, final Boolean fullInitialization) {
+    public JsonServiceClient(final String location, final String merchantId, final String key, final boolean fullInitialization) {
         this.validateParameters(location, merchantId);
         String url = this.getUrl(location);
         this.root = url;
