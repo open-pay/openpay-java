@@ -28,6 +28,8 @@ import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
+ * Calls the HTTP Service and parses the response, delegating to a HttpServiceClient and a JsonSerializer. Custom
+ * implementations can be used if the defaults are not appropiate.
  * @author Heber Lazcano
  * @author elopez
  */
@@ -47,20 +49,36 @@ public class JsonServiceClient {
     @Getter
     private final String merchantId;
 
-    public JsonServiceClient(final String location, final String merchantId, final String key, final boolean fullInitialization) {
+    /**
+     * Initializes a JsonServiceClient with the default JsonSerializer and HttpServiceClient.
+     * @param location Base URL of the Webservice.
+     * @param merchantId Merchant's Id.
+     * @param key Public or private key. Public Key may have limited permissions.
+     */
+    public JsonServiceClient(final String location, final String merchantId, final String key) {
+        this(location, merchantId, key, new DefaultSerializer(), new DefaultHttpServiceClient(true));
+    }
+
+    /**
+     * Initializes a JsonServiceClient using a custom implementation of a serializer and http client. Useful if the
+     * defaults need to be changed or a different Http Client library needs to be used.
+     * @param location
+     * @param merchantId
+     * @param key
+     * @param serializer
+     * @param httpClient
+     */
+    public JsonServiceClient(final String location, final String merchantId, final String key,
+            final JsonSerializer serializer, final HttpServiceClient httpClient) {
         this.validateParameters(location, merchantId);
         String url = this.getUrl(location);
         this.root = url;
         this.merchantId = merchantId;
-        this.serializer = new DefaultSerializer();
-        this.httpClient = new DefaultHttpServiceClient(fullInitialization);
+        this.serializer = serializer;
+        this.httpClient = httpClient;
         this.httpClient.setKey(key);
     }
 
-    /**
-     * @param location
-     * @param merchantId2
-     */
     private void validateParameters(final String location, final String merchantId) {
         if (location == null) {
             throw new IllegalArgumentException("Location can't be null");

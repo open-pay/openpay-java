@@ -26,6 +26,11 @@ import mx.openpay.client.core.operations.SubscriptionOperations;
 import mx.openpay.client.core.operations.TransferOperations;
 
 /**
+ * Initializes all Operations from the Openpay API.
+ * <p>
+ * A custom JsonServiceClient can be used for all the operations. If only one operation is needed in all the
+ * application, it may be better to initialize a JsonServiceClient and instantiate the Operation object.
+ * </p>
  * @author elopez
  */
 public class OpenpayAPI {
@@ -51,31 +56,20 @@ public class OpenpayAPI {
     private SubscriptionOperations subscriptionsOperations;
 
     public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
-        this(new JsonServiceClient(location, merchantId, apiKey, true));
-    }
-
-    public OpenpayAPI(final String location, final String apiKey, final String merchantId, final boolean fullInitialization) {
-        this(new JsonServiceClient(location, merchantId, apiKey, false));
+        this(new JsonServiceClient(location, merchantId, apiKey));
     }
 
     public OpenpayAPI(final JsonServiceClient client) {
-    	this(client, true);
-    }
-    
-    public OpenpayAPI(final JsonServiceClient client, final boolean fullInitialization) {
         this.jsonClient = client;
-        
         this.cardOperations = new CardOperations(this.jsonClient);
-        if (fullInitialization) {
-	        this.bankAccountOperations = new BankAccountOperations(this.jsonClient);
-	        this.customerOperations = new CustomerOperations(this.jsonClient);
-	        this.chargeOperations = new ChargeOperations(this.jsonClient);
-	        this.feeOperations = new FeeOperations(this.jsonClient);
-	        this.payoutOperations = new PayoutOperations(this.jsonClient);
-	        this.transferOperations = new TransferOperations(this.jsonClient);
-	        this.planOperations = new PlanOperations(this.jsonClient);
-	        this.subscriptionsOperations = new SubscriptionOperations(this.jsonClient);
-        }
+        this.bankAccountOperations = new BankAccountOperations(this.jsonClient);
+        this.customerOperations = new CustomerOperations(this.jsonClient);
+        this.chargeOperations = new ChargeOperations(this.jsonClient);
+        this.feeOperations = new FeeOperations(this.jsonClient);
+        this.payoutOperations = new PayoutOperations(this.jsonClient);
+        this.transferOperations = new TransferOperations(this.jsonClient);
+        this.planOperations = new PlanOperations(this.jsonClient);
+        this.subscriptionsOperations = new SubscriptionOperations(this.jsonClient);
     }
 
     public void setTimeout(final int timeout) {
