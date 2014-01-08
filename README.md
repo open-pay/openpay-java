@@ -15,6 +15,18 @@ What's new
 - Fixed bug that made Java 7 required.
 - Parameters are now set into a request object to reduce method signatures.
 
+Installation
+----------------
+
+To install, add the following dependency to your pom.xml:
+
+```xml
+<dependency>
+	<groupId>mx.openpay</groupId>
+	<artifactId>openpay-api-client</artifactId>
+	<version>1.0.1</version>
+</dependency>
+```
 
 Compatibility
 ----------------
@@ -159,19 +171,6 @@ You can also cancel the subscription immediately:
 
 ```java
 api.subscriptions().delete(customer.getId(), subscription.getId());
-```
-
-Installation
-----------------
-
-To install, add the following dependency to your pom.xml:
-
-```xml
-<dependency>
-	<groupId>mx.openpay</groupId>
-	<artifactId>openpay-api-client</artifactId>
-	<version>1.0.1</version>
-</dependency>
 ```
 
 
