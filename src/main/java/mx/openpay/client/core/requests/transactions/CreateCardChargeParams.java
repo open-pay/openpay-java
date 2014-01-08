@@ -17,7 +17,6 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 
-import lombok.Getter;
 import mx.openpay.client.Card;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
@@ -28,20 +27,8 @@ import mx.openpay.client.enums.ChargeMethods;
  */
 public class CreateCardChargeParams extends RequestBuilder {
 
-    @Getter
-    private String customerId;
-
     public CreateCardChargeParams() {
         this.with("method", ChargeMethods.CARD.name().toLowerCase());
-    }
-
-    /**
-     * The customer to which the amount will be added. Optional, if not given, the amount will be added to the
-     * merchant's balance.
-     */
-    public CreateCardChargeParams customerId(final String customerId) {
-        this.customerId = customerId;
-        return this;
     }
 
     /**

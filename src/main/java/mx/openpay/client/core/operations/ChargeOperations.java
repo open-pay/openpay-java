@@ -64,23 +64,25 @@ public class ChargeOperations extends ServiceOperations {
 
     public Charge create(final CreateCardChargeParams request) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path;
-        if (request.getCustomerId() == null) {
-            path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
-        } else {
-            path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), request.getCustomerId());
-        }
+        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
+        return this.getJsonClient().post(path, request.asMap(), Charge.class);
+    }
+
+    public Charge create(final String customerId, final CreateCardChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
         return this.getJsonClient().post(path, request.asMap(), Charge.class);
     }
 
     public Charge create(final CreateBankChargeParams request) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path;
-        if (request.getCustomerId() == null) {
-            path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
-        } else {
-            path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), request.getCustomerId());
-        }
+        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
+        return this.getJsonClient().post(path, request.asMap(), Charge.class);
+    }
+
+    public Charge create(final String customerId, final CreateBankChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
         return this.getJsonClient().post(path, request.asMap(), Charge.class);
     }
 
@@ -110,13 +112,13 @@ public class ChargeOperations extends ServiceOperations {
     }
 
     public Charge refund(final RefundParams params) throws OpenpayServiceException, ServiceUnavailableException {
-        String path;
-        if (params.getCustomerId() == null) {
-            path = String.format(REFUND_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
-        } else {
-            path = String.format(REFUND_FOR_CUSTOMER_PATH, this.getMerchantId(), params.getCustomerId(),
-                    params.getChargeId());
-        }
+        String path = String.format(REFUND_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
+        return this.getJsonClient().post(path, params.asMap(), Charge.class);
+    }
+
+    public Charge refund(final String customerId, final RefundParams params) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(REFUND_FOR_CUSTOMER_PATH, this.getMerchantId(), customerId, params.getChargeId());
         return this.getJsonClient().post(path, params.asMap(), Charge.class);
     }
 
@@ -125,13 +127,17 @@ public class ChargeOperations extends ServiceOperations {
      */
     public Charge confirmCapture(final ConfirmCaptureParams params) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path;
-        if (params.getCustomerId() == null) {
-            path = String.format(CONFIRM_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
-        } else {
-            path = String.format(CONFIRM_FOR_CUSTOMER_PATH, this.getMerchantId(), params.getCustomerId(),
-                    params.getChargeId());
-        }
+        String path = String.format(CONFIRM_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
+        return this.getJsonClient().post(path, params.asMap(), Charge.class);
+    }
+
+    /**
+     * Confirms a charge that was made with the option capture set to false.
+     */
+    public Charge confirmCapture(final String customerId, final ConfirmCaptureParams params)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(CONFIRM_FOR_CUSTOMER_PATH, this.getMerchantId(), customerId,
+                params.getChargeId());
         return this.getJsonClient().post(path, params.asMap(), Charge.class);
     }
 
@@ -149,24 +155,22 @@ public class ChargeOperations extends ServiceOperations {
     public Charge create(final String customerId, final Card card, final BigDecimal amount,
             final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
         CreateCardChargeParams charge = new CreateCardChargeParams()
-                .customerId(customerId)
                 .amount(amount)
                 .description(description)
                 .orderId(orderId)
                 .card(card);
-        return this.create(charge);
+        return this.create(customerId, charge);
     }
 
     @Deprecated
     public Charge create(final String customerId, final String sourceId, final BigDecimal amount,
             final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
         CreateCardChargeParams charge = new CreateCardChargeParams()
-                .customerId(customerId)
                 .cardId(sourceId)
                 .amount(amount)
                 .description(description)
                 .orderId(orderId);
-        return this.create(charge);
+        return this.create(customerId, charge);
     }
 
     @Deprecated
@@ -184,11 +188,10 @@ public class ChargeOperations extends ServiceOperations {
             final String description,
             final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
         CreateBankChargeParams request = new CreateBankChargeParams()
-                .customerId(customerId)
                 .amount(amount)
                 .description(description)
                 .orderId(orderId);
-        return this.create(request);
+        return this.create(customerId, request);
     }
 
     @Deprecated
@@ -200,7 +203,7 @@ public class ChargeOperations extends ServiceOperations {
     @Deprecated
     public Charge refund(final String customerId, final String transactionId, final String description,
             final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
-        return this.refund(new RefundParams().customerId(customerId).chargeId(transactionId).description(description));
+        return this.refund(customerId, new RefundParams().chargeId(transactionId).description(description));
     }
 
 }

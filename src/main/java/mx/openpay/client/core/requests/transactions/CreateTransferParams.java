@@ -17,7 +17,6 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 
-import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
 
 /**
@@ -25,17 +24,6 @@ import mx.openpay.client.core.requests.RequestBuilder;
  * @author elopez
  */
 public class CreateTransferParams extends RequestBuilder {
-
-    @Getter
-    private String fromCustomerId;
-
-    /**
-     * The Customer from which the amount will be taken. Required.
-     */
-    public CreateTransferParams fromCustomerId(final String fromCustomerId) {
-        this.fromCustomerId = fromCustomerId;
-        return this;
-    }
 
     /**
      * The Customer to which the amount will be deposited. Required.

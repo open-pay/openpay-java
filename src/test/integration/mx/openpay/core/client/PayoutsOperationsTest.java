@@ -125,13 +125,12 @@ public class PayoutsOperationsTest {
 
         String orderId = String.valueOf(System.currentTimeMillis());
         CreateBankPayoutParams createPayout = new CreateBankPayoutParams()
-                .customerId(customerId)
                 .bankAccountId(bankAccounts.get(0).getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId);
 
-        Payout transaction = this.payouts.create(createPayout);
+        Payout transaction = this.payouts.create(customerId, createPayout);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertEquals(amount, transaction.getAmount());
@@ -170,8 +169,7 @@ public class PayoutsOperationsTest {
         bankAccount.holderName("Cuenta");
 
         String orderId = String.valueOf(System.currentTimeMillis());
-        Payout transaction = this.payouts.create(new CreateBankPayoutParams()
-                .customerId(customerId)
+        Payout transaction = this.payouts.create(customerId, new CreateBankPayoutParams()
                 .bankAccount(bankAccount)
                 .amount(amount)
                 .description(desc)
@@ -212,8 +210,7 @@ public class PayoutsOperationsTest {
         card.bankCode("012");
 
         String orderId = String.valueOf(System.currentTimeMillis());
-        Payout transaction = this.payouts.create(new CreateCardPayoutParams()
-                .customerId(customerId)
+        Payout transaction = this.payouts.create(customerId, new CreateCardPayoutParams()
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)

@@ -69,8 +69,7 @@ public class TransferOperationsTest {
     @Test
     public void testCreate() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
-        Transfer transfer = this.ops.create(new CreateTransferParams()
-                .fromCustomerId(CUSTOMER_ID)
+        Transfer transfer = this.ops.create(CUSTOMER_ID, new CreateTransferParams()
                 .toCustomerId(TRANSFER_TO_CUSTOMER_ID)
                 .amount(BigDecimal.TEN)
                 .description("Una descripcion")
@@ -98,8 +97,7 @@ public class TransferOperationsTest {
     public void testCreate_NoDestination() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
         try {
-            this.ops.create(new CreateTransferParams()
-                    .fromCustomerId(CUSTOMER_ID)
+            this.ops.create(CUSTOMER_ID, new CreateTransferParams()
                     .amount(new BigDecimal("10.0"))
                     .description("Una descripcion")
                     .orderId(orderId));
@@ -125,8 +123,7 @@ public class TransferOperationsTest {
     public void testCreate_InvalidDestination() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
         try {
-            this.ops.create(new CreateTransferParams()
-                    .fromCustomerId(CUSTOMER_ID)
+            this.ops.create(CUSTOMER_ID, new CreateTransferParams()
                     .toCustomerId("")
                     .amount(new BigDecimal("10.0"))
                     .description("Una descripcion")

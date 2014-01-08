@@ -89,12 +89,11 @@ public class ChargesOperationsTest {
 
         String orderId = String.valueOf(System.currentTimeMillis());
         CreateCardChargeParams charge = new CreateCardChargeParams()
-                .customerId(CUSTOMER_ID)
                 .cardId(cards.get(0).getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId);
-        Charge transaction = this.charges.create(charge);
+        Charge transaction = this.charges.create(CUSTOMER_ID, charge);
         Assert.assertNotNull(transaction);
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
@@ -112,13 +111,12 @@ public class ChargesOperationsTest {
 
         String orderId = String.valueOf(System.currentTimeMillis());
         CreateCardChargeParams charge = new CreateCardChargeParams()
-                .customerId(CUSTOMER_ID)
                 .cardId(cards.get(0).getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
                 .capture(false);
-        Charge transaction = this.charges.create(charge);
+        Charge transaction = this.charges.create(CUSTOMER_ID, charge);
         Assert.assertNotNull(transaction);
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
@@ -127,8 +125,7 @@ public class ChargesOperationsTest {
         BigDecimal newBalance = this.api.customers().get(CUSTOMER_ID).getBalance();
         Assert.assertTrue(currentBalance.compareTo(newBalance) == 0);
 
-        Charge confirmed = this.charges.confirmCapture(new ConfirmCaptureParams()
-                .customerId(CUSTOMER_ID)
+        Charge confirmed = this.charges.confirmCapture(CUSTOMER_ID, new ConfirmCaptureParams()
                 .chargeId(transaction.getId())
                 .amount(amount));
 
@@ -150,13 +147,12 @@ public class ChargesOperationsTest {
 
         String orderId = String.valueOf(System.currentTimeMillis());
         CreateCardChargeParams charge = new CreateCardChargeParams()
-                .customerId(CUSTOMER_ID)
                 .cardId(cards.get(0).getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
                 .capture(false);
-        Charge transaction = this.charges.create(charge);
+        Charge transaction = this.charges.create(CUSTOMER_ID, charge);
         Assert.assertNotNull(transaction);
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
@@ -166,8 +162,7 @@ public class ChargesOperationsTest {
         Assert.assertTrue(currentBalance.compareTo(newBalance) == 0);
 
         BigDecimal confirmedAmount = BigDecimal.ONE;
-        Charge confirmed = this.charges.confirmCapture(new ConfirmCaptureParams()
-                .customerId(CUSTOMER_ID)
+        Charge confirmed = this.charges.confirmCapture(CUSTOMER_ID, new ConfirmCaptureParams()
                 .chargeId(transaction.getId())
                 .amount(confirmedAmount));
 
@@ -193,8 +188,7 @@ public class ChargesOperationsTest {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
-        Charge deposit = this.charges.create(new CreateCardChargeParams()
-                .customerId(CUSTOMER_ID)
+        Charge deposit = this.charges.create(CUSTOMER_ID, new CreateCardChargeParams()
                 .card(card)
                 .amount(amount)
                 .description(desc)
@@ -211,8 +205,7 @@ public class ChargesOperationsTest {
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         try {
-            this.charges.create(new CreateCardChargeParams()
-                    .customerId(CUSTOMER_ID)
+            this.charges.create(CUSTOMER_ID, new CreateCardChargeParams()
                     .amount(amount)
                     .description(desc)
                     .orderId(orderId));
@@ -245,11 +238,10 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(cards);
         String orderId = String.valueOf(System.currentTimeMillis());
 
-        Charge transaction = this.charges.create(new CreateCardChargeParams()
+        Charge transaction = this.charges.create(CUSTOMER_ID, new CreateCardChargeParams()
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .customerId(CUSTOMER_ID)
                 .cardId(cards.get(0).getId()));
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
@@ -272,18 +264,16 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(cards);
         String orderId = String.valueOf(System.currentTimeMillis());
 
-        Charge transaction = this.charges.create(new CreateCardChargeParams()
+        Charge transaction = this.charges.create(CUSTOMER_ID, new CreateCardChargeParams()
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .customerId(CUSTOMER_ID)
                 .cardId(cards.get(0).getId()));
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
         String refDesc = "cancelacion (ignored description)";
-        transaction = this.charges.refund(new RefundParams()
-                .customerId(CUSTOMER_ID)
+        transaction = this.charges.refund(CUSTOMER_ID, new RefundParams()
                 .chargeId(transaction.getId())
                 .description(refDesc));
         Assert.assertNotNull(transaction.getRefund());

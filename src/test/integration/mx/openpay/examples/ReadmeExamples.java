@@ -83,22 +83,19 @@ public class ReadmeExamples {
                     .expirationMonth(9)
                     .expirationYear(14);
 
-            Charge charge = api.charges().create(new CreateCardChargeParams()
-                    .customerId(customer.getId())
+            Charge charge = api.charges().create(customer.getId(), new CreateCardChargeParams()
                     .description("Service charge")
                     .amount(new BigDecimal("200.00")) // Amount is in MXN
                     .orderId("Charge0001") // Optional transaction identifier
                     .card(card));
 
-            Charge refundedCharge = api.charges().refund(new RefundParams()
-                    .customerId(customer.getId())
+            Charge refundedCharge = api.charges().refund(customer.getId(), new RefundParams()
                     .chargeId(charge.getId()));
             System.out.println("refunded: " + refundedCharge);
 
         }
 
-        api.charges().create(new CreateCardChargeParams()
-                .customerId(customer.getId())
+        api.charges().create(customer.getId(), new CreateCardChargeParams()
                 .description("Test charge")
                 .amount(new BigDecimal("2000.00")) // Amount is in MXN
                 .card(new Card()
@@ -109,8 +106,7 @@ public class ReadmeExamples {
                         .expirationYear(14)));
 
         {
-            Charge charge = api.charges().create(new CreateBankChargeParams()
-                    .customerId(customer.getId())
+            Charge charge = api.charges().create(customer.getId(), new CreateBankChargeParams()
                     .description("Service charge")
                     .amount(new BigDecimal("100.00"))
                     .orderId("Charge0002"));
@@ -127,8 +123,7 @@ public class ReadmeExamples {
                     .holderName("Juan Pérez")
                     .alias("Juan's deposit account"); // Optional
 
-            Payout payout = api.payouts().create(new CreateBankPayoutParams()
-                    .customerId(customer.getId())
+            Payout payout = api.payouts().create(customer.getId(), new CreateBankPayoutParams()
                     .bankAccount(bankAccount)
                     .amount(new BigDecimal("150.00"))
                     .description("Payment to Juan")
@@ -141,8 +136,7 @@ public class ReadmeExamples {
                     .holderName("Juan Pérez Nuñez")
                     .bankCode("012");
 
-            Payout payout = api.payouts().create(new CreateCardPayoutParams()
-                    .customerId(customer.getId())
+            Payout payout = api.payouts().create(customer.getId(), new CreateCardPayoutParams()
                     .card(card)
                     .amount(new BigDecimal("150.00"))
                     .description("Payment to Juan")

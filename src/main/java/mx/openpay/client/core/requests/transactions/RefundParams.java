@@ -25,19 +25,7 @@ import mx.openpay.client.core.requests.RequestBuilder;
 public class RefundParams extends RequestBuilder {
 
     @Getter
-    private String customerId;
-
-    @Getter
     private String chargeId;
-
-    /**
-     * The ID of the customer to which the amount will be refunded. Optional, the refund will be for the merchant if not
-     * specified.
-     */
-    public RefundParams customerId(final String customerId) {
-        this.customerId = customerId;
-        return this;
-    }
 
     /**
      * The ID of the charge to refund. Required. The charge must belong to the merchant, or to the customer if the

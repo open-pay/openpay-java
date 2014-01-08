@@ -46,17 +46,17 @@ public class TransferOperations extends ServiceOperations {
         super(client);
     }
 
-    public Transfer create(final CreateTransferParams params) throws OpenpayServiceException,
+    public Transfer create(final String fromCustomerId, final CreateTransferParams params)
+            throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(CUSTOMER_TRANSFERS_PATH, this.getMerchantId(), params.getFromCustomerId());
+        String path = String.format(CUSTOMER_TRANSFERS_PATH, this.getMerchantId(), fromCustomerId);
         return this.getJsonClient().post(path, params.asMap(), Transfer.class);
     }
 
     @Deprecated
     public Transfer create(final String fromCustomerId, final String toCustomerId, final BigDecimal amount,
             final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
-        return this.create(new CreateTransferParams()
-                .fromCustomerId(fromCustomerId)
+        return this.create(fromCustomerId, new CreateTransferParams()
                 .toCustomerId(toCustomerId)
                 .amount(amount)
                 .description(description)

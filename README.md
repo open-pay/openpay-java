@@ -62,8 +62,7 @@ Card card = new Card()
 		.expirationMonth(9)
 		.expirationYear(14);
 
-Charge charge = api.charges().create(new CreateCardChargeParams()
-		.customerId(customer.getId())
+Charge charge = api.charges().create(customer.getId(), new CreateCardChargeParams()
 		.description("Service charge")
 		.amount(new BigDecimal("200.00"))       // Amount is in MXN
 		.orderId("Charge0001")                  // Optional transaction identifier
@@ -73,16 +72,14 @@ Charge charge = api.charges().create(new CreateCardChargeParams()
 Refunding a card charge:
 
 ```java
-Charge refundedCharge = api.charges().refund(new RefundParams()
-		.customerId(customer.getId())
+Charge refundedCharge = api.charges().refund(customer.getId(), new RefundParams()
 		.chargeId(charge.getId()));
 ```
 
 Create a charge to be paid by bank transfer:
 
 ```java
-Charge charge = api.charges().create(new CreateBankChargeParams()
-		.customerId(customer.getId())
+Charge charge = api.charges().create(customer.getId(), new CreateBankChargeParams()
 		.description("Service charge")
 		.amount(new BigDecimal("100.00"))
 		.orderId("Charge0002"));
@@ -100,8 +97,7 @@ BankAccount bankAccount = new BankAccount()
 		.holderName("Juan Pérez")
 		.alias("Juan's deposit account");       // Optional
 
-Payout payout = api.payouts().create(new CreateBankPayoutParams()
-	    .customerId(customer.getId())
+Payout payout = api.payouts().create(customer.getId(), new CreateBankPayoutParams()
 	    .bankAccount(bankAccount)
 	    .amount(new BigDecimal("150.00"))
 	    .description("Payment to Juan")
@@ -116,8 +112,7 @@ Card card = new Card()
         .holderName("Juan Pérez Nuñez")
         .bankCode("012");
 
-Payout payout = api.payouts().create(new CreateCardPayoutParams()
-        .customerId(customer.getId())
+Payout payout = api.payouts().create(customer.getId(), new CreateCardPayoutParams()
         .card(card)
         .amount(new BigDecimal("150.00"))
         .description("Payment to Juan")

@@ -27,18 +27,7 @@ import mx.openpay.client.core.requests.RequestBuilder;
 public class ConfirmCaptureParams extends RequestBuilder {
 
     @Getter
-    private String customerId;
-
-    @Getter
     private String chargeId;
-
-    /**
-     * The ID of the customer to which the charge will be confirmed. Set only if the charge belongs to a customer.
-     */
-    public ConfirmCaptureParams customerId(final String customerId) {
-        this.customerId = customerId;
-        return this;
-    }
 
     /**
      * The ID of the charge to confirm. Required.

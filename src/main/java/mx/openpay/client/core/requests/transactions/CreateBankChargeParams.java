@@ -17,7 +17,6 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 
-import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 
@@ -28,20 +27,8 @@ import mx.openpay.client.enums.ChargeMethods;
  */
 public class CreateBankChargeParams extends RequestBuilder {
 
-    @Getter
-    private String customerId;
-
     public CreateBankChargeParams() {
         this.with("method", ChargeMethods.BANK_ACCOUNT.name().toLowerCase());
-    }
-
-    /**
-     * The ID of the customer to charge. Optional, if given the amount will be added to the customer's balance,
-     * otherwise the amount will be sent to the merchant's balance.
-     */
-    public CreateBankChargeParams customerId(final String customerId) {
-        this.customerId = customerId;
-        return this;
     }
 
     /**

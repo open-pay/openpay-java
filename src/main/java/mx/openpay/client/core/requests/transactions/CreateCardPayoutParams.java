@@ -17,7 +17,6 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 
-import lombok.Getter;
 import mx.openpay.client.Card;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.PayoutMethod;
@@ -28,20 +27,8 @@ import mx.openpay.client.enums.PayoutMethod;
  */
 public class CreateCardPayoutParams extends RequestBuilder {
 
-    @Getter
-    private String customerId;
-
     public CreateCardPayoutParams() {
         this.with("method", PayoutMethod.CARD.name().toLowerCase());
-    }
-
-    /**
-     * The customer from which the funds will be taken. Optional, if not specified, the funds will be taken from the
-     * merchant's balance.
-     */
-    public CreateCardPayoutParams customerId(final String customerId) {
-        this.customerId = customerId;
-        return this;
     }
 
     /**
