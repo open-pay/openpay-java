@@ -305,6 +305,15 @@ public class ChargesOperationsTest {
     }
 
     @Test
+    public void testList_Customer_Amount() throws Exception {
+        BigDecimal amount = BigDecimal.ONE;
+        List<Charge> deposits = this.charges.list(CUSTOMER_ID, search().amount(amount));
+        for (Charge charge : deposits) {
+            assertTrue(amount.compareTo(charge.getAmount()) == 0);
+        }
+    }
+
+    @Test
     public void testList_Customer_Empty() throws Exception {
         List<Charge> deposits = this.charges.list(CUSTOMER_ID, search().limit(2).offset(10000));
         assertTrue(deposits.isEmpty());
@@ -468,6 +477,15 @@ public class ChargesOperationsTest {
 
         sale = this.charges.list(search().limit(5));
         assertEquals(5, sale.size());
+    }
+
+    @Test
+    public void testList_Merchant_Amount() throws Exception {
+        BigDecimal amount = new BigDecimal("99.99");
+        List<Charge> sale = this.charges.list(search().amount(amount));
+        for (Charge charge : sale) {
+            assertTrue(amount.compareTo(charge.getAmount()) == 0);
+        }
     }
 
     private Card getCard() {
