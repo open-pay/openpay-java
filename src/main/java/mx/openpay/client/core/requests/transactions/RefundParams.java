@@ -48,4 +48,8 @@ public class RefundParams extends RequestBuilder {
         return this;
     }
 
+    /** Cause of the refund. Optional. */
+    public RefundParams description(final String description) {
+        return this.with("description", description);
+    }
 }

@@ -255,8 +255,10 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = this.charges.refund(CUSTOMER_ID, transaction.getId(), "cancelacion (ignored description)", null);
+        String refDesc = "cancelacion (ignored description)";
+        transaction = this.charges.refund(CUSTOMER_ID, transaction.getId(), refDesc, null);
         Assert.assertNotNull(transaction.getRefund());
+        Assert.assertEquals(refDesc, transaction.getRefund().getDescription());
 
         transaction = this.charges.get(CUSTOMER_ID, originalTransactionId);
         assertNotNull(transaction.getRefund());
@@ -279,11 +281,13 @@ public class ChargesOperationsTest {
         String originalTransactionId = transaction.getId();
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
-
+        String refDesc = "cancelacion (ignored description)";
         transaction = this.charges.refund(new RefundParams()
                 .customerId(CUSTOMER_ID)
-                .chargeId(transaction.getId()));
+                .chargeId(transaction.getId())
+                .description(refDesc));
         Assert.assertNotNull(transaction.getRefund());
+        Assert.assertEquals(refDesc, transaction.getRefund().getDescription());
 
         transaction = this.charges.get(CUSTOMER_ID, originalTransactionId);
         assertNotNull(transaction.getRefund());
@@ -426,8 +430,10 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = this.charges.refund(transaction.getId(), "cancelacion (ignored description)", null);
+        String refDesc = "cancelacion (ignored description)";
+        transaction = this.charges.refund(transaction.getId(), refDesc, null);
         Assert.assertNotNull(transaction.getRefund());
+        Assert.assertEquals(refDesc, transaction.getRefund().getDescription());
 
         transaction = this.charges.get(originalTransactionId);
         assertNotNull(transaction.getRefund());
@@ -448,8 +454,10 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(transaction);
         assertNull(transaction.getRefund());
 
-        transaction = this.charges.refund(new RefundParams().chargeId(transaction.getId()));
+        String refDesc = "Cancelado por test " + System.currentTimeMillis();
+        transaction = this.charges.refund(new RefundParams().chargeId(transaction.getId()).description(refDesc));
         Assert.assertNotNull(transaction.getRefund());
+        Assert.assertEquals(refDesc, transaction.getRefund().getDescription());
 
         transaction = this.charges.get(originalTransactionId);
         assertNotNull(transaction.getRefund());

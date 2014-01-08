@@ -194,13 +194,13 @@ public class ChargeOperations extends ServiceOperations {
     @Deprecated
     public Charge refund(final String transactionId, final String description, final String orderId)
             throws OpenpayServiceException, ServiceUnavailableException {
-        return this.refund(new RefundParams().chargeId(transactionId));
+        return this.refund(new RefundParams().chargeId(transactionId).description(description));
     }
 
     @Deprecated
     public Charge refund(final String customerId, final String transactionId, final String description,
             final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
-        return this.refund(new RefundParams().customerId(customerId).chargeId(transactionId));
+        return this.refund(new RefundParams().customerId(customerId).chargeId(transactionId).description(description));
     }
 
 }

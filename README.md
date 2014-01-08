@@ -10,7 +10,7 @@ What's new
 
 - **API incompatibility**: Removed the option to look a transfer up using only the transactionId.
 - **API incompatibility**: Customer charges can't be looked up only with the transactionId anymore, customerId is required. 
-- **API incompatibility**: Refunds no longer accept a description or an order Id. 
+- **API incompatibility**: Refunds no longer accept an order Id. 
 - Added management of plans and subscriptions.
 - Fixed bug that made Java 7 required.
 - Parameters are now set into a request object to reduce method signatures.
