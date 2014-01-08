@@ -79,4 +79,11 @@ public class CreateCardChargeParams extends RequestBuilder {
         return this.with("order_id", orderId);
     }
 
+    /**
+     * If false, a preathorization will be made and the card won't be charged until the capture method is called.
+     */
+    public CreateCardChargeParams capture(final Boolean capture) {
+        return this.with("capture", capture);
+    }
+
 }

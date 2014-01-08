@@ -38,6 +38,7 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.ChargeOperations;
+import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
@@ -97,6 +98,84 @@ public class ChargesOperationsTest {
         Assert.assertNotNull(transaction);
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
+    }
+
+    @Test
+    public void testCreate_Customer_WithCaptureFalse() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+
+        BigDecimal currentBalance = this.api.customers().get(CUSTOMER_ID).getBalance();
+
+        List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
+        Assert.assertNotNull(cards);
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        CreateCardChargeParams charge = new CreateCardChargeParams()
+                .customerId(CUSTOMER_ID)
+                .cardId(cards.get(0).getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .capture(false);
+        Charge transaction = this.charges.create(charge);
+        Assert.assertNotNull(transaction);
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertEquals("in_progress", transaction.getStatus());
+
+        BigDecimal newBalance = this.api.customers().get(CUSTOMER_ID).getBalance();
+        Assert.assertTrue(currentBalance.compareTo(newBalance) == 0);
+
+        Charge confirmed = this.charges.confirmCapture(new ConfirmCaptureParams()
+                .customerId(CUSTOMER_ID)
+                .chargeId(transaction.getId())
+                .amount(amount));
+
+        newBalance = this.api.customers().get(CUSTOMER_ID).getBalance();
+        Assert.assertTrue(currentBalance.add(amount).compareTo(newBalance) == 0);
+        Assert.assertEquals("completed", confirmed.getStatus());
+    }
+
+    @Test
+    public void testCreate_Customer_WithCaptureFalse_LessAmount() throws ServiceUnavailableException,
+            OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+
+        BigDecimal currentBalance = this.api.customers().get(CUSTOMER_ID).getBalance();
+
+        List<Card> cards = this.api.cards().list(CUSTOMER_ID, search().offset(0).limit(10));
+        Assert.assertNotNull(cards);
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        CreateCardChargeParams charge = new CreateCardChargeParams()
+                .customerId(CUSTOMER_ID)
+                .cardId(cards.get(0).getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .capture(false);
+        Charge transaction = this.charges.create(charge);
+        Assert.assertNotNull(transaction);
+        Assert.assertEquals(amount, transaction.getAmount());
+        Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertEquals("in_progress", transaction.getStatus());
+
+        BigDecimal newBalance = this.api.customers().get(CUSTOMER_ID).getBalance();
+        Assert.assertTrue(currentBalance.compareTo(newBalance) == 0);
+
+        BigDecimal confirmedAmount = BigDecimal.ONE;
+        Charge confirmed = this.charges.confirmCapture(new ConfirmCaptureParams()
+                .customerId(CUSTOMER_ID)
+                .chargeId(transaction.getId())
+                .amount(confirmedAmount));
+
+        newBalance = this.api.customers().get(CUSTOMER_ID).getBalance();
+        Assert.assertTrue(currentBalance.add(confirmedAmount).compareTo(newBalance) == 0);
+        Assert.assertTrue(confirmedAmount.compareTo(confirmed.getAmount()) == 0);
+        Assert.assertTrue(this.charges.get(CUSTOMER_ID, transaction.getId()).getAmount().compareTo(confirmedAmount) == 0);
+        Assert.assertEquals("completed", confirmed.getStatus());
     }
 
     @Test
@@ -239,6 +318,39 @@ public class ChargesOperationsTest {
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
         }
+    }
+
+    @Test
+    public void testCreate_Merchant_WithCard_CaptureFalse() throws Exception {
+        Address address = this.createAddress();
+
+        Card card = new Card();
+        card.cardNumber("5243385358972033");
+        card.holderName("Juanito Pérez Nuñez");
+        card.cvv2("111");
+        card.expirationMonth(9);
+        card.expirationYear(14);
+        card.address(address);
+
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge charge = this.charges.create(new CreateCardChargeParams()
+                .card(card)
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .capture(false));
+        assertNotNull(charge);
+        assertNotNull(charge.getCard());
+        assertNull(charge.getCard().getCvv2());
+        assertNull(charge.getCard().getId());
+        Assert.assertEquals("in_progress", charge.getStatus());
+
+        Charge confirmed = this.charges.confirmCapture(new ConfirmCaptureParams()
+                .chargeId(charge.getId())
+                .amount(amount));
+        Assert.assertEquals("completed", confirmed.getStatus());
     }
 
     @Test

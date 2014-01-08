@@ -37,23 +37,23 @@ public class OpenpayAPI {
 
     private final JsonServiceClient jsonClient;
 
-    private BankAccountOperations bankAccountOperations;
+    private final BankAccountOperations bankAccountOperations;
 
-    private CustomerOperations customerOperations;
+    private final CustomerOperations customerOperations;
 
     private final CardOperations cardOperations;
 
-    private ChargeOperations chargeOperations;
+    private final ChargeOperations chargeOperations;
 
-    private FeeOperations feeOperations;
+    private final FeeOperations feeOperations;
 
-    private PayoutOperations payoutOperations;
+    private final PayoutOperations payoutOperations;
 
-    private TransferOperations transferOperations;
+    private final TransferOperations transferOperations;
 
-    private PlanOperations planOperations;
+    private final PlanOperations planOperations;
 
-    private SubscriptionOperations subscriptionsOperations;
+    private final SubscriptionOperations subscriptionsOperations;
 
     public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
         this(new JsonServiceClient(location, merchantId, apiKey));

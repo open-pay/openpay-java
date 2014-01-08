@@ -15,6 +15,7 @@
  */
 package mx.openpay.client.core.operations;
 
+import static mx.openpay.client.utils.OpenpayPathComponents.CAPTURE;
 import static mx.openpay.client.utils.OpenpayPathComponents.CHARGES;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
@@ -28,6 +29,7 @@ import java.util.Map;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
@@ -46,11 +48,15 @@ public class ChargeOperations extends ServiceOperations {
 
     private static final String REFUND_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + REFUND;
 
+    private static final String CONFIRM_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + CAPTURE;
+
     private static final String FOR_CUSTOMER_PATH = MERCHANT_ID + CUSTOMERS + ID + CHARGES;
 
     private static final String GET_FOR_CUSTOMER_PATH = FOR_CUSTOMER_PATH + ID;
 
     private static final String REFUND_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + REFUND;
+
+    private static final String CONFIRM_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + CAPTURE;
 
     public ChargeOperations(final JsonServiceClient client) {
         super(client);
@@ -109,6 +115,21 @@ public class ChargeOperations extends ServiceOperations {
             path = String.format(REFUND_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
         } else {
             path = String.format(REFUND_FOR_CUSTOMER_PATH, this.getMerchantId(), params.getCustomerId(),
+                    params.getChargeId());
+        }
+        return this.getJsonClient().post(path, params.asMap(), Charge.class);
+    }
+
+    /**
+     * Confirms a charge that was made with the option capture set to false.
+     */
+    public Charge confirmCapture(final ConfirmCaptureParams params) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path;
+        if (params.getCustomerId() == null) {
+            path = String.format(CONFIRM_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
+        } else {
+            path = String.format(CONFIRM_FOR_CUSTOMER_PATH, this.getMerchantId(), params.getCustomerId(),
                     params.getChargeId());
         }
         return this.getJsonClient().post(path, params.asMap(), Charge.class);
