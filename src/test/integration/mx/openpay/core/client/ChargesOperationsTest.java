@@ -40,6 +40,7 @@ import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.operations.ChargeOperations;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -62,6 +63,32 @@ public class ChargesOperationsTest {
         this.api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
         this.charges = this.api.charges();
     }
+
+	@Test
+	public void testCreate_Merchant_Store() throws Exception {
+		BigDecimal amount = new BigDecimal("10.00");
+		String desc = "Pago de taxi";
+		String orderId = String.valueOf(System.currentTimeMillis());
+
+		Charge transaction = this.charges.create(new CreateStoreChargeParams().amount(amount).description(desc)
+				.orderId(orderId));
+		Assert.assertNotNull(transaction);
+		Assert.assertNotNull(transaction.getPaymentMethod().getReference());
+		Assert.assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+	}
+
+	@Test
+	public void testCreate_Customer_Store() throws Exception {
+		BigDecimal amount = new BigDecimal("10.00");
+		String desc = "Pago de taxi";
+		String orderId = String.valueOf(System.currentTimeMillis());
+
+		Charge transaction = this.charges.create(CUSTOMER_ID,
+				new CreateStoreChargeParams().amount(amount).description(desc).orderId(orderId));
+		Assert.assertNotNull(transaction);
+		Assert.assertNotNull(transaction.getPaymentMethod().getReference());
+		Assert.assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+	}
 
     @SuppressWarnings("deprecation")
     @Test

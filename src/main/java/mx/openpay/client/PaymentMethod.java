@@ -18,6 +18,8 @@ package mx.openpay.client;
 import lombok.Getter;
 import lombok.ToString;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * @author elopez
  */
@@ -32,4 +34,9 @@ public class PaymentMethod {
     private String clabe;
 
     private String name;
+
+	private String reference;
+
+	@SerializedName("barcode_url")
+	private String barcodeUrl;
 }
