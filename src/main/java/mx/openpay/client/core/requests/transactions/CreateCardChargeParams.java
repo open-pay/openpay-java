@@ -15,11 +15,11 @@
  */
 package mx.openpay.client.core.requests.transactions;
 
-import java.math.BigDecimal;
-
 import mx.openpay.client.Card;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
+
+import java.math.BigDecimal;
 
 /**
  * Parameters to charge a credit or debit card.
@@ -71,6 +71,16 @@ public class CreateCardChargeParams extends RequestBuilder {
      */
     public CreateCardChargeParams capture(final Boolean capture) {
         return this.with("capture", capture);
+    }
+
+    /**
+     * This param is only used when the charge is for merchant and needs to create a link with a customer.
+     * For customer charges the request will fail
+     * @param customerId
+     * @return
+     */
+    public CreateCardChargeParams customerId(final String customerId) {
+        return this.with("customer_id", customerId);
     }
 
 }
