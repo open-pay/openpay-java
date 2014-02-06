@@ -8,9 +8,20 @@
 		</layout>
 	</appender>
 
+	<logger name="mx.openpay">
+		<level value="DEBUG" />
+	</logger>
+	
+	<logger name="org.apache.http">
+		<level value="DEBUG"/>
+	</logger>
+	
+	<logger name="org.apache.http.wire">
+		<level value="ERROR"/>
+	</logger>
 
 	<root>
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="stdout" />
 	</root>
 
