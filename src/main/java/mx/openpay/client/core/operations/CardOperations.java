@@ -39,7 +39,9 @@ public class CardOperations extends ServiceOperations {
 
     private static final String CUSTOMER_CARDS_PATH = MERCHANT_ID + CUSTOMERS + ID + CARDS;
 
-    private static final String GET_CARD_PATH = CUSTOMER_CARDS_PATH + ID;
+    private static final String GET_MERCHANT_CARD_PATH = MERCHANT_CARDS_PATH + ID;
+
+    private static final String GET_CUSTOMER_CARD_PATH = CUSTOMER_CARDS_PATH + ID;
 
     public CardOperations(final JsonServiceClient client) {
         super(client);
@@ -56,6 +58,12 @@ public class CardOperations extends ServiceOperations {
         return this.getJsonClient().post(path, card, Card.class);
     }
 
+    public List<Card> list(final SearchParams params) throws ServiceUnavailableException, OpenpayServiceException {
+        String path = String.format(MERCHANT_CARDS_PATH, this.getMerchantId());
+        Map<String, String> map = params == null ? null : params.asMap();
+        return this.getJsonClient().list(path, map, Card.class);
+    }
+
     public List<Card> list(final String customerId, final SearchParams params)
             throws ServiceUnavailableException, OpenpayServiceException {
         String path = String.format(CUSTOMER_CARDS_PATH, this.getMerchantId(), customerId);
@@ -63,15 +71,27 @@ public class CardOperations extends ServiceOperations {
         return this.getJsonClient().list(path, map, Card.class);
     }
 
+    public Card get(final String cardId) throws ServiceUnavailableException,
+            OpenpayServiceException {
+        String path = String.format(GET_MERCHANT_CARD_PATH, this.getMerchantId(), cardId);
+        return this.getJsonClient().get(path, Card.class);
+    }
+
     public Card get(final String customerId, final String cardId) throws ServiceUnavailableException,
             OpenpayServiceException {
-        String path = String.format(GET_CARD_PATH, this.getMerchantId(), customerId, cardId);
+        String path = String.format(GET_CUSTOMER_CARD_PATH, this.getMerchantId(), customerId, cardId);
         return this.getJsonClient().get(path, Card.class);
+    }
+
+    public void delete(final String cardId) throws ServiceUnavailableException,
+            OpenpayServiceException {
+        String path = String.format(GET_MERCHANT_CARD_PATH, this.getMerchantId(), cardId);
+        this.getJsonClient().delete(path);
     }
 
     public void delete(final String customerId, final String cardId) throws ServiceUnavailableException,
             OpenpayServiceException {
-        String path = String.format(GET_CARD_PATH, this.getMerchantId(), customerId, cardId);
+        String path = String.format(GET_CUSTOMER_CARD_PATH, this.getMerchantId(), customerId, cardId);
         this.getJsonClient().delete(path);
     }
 
