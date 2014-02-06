@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,23 +36,26 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.HttpClientUtils;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.config.ConnectionConfig;
+import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 
 /**
@@ -66,20 +70,21 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
 
     private static final int DEFAULT_CONNECTION_TIMEOUT = 90000;
 
-    private final HttpClient httpClient;
+    private final CloseableHttpClient httpClient;
 
     private final String userAgent;
+
+    private RequestConfig requestConfig;
 
     @Setter
     private String key;
 
     public DefaultHttpServiceClient(final boolean requirePoolManager) {
-        this.httpClient = this.initHttpClient(requirePoolManager);
-        this.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
-        this.setSocketTimeout(DEFAULT_CONNECTION_TIMEOUT);
+        this.httpClient = this.initHttpClient(requirePoolManager, DEFAULT_CONNECTION_TIMEOUT,
+                DEFAULT_CONNECTION_TIMEOUT);
         String version = this.getClass().getPackage().getImplementationVersion();
         if (version == null) {
-            version = "1.0.1-UNKNOWN";
+            version = "1.0.2-UNKNOWN";
         }
         this.userAgent = AGENT + version;
     }
@@ -89,25 +94,32 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
      */
     @Override
     public void setConnectionTimeout(final int timeout) {
-        this.httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, timeout);
+        this.requestConfig = RequestConfig.copy(this.requestConfig).setConnectTimeout(timeout).build();
     }
 
     @Override
     public void setSocketTimeout(final int timeout) {
-        this.httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, timeout);
+        this.requestConfig = RequestConfig.copy(this.requestConfig).setSocketTimeout(timeout).build();
     }
 
-    protected HttpClient initHttpClient(final boolean requirePoolManager) {
-    	HttpClient httpClient;
-    	if (requirePoolManager) {
-    		PoolingClientConnectionManager connMgr = new PoolingClientConnectionManager();
-        	httpClient = new DefaultHttpClient(connMgr);
-    	} else {
-    		httpClient = new DefaultHttpClient();
-    	}
+    protected CloseableHttpClient initHttpClient(final boolean requirePoolManager, final int connectionTimeout,
+            final int socketTimeout) {
+        CloseableHttpClient httpClient;
+        HttpClientConnectionManager manager;
+        if (requirePoolManager) {
+            manager = new PoolingHttpClientConnectionManager();
+        } else {
+            manager = new BasicHttpClientConnectionManager();
+        }
 
-        httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-        httpClient.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
+        this.requestConfig = RequestConfig.custom().setConnectTimeout(connectionTimeout)
+                .setSocketTimeout(socketTimeout).build();
+        ConnectionConfig connnectionConfig = ConnectionConfig.custom().setCharset(Charset.forName("UTF-8")).build();
+        httpClient = HttpClientBuilder.create()
+                .setConnectionManager(manager)
+                .setDefaultConnectionConfig(connnectionConfig)
+                .setDefaultRequestConfig(this.requestConfig)
+                .build();
         return httpClient;
     }
 
@@ -165,7 +177,6 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
      * @see mx.openpay.client.core.HttpServiceClient#put(java.lang.String, java.lang.String)
      */
     @Override
-//    @SneakyThrows(UnsupportedEncodingException.class)
     public HttpServiceResponse put(final String url, final String json) throws ServiceUnavailableException {
         HttpPut request = new HttpPut(URI.create(url));
         request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
@@ -176,30 +187,34 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
      * @see mx.openpay.client.core.HttpServiceClient#post(java.lang.String, java.lang.String)
      */
     @Override
-    @SneakyThrows(UnsupportedEncodingException.class)
     public HttpServiceResponse post(final String url, final String json) throws ServiceUnavailableException {
         HttpPost request = new HttpPost(URI.create(url));
         request.setEntity(new StringEntity(json, Consts.UTF_8.name()));
         return this.executeOperation(request);
     }
 
-    protected HttpServiceResponse executeOperation(final HttpUriRequest request) throws ServiceUnavailableException {
+    protected HttpServiceResponse executeOperation(final HttpRequestBase request) throws ServiceUnavailableException {
         this.addHeaders(request);
         this.addAuthentication(request);
         long init = System.currentTimeMillis();
-        HttpResponse response = this.callService(request);
-        HttpServiceResponse serviceResponse = this.createResult(response);
+        CloseableHttpResponse response = this.callService(request);
+        HttpServiceResponse serviceResponse;
+        try {
+            serviceResponse = this.createResult(response);
+        } finally {
+            HttpClientUtils.closeQuietly(response);
+        }
         log.trace("Request Time: {}", (System.currentTimeMillis() - init));
         return serviceResponse;
     }
 
-    protected void addHeaders(final HttpUriRequest request) {
+    protected void addHeaders(final HttpRequestBase request) {
         request.addHeader(new BasicHeader("User-Agent", this.userAgent));
         request.addHeader(new BasicHeader("Accept", "application/json"));
         request.setHeader(new BasicHeader("Content-Type", "application/json"));
     }
 
-    protected void addAuthentication(final HttpUriRequest request) {
+    protected void addAuthentication(final HttpRequestBase request) {
         if (this.key != null) {
             String authEncoding = this.getBase64Auth();
             request.setHeader("Authorization", "Basic " + authEncoding);
@@ -213,8 +228,9 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
         return StringUtils.newStringUtf8(Base64.encodeBase64(auth, false));
     }
 
-    protected HttpResponse callService(final HttpUriRequest request) throws ServiceUnavailableException {
-        HttpResponse response;
+    protected CloseableHttpResponse callService(final HttpRequestBase request) throws ServiceUnavailableException {
+        request.setConfig(this.requestConfig);
+        CloseableHttpResponse response;
         try {
             response = this.httpClient.execute(request);
         } catch (ClientProtocolException e) {

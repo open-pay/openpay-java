@@ -120,7 +120,7 @@ Debit card payout:
 
 ```java
 Card card = new Card()
-        .cardNumber("5555555555554444")         // No dashes or spaces
+        .cardNumber("4111111111111111")         // No dashes or spaces
         .holderName("Juan Pérez Nuñez")
         .bankCode("012");
 

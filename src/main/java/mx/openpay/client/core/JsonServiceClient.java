@@ -158,7 +158,7 @@ public class JsonServiceClient {
                 error.setBody(response.getBody());
                 throw error;
             } else {
-                log.error("Not a Json response: {} ", response.getBody());
+                log.error("Not a Json response. Code: {}, body: {} ", response.getStatusCode(), response.getBody());
                 OpenpayServiceException openpayServiceException = new OpenpayServiceException("["
                         + response.getStatusCode() + "] Internal server error");
                 openpayServiceException.setHttpCode(response.getStatusCode());
