@@ -266,7 +266,6 @@ public class MerchantCardChargesTest extends BaseTest {
     public void testList_Customer_Amount() throws Exception {
         Date date = new Date();
         BigDecimal amount = new BigDecimal(String.format("%tI%<td.%<tM", date));
-        System.out.println(amount);
         this.api.charges().create(new CreateCardChargeParams()
                 .cardId(this.registeredCard.getId()).amount(amount).description("desc"));
         this.api.charges().create(new CreateCardChargeParams()
