@@ -37,9 +37,11 @@ public class BankAccountOperations extends ServiceOperations {
 
     private static final String MERCHANT_BANK_ACCOUNTS_PATH = MERCHANT_ID + BANK_ACCOUNTS;
 
-    private static final String BANK_ACCOUNTS_PATH = MERCHANT_ID + CUSTOMERS + ID + BANK_ACCOUNTS;
+    private static final String GET_MERCHANT_BANK_ACCOUNT = MERCHANT_BANK_ACCOUNTS_PATH + ID;
 
-    private static final String GET_BANK_ACCOUNT = BANK_ACCOUNTS_PATH + ID;
+    private static final String CUSTOMER_BANK_ACCOUNTS_PATH = MERCHANT_ID + CUSTOMERS + ID + BANK_ACCOUNTS;
+
+    private static final String GET_CUSTOMER_BANK_ACCOUNT = CUSTOMER_BANK_ACCOUNTS_PATH + ID;
 
     public BankAccountOperations(final JsonServiceClient client) {
         super(client);
@@ -53,7 +55,7 @@ public class BankAccountOperations extends ServiceOperations {
 
     public BankAccount create(final String customerId, final BankAccount bankAccount) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(BANK_ACCOUNTS_PATH, this.getMerchantId(), customerId);
+        String path = String.format(CUSTOMER_BANK_ACCOUNTS_PATH, this.getMerchantId(), customerId);
         return this.getJsonClient().post(path, bankAccount, BankAccount.class);
     }
 
@@ -66,22 +68,41 @@ public class BankAccountOperations extends ServiceOperations {
                 .alias(alias));
     }
 
-    public List<BankAccount> list(final String customerId, final SearchParams params)
+    public List<BankAccount> list(final SearchParams params)
             throws ServiceUnavailableException, OpenpayServiceException {
-        String path = String.format(BANK_ACCOUNTS_PATH, this.getMerchantId(), customerId);
+        String path = String.format(MERCHANT_BANK_ACCOUNTS_PATH, this.getMerchantId());
         Map<String, String> map = params == null ? null : params.asMap();
         return this.getJsonClient().list(path, map, BankAccount.class);
     }
 
+    public List<BankAccount> list(final String customerId, final SearchParams params)
+            throws ServiceUnavailableException, OpenpayServiceException {
+        String path = String.format(CUSTOMER_BANK_ACCOUNTS_PATH, this.getMerchantId(), customerId);
+        Map<String, String> map = params == null ? null : params.asMap();
+        return this.getJsonClient().list(path, map, BankAccount.class);
+    }
+
+    public BankAccount get(final String bankId) throws ServiceUnavailableException,
+            OpenpayServiceException {
+        String path = String.format(GET_MERCHANT_BANK_ACCOUNT, this.getMerchantId(), bankId);
+        return this.getJsonClient().get(path, BankAccount.class);
+    }
+
     public BankAccount get(final String customerId, final String bankId) throws ServiceUnavailableException,
             OpenpayServiceException {
-        String path = String.format(GET_BANK_ACCOUNT, this.getMerchantId(), customerId, bankId);
+        String path = String.format(GET_CUSTOMER_BANK_ACCOUNT, this.getMerchantId(), customerId, bankId);
         return this.getJsonClient().get(path, BankAccount.class);
+    }
+
+    public void delete(final String bankId) throws ServiceUnavailableException,
+            OpenpayServiceException {
+        String path = String.format(GET_MERCHANT_BANK_ACCOUNT, this.getMerchantId(), bankId);
+        this.getJsonClient().delete(path);
     }
 
     public void delete(final String customerId, final String bankId) throws ServiceUnavailableException,
             OpenpayServiceException {
-        String path = String.format(GET_BANK_ACCOUNT, this.getMerchantId(), customerId, bankId);
+        String path = String.format(GET_CUSTOMER_BANK_ACCOUNT, this.getMerchantId(), customerId, bankId);
         this.getJsonClient().delete(path);
     }
 

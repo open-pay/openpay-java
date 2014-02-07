@@ -48,7 +48,7 @@ public class MerchantCardsTest extends BaseTest {
     }
 
     @Test
-    public void testCreateCustomerCard() throws Exception {
+    public void testCreateMerchantCard() throws Exception {
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
@@ -62,7 +62,7 @@ public class MerchantCardsTest extends BaseTest {
     }
 
     @Test
-    public void testGetCustomerCard() throws Exception {
+    public void testGetMerchantCard() throws Exception {
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
@@ -77,7 +77,7 @@ public class MerchantCardsTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteCustomerCard() throws Exception {
+    public void testDeleteMerchantCard() throws Exception {
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
@@ -94,7 +94,7 @@ public class MerchantCardsTest extends BaseTest {
     }
 
     @Test
-    public void testCreateCustomerCard_NoAddress() throws Exception {
+    public void testCreateMerchantCard_NoAddress() throws Exception {
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
@@ -107,7 +107,7 @@ public class MerchantCardsTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteCustomerCard_DoesNotExist() throws Exception {
+    public void testDeleteMerchantCard_DoesNotExist() throws Exception {
         try {
             this.api.cards().delete("kfaq5dm5pq1qefzev3nz");
             fail();
@@ -118,7 +118,7 @@ public class MerchantCardsTest extends BaseTest {
     }
 
     @Test
-    public void testGetCustomerCard_DoesNotExist() throws Exception {
+    public void testGetMerchantCard_DoesNotExist() throws Exception {
         try {
             this.api.cards().get("kfaq5dm5pq1qefzev3nz");
             fail();
@@ -129,14 +129,14 @@ public class MerchantCardsTest extends BaseTest {
     }
 
     @Test
-    public void testListCustomerCards_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testListMerchantCards_Empty() throws ServiceUnavailableException, OpenpayServiceException {
         List<Card> cards = this.api.cards().list(null);
         Assert.assertNotNull(cards);
         Assert.assertTrue(cards.isEmpty());
     }
 
     @Test
-    public void testListCustomerCards() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testListMerchantCards() throws ServiceUnavailableException, OpenpayServiceException {
         this.cardsToDelete.add(this.api.cards().create(
                 new Card().cardNumber("5555555555554444").holderName("Juan Pérez Nuñez").cvv2("111").expirationMonth(9)
                         .expirationYear(14)));
