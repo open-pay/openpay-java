@@ -136,14 +136,15 @@ public class TransfersTest extends BaseTest {
 
     @Test
     public void testGet_Customer() throws Exception {
+        String orderId = String.valueOf(System.currentTimeMillis());
         String id = this.api.transfers().create(this.customerFrom.getId(), new CreateTransferParams()
                 .amount(BigDecimal.ONE)
                 .description("Some description")
-                .orderId("20131203174909")
+                .orderId(orderId)
                 .toCustomerId(this.customerTo.getId())).getId();
         Transfer transfer = this.api.transfers().get(this.customerFrom.getId(), id);
         assertEquals(id, transfer.getId());
-        assertEquals("20131203174909", transfer.getOrderId());
+        assertEquals(orderId, transfer.getOrderId());
     }
 
     @Test
