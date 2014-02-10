@@ -41,12 +41,15 @@ import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
+ * Test creating all kinds of objects using an empty merchant account.
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
 @Slf4j
+@Ignore
 public class FullApiTest {
 
     private OpenpayAPI api;
@@ -73,9 +76,9 @@ public class FullApiTest {
 
     @Before
     public void setUp() throws Exception {
-        String merchantId = "mtfsdeoulmcoj0xofpfc";
-        String apiKey = "sk_4ec3ef18cd01471487ca719f566d4d3f";
-        String endpoint = "https://localhost:8443/Services/";
+        String merchantId = "mi93pk0cjumoraf08tqt";
+        String apiKey = "sk_88ab47ebc710472d91488cc4f3009080";
+        String endpoint = "https://sandbox-api.openpay.mx/";
         this.api = new OpenpayAPI(endpoint, apiKey, merchantId);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }

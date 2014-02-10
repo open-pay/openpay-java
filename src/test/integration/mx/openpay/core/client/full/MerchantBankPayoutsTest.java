@@ -63,15 +63,13 @@ public class MerchantBankPayoutsTest extends BaseTest {
     public void testListCustomerPayouts() throws ServiceUnavailableException, OpenpayServiceException {
         Date date = new Date();
         BigDecimal amount = new BigDecimal(String.format("%tI%<td.%<tM", date));
-        this.api.charges().create(new CreateCardChargeParams()
-                .amount(amount.multiply(new BigDecimal(3)))
-                .description("Cargo")
-                .card(new Card()
-                        .cardNumber("5555555555554444")
-                        .holderName("Juanito Pérez Nuñez")
-                        .cvv2("111")
-                        .expirationMonth(9)
-                        .expirationYear(14)));
+        CreateCardChargeParams charge = new CreateCardChargeParams()
+                .amount(amount).description("Cargo")
+                .card(new Card().cardNumber("5555555555554444").holderName("Juanito Pérez Nuñez").cvv2("111")
+                        .expirationMonth(9).expirationYear(14));
+        this.api.charges().create(charge);
+        this.api.charges().create(charge);
+        this.api.charges().create(charge);
         this.api.payouts().create(new CreateBankPayoutParams()
                 .bankAccountId(this.bankAccount.getId()).amount(amount).description("desc 1"));
         this.api.payouts().create(new CreateBankPayoutParams()

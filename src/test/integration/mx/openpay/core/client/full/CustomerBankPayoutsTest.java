@@ -80,7 +80,7 @@ public class CustomerBankPayoutsTest extends BaseTest {
 
     @Test
     public void testListCustomerPayouts_Empty() throws ServiceUnavailableException, OpenpayServiceException {
-        List<Payout> transactions = this.api.payouts().list(search());
+        List<Payout> transactions = this.api.payouts().list(this.customer.getId(), search());
         assertEquals(0, transactions.size());
     }
 

@@ -9,6 +9,7 @@
  */
 package mx.openpay.core.client.full;
 
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -151,5 +152,9 @@ public class MerchantCardsTest extends BaseTest {
         for (Card card : cards) {
             Assert.assertNotNull(card.getId());
         }
+        cards = this.api.cards().list(search().limit(2));
+        assertThat(cards.size(), is(2));
+        cards = this.api.cards().list(search().limit(2).offset(2));
+        assertThat(cards.size(), is(1));
     }
 }

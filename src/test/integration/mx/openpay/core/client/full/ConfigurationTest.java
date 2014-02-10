@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.openpay.core.client;
+package mx.openpay.core.client.full;
 
 import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
@@ -37,7 +37,7 @@ public class ConfigurationTest {
 
     @Test
     public void testNoAPIKey() throws Exception {
-        OpenpayAPI api = new OpenpayAPI(ENDPOINT, null, MERCHANT_ID);
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https", "http"), null, MERCHANT_ID);
         try {
             api.customers().list(null);
             fail();

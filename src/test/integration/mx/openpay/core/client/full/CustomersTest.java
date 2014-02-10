@@ -9,6 +9,7 @@
  */
 package mx.openpay.core.client.full;
 
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,7 +20,6 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.exceptions.OpenpayServiceException;
@@ -59,8 +59,8 @@ public class CustomersTest extends BaseTest {
                 .address(address);
         Customer customer = this.api.customers().create(params);
         this.customersToDelete.add(customer);
-        Assert.assertNotNull(customer);
-        Assert.assertNotNull(customer.getId());
+        assertNotNull(customer);
+        assertNotNull(customer.getId());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class CustomersTest extends BaseTest {
         this.customersToDelete.add(customer);
         customer.setName("Juanito 2");
         customer = this.api.customers().update(customer);
-        Assert.assertEquals("Juanito 2", customer.getName());
+        assertEquals("Juanito 2", customer.getName());
     }
 
     @SuppressWarnings("deprecation")
@@ -84,8 +84,8 @@ public class CustomersTest extends BaseTest {
         Customer customer = this.api.customers()
                 .create("Juan", "Perez Perez", "juan.perez@gmail.com", "55-25634013", address);
         this.customersToDelete.add(customer);
-        Assert.assertNotNull(customer);
-        Assert.assertNotNull(customer.getId());
+        assertNotNull(customer);
+        assertNotNull(customer.getId());
     }
 
     @Test
@@ -118,31 +118,33 @@ public class CustomersTest extends BaseTest {
     }
 
     @Test
-    public void testList() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testList() throws Exception {
         this.customersToDelete.add(this.api.customers().create(new Customer().name("Juan").lastName("Perez Perez")
                 .email("juan.perez@gmail.com").phoneNumber("55-25634013")));
-        this.customersToDelete.add(this.api.customers().create(new Customer().name("Jose").lastName("Perez Perez")
-                .email("jose.perez@gmail.com").phoneNumber("55-25634013")));
+        Customer middleCustomer = this.api.customers().create(new Customer().name("Jose").lastName("Perez Perez")
+                .email("jose.perez@gmail.com").phoneNumber("55-25634013"));
+        this.customersToDelete.add(middleCustomer);
         this.customersToDelete.add(this.api.customers().create(new Customer().name("Ruben").lastName("Perez Perez")
                 .email("ruben.perez@gmail.com").phoneNumber("55-25634013")));
         List<Customer> customers = this.api.customers().list(null);
-        Assert.assertNotNull(customers);
         assertThat(customers.size(), is(3));
         for (Customer customer : customers) {
-            Assert.assertNotNull(customer.getId());
-            Assert.assertNotNull(customer.getBalance());
-            Assert.assertNotNull(customer.getCreationDate());
-            Assert.assertNotNull(customer.getEmail());
-            Assert.assertNotNull(customer.getName());
-            Assert.assertNotNull(customer.getStatus());
+            assertNotNull(customer.getId());
+            assertNotNull(customer.getBalance());
+            assertNotNull(customer.getCreationDate());
+            assertNotNull(customer.getEmail());
+            assertNotNull(customer.getName());
+            assertNotNull(customer.getStatus());
         }
-
+        customers = this.api.customers().list(search().limit(2));
+        assertThat(customers.size(), is(2));
+        customers = this.api.customers().list(search().limit(2).offset(2));
+        assertThat(customers.size(), is(1));
     }
 
     @Test
     public void testList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
         List<Customer> customers = this.api.customers().list(null);
-        Assert.assertNotNull(customers);
         assertTrue(customers.isEmpty());
     }
 

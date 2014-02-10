@@ -9,6 +9,7 @@
  */
 package mx.openpay.core.client.full;
 
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -162,7 +163,9 @@ public class PlansTest extends BaseTest {
     @Test
     public void testList_Empty() throws Exception {
         List<Plan> list = this.api.plans().list(null);
-        assertTrue(list.isEmpty());
+        for (Plan plan : list) {
+            assertThat(plan.getStatus(), is("deleted"));
+        }
     }
 
     @Test
@@ -187,8 +190,8 @@ public class PlansTest extends BaseTest {
                 .amount(new BigDecimal("1200.00"))
                 .repeatEvery(1, PlanRepeatUnit.MONTH)
                 .statusAfterRetry(PlanStatusAfterRetry.UNPAID)));
-        List<Plan> list = this.api.plans().list(null);
-        assertThat(list.size(), is(4));
+        List<Plan> list = this.api.plans().list(search().limit(3));
+        assertThat(list.size(), is(3));
         for (Plan plan : list) {
             assertNotNull(plan.getId());
         }

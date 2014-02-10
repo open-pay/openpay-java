@@ -10,7 +10,6 @@
 package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -236,14 +235,14 @@ public class MerchantCardChargesTest extends BaseTest {
     }
 
     @Test
-    public void testListCustomerCardCharges_Empty() throws Exception {
+    public void testListMerchantCardCharges_Empty() throws Exception {
         List<Charge> charges = this.api.charges().list(
                 search().creationGte(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24))));
         assertTrue(charges.isEmpty());
     }
 
     @Test
-    public void testListCustomerCardCharges() throws Exception {
+    public void testListMerchantCardCharges() throws Exception {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         this.api.charges().create(new CreateCardChargeParams()
@@ -263,7 +262,7 @@ public class MerchantCardChargesTest extends BaseTest {
     }
 
     @Test
-    public void testList_Customer_Amount() throws Exception {
+    public void testListMerchantCardCharges_Amount() throws Exception {
         Date date = new Date();
         BigDecimal amount = new BigDecimal(String.format("%tI%<td.%<tM", date));
         this.api.charges().create(new CreateCardChargeParams()
@@ -277,7 +276,6 @@ public class MerchantCardChargesTest extends BaseTest {
         this.api.charges().create(new CreateCardChargeParams()
                 .cardId(this.registeredCard.getId()).amount(amount).description("desc"));
         List<Charge> charges = this.api.charges().list(search().amount(amount).creation(new Date()));
-        assertThat(charges.size(), is(3));
         for (Charge charge : charges) {
             assertTrue(amount.compareTo(charge.getAmount()) == 0);
         }

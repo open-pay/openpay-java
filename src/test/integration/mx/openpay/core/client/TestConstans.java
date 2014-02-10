@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Opencard Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,11 +17,11 @@ package mx.openpay.core.client;
 
 public class TestConstans {
 
-    public static final String ENDPOINT = "https://sandbox-api.openpay.mx";
+    public static final String ENDPOINT = "https://dev-api.openpay.mx";
 
-    public static final String MERCHANT_ID = "mi93pk0cjumoraf08tqt";
+    public static final String MERCHANT_ID = "mtfsdeoulmcoj0xofpfc";
 
-    public static final String API_KEY = "sk_b0f317073597453ca9222fe2b52dae8d";
+    public static final String API_KEY = "sk_4ec3ef18cd01471487ca719f566d4d3f";
 
     public static final String CUSTOMER_ID = "alqrigidmw9jlgngwlrj";
 
