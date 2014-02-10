@@ -38,6 +38,4 @@ public class Merchant {
 
     private String clabe;
 
-    private String type;
-
 }
