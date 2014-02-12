@@ -47,6 +47,9 @@ public class Customer {
 
     private BigDecimal balance;
 
+	@SerializedName("external_id")
+	private String externalId;
+
     @SerializedName("creation_date")
     private Date creationDate;
 
@@ -89,5 +92,10 @@ public class Customer {
         this.address = address;
         return this;
     }
+
+	public Customer externalId(final String externalId) {
+		this.externalId = externalId;
+		return this;
+	}
 
 }
