@@ -50,6 +50,9 @@ public class Customer {
 	@SerializedName("external_id")
 	private String externalId;
 
+	@SerializedName("requires_account")
+	private boolean requiresAccount;
+
     @SerializedName("creation_date")
     private Date creationDate;
 
@@ -93,8 +96,19 @@ public class Customer {
         return this;
     }
 
+	/**
+	 * Customer externaId. Optional.
+	 */
 	public Customer externalId(final String externalId) {
 		this.externalId = externalId;
+		return this;
+	}
+
+	/**
+	 * Customer requires account. Optional. Default true.
+	 */
+	public Customer requiresAccount(final boolean requiresAccount) {
+		this.requiresAccount = requiresAccount;
 		return this;
 	}
 
