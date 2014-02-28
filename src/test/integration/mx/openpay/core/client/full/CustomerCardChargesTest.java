@@ -42,7 +42,11 @@ public class CustomerCardChargesTest extends BaseTest {
 
     private Customer customer;
 
+    private Customer customerNoAccount;
+
     private Card registeredCard;
+
+    private Card registeredCardNoAccount;
 
     @Before
     public void setUp() throws Exception {
@@ -56,12 +60,25 @@ public class CustomerCardChargesTest extends BaseTest {
                 .expirationMonth(9)
                 .expirationYear(14)
                 .address(TestUtils.prepareAddress()));
+        this.customerNoAccount = this.api.customers().create(new Customer()
+                .name("Juan").email("juan.perez@gmail.com")
+                .phoneNumber("55-25634013").requiresAccount(false));
+        this.registeredCardNoAccount = this.api.cards().create(this.customerNoAccount.getId(), new Card()
+                .cardNumber("4242424242424242")
+                .holderName("Juanito Pérez Nuñez")
+                .cvv2("111")
+                .expirationMonth(9)
+                .expirationYear(14)
+                .address(TestUtils.prepareAddress()));
     }
 
     @After
     public void tearDown() throws Exception {
         if (this.registeredCard != null) {
             this.api.cards().delete(this.customer.getId(), this.registeredCard.getId());
+        }
+        if (this.registeredCardNoAccount != null) {
+            this.api.cards().delete(this.customerNoAccount.getId(), this.registeredCardNoAccount.getId());
         }
         this.api.customers().delete(this.customer.getId());
     }
@@ -92,10 +109,78 @@ public class CustomerCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
+        String transactionId = transaction.getId();
+        transaction = this.api.charges().get(this.customer.getId(), transactionId);
+        assertThat(transaction.getId(), is(transactionId));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        // No se puede obtener tambien desde el merchant
+        try {
+            this.api.charges().get(transactionId);
+            fail("Expected can't find");
+        } catch (OpenpayServiceException e) {
+            assertThat(e.getHttpCode(), is(404));
+        }
+    }
+
+    @Test
+    public void testCreate_Customer_WithId_WithoutAccount() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(this.customerNoAccount.getId(), new CreateCardChargeParams()
+                .cardId(this.registeredCardNoAccount.getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        String transactionId = transaction.getId();
+        transaction = this.api.charges().get(this.customerNoAccount.getId(), transactionId);
+        assertThat(transaction.getId(), is(transactionId));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        // Se puede obtener tambien desde el merchant
+        transaction = this.api.charges().get(transactionId);
+        assertThat(transaction.getId(), is(transactionId));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        this.api.charges().refund(new RefundParams().chargeId(transactionId));
     }
 
     @Test
     public void testCreate_Customer_WithCaptureFalse() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
+                .cardId(this.registeredCard.getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .capture(false));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        assertEquals("in_progress", transaction.getStatus());
+
+        BigDecimal newBalance = this.api.customers().get(this.customer.getId()).getBalance();
+        assertTrue(newBalance.compareTo(BigDecimal.ZERO) == 0);
+        Charge confirmed = this.api.charges().confirmCapture(this.customer.getId(), new ConfirmCaptureParams()
+                .chargeId(transaction.getId())
+                .amount(amount));
+        newBalance = this.api.customers().get(this.customer.getId()).getBalance();
+        assertTrue(amount.compareTo(newBalance) == 0);
+        assertEquals("completed", confirmed.getStatus());
+    }
+
+    @Test
+    public void testCreate_Customer_WithCaptureFalse_WithoutAccount() throws ServiceUnavailableException,
+            OpenpayServiceException {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -235,6 +320,60 @@ public class CustomerCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(this.customer.getId(), originalTransactionId);
         assertNotNull(transaction.getRefund());
         assertTrue(this.api.customers().get(this.customer.getId()).getBalance().compareTo(BigDecimal.ZERO) == 0);
+    }
+
+    @Test
+    public void testRefund_Customer_NoAccount() throws Exception {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(this.customerNoAccount.getId(), new CreateCardChargeParams()
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .cardId(this.registeredCardNoAccount.getId()));
+        String originalTransactionId = transaction.getId();
+        assertNotNull(transaction);
+        assertNull(transaction.getRefund());
+        String refDesc = "cancelacion (ignored description)";
+        transaction = this.api.charges().refund(this.customerNoAccount.getId(), new RefundParams()
+                .chargeId(transaction.getId())
+                .description(refDesc));
+        assertNotNull(transaction.getRefund());
+        assertEquals(refDesc, transaction.getRefund().getDescription());
+
+        transaction = this.api.charges().get(this.customerNoAccount.getId(), originalTransactionId);
+        assertNotNull(transaction.getRefund());
+        BigDecimal balanceNew = this.api.merchant().get().getBalance();
+        assertTrue("was " + balanceNew, balanceNew.compareTo(BigDecimal.ZERO) == 0);
+    }
+
+    @Test
+    public void testRefund_Customer_NoAccount_FromMerchant() throws Exception {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(this.customerNoAccount.getId(), new CreateCardChargeParams()
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .cardId(this.registeredCardNoAccount.getId()));
+        String originalTransactionId = transaction.getId();
+        assertNotNull(transaction);
+        assertNull(transaction.getRefund());
+        String refDesc = "cancelacion (ignored description)";
+        transaction = this.api.charges().refund(new RefundParams()
+                .chargeId(transaction.getId())
+                .description(refDesc));
+        assertNotNull(transaction.getRefund());
+        assertEquals(refDesc, transaction.getRefund().getDescription());
+
+        transaction = this.api.charges().get(this.customerNoAccount.getId(), originalTransactionId);
+        assertNotNull(transaction.getRefund());
+        transaction = this.api.charges().get(originalTransactionId);
+        assertNotNull(transaction.getRefund());
+        BigDecimal balanceNew = this.api.merchant().get().getBalance();
+        assertTrue("was " + balanceNew, balanceNew.compareTo(BigDecimal.ZERO) == 0);
     }
 
     @Test

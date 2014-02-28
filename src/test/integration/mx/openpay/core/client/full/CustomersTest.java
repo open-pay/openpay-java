@@ -11,10 +11,11 @@ package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -64,6 +65,22 @@ public class CustomersTest extends BaseTest {
     }
 
     @Test
+    public void testCreateCustomer_NoAccount() throws ServiceUnavailableException, OpenpayServiceException {
+        Address address = TestUtils.prepareAddress();
+        Customer params = new Customer()
+                .name("Juan").lastName("Perez Perez")
+                .email("juan.perez@gmail.com")
+                .phoneNumber("55-25634013")
+                .address(address)
+                .requiresAccount(false);
+        Customer customer = this.api.customers().create(params);
+        assertNotNull(customer);
+        assertNotNull(customer.getId());
+        assertNull(customer.getBalance());
+        assertNull(customer.getStatus());
+    }
+
+    @Test
     public void testUpdateCustomer() throws Exception {
         Address address = TestUtils.prepareAddress();
         Customer customer = this.api.customers().create(new Customer()
@@ -71,6 +88,21 @@ public class CustomersTest extends BaseTest {
                 .email("juan.perez@gmail.com")
                 .phoneNumber("55-25634013")
                 .address(address));
+        this.customersToDelete.add(customer);
+        customer.setName("Juanito 2");
+        customer = this.api.customers().update(customer);
+        assertEquals("Juanito 2", customer.getName());
+    }
+
+    @Test
+    public void testUpdateCustomer_NoAccount() throws Exception {
+        Address address = TestUtils.prepareAddress();
+        Customer customer = this.api.customers().create(new Customer()
+                .name("Juan").lastName("Perez Perez")
+                .email("juan.perez@gmail.com")
+                .phoneNumber("55-25634013")
+                .address(address))
+                .requiresAccount(false);
         this.customersToDelete.add(customer);
         customer.setName("Juanito 2");
         customer = this.api.customers().update(customer);
@@ -126,7 +158,7 @@ public class CustomersTest extends BaseTest {
         this.customersToDelete.add(middleCustomer);
         this.customersToDelete.add(this.api.customers().create(new Customer().name("Ruben").lastName("Perez Perez")
                 .email("ruben.perez@gmail.com").phoneNumber("55-25634013")));
-        List<Customer> customers = this.api.customers().list(null);
+        List<Customer> customers = this.api.customers().list(search().limit(3));
         assertThat(customers.size(), is(3));
         for (Customer customer : customers) {
             assertNotNull(customer.getId());
@@ -138,14 +170,18 @@ public class CustomersTest extends BaseTest {
         }
         customers = this.api.customers().list(search().limit(2));
         assertThat(customers.size(), is(2));
-        customers = this.api.customers().list(search().limit(2).offset(2));
-        assertThat(customers.size(), is(1));
+        Customer expectedFirst = customers.get(1);
+        customers = this.api.customers().list(search().limit(2).offset(1));
+        assertThat(customers.get(0).getId(), is(expectedFirst.getId()));
     }
 
     @Test
-    public void testList_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testList_OnlyWithoutAccount() throws ServiceUnavailableException, OpenpayServiceException {
         List<Customer> customers = this.api.customers().list(null);
-        assertTrue(customers.isEmpty());
+        for (Customer customer : customers) {
+            assertThat(customer.getBalance(), is(nullValue()));
+            assertThat(customer.getStatus(), is(nullValue()));
+        }
     }
 
     @Test
