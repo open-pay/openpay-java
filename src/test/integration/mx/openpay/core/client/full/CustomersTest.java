@@ -151,21 +151,22 @@ public class CustomersTest extends BaseTest {
 
     @Test
     public void testList() throws Exception {
+        // To get next three customers first
+        Thread.sleep(1000);
         this.customersToDelete.add(this.api.customers().create(new Customer().name("Juan").lastName("Perez Perez")
                 .email("juan.perez@gmail.com").phoneNumber("55-25634013")));
-        Customer middleCustomer = this.api.customers().create(new Customer().name("Jose").lastName("Perez Perez")
-                .email("jose.perez@gmail.com").phoneNumber("55-25634013"));
-        this.customersToDelete.add(middleCustomer);
+        this.customersToDelete.add(this.api.customers().create(new Customer().name("Jose").lastName("Perez Perez")
+                .email("jose.perez@gmail.com").phoneNumber("55-25634013")));
         this.customersToDelete.add(this.api.customers().create(new Customer().name("Ruben").lastName("Perez Perez")
                 .email("ruben.perez@gmail.com").phoneNumber("55-25634013")));
         List<Customer> customers = this.api.customers().list(search().limit(3));
         assertThat(customers.size(), is(3));
         for (Customer customer : customers) {
             assertNotNull(customer.getId());
-            assertNotNull(customer.getBalance());
             assertNotNull(customer.getCreationDate());
             assertNotNull(customer.getEmail());
             assertNotNull(customer.getName());
+            assertNotNull(customer.getBalance());
             assertNotNull(customer.getStatus());
         }
         customers = this.api.customers().list(search().limit(2));

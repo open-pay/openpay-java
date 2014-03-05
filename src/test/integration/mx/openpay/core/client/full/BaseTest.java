@@ -9,9 +9,12 @@
  */
 package mx.openpay.core.client.full;
 
+import java.math.BigDecimal;
 import java.util.TimeZone;
 
+import mx.openpay.client.BankAccount;
 import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
 
 import org.junit.Before;
 
@@ -24,11 +27,22 @@ public class BaseTest {
 
     @Before
     public void setupAPI() throws Exception {
-		String merchantId = "mb7l02unol7psmitfkbf";
-		String apiKey = "sk_4988c229553842f391a930fb497bde85";
-        String endpoint = "https://dev-api.openpay.mx/";
+        String merchantId = "mi93pk0cjumoraf08tqt";
+        String apiKey = "sk_88ab47ebc710472d91488cc4f3009080";
+        String endpoint = "https://sandbox-api.openpay.mx/";
         this.api = new OpenpayAPI(endpoint, apiKey, merchantId);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
+        // Reset Merchant balance before each test
+        BigDecimal balance = this.api.merchant().get().getBalance();
+        if (balance.compareTo(BigDecimal.ZERO) != 0) {
+            this.api.payouts().create(
+                    new CreateBankPayoutParams()
+                            .amount(balance)
+                            .bankAccount(new BankAccount()
+                                    .clabe("012298026516924616")
+                                    .holderName("Holder"))
+                            .description("Payout to reset merchant's balance"));
+        }
     }
 
 }

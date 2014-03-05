@@ -145,7 +145,7 @@ public class FullApiTest {
     }
 
     private void testCreateMerchantCard() throws OpenpayServiceException, ServiceUnavailableException {
-        this.merchantCreditCard = this.api.cards().create(this.createCard("5555555555554444"));
+        this.merchantCreditCard = this.api.cards().create(this.createCard("345678000000007"));
         log.info("Merchant credit card: {}", this.merchantCreditCard.getId());
 
     }
@@ -194,7 +194,7 @@ public class FullApiTest {
         Charge charge = this.api.charges().create(new CreateCardChargeParams()
                 .description("Service charge")
                 .amount(new BigDecimal("200.00")) // Amount is in MXN
-                .card(this.createCard("5555555555554444")));
+                .card(this.createCard("345678000000007")));
         log.info("Merchant direct card charge: {}", charge.getId());
 
     }
