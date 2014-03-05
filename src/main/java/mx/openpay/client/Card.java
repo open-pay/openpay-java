@@ -59,6 +59,9 @@ public class Card {
     @SerializedName("bank_code")
     private String bankCode;
 
+    @SerializedName("token_id")
+    private String tokenId;
+
     private String type;
 
     private String cvv2;
@@ -150,6 +153,14 @@ public class Card {
      */
     public Card bankCode(final String bankCode) {
         this.bankCode = bankCode;
+        return this;
+    }
+
+    /**
+     * Token previously generated in Openpay.
+     */
+    public Card tokenId(final String tokenId) {
+        this.tokenId = tokenId;
         return this;
     }
 
