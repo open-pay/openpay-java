@@ -27,9 +27,9 @@ public class BaseTest {
 
     @Before
     public void setupAPI() throws Exception {
-        String merchantId = "mi93pk0cjumoraf08tqt";
-        String apiKey = "sk_88ab47ebc710472d91488cc4f3009080";
-        String endpoint = "https://sandbox-api.openpay.mx/";
+        String merchantId = "miklpzr4nsvsucghm2qp";
+        String apiKey = "sk_08453429e4c54220a3a82ab4d974c31a";
+        String endpoint = "https://dev-api.openpay.mx/";
         this.api = new OpenpayAPI(endpoint, apiKey, merchantId);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
         // Reset Merchant balance before each test
