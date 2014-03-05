@@ -2,7 +2,7 @@
  * Copyright 1999,2006 The Apache Software Foundation.
  *
  * This file was taken from the Jakarta Feedparser sources and was modified
- * to change the package and for formatting reasons.
+ * to change the package and for formatting reasons, and fixed a bug with dates at 12:00:00 hours.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public class ISO8601DateParser {
     // 2004-06-14T19:GMT20:30Z
     // 2004-06-20T06:GMT22:01Z
 
-    private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssz", Locale.ENGLISH);
+    private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz", Locale.ENGLISH);
 
     // http://www.cl.cam.ac.uk/~mgk25/iso-time.html
     //
