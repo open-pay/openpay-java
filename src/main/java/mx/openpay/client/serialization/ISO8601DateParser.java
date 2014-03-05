@@ -2,7 +2,8 @@
  * Copyright 1999,2006 The Apache Software Foundation.
  *
  * This file was taken from the Jakarta Feedparser sources and was modified
- * to change the package and for formatting reasons, and fixed a bug with dates at 12:00:00 hours.
+ * to change the package and for formatting reasons,fixed a bug with dates at 12:00:00 hours,
+ * and removed unnecesary method.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +20,10 @@
 
 package mx.openpay.client.serialization;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * ISO 8601 date parsing utility. <br>
@@ -96,41 +97,12 @@ public class ISO8601DateParser {
             input = s0 + "GMT" + s1;
         }
 
+        return parseDate(input);
+
+    }
+
+    private static synchronized Date parseDate(final String input) throws ParseException {
         return df.parse(input);
-
-    }
-
-    public static String toString(final Date date) {
-
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-
-        df.setTimeZone(tz);
-
-        String output = df.format(date);
-
-        int inset0 = 9;
-        int inset1 = 6;
-
-        String s0 = output.substring(0, output.length() - inset0);
-        String s1 = output.substring(output.length() - inset1, output.length());
-
-        String result = s0 + s1;
-
-        result = result.replaceAll("UTC", "+00:00");
-
-        return result;
-
-    }
-
-    public static void main(final String[] args) throws Exception {
-
-        System.out.println(parse("2004-05-31T09:19:31-06:00"));
-        System.out.println(parse("2004-06-23T17:25:31-00:00"));
-        System.out.println(parse("2004-06-23T17:25:31Z"));
-
-        // 2002-10-02T10:00:00-05:00
-        System.out.println("v: " + toString(new Date(System.currentTimeMillis())));
-
     }
 
 }
