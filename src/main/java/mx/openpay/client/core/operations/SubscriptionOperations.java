@@ -18,6 +18,7 @@ package mx.openpay.client.core.operations;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
+import static mx.openpay.client.utils.OpenpayPathComponents.PLANS;
 import static mx.openpay.client.utils.OpenpayPathComponents.SUBSCRIPTIONS;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class SubscriptionOperations extends ServiceOperations {
     private static final String CUSTOMER_SUBSCRIPTIONS_PATH = MERCHANT_ID + CUSTOMERS + ID + SUBSCRIPTIONS;
 
     private static final String GET_CUSTOMER_SUBSCRIPTION_PATH = MERCHANT_ID + CUSTOMERS + ID + SUBSCRIPTIONS + ID;
+	private static final String GET_PLAN_SUBSCRIPTION_PATH = MERCHANT_ID + PLANS + ID + SUBSCRIPTIONS + ID;
 
     public SubscriptionOperations(final JsonServiceClient client) {
         super(client);
@@ -73,5 +75,11 @@ public class SubscriptionOperations extends ServiceOperations {
         Map<String, String> map = params == null ? null : params.asMap();
         return this.getJsonClient().list(path, map, Subscription.class);
     };
+
+	public Subscription getByPlan(final String planId, final String subscriptionId) throws OpenpayServiceException,
+			ServiceUnavailableException {
+		String path = String.format(GET_PLAN_SUBSCRIPTION_PATH, this.getMerchantId(), planId, subscriptionId);
+		return this.getJsonClient().get(path, Subscription.class);
+	};
 
 }

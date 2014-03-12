@@ -16,6 +16,7 @@
 package mx.openpay.client.core.operations;
 
 import static mx.openpay.client.utils.OpenpayPathComponents.FEES;
+import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 
 import java.math.BigDecimal;
@@ -35,6 +36,8 @@ import mx.openpay.client.utils.SearchParams;
 public class FeeOperations extends ServiceOperations {
 
     private static final String FEES_PATH = MERCHANT_ID + FEES;
+
+	private static final String GET_FEE_PATH = MERCHANT_ID + FEES + ID;
 
     public FeeOperations(final JsonServiceClient client) {
         super(client);
@@ -60,5 +63,10 @@ public class FeeOperations extends ServiceOperations {
         Map<String, String> map = params == null ? null : params.asMap();
         return this.getJsonClient().list(path, map, Fee.class);
     }
+
+	public Fee get(final String transactionId) throws OpenpayServiceException, ServiceUnavailableException {
+		String path = String.format(GET_FEE_PATH, this.getMerchantId(), transactionId);
+		return this.getJsonClient().get(path, Fee.class);
+	}
 
 }

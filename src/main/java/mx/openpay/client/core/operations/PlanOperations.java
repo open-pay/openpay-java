@@ -18,11 +18,13 @@ package mx.openpay.client.core.operations;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.PLANS;
+import static mx.openpay.client.utils.OpenpayPathComponents.SUBSCRIPTIONS;
 
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.Plan;
+import mx.openpay.client.Subscription;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -36,6 +38,8 @@ public class PlanOperations extends ServiceOperations {
     private static final String PLANS_PATH = MERCHANT_ID + PLANS;
 
     private static final String GET_PLAN_PATH = PLANS_PATH + ID;
+
+	private static final String GET_SUBSCRIPTIONS_PLAN_PATH = GET_PLAN_PATH + SUBSCRIPTIONS;
 
     public PlanOperations(final JsonServiceClient client) {
         super(client);
@@ -66,5 +70,12 @@ public class PlanOperations extends ServiceOperations {
         Map<String, String> map = params == null ? null : params.asMap();
         return this.getJsonClient().list(path, map, Plan.class);
     };
+
+	public List<Subscription> listSubscriptions(final String planId, final SearchParams params)
+			throws OpenpayServiceException, ServiceUnavailableException {
+		String path = String.format(GET_SUBSCRIPTIONS_PLAN_PATH, this.getMerchantId(), planId);
+		Map<String, String> map = params == null ? null : params.asMap();
+		return this.getJsonClient().list(path, map, Subscription.class);
+	};
 
 }
