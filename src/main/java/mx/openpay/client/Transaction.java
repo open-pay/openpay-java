@@ -65,4 +65,7 @@ public class Transaction {
     @SerializedName("customer_id")
     private String customerId;
 
+	@SerializedName("due_date")
+	private Date dueDate;
+
 }
