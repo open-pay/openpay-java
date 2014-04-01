@@ -23,12 +23,15 @@ import java.util.Date;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 /**
  * Formats the JSON-serialized dates.
  * @author elopez
  */
-public class DateFormatDeserializer implements JsonDeserializer<Date> {
+public class DateFormatDeserializer implements JsonDeserializer<Date>, JsonSerializer<Date> {
 
     public Date deserialize(final JsonElement json, final Type paramType,
             final JsonDeserializationContext paramJsonDeserializationContext) {
@@ -58,4 +61,10 @@ public class DateFormatDeserializer implements JsonDeserializer<Date> {
     private synchronized Date parseISO8601(final String date) throws ParseException {
         return ISO8601DateParser.parse(date);
     }
+
+	@Override
+	public JsonElement serialize(final Date src, final Type typeOfSrc, final JsonSerializationContext context) {
+		String dateFormatAsString = ISO8601DateParser.format(src);
+		return new JsonPrimitive(dateFormatAsString);
+	}
 }
