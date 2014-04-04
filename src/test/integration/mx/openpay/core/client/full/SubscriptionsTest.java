@@ -109,7 +109,7 @@ public class SubscriptionsTest extends BaseTest {
         this.subscriptionsToDelete.add(subscription);
         assertNotNull(subscription.getId());
         assertThat(subscription.getCard().getId(), is(this.card.getId()));
-        assertThat(subscription.getCard().getCardNumber(), is("1111"));
+        assertThat(subscription.getCard().getCardNumber(), is("411111XXXXXX1111"));
         assertNotNull(subscription.getCreationDate());
         assertNotNull(subscription.getChargeDate());
         assertThat(subscription.getCurrentPeriodNumber(), is(0));
@@ -130,7 +130,7 @@ public class SubscriptionsTest extends BaseTest {
         this.subscriptionsToDelete.add(subscription);
         assertNotNull(subscription.getId());
         assertNull(subscription.getCard().getId());
-        assertThat(subscription.getCard().getCardNumber(), is("4444"));
+        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
         assertNotNull(subscription.getCreationDate());
         assertNotNull(subscription.getChargeDate());
         assertThat(subscription.getCurrentPeriodNumber(), is(0));
@@ -156,7 +156,7 @@ public class SubscriptionsTest extends BaseTest {
         calendar.add(Calendar.DATE, -1);
         assertNotNull(subscription.getId());
         assertNull(subscription.getCard().getId());
-        assertThat(subscription.getCard().getCardNumber(), is("4444"));
+        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
         assertNotNull(subscription.getCreationDate());
         assertNotNull(subscription.getChargeDate());
         assertThat(subscription.getCurrentPeriodNumber(), is(1));
@@ -177,7 +177,7 @@ public class SubscriptionsTest extends BaseTest {
         subscription = this.api.subscriptions().get(this.customer.getId(), subscription.getId());
         assertThat(subscription.getId(), is(subscription.getId()));
         assertNull(subscription.getCard().getId());
-        assertThat(subscription.getCard().getCardNumber(), is("4444"));
+        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
         // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println(subscription.getCreationDate());
         System.out.println(start);
@@ -213,7 +213,7 @@ public class SubscriptionsTest extends BaseTest {
         assertThat(subscription.getId(), is(id));
         assertNull(subscription.getCardId());
         assertNull(subscription.getCard().getId());
-        assertThat(subscription.getCard().getCardNumber(), is("4444"));
+        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(true));
 
@@ -225,7 +225,7 @@ public class SubscriptionsTest extends BaseTest {
         assertThat(subscription.getId(), is(id));
         assertNull(subscription.getCardId());
         assertNull(subscription.getCard().getId());
-        assertThat(subscription.getCard().getCardNumber(), is("4444"));
+        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(true));
 
@@ -235,7 +235,7 @@ public class SubscriptionsTest extends BaseTest {
         assertThat(subscription.getId(), is(id));
         assertNull(subscription.getCardId());
         assertNull(subscription.getCard().getId());
-        assertThat(subscription.getCard().getCardNumber(), is("4444"));
+        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(false));
 
@@ -246,7 +246,7 @@ public class SubscriptionsTest extends BaseTest {
         assertThat(subscription.getId(), is(id));
         assertThat(subscription.getCardId(), is(nullValue()));
         assertThat(subscription.getCard().getId(), is(this.secondCard.getId()));
-        assertThat(subscription.getCard().getCardNumber(), is("4242"));
+        assertThat(subscription.getCard().getCardNumber(), is("424242XXXXXX4242"));
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(false));
     }

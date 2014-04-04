@@ -58,7 +58,7 @@ public class MerchantCardPayoutsTest extends BaseTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testCreate_Customer_Card_Old() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Merchant_Card_Old() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
@@ -80,7 +80,7 @@ public class MerchantCardPayoutsTest extends BaseTest {
     }
 
     @Test
-    public void testCreate_Customer_Card() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreate_Merchant_Card() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 
@@ -106,7 +106,7 @@ public class MerchantCardPayoutsTest extends BaseTest {
     }
 
     @Test
-    public void testCreateCustomerCardPayout_CardId() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreateMerchantCardPayout_CardId() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
 

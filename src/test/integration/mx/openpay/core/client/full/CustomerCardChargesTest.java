@@ -11,6 +11,7 @@ package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -324,6 +325,7 @@ public class CustomerCardChargesTest extends BaseTest {
 
     @Test
     public void testRefund_Customer_NoAccount() throws Exception {
+        BigDecimal balanceOld = this.api.merchant().get().getBalance();
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -345,11 +347,12 @@ public class CustomerCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(this.customerNoAccount.getId(), originalTransactionId);
         assertNotNull(transaction.getRefund());
         BigDecimal balanceNew = this.api.merchant().get().getBalance();
-        assertTrue("was " + balanceNew, balanceNew.compareTo(BigDecimal.ZERO) == 0);
+        assertThat(balanceNew, comparesEqualTo(balanceOld));
     }
 
     @Test
     public void testRefund_Customer_NoAccount_FromMerchant() throws Exception {
+        BigDecimal balanceOld = this.api.merchant().get().getBalance();
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -373,7 +376,7 @@ public class CustomerCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(originalTransactionId);
         assertNotNull(transaction.getRefund());
         BigDecimal balanceNew = this.api.merchant().get().getBalance();
-        assertTrue("was " + balanceNew, balanceNew.compareTo(BigDecimal.ZERO) == 0);
+        assertThat(balanceNew, comparesEqualTo(balanceOld));
     }
 
     @Test

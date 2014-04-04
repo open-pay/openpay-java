@@ -58,7 +58,7 @@ public class MerchantCardsTest extends BaseTest {
                 .expirationYear(14)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
-        assertEquals("4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 
@@ -73,7 +73,7 @@ public class MerchantCardsTest extends BaseTest {
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.api.cards().get(card.getId());
-        assertEquals("4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 
@@ -103,7 +103,7 @@ public class MerchantCardsTest extends BaseTest {
                 .expirationMonth(9)
                 .expirationYear(14));
         this.cardsToDelete.add(card);
-        assertEquals("4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 

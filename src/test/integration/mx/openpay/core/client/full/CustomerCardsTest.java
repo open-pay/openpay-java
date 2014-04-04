@@ -61,7 +61,7 @@ public class CustomerCardsTest extends BaseTest {
         Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Pérez Nuñez", "111",
                 "09", "14", TestUtils.prepareAddress());
         this.cardsToDelete.add(card);
-        assertEquals("4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 
@@ -75,7 +75,7 @@ public class CustomerCardsTest extends BaseTest {
                 .expirationYear(14)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
-        assertEquals("4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 
@@ -90,7 +90,7 @@ public class CustomerCardsTest extends BaseTest {
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.api.cards().get(this.customer.getId(), card.getId());
-        assertEquals("4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 
@@ -117,7 +117,7 @@ public class CustomerCardsTest extends BaseTest {
         Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Pérez Nuñez", "111",
                 "09", "14", null);
         this.cardsToDelete.add(card);
-        assertEquals("4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 
@@ -130,7 +130,7 @@ public class CustomerCardsTest extends BaseTest {
                 .expirationMonth(9)
                 .expirationYear(14));
         this.cardsToDelete.add(card);
-        assertEquals("4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 

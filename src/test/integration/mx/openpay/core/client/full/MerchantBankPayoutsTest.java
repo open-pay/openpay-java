@@ -60,7 +60,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
     }
 
     @Test
-    public void testListCustomerPayouts() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testListMerchantPayouts() throws ServiceUnavailableException, OpenpayServiceException {
         Date date = new Date();
         BigDecimal amount = new BigDecimal(String.format("%tI%<td.%<tM", date));
         CreateCardChargeParams charge = new CreateCardChargeParams()
@@ -81,14 +81,14 @@ public class MerchantBankPayoutsTest extends BaseTest {
     }
 
     @Test
-    public void testListCustomerPayouts_Empty() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testListMerchantPayouts_Empty() throws ServiceUnavailableException, OpenpayServiceException {
         List<Payout> transactions = this.api.payouts().list(
                 search().creation(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24))));
         assertEquals(0, transactions.size());
     }
 
     @Test
-    public void testGetCustomerPayout() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testGetMerchantPayout() throws ServiceUnavailableException, OpenpayServiceException {
         Payout payout = this.api.payouts().create(new CreateBankPayoutParams()
                 .bankAccountId(this.bankAccount.getId()).amount(BigDecimal.ONE).description("desc 1"));
         Payout transaction = this.api.payouts().get(payout.getId());
@@ -97,7 +97,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
     }
 
     @Test
-    public void testCreateCustomerBankPayout_WithId() throws ServiceUnavailableException, OpenpayServiceException {
+    public void testCreateMerchantBankPayout_WithId() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = BigDecimal.ONE;
         String desc = "Ganancias";
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -116,7 +116,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testCreateCustomerBankPayout_WithBankAccount_Old() throws ServiceUnavailableException,
+    public void testCreateMerchantBankPayout_WithBankAccount_Old() throws ServiceUnavailableException,
             OpenpayServiceException {
         BigDecimal amount = BigDecimal.ONE;
         String desc = "Ganancias";
@@ -135,7 +135,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
     }
 
     @Test
-    public void testCreateCustomerBankPayout_WithBankAccount() throws ServiceUnavailableException,
+    public void testCreateMerchantBankPayout_WithBankAccount() throws ServiceUnavailableException,
             OpenpayServiceException {
         BigDecimal amount = BigDecimal.ONE;
         String desc = "Ganancias";

@@ -91,6 +91,18 @@ public class PayoutOperations extends ServiceOperations {
         return this.getJsonClient().get(path, Payout.class);
     }
 
+    public void cancel(final String transactionId) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(GET_FOR_MERCHANT_PATH, this.getMerchantId(), transactionId);
+        this.getJsonClient().delete(path);
+    }
+
+    public void cancel(final String customerId, final String transactionId) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(GET_FOR_CUSTOMER_PATH, this.getMerchantId(), customerId, transactionId);
+        this.getJsonClient().delete(path);
+    }
+
     public List<Payout> list(final SearchParams params) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
