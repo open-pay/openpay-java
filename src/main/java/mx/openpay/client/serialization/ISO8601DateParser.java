@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * ISO 8601 date parsing utility. <br>
@@ -40,15 +41,15 @@ public class ISO8601DateParser {
 
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz", Locale.ENGLISH);
 
-	/**
-	 * ID to represent the 'GMT' string
-	 */
-	private static final String GMT_ID = "GMT";
+    /**
+     * ID to represent the 'GMT' string
+     */
+    private static final String GMT_ID = "GMT";
 
-	/**
-	 * The GMT timezone
-	 */
-	private static final TimeZone TIMEZONE_GMT = TimeZone.getTimeZone(GMT_ID);
+    /**
+     * The GMT timezone
+     */
+    private static final TimeZone TIMEZONE_GMT = TimeZone.getTimeZone(GMT_ID);
 
     // http://www.cl.cam.ac.uk/~mgk25/iso-time.html
     //
@@ -117,89 +118,78 @@ public class ISO8601DateParser {
         return df.parse(input);
     }
 
-	/**
-	 * Format a date into 'yyyy-MM-ddThh:mm:ss[.sss]Z' (GMT timezone)
-	 * 
-	 * @param date
-	 *            the date to format
-	 * @param millis
-	 *            true to include millis precision otherwise false
-	 * @return the date formatted as 'yyyy-MM-ddThh:mm:ss[.sss]Z'
-	 */
-	public static String format(final Date date) {
-		return format(date, false, TIMEZONE_GMT);
-	}
+    /**
+     * Format a date into 'yyyy-MM-ddThh:mm:ss[.sss]Z' (GMT timezone)
+     * @param date the date to format
+     * @param millis true to include millis precision otherwise false
+     * @return the date formatted as 'yyyy-MM-ddThh:mm:ss[.sss]Z'
+     */
+    public static String format(final Date date) {
+        return format(date, false, TIMEZONE_GMT);
+    }
 
-	/**
-	 * Format date into yyyy-MM-ddThh:mm:ss[.sss][Z|[+-]hh:mm]
-	 * 
-	 * @param date
-	 *            the date to format
-	 * @param millis
-	 *            true to include millis precision otherwise false
-	 * @param tz
-	 *            timezone to use for the formatting (GMT will produce 'Z')
-	 * @return the date formatted as yyyy-MM-ddThh:mm:ss[.sss][Z|[+-]hh:mm]
-	 */
-	public static String format(final Date date, final boolean millis, final TimeZone tz) {
-		Calendar calendar = new GregorianCalendar(tz, Locale.US);
-		calendar.setTime(date);
+    /**
+     * Format date into yyyy-MM-ddThh:mm:ss[.sss][Z|[+-]hh:mm]
+     * @param date the date to format
+     * @param millis true to include millis precision otherwise false
+     * @param tz timezone to use for the formatting (GMT will produce 'Z')
+     * @return the date formatted as yyyy-MM-ddThh:mm:ss[.sss][Z|[+-]hh:mm]
+     */
+    public static String format(final Date date, final boolean millis, final TimeZone tz) {
+        Calendar calendar = new GregorianCalendar(tz, Locale.US);
+        calendar.setTime(date);
 
-		// estimate capacity of buffer as close as we can (yeah, that's pedantic
-		// ;)
-		int capacity = "yyyy-MM-ddThh:mm:ss".length();
-		capacity += millis ? ".sss".length() : 0;
-		capacity += tz.getRawOffset() == 0 ? "Z".length() : "+hh:mm".length();
-		StringBuilder formatted = new StringBuilder(capacity);
+        // estimate capacity of buffer as close as we can (yeah, that's pedantic
+        // ;)
+        int capacity = "yyyy-MM-ddThh:mm:ss".length();
+        capacity += millis ? ".sss".length() : 0;
+        capacity += tz.getRawOffset() == 0 ? "Z".length() : "+hh:mm".length();
+        StringBuilder formatted = new StringBuilder(capacity);
 
-		padInt(formatted, calendar.get(Calendar.YEAR), "yyyy".length());
-		formatted.append('-');
-		padInt(formatted, calendar.get(Calendar.MONTH) + 1, "MM".length());
-		formatted.append('-');
-		padInt(formatted, calendar.get(Calendar.DAY_OF_MONTH), "dd".length());
-		formatted.append('T');
-		padInt(formatted, calendar.get(Calendar.HOUR_OF_DAY), "hh".length());
-		formatted.append(':');
-		padInt(formatted, calendar.get(Calendar.MINUTE), "mm".length());
-		formatted.append(':');
-		padInt(formatted, calendar.get(Calendar.SECOND), "ss".length());
-		if (millis) {
-			formatted.append('.');
-			padInt(formatted, calendar.get(Calendar.MILLISECOND), "sss".length());
-		}
+        padInt(formatted, calendar.get(Calendar.YEAR), "yyyy".length());
+        formatted.append('-');
+        padInt(formatted, calendar.get(Calendar.MONTH) + 1, "MM".length());
+        formatted.append('-');
+        padInt(formatted, calendar.get(Calendar.DAY_OF_MONTH), "dd".length());
+        formatted.append('T');
+        padInt(formatted, calendar.get(Calendar.HOUR_OF_DAY), "hh".length());
+        formatted.append(':');
+        padInt(formatted, calendar.get(Calendar.MINUTE), "mm".length());
+        formatted.append(':');
+        padInt(formatted, calendar.get(Calendar.SECOND), "ss".length());
+        if (millis) {
+            formatted.append('.');
+            padInt(formatted, calendar.get(Calendar.MILLISECOND), "sss".length());
+        }
 
-		int offset = tz.getOffset(calendar.getTimeInMillis());
-		if (offset != 0) {
-			int hours = Math.abs((offset / (60 * 1000)) / 60);
-			int minutes = Math.abs((offset / (60 * 1000)) % 60);
-			formatted.append(offset < 0 ? '-' : '+');
-			padInt(formatted, hours, "hh".length());
-			formatted.append(':');
-			padInt(formatted, minutes, "mm".length());
-		} else {
-			formatted.append('Z');
-		}
+        int offset = tz.getOffset(calendar.getTimeInMillis());
+        if (offset != 0) {
+            int hours = Math.abs((offset / (60 * 1000)) / 60);
+            int minutes = Math.abs((offset / (60 * 1000)) % 60);
+            formatted.append(offset < 0 ? '-' : '+');
+            padInt(formatted, hours, "hh".length());
+            formatted.append(':');
+            padInt(formatted, minutes, "mm".length());
+        } else {
+            formatted.append('Z');
+        }
 
-		return formatted.toString();
-	}
+        return formatted.toString();
+    }
 
-	/**
-	 * Zero pad a number to a specified length
-	 * 
-	 * @param buffer
-	 *            buffer to use for padding
-	 * @param value
-	 *            the integer value to pad if necessary.
-	 * @param length
-	 *            the length of the string we should zero pad
-	 */
-	private static void padInt(final StringBuilder buffer, final int value, final int length) {
-		String strValue = Integer.toString(value);
-		for (int i = length - strValue.length(); i > 0; i--) {
-			buffer.append('0');
-		}
-		buffer.append(strValue);
-	}
+    /**
+     * Zero pad a number to a specified length
+     * @param buffer buffer to use for padding
+     * @param value the integer value to pad if necessary.
+     * @param length the length of the string we should zero pad
+     */
+    private static void padInt(final StringBuilder buffer, final int value, final int length) {
+        String strValue = Integer.toString(value);
+        for (int i = length - strValue.length(); i > 0; i--) {
+            buffer.append('0');
+        }
+        buffer.append(strValue);
+    }
 
     public static void main(final String[] args) throws Exception {
 
@@ -208,8 +198,8 @@ public class ISO8601DateParser {
         System.out.println(parse("2004-06-23T17:25:31Z"));
 
         // 2002-10-02T10:00:00-05:00
-		System.out.println("v: " + toString(new Date(System.currentTimeMillis())));
-		System.out.println("v: " + toString(new Date(1396314300000L)));
-}
+        System.out.println("v: " + format(new Date(System.currentTimeMillis())));
+        System.out.println("v: " + format(new Date(1396314300000L)));
+    }
 
 }
