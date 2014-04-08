@@ -59,8 +59,8 @@ public class Subscription {
     @SerializedName("customer_id")
     private String customerId;
 
-    @SerializedName("card_id")
-    private String cardId;
+    @SerializedName("source_id")
+    private String sourceId;
 
     private Card card;
 
@@ -73,11 +73,39 @@ public class Subscription {
     }
 
     /**
+     * Use {@link #getSourceId()} instead.
+     * @param cardId
+     */
+    public String getCardId() {
+        return this.sourceId;
+    }
+
+    /**
+     * Use {@link #setSourceId(String)} instead.
+     * @param cardId
+     */
+    @Deprecated
+    public void setCardId(final String cardId) {
+        this.sourceId = cardId;
+    }
+
+    /**
      * The ID of the customer's pre-registered card to which the charge will be made each cycle. Required if no card is
      * specified to be created.
+     * @deprecated use {@link #sourceId(String)} instead.
      */
+    @Deprecated
     public Subscription cardId(final String cardId) {
-        this.cardId = cardId;
+        this.sourceId = cardId;
+        return this;
+    }
+
+    /**
+     * The ID of the customer's pre-registered card or token to which the charge will be made each cycle. Required if no
+     * card is specified to be created.
+     */
+    public Subscription sourceId(final String sourceId) {
+        this.sourceId = sourceId;
         return this;
     }
 

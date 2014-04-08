@@ -54,6 +54,20 @@ public class DateFormatDeserializerTest {
     }
 
     @Test
+    public void testParse_12Hours() throws Exception {
+        Date expected = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2014-01-06 12:14:09");
+        Date date = this.parse("2014-01-06T12:14:09-06:00");
+        assertEquals(expected, date);
+    }
+
+    @Test
+    public void testParse_ZeroHours() throws Exception {
+        Date expected = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2014-01-06 00:14:09");
+        Date date = this.parse("2014-01-06T00:14:09-06:00");
+        assertEquals(expected, date);
+    }
+
+    @Test
     public void testParseDifferentZone() throws Exception {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         Date expected = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2014-01-06 19:14:09");

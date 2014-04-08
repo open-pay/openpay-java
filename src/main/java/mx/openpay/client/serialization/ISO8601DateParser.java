@@ -2,7 +2,8 @@
  * Copyright 1999,2006 The Apache Software Foundation.
  *
  * This file was taken from the Jakarta Feedparser sources and was modified
- * to change the package and for formatting reasons.
+ * to change the package and for formatting reasons,fixed a bug with dates at 12:00:00 hours,
+ * and removed unnecesary method.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +20,12 @@
 
 package mx.openpay.client.serialization;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * ISO 8601 date parsing utility. <br>
@@ -37,7 +38,7 @@ public class ISO8601DateParser {
     // 2004-06-14T19:GMT20:30Z
     // 2004-06-20T06:GMT22:01Z
 
-    private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssz", Locale.ENGLISH);
+    private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz", Locale.ENGLISH);
 
 	/**
 	 * ID to represent the 'GMT' string
@@ -108,30 +109,12 @@ public class ISO8601DateParser {
             input = s0 + "GMT" + s1;
         }
 
-        return df.parse(input);
+        return parseDate(input);
 
     }
 
-    public static String toString(final Date date) {
-
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-
-        df.setTimeZone(tz);
-
-        String output = df.format(date);
-
-        int inset0 = 9;
-        int inset1 = 6;
-
-        String s0 = output.substring(0, output.length() - inset0);
-        String s1 = output.substring(output.length() - inset1, output.length());
-
-        String result = s0 + s1;
-
-        result = result.replaceAll("UTC", "+00:00");
-
-        return result;
-
+    private static synchronized Date parseDate(final String input) throws ParseException {
+        return df.parse(input);
     }
 
 	/**
@@ -227,6 +210,6 @@ public class ISO8601DateParser {
         // 2002-10-02T10:00:00-05:00
 		System.out.println("v: " + toString(new Date(System.currentTimeMillis())));
 		System.out.println("v: " + toString(new Date(1396314300000L)));
-    }
+}
 
 }
