@@ -75,6 +75,7 @@ public class FeesTest extends BaseTest {
         Assert.assertNotNull(transaction);
         Assert.assertEquals(feeAmount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertNull(transaction.getFee());
     }
 
     @Test

@@ -24,6 +24,7 @@ import mx.openpay.client.Customer;
 import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,6 +57,7 @@ public class CustomerStoreChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertNotNull(transaction.getPaymentMethod().getReference());
         assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+        Assert.assertNull(transaction.getFee());
     }
 
 }

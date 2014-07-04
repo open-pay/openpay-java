@@ -101,6 +101,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
         Payout transaction = this.api.payouts().get(payout.getId());
         Assert.assertNotNull(transaction.getId());
         Assert.assertNotNull(transaction.getAmount());
+        Assert.assertNull(transaction.getFee());
     }
 
     @Test
@@ -160,5 +161,6 @@ public class MerchantBankPayoutsTest extends BaseTest {
         Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertNull(transaction.getCustomerId());
+        Assert.assertNull(transaction.getFee());
     }
 }

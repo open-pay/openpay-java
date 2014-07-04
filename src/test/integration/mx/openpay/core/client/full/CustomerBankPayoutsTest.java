@@ -131,6 +131,7 @@ public class CustomerBankPayoutsTest extends BaseTest {
         Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(this.customer.getId(), transaction.getCustomerId());
+        Assert.assertNull(transaction.getFee());
     }
 
     @SuppressWarnings("deprecation")

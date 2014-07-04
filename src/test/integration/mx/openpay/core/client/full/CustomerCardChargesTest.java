@@ -39,6 +39,7 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -122,6 +123,7 @@ public class CustomerCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
+        Assert.assertNotNull(transaction.getFee());
         // No se puede obtener tambien desde el merchant
         try {
             this.api.charges().get(transactionId);

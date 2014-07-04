@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -39,6 +40,7 @@ public class MerchantStoreChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertNotNull(transaction.getPaymentMethod().getReference());
         assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+        Assert.assertNull(transaction.getFee());
     }
 
 }

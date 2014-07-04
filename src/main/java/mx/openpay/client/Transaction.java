@@ -67,5 +67,7 @@ public class Transaction {
 
 	@SerializedName("due_date")
 	private Date dueDate;
+	
+	private TransactionFee fee;
 
 }

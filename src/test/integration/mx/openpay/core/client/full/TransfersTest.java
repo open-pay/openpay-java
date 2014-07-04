@@ -34,6 +34,7 @@ import mx.openpay.client.core.requests.transactions.CreateTransferParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -78,7 +79,7 @@ public class TransfersTest extends BaseTest {
                 .description("Some description")
                 .toCustomerId(this.customerTo.getId()));
         assertThat(transfer.getStatus(), is("completed"));
-
+        Assert.assertNull(transfer.getFee());
     }
 
     @SuppressWarnings("deprecation")

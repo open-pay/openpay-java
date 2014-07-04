@@ -137,6 +137,7 @@ public class CustomerCardPayoutsTest extends BaseTest {
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(this.customer.getId(), transaction.getCustomerId());
+        Assert.assertNull(transaction.getFee());
     }
 
     @Test

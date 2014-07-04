@@ -109,6 +109,7 @@ public class MerchantCardPayoutsTest extends BaseTest {
         Assert.assertEquals(amount, transaction.getAmount());
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertNull(transaction.getCustomerId());
+        Assert.assertNull(transaction.getFee());
     }
 
     @Test
