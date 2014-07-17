@@ -17,17 +17,14 @@ package mx.openpay.client.utils;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class SearchParams {
+import java.util.Date;
+
+public class SearchParams extends PaginationParams {
 
     private static final int DEFAULT_LIMIT_SIZE = 10;
 
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-    private Map<String, String> params = new HashMap<String, String>();
 
     public static SearchParams search() {
         return new SearchParams();
@@ -52,21 +49,23 @@ public class SearchParams {
         return this;
     }
 
+    @Override
+    public SearchParams limit(final int limit) {
+        super.limit(limit);
+        return this;
+    }
+
+    @Override
+    public SearchParams offset(final int offset) {
+        super.offset(offset);
+        return this;
+    }
+
     /**
      * Shorthand for creationGte(start).creationLte(end).
      */
     public SearchParams between(final Date start, final Date end) {
         return this.creationGte(start).creationLte(end);
-    }
-
-    public SearchParams limit(final int limit) {
-        this.params.put("limit", String.valueOf(limit));
-        return this;
-    }
-
-    public SearchParams offset(final int offset) {
-        this.params.put("offset", String.valueOf(offset));
-        return this;
     }
 
     /**
@@ -77,7 +76,4 @@ public class SearchParams {
         return this;
     }
 
-    public Map<String, String> asMap() {
-        return this.params;
-    }
 }

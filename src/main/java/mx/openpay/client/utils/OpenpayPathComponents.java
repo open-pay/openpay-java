@@ -48,5 +48,10 @@ public class OpenpayPathComponents {
 
     public static final String SUBSCRIPTIONS = "/subscriptions";
 
+    public static final String REPORTS = "/reports";
+
+    public static final String REPORT_DETAILS = "/detail";
+
+    public static final String OPENPAY_FEES = "/fees";
 
 }
