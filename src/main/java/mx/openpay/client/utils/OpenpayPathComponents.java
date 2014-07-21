@@ -54,4 +54,6 @@ public class OpenpayPathComponents {
 
     public static final String OPENPAY_FEES = "/fees";
 
+	public static final String PAYOUT = "/payout";
+
 }
