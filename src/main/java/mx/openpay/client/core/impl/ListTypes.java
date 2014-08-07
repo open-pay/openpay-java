@@ -16,7 +16,6 @@
 package mx.openpay.client.core.impl;
 
 import java.lang.reflect.Type;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +27,7 @@ import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Fee;
 import mx.openpay.client.GenericTransaction;
+import mx.openpay.client.Order;
 import mx.openpay.client.Payout;
 import mx.openpay.client.Plan;
 import mx.openpay.client.Subscription;
@@ -64,6 +64,8 @@ public class ListTypes {
         }.getType());
         map.put(GenericTransaction.class, new TypeToken<List<GenericTransaction>>() {
         }.getType());
+		map.put(Order.class, new TypeToken<List<Order>>() {
+		}.getType());
         TYPES_MAP = Collections.unmodifiableMap(map);
     }
 
