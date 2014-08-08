@@ -51,7 +51,8 @@ public class OrdersTest extends BaseTest {
 		assertThat(newOrder.getAmount(), equalTo(orderAmount));
 		assertThat(newOrder.getTotalAmountToPay(), equalTo(orderAmount));
 		assertThat(newOrder.getTotalAmountPaid(), equalTo(BigDecimal.ZERO));
-		assertThat(newOrder.getTotalNumberPays(), equalTo(new Integer("0")));
+		assertThat(newOrder.getNumberOfPaymentsMade(), equalTo(new Integer("0")));
+		assertThat(newOrder.getMaximunNumberOfPayments(), equalTo(new Integer("5")));
 		this.assertNotNullValues(newOrder);
 	}
 
@@ -105,7 +106,8 @@ public class OrdersTest extends BaseTest {
 		assertNotNull(order.getAmount());
 		assertNotNull(order.getTotalAmountToPay());
 		assertNotNull(order.getTotalAmountPaid());
-		assertNotNull(order.getTotalNumberPays());
+		assertNotNull(order.getNumberOfPaymentsMade());
+		assertNotNull(order.getMaximunNumberOfPayments());
 		assertNotNull(order.getBarcodeUrl());
 	}
 }

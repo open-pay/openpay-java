@@ -44,8 +44,11 @@ public class Order {
 	@SerializedName("total_amount_paid")
 	private BigDecimal totalAmountPaid;
 
-	@SerializedName("total_number_pays")
-	private Integer totalNumberPays;
+	@SerializedName("number_of_payments_made")
+	private Integer numberOfPaymentsMade;
+
+	@SerializedName("maximun_number_of_payments")
+	private Integer maximunNumberOfPayments;
 
 	@SerializedName("limit_date")
 	private Date limitDate;
