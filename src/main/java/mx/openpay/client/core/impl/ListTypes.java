@@ -28,6 +28,7 @@ import mx.openpay.client.Customer;
 import mx.openpay.client.Fee;
 import mx.openpay.client.GenericTransaction;
 import mx.openpay.client.Order;
+import mx.openpay.client.PaymentPlan;
 import mx.openpay.client.Payout;
 import mx.openpay.client.Plan;
 import mx.openpay.client.Subscription;
@@ -66,6 +67,9 @@ public class ListTypes {
         }.getType());
 		map.put(Order.class, new TypeToken<List<Order>>() {
 		}.getType());
+        map.put(PaymentPlan.class, new TypeToken<List<PaymentPlan>>() {
+        }.getType());
+        
         TYPES_MAP = Collections.unmodifiableMap(map);
     }
 
