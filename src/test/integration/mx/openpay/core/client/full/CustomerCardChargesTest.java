@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+
 import java.util.List;
 
 import mx.openpay.client.Card;
@@ -66,7 +67,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.customerNoAccount = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
@@ -76,7 +77,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
     }
 
@@ -258,7 +259,7 @@ public class CustomerCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(14))
+                        .expirationYear(20))
                 .amount(amount)
                 .description(desc));
         assertNotNull(charge);

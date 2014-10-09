@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -69,14 +70,14 @@ public class SubscriptionsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.secondCard = this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.planWithTrial = this.api.plans().create(
                 new Plan().name("Test plan").amount(BigDecimal.TEN).statusAfterRetry(PlanStatusAfterRetry.CANCELLED)

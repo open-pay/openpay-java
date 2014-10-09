@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class MerchantCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
     }
 
@@ -150,7 +151,7 @@ public class MerchantCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(14))
+                        .expirationYear(20))
                 .amount(amount)
                 .description(desc));
         assertNotNull(charge);
@@ -273,7 +274,7 @@ public class MerchantCardChargesTest extends BaseTest {
     @Test
     public void testListMerchantCardCharges_Amount() throws Exception {
         Date date = new Date();
-        BigDecimal amount = new BigDecimal(String.format("%tI%<td.%<tM", date));
+        BigDecimal amount = new BigDecimal(String.format("%tI%<td.%<tM", date)).remainder(new BigDecimal("1000"));
         this.api.charges().create(new CreateCardChargeParams()
                 .cardId(this.registeredCard.getId()).amount(amount).description("desc"));
         this.api.charges().create(new CreateCardChargeParams()

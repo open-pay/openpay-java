@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class FeesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(14)));
+                        .expirationYear(20)));
     }
 
     @After
@@ -89,7 +90,7 @@ public class FeesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(14)));
+                        .expirationYear(20)));
         this.api.fees().create(this.customer.getId(), amount, "desc 1", null);
         this.api.fees().create(this.customer.getId(), amount, "desc 2", null);
         this.api.fees().create(this.customer.getId(), amount, "desc 3", null);

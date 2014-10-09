@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+
 import java.util.List;
 
 import mx.openpay.client.BankAccount;
@@ -59,7 +60,7 @@ public class CustomerBankPayoutsTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(14)));
+                        .expirationYear(20)));
 
         this.bankAccount = this.api.bankAccounts().create(this.customer.getId(), new BankAccount()
                 .clabe("012298026516924616").holderName("Mi nombre"));

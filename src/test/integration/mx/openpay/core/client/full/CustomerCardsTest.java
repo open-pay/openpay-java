@@ -65,7 +65,7 @@ public class CustomerCardsTest extends BaseTest {
     @Test
     public void testCreateCustomerCard_Old() throws Exception {
         Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Pérez Nuñez", "111",
-                "09", "14", TestUtils.prepareAddress());
+                "09", "20", TestUtils.prepareAddress());
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
@@ -78,7 +78,7 @@ public class CustomerCardsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
@@ -92,7 +92,7 @@ public class CustomerCardsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.api.cards().get(this.customer.getId(), card.getId());
@@ -107,7 +107,7 @@ public class CustomerCardsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14));
+                .expirationYear(20));
         this.api.cards().delete(this.customer.getId(), card.getId());
         try {
             card = this.api.cards().get(this.customer.getId(), card.getId());
@@ -121,7 +121,7 @@ public class CustomerCardsTest extends BaseTest {
     @Test
     public void testCreateCustomerCard_NoAddress_Old() throws Exception {
         Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Pérez Nuñez", "111",
-                "09", "14", null);
+                "09", "20", null);
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
@@ -134,7 +134,7 @@ public class CustomerCardsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(14));
+                .expirationYear(20));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
@@ -173,13 +173,13 @@ public class CustomerCardsTest extends BaseTest {
     public void testListCustomerCards() throws ServiceUnavailableException, OpenpayServiceException {
         this.cardsToDelete.add(this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("5555555555554444").holderName("Juan Pérez Nuñez")
-                .cvv2("111").expirationMonth(9).expirationYear(14)));
+                .cvv2("111").expirationMonth(9).expirationYear(20)));
         this.cardsToDelete.add(this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4111111111111111").holderName("Ruben Pérez Nuñez")
-                .cvv2("111").expirationMonth(9).expirationYear(14)));
+                .cvv2("111").expirationMonth(9).expirationYear(20)));
         this.cardsToDelete.add(this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242").holderName("Carlos Pérez Nuñez")
-                .cvv2("111").expirationMonth(9).expirationYear(14)));
+                .cvv2("111").expirationMonth(9).expirationYear(20)));
         List<Card> cards = this.api.cards().list(this.customer.getId(), null);
         assertThat(cards.size(), is(3));
         for (Card card : cards) {
