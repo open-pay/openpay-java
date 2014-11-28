@@ -50,5 +50,12 @@ public class OpenpayPathComponents {
 
     public static final String SUBSCRIPTIONS = "/subscriptions";
 
+    public static final String WEBHOOKS = "/webhooks";
+    
+    public static final String WEBHOOK_ID = "/%s";
+    
+    public static final String WEBHOOKS_VERIFY = "/verify";
+    
+    public static final String WEBHOOK_CODE = "/%s";
 
 }

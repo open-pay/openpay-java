@@ -143,6 +143,28 @@ public class JsonServiceClient {
         return this.deserializeObject(response, clazz);
     }
 
+    public <T> T post(final String path, final Map<String, Object> params, final Class<T> clazz, final boolean withResponse)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        HttpServiceResponse response = this.httpClient.post(this.buildUri(path), this.serializer.serialize(params));
+        this.checkForErrors(response);
+        if (withResponse) {
+        	return this.deserializeObject(response, clazz);
+        } else {
+        	return null;
+        }
+    }
+
+    public <T> T post(final String path, final T params, final Class<T> clazz, final boolean withResponse) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        HttpServiceResponse response = this.httpClient.post(this.buildUri(path), this.serializer.serialize(params));
+        this.checkForErrors(response);
+        if (withResponse) {
+        	return this.deserializeObject(response, clazz);
+        } else {
+        	return null;
+        }
+    }
+    
     private String buildUri(final String path) {
         StringBuilder sb = new StringBuilder();
         sb.append(this.root);
