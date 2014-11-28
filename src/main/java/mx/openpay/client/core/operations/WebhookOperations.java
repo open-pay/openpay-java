@@ -78,7 +78,7 @@ public class WebhookOperations extends ServiceOperations {
 	 */
 	public void verify(final String webhookId, final String code) throws OpenpayServiceException, ServiceUnavailableException {
 		String path = String.format(VERIFY_PATH, this.getMerchantId(), webhookId, code);
-		this.getJsonClient().post(path, new HashMap<String, Object>(), null, false);
+		this.getJsonClient().post(path, new HashMap<String, Object>(), Webhook.class, false);
 	}
 	
 	/**
