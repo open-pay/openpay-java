@@ -29,6 +29,7 @@ import mx.openpay.client.core.operations.PlanOperations;
 import mx.openpay.client.core.operations.SubscriptionOperations;
 import mx.openpay.client.core.operations.TransactionsPayoutOperations;
 import mx.openpay.client.core.operations.TransferOperations;
+import mx.openpay.client.core.operations.WebhookOperations;
 
 /**
  * Initializes all Operations from the Openpay API.
@@ -63,6 +64,8 @@ public class OpenpayAPI {
     private final MerchantOperations merchantOperations;
     
     private final PaymentPlanOperations paymentPlanOperations;
+    
+    private final WebhookOperations webhookOperations;
 
     private final OpenpayFeesOperations openpayFeesOperations;
 
@@ -90,6 +93,7 @@ public class OpenpayAPI {
 		this.transactionsPayoutOperations = new TransactionsPayoutOperations(this.jsonClient);
 		this.orderOperations = new OrderOperations(this.jsonClient);
         this.paymentPlanOperations = new PaymentPlanOperations(this.jsonClient);
+        this.webhookOperations = new WebhookOperations(this.jsonClient);
     }
 
     public void setTimeout(final int timeout) {
@@ -150,5 +154,9 @@ public class OpenpayAPI {
     
     public PaymentPlanOperations paymentsPlans(){
         return this.paymentPlanOperations;
+    }
+    
+    public WebhookOperations webhooks() {
+    	return this.webhookOperations;
     }
 }

@@ -33,6 +33,7 @@ import mx.openpay.client.Payout;
 import mx.openpay.client.Plan;
 import mx.openpay.client.Subscription;
 import mx.openpay.client.Transfer;
+import mx.openpay.client.Webhook;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -68,6 +69,8 @@ public class ListTypes {
 		map.put(Order.class, new TypeToken<List<Order>>() {
 		}.getType());
         map.put(PaymentPlan.class, new TypeToken<List<PaymentPlan>>() {
+        }.getType());
+        map.put(Webhook.class, new TypeToken<List<Webhook>>() {
         }.getType());
         
         TYPES_MAP = Collections.unmodifiableMap(map);
