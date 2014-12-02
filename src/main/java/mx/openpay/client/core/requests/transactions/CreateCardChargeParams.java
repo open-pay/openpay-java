@@ -16,10 +16,12 @@
 package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 import mx.openpay.client.Card;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
+import mx.openpay.client.enums.Currency;
 
 /**
  * Parameters to charge a credit or debit card.
@@ -46,8 +48,8 @@ public class CreateCardChargeParams extends RequestBuilder {
     }
 
     /**
-     * The amount to charge to the card, in MXN. Required.
-     */
+	 * The amount to charge to the card. Required.
+	 */
     public CreateCardChargeParams amount(final BigDecimal amount) {
         return this.with("amount", amount);
     }
@@ -81,5 +83,28 @@ public class CreateCardChargeParams extends RequestBuilder {
     public CreateCardChargeParams deviceSessionId(final String deviceSessionId) {
         return this.with("device_session_id", deviceSessionId);
     }
+
+	/**
+	 * A currency to give to the charge. Optional.<br>
+	 * Default value is MXN<br>
+	 * <br>
+	 * 
+	 * See @
+	 * 
+	 * @param currency
+	 * @return
+	 */
+	public CreateCardChargeParams currency(final Currency currency) {
+		return this.with("currency", currency.name());
+	}
+
+	/**
+	 * 
+	 * @param metadata
+	 * @return
+	 */
+	public CreateCardChargeParams metadata(final Map<String, String> metadata) {
+		return this.with("metadata", metadata);
+	}
 
 }

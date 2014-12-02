@@ -17,6 +17,7 @@ package mx.openpay.client;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -69,5 +70,10 @@ public class Transaction {
 	private Date dueDate;
 	
 	private TransactionFee fee;
+
+	@SerializedName("exchange_rate")
+	private ExchangeRate exchangeRate;
+
+	private Map<String, String> metadata;
 
 }

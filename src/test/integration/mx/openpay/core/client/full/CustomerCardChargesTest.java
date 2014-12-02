@@ -26,8 +26,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
-
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
@@ -35,6 +36,7 @@ import mx.openpay.client.Customer;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
+import mx.openpay.client.enums.Currency;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
@@ -267,6 +269,29 @@ public class CustomerCardChargesTest extends BaseTest {
         assertNull(charge.getCard().getCvv2());
         assertNull(charge.getCard().getId());
     }
+
+	@Test
+	public void testCreate_Customer_WithCard_currencyUSD() throws Exception {
+		BigDecimal amount = new BigDecimal("10.00");
+		String desc = "Pago de taxi";
+		Map<String, String> metadata = new LinkedHashMap<String, String>();
+		metadata.put("origin", "Mexico");
+		metadata.put("destination", "Puebla");
+		metadata.put("seats", "3");
+		Charge charge = this.api.charges().create(
+				this.customer.getId(),
+				new CreateCardChargeParams()
+						.card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("111")
+								.expirationMonth(9).expirationYear(20)).amount(amount).description(desc)
+						.currency(Currency.USD).metadata(metadata));
+		assertNotNull(charge);
+		assertNotNull(charge.getCard());
+		assertNull(charge.getCard().getCvv2());
+		assertNull(charge.getCard().getId());
+		assertNotNull(charge.getExchangeRate());
+		assertNotNull(charge.getExchangeRate().getValue());
+		assertNotNull(charge.getMetadata());
+	}
 
     @Test
     public void testCreate_Customer_NoCardOrId() throws Exception {
