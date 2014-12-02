@@ -60,11 +60,19 @@ public class WebhooksTest {
 
 	private OpenpayAPI api;
 
-	private String urlTest = "http://requestb.in/nyhhsrny"; 
+	private String urlTest = null; 
 	
 	private String webhookId;
 	
 	private List<Webhook> webhooks;
+	
+	{
+		try {
+			urlTest = getNewURLWebhook();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Before
 	public void setUp() {
@@ -142,11 +150,11 @@ public class WebhooksTest {
 	}
 	
 	@Test
-	public void testListWebhook() throws OpenpayServiceException, ServiceUnavailableException {
+	public void testListWebhook() throws OpenpayServiceException, ServiceUnavailableException, IOException {
 		List<Webhook> webhooks = null;
-		this.urlTest = "http://requestb.in/1hmh5y41";
+		this.urlTest = getNewURLWebhook();
 		this.testCreateWebhook();
-		this.urlTest = "http://requestb.in/15nrae61";
+		this.urlTest = getNewURLWebhook();
 		this.testCreateWebhook();
 		webhooks = this.api.webhooks().list();
 		log.info(webhooks.toString());
@@ -176,5 +184,25 @@ public class WebhooksTest {
     	
     	log.info("codigo de verificacion para Webhook: " + verificationCode);
 		return verificationCode;
+    }
+    
+	private String getNewURLWebhook() throws IOException {
+    	final String URL_BASE_WEBHOOK = "http://requestb.in/";
+    	String resultString = null;
+    	String webhookUrlId =  null;
+    	
+    	HttpClient client = new DefaultHttpClient();
+    	HttpPost post = new HttpPost("http://requestb.in/api/v1/bins");
+    	HttpResponse response = client.execute(post);
+    	BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+    	while (rd.read() != -1) {
+    		resultString += rd.readLine();	
+    	}
+    	rd.close();
+    	webhookUrlId = resultString.substring(resultString.indexOf("name") + 8, resultString.indexOf("name") + 16);
+    	
+    	log.info("Nueva URL de Webhook: " + URL_BASE_WEBHOOK + webhookUrlId);
+		return URL_BASE_WEBHOOK + webhookUrlId;
     }
 }

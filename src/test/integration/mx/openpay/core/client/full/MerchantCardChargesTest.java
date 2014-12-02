@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
@@ -47,6 +48,7 @@ import org.junit.Test;
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
+@Slf4j
 public class MerchantCardChargesTest extends BaseTest {
 
     private Card registeredCard;
@@ -172,9 +174,9 @@ public class MerchantCardChargesTest extends BaseTest {
 		metadata.put("seats", "3");
 		Charge charge = this.api.charges().create(
 				new CreateCardChargeParams()
-						.card(new Card().cardNumber("5555555555554444").holderName("Juanito Pérez Nuñez").cvv2("111")
-								.expirationMonth(9).expirationYear(20)).amount(amount).description(desc)
-						.currency(Currency.USD).metadata(metadata));
+						.card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("110")
+								.expirationMonth(12).expirationYear(20)).amount(amount).description(desc)
+						.currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
 		assertNotNull(charge);
 		assertNotNull(charge.getCard());
 		assertNull(charge.getCard().getCvv2());
