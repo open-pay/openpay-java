@@ -130,14 +130,16 @@ public class TransfersTest extends BaseTest {
     public void testCreate_InvalidDestination() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
         try {
-            this.api.transfers().create(this.customerFrom.getId(), new CreateTransferParams()
+			Transfer transfer = this.api.transfers().create(
+					this.customerFrom.getId(),
+					new CreateTransferParams()
                     .toCustomerId("")
                     .amount(new BigDecimal("10.0"))
-                    .description("Una descripcion")
+							.description("Una descripcion invalid")
                     .orderId(orderId));
             fail();
         } catch (OpenpayServiceException e) {
-            assertEquals(404, e.getHttpCode().intValue());
+			assertEquals(400, e.getHttpCode().intValue());
         }
     }
 
