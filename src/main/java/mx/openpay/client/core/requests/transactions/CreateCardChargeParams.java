@@ -95,7 +95,7 @@ public class CreateCardChargeParams extends RequestBuilder {
 	 * @return
 	 */
 	public CreateCardChargeParams currency(final Currency currency) {
-		return this.with("currency", currency.name());
+		return this.with("currency", currency == null ? Currency.MXN.name() : currency.name());
 	}
 
 	/**
