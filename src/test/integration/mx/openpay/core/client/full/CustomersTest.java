@@ -35,6 +35,7 @@ import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
 
+import org.hamcrest.core.IsNot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -189,7 +190,11 @@ public class CustomersTest extends BaseTest {
         List<Customer> customers = this.api.customers().list(null);
         for (Customer customer : customers) {
             Assert.assertTrue(customer.getBalance() == null || customer.getBalance().equals(new BigDecimal("0.00")));
-            assertThat(customer.getStatus(), is(nullValue()));
+            if (customer.getStatus() != null) {
+            	Assert.assertFalse(customer.getStatus().isEmpty());
+            } else {
+            	assertThat(customer.getStatus(), is(nullValue()));	
+            }
         }
     }
 
