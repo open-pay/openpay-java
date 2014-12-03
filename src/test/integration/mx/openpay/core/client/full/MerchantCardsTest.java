@@ -156,13 +156,13 @@ public class MerchantCardsTest extends BaseTest {
                         .expirationMonth(9).expirationYear(20)));
         List<Card> cards = this.api.cards().list(null);
 		assertNotNull(cards);
-		assertTrue(cards.size() > 3);
+		assertTrue(cards.size() >= 3);
         for (Card card : cards) {
             Assert.assertNotNull(card.getId());
         }
         cards = this.api.cards().list(search().limit(2));
         assertThat(cards.size(), is(2));
         cards = this.api.cards().list(search().limit(2).offset(2));
-		assertTrue(cards.size() > 1);
+		assertTrue(cards.size() >= 1);
     }
 }
