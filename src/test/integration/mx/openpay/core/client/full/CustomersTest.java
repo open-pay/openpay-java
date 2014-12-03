@@ -24,9 +24,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.exceptions.OpenpayServiceException;
@@ -186,7 +188,7 @@ public class CustomersTest extends BaseTest {
     public void testList_OnlyWithoutAccount() throws ServiceUnavailableException, OpenpayServiceException {
         List<Customer> customers = this.api.customers().list(null);
         for (Customer customer : customers) {
-            assertThat(customer.getBalance(), is(nullValue()));
+            Assert.assertTrue(customer.getBalance() == null || customer.getBalance().equals(new BigDecimal("0.00")));
             assertThat(customer.getStatus(), is(nullValue()));
         }
     }
