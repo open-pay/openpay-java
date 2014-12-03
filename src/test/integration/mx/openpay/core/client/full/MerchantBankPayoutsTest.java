@@ -74,7 +74,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
         CreateCardChargeParams charge = new CreateCardChargeParams()
                 .amount(amount).description("Cargo")
                 .card(new Card().cardNumber("5555555555554444").holderName("Juanito Pérez Nuñez").cvv2("111")
-                        .expirationMonth(9).expirationYear(20));
+                        .expirationMonth(9).expirationYear(20)).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI");
         this.api.charges().create(charge);
         this.api.charges().create(charge);
         this.api.charges().create(charge);
