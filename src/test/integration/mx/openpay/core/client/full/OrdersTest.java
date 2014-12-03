@@ -61,7 +61,7 @@ public class OrdersTest extends BaseTest {
 		assertThat(newOrder.getTotalAmountToPay(), equalTo(orderAmount));
 		assertThat(newOrder.getTotalAmountPaid(), equalTo(BigDecimal.ZERO));
 		assertThat(newOrder.getNumberOfPaymentsMade(), equalTo(new Integer("0")));
-		assertThat(newOrder.getMaximunNumberOfPayments(), equalTo(new Integer("5")));
+		assertThat(newOrder.getMaximunNumberOfPayments(), equalTo(new Integer("12")));
 		this.assertNotNullValues(newOrder);
 	}
 
@@ -96,10 +96,11 @@ public class OrdersTest extends BaseTest {
 
 	@Test
 	public void getOrderList() throws OpenpayServiceException, ServiceUnavailableException {
+		this.createOrderTest();
 		String customerId = customer.getId();
 		List<Order> orderList = this.api.orders().list(customerId, null);
 		assertNotNull(orderList);
-		assertTrue(orderList.size() > 1);
+		assertTrue(orderList.size() >= 1);
 	}
 
 	private void assertNotNullValues(final Order order) {
