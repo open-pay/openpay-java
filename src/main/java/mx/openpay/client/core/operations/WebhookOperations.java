@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT © 2014. OPENPAY.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Class: WebhookOperations.java
- * 
+ *
  * Change control:
  * ---------------------------------------------------------------------------------------
  * Version | Date       | Name                                      | Description
@@ -49,17 +49,17 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 public class WebhookOperations extends ServiceOperations {
 
 	private static final String BASE_PATH = MERCHANT_ID + WEBHOOKS;
-	
+
 	private static final String GET_PATH = BASE_PATH + WEBHOOK_ID;
-	
+
 	private static final String DELETE_PATH = BASE_PATH + WEBHOOK_ID;
-	
+
 	private static final String VERIFY_PATH = BASE_PATH + WEBHOOK_ID + WEBHOOKS_VERIFY + WEBHOOK_CODE;
-	
+
 	public WebhookOperations(final JsonServiceClient client) {
         super(client);
     }
-	
+
 	/**
 	 * <p>Método que permite crear un webhook en la plataforma Openpay</p>
 	 * @param webhook Objeto contenedor de la información para la creación del webhook
@@ -71,17 +71,6 @@ public class WebhookOperations extends ServiceOperations {
 	}
 
 	/**
-	 * <p>Método que permite verificar y activar un webhook, despues de ser creado</p>
-	 * @param webhookId  Identificador único del webhook
-	 * @param code  Código para verificar el webhook
-	 * @return No regresa nada.
-	 */
-	public void verify(final String webhookId, final String code) throws OpenpayServiceException, ServiceUnavailableException {
-		String path = String.format(VERIFY_PATH, this.getMerchantId(), webhookId, code);
-		this.getJsonClient().post(path, new HashMap<String, Object>(), Webhook.class, false);
-	}
-	
-	/**
 	 * <p>Método que permite optener la información de un webhook</p>
 	 * @param webhookId  Identificador único del webhook
 	 * @return Regresa un objeto Webhook
@@ -90,7 +79,7 @@ public class WebhookOperations extends ServiceOperations {
 		String path = String.format(GET_PATH, this.getMerchantId(), webhookId);
 		return this.getJsonClient().get(path, Webhook.class);
 	}
-	
+
 	/**
 	 * <p>Método que permite eliminar un webhook en la plataforma Openpay</p>
 	 * @param webhookId  Identificador único del webhook
@@ -100,7 +89,7 @@ public class WebhookOperations extends ServiceOperations {
 		String path = String.format(DELETE_PATH, this.getMerchantId(), webhookId);
 		this.getJsonClient().delete(path);
 	}
-	
+
 	/**
 	 * <p>Método que permite obtener todos los webhook's de un merchant</p>
 	 * @return Regresa un listado de objetos Webhook.
