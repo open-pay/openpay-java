@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -274,7 +275,7 @@ public class CustomerCardChargesTest extends BaseTest {
 
 	@Test
 	public void testCreate_Customer_WithCard_currencyUSD() throws Exception {
-		BigDecimal amount = new BigDecimal("10.00");
+		BigDecimal amount = new BigDecimal("1.00");
 		String desc = "Pago de taxi";
 		Map<String, String> metadata = new LinkedHashMap<String, String>();
 		metadata.put("origin", "Mexico");
