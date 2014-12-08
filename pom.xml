@@ -3,32 +3,32 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>openpay-api-client</name>
 	<description>Java client for Openpay Services</description>
 	<url>http://github.com/open-pay/openpay-java</url>
 	
 <!-- Para publicar en Sonatype -->
-<!-- 	<parent> -->
-<!-- 		<groupId>org.sonatype.oss</groupId> -->
-<!-- 		<artifactId>oss-parent</artifactId> -->
-<!-- 		<version>7</version> -->
-<!-- 	</parent> -->
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 
 <!-- Para publicar en repositorio local -->
-	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
-		</repository>
-	</distributionManagement>
+<!-- 	<distributionManagement> -->
+<!-- 		<snapshotRepository> -->
+<!-- 			<id>nexus-facelend</id> -->
+<!-- 			<name>RepositoryProxy</name> -->
+<!-- 			<url>http://nexus.facelend.com:8081/nexus/content/repositories/snapshots</url> -->
+<!-- 		</snapshotRepository> -->
+<!-- 		<repository> -->
+<!-- 			<id>nexus-facelend</id> -->
+<!-- 			<name>RepositoryProxy</name> -->
+<!-- 			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url> -->
+<!-- 		</repository> -->
+<!-- 	</distributionManagement> -->
 
 
 	<licenses>
