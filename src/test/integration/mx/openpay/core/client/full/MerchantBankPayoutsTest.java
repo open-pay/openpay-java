@@ -164,4 +164,28 @@ public class MerchantBankPayoutsTest extends BaseTest {
         Assert.assertNull(transaction.getCustomerId());
         Assert.assertNull(transaction.getFee());
     }
+    
+    @Test
+    public void testCreateMerchantBankPayout_WithBankAccount_Breakdown() throws ServiceUnavailableException,
+            OpenpayServiceException {
+        BigDecimal amount = BigDecimal.ONE;
+        String desc = "Ganancias";
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Payout transaction = this.api.payouts().create(new CreateBankPayoutParams()
+                .bankAccount(new BankAccount()
+                        .clabe("012298026516924616")
+                        .holderName("Cuenta"))
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .makeBreakdown(true));
+        Assert.assertNotNull(transaction);
+        Assert.assertNotNull(transaction.getCreationDate());
+        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        Assert.assertEquals(desc, transaction.getDescription());
+        Assert.assertEquals("payout", transaction.getTransactionType());
+        Assert.assertNull(transaction.getCustomerId());
+        Assert.assertNull(transaction.getFee());
+    }
 }
