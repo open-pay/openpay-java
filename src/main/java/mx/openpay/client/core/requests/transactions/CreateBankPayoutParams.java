@@ -51,6 +51,12 @@ public class CreateBankPayoutParams extends RequestBuilder {
     public CreateBankPayoutParams orderId(final String orderId) {
         return this.with("order_id", orderId);
     }
+    /**
+     * True if you want the payout to generate settlement report.
+     */
+    public CreateBankPayoutParams makeBreakdown(final boolean makeBreakdown) {
+        return this.with("make_breakdown", makeBreakdown);
+    }
 
     /**
      * The ID of the Bank Account to deposit the amount to. Required if no new bank account is given.
