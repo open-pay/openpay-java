@@ -312,6 +312,22 @@ public class CustomerCardChargesTest extends BaseTest {
         }
     }
 
+    @Test
+    public void testCreate_Customer_SingleCharge() throws Exception {
+        BigDecimal amount = new BigDecimal("100.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Customer customer = new Customer().name("Karina Solis").email("o@mail.com").phoneNumber("12345678");
+        Charge charge = this.api.charges().create(new CreateCardChargeParams()
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .cardId(this.registeredCard.getId())
+                .customer(customer));
+        assertNotNull(charge);
+        assertNotNull(charge.getCard());
+    }
+
     @SuppressWarnings("deprecation")
     @Test
     public void testRefund_Customer_Old() throws Exception {

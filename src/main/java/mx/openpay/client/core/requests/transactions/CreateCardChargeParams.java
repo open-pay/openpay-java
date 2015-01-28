@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import mx.openpay.client.Card;
+import mx.openpay.client.Customer;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.enums.Currency;
@@ -96,6 +97,10 @@ public class CreateCardChargeParams extends RequestBuilder {
 	 */
 	public CreateCardChargeParams currency(final Currency currency) {
 		return this.with("currency", currency == null ? Currency.MXN.name() : currency.name());
+	}
+	
+	public CreateCardChargeParams customer(final Customer customer) {
+	    return this.with("customer", customer);
 	}
 
 	/**

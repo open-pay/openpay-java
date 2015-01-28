@@ -16,6 +16,7 @@
 package mx.openpay.core.client.full;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
@@ -57,7 +58,22 @@ public class CustomerStoreChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertNotNull(transaction.getPaymentMethod().getReference());
         assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+        assertEquals(transaction.getStatus(), "IN_PROGRESS");
         Assert.assertNull(transaction.getFee());
     }
 
+    @Test
+    public void testCreate_SingleCustomer_Store() throws Exception {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(
+                new CreateStoreChargeParams().amount(amount).description(desc)
+                .orderId(orderId).customer(new Customer().name("Vivaldi").email("v@comerce.com").phoneNumber("154234623")));
+        assertNotNull(transaction);
+        assertNotNull(transaction.getPaymentMethod().getReference());
+        assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+        Assert.assertNull(transaction.getFee());
+    }
+    
 }

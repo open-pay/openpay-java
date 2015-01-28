@@ -18,6 +18,7 @@ package mx.openpay.client.core.requests.transactions;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import mx.openpay.client.Customer;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 
@@ -59,6 +60,10 @@ public class CreateStoreChargeParams extends RequestBuilder {
 	 */
 	public CreateStoreChargeParams dueDate(final Date dueDate) {
 		return this.with("due_date", dueDate);
+	}
+	
+	public CreateStoreChargeParams customer(final Customer customer) {
+	    return this.with("customer", customer);
 	}
 
 }
