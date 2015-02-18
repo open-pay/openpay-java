@@ -165,6 +165,26 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNull(charge.getCard().getId());
     }
 
+    @Test
+    public void testCreate_Charge_WithCard_PhoneOrder() throws Exception {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        Charge charge = this.api.charges().create(new CreateCardChargeParams()
+                .card(new Card()
+                        .cardNumber("5555555555554444")
+                        .holderName("Juanito Pérez Nuñez")
+                        .cvv2("111")
+                        .expirationMonth(9)
+                        .expirationYear(20))
+                .amount(amount)
+                .description(desc)
+                .isPhoneOrder(true));
+        assertNotNull(charge);
+        assertNotNull(charge.getCard());
+        assertNull(charge.getCard().getCvv2());
+        assertNull(charge.getCard().getId());
+    }
+
 	@Test
 	public void testCreate_Charge_WithCard_currencyUSD_metadata() throws Exception {
 		BigDecimal amount = new BigDecimal("1.00");

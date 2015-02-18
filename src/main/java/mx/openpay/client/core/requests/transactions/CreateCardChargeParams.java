@@ -103,6 +103,10 @@ public class CreateCardChargeParams extends RequestBuilder {
 	    return this.with("customer", customer);
 	}
 
+	public CreateCardChargeParams isPhoneOrder(final boolean isPhoneOrder) {
+	    return this.with("is_phone_order", isPhoneOrder);
+	}
+	
 	/**
 	 * 
 	 * @param metadata
