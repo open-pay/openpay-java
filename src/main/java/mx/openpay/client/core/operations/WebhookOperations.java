@@ -28,7 +28,7 @@ import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.WEBHOOKS;
 import static mx.openpay.client.utils.OpenpayPathComponents.WEBHOOKS_VERIFY;
 import static mx.openpay.client.utils.OpenpayPathComponents.WEBHOOK_CODE;
-import static mx.openpay.client.utils.OpenpayPathComponents.WEBHOOK_ID;
+import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,11 +50,11 @@ public class WebhookOperations extends ServiceOperations {
 
 	private static final String BASE_PATH = MERCHANT_ID + WEBHOOKS;
 
-	private static final String GET_PATH = BASE_PATH + WEBHOOK_ID;
+	private static final String GET_PATH = BASE_PATH + ID;
 
-	private static final String DELETE_PATH = BASE_PATH + WEBHOOK_ID;
+	private static final String DELETE_PATH = BASE_PATH + ID;
 
-	private static final String VERIFY_PATH = BASE_PATH + WEBHOOK_ID + WEBHOOKS_VERIFY + WEBHOOK_CODE;
+	private static final String VERIFY_PATH = BASE_PATH + ID + WEBHOOKS_VERIFY + WEBHOOK_CODE;
 
 	public WebhookOperations(final JsonServiceClient client) {
         super(client);

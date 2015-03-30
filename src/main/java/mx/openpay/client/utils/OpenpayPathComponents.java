@@ -41,6 +41,8 @@ public class OpenpayPathComponents {
     public static final String REFUND = "/refund";
 
     public static final String CAPTURE = "/capture";
+    
+    public static final String CONFIRM = "/confirm";
 
     public static final String ID = "/%s";
 
