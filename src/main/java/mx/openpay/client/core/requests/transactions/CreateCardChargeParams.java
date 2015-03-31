@@ -16,6 +16,7 @@
 package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Map;
 
 import mx.openpay.client.Card;
@@ -106,12 +107,31 @@ public class CreateCardChargeParams extends RequestBuilder {
 		return this.with("currency", currency == null ? Currency.MXN.name() : currency.name());
 	}
 	
+	/**
+	 * Customer Information when you want to send info but not create the resource
+	 * @param customer
+	 * @return
+	 */
 	public CreateCardChargeParams customer(final Customer customer) {
 	    return this.with("customer", customer);
 	}
 
+	/**
+	 * Is Phone Order Flag indicate the transaction was sent from call center.
+	 * @param idPhoneOrder
+	 * @return
+	 */
 	public CreateCardChargeParams isPhoneOrder(final boolean isPhoneOrder) {
 	    return this.with("is_phone_order", isPhoneOrder);
+	}
+	
+	/**
+	 * Due Date when you create an unconfirmed charge you may want to define the date limit to confirm.
+	 * @param dueDate
+	 * @return
+	 */
+	public CreateCardChargeParams dueDate(final Date dueDate) {
+	    return this.with("due_date", dueDate);
 	}
 	
 	/**
