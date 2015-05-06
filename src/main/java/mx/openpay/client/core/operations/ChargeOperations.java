@@ -33,6 +33,7 @@ import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.ConfirmChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
@@ -101,6 +102,18 @@ public class ChargeOperations extends ServiceOperations {
     }
 
     public Charge create(final String customerId, final CreateStoreChargeParams request)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
+        return this.getJsonClient().post(path, request.asMap(), Charge.class);
+    }
+
+    public Charge create(final CreateBitcoinChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
+        return this.getJsonClient().post(path, request.asMap(), Charge.class);
+    }
+
+    public Charge create(final String customerId, final CreateBitcoinChargeParams request)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
         return this.getJsonClient().post(path, request.asMap(), Charge.class);

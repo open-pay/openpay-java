@@ -19,5 +19,5 @@ package mx.openpay.client.enums;
  * @author elopez
  */
 public enum ChargeMethods {
-	CARD, BANK_ACCOUNT, STORE;
+	CARD, BANK_ACCOUNT, STORE, BITCOIN;
 }
