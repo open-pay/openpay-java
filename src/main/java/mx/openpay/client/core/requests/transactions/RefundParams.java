@@ -40,4 +40,9 @@ public class RefundParams extends RequestBuilder {
     public RefundParams description(final String description) {
         return this.with("description", description);
     }
+    
+    /** Address to refund bitcoins. Optional. */
+    public RefundParams bitcoinAddress(final String bitcoinAddress) {
+        return this.with("bitcoin_address", bitcoinAddress);
+    }
 }

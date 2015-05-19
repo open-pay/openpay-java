@@ -50,29 +50,38 @@ public class CustomerBitcoinChargesTest extends BaseTest {
 
     @Test
     public void testCreate_Customer_Store() throws Exception {
-        BigDecimal amount = new BigDecimal("10.00");
-        String desc = "Pago de taxi";
+        BigDecimal amount = new BigDecimal("100.00");
+        String desc = "Pago de servicio";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(this.customer.getId(),
                 new CreateBitcoinChargeParams().amount(amount).description(desc).orderId(orderId));
         assertNotNull(transaction);
-        assertNotNull(transaction.getPaymentMethod().getReference());
-        assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
-        assertEquals(transaction.getStatus(), "IN_PROGRESS");
+        assertEquals(transaction.getPaymentMethod().getType(), "bitcoin");
+        assertEquals(transaction.getAmount().intValue(), amount.intValue());
+        assertNotNull(transaction.getPaymentMethod().getPaymentAddress());
+        assertNotNull(transaction.getPaymentMethod().getPaymentUrlBip21());
+        assertNotNull(transaction.getPaymentMethod().getAmountBitcoins());
+        assertNotNull(transaction.getPaymentMethod().getExchangeRate());
+        assertNotNull(transaction.getStatus(), "CHARGE_PENDING");
         Assert.assertNull(transaction.getFee());
     }
 
     @Test
     public void testCreate_SingleCustomer_Store() throws Exception {
-        BigDecimal amount = new BigDecimal("10.00");
-        String desc = "Pago de taxi";
+        BigDecimal amount = new BigDecimal("100.00");
+        String desc = "Pago de servicio";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(
                 new CreateBitcoinChargeParams().amount(amount).description(desc)
                 .orderId(orderId).customer(new Customer().name("Vivaldi").email("v@comerce.com").phoneNumber("154234623")));
         assertNotNull(transaction);
-        assertNotNull(transaction.getPaymentMethod().getReference());
-        assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+        assertEquals(transaction.getPaymentMethod().getType(), "bitcoin");
+        assertEquals(transaction.getAmount().intValue(), amount.intValue());
+        assertNotNull(transaction.getPaymentMethod().getPaymentAddress());
+        assertNotNull(transaction.getPaymentMethod().getPaymentUrlBip21());
+        assertNotNull(transaction.getPaymentMethod().getAmountBitcoins());
+        assertNotNull(transaction.getPaymentMethod().getExchangeRate());
+        assertNotNull(transaction.getStatus(), "CHARGE_PENDING");
         Assert.assertNull(transaction.getFee());
     }
     

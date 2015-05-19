@@ -49,7 +49,7 @@ public class ChargeOperations extends ServiceOperations {
 
     private static final String FOR_MERCHANT_PATH = MERCHANT_ID + CHARGES;
 
-    private static final String GET_FOR_MERCHANT_PATH = FOR_MERCHANT_PATH + ID;
+    protected static final String GET_FOR_MERCHANT_PATH = FOR_MERCHANT_PATH + ID;
 
     private static final String REFUND_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + REFUND;
 
@@ -59,7 +59,7 @@ public class ChargeOperations extends ServiceOperations {
 
     private static final String FOR_CUSTOMER_PATH = MERCHANT_ID + CUSTOMERS + ID + CHARGES;
 
-    private static final String GET_FOR_CUSTOMER_PATH = FOR_CUSTOMER_PATH + ID;
+    protected static final String GET_FOR_CUSTOMER_PATH = FOR_CUSTOMER_PATH + ID;
 
     private static final String REFUND_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + REFUND;
 

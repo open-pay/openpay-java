@@ -15,6 +15,8 @@
  */
 package mx.openpay.client;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.ToString;
 
@@ -39,4 +41,17 @@ public class PaymentMethod {
 
 	@SerializedName("barcode_url")
 	private String barcodeUrl;
+	
+	@SerializedName("payment_address")
+	private String  paymentAddress;
+	
+	@SerializedName("payment_url_bip21")
+	private String  paymentUrlBip21;
+	
+	@SerializedName("amount_bitcoins")
+	private BigDecimal  amountBitcoins;
+	
+	@SerializedName("exchange_rate")
+	private ExchangeRate exchangeRate;
+	
 }

@@ -16,6 +16,7 @@
 package mx.openpay.core.client.full;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
@@ -38,8 +39,12 @@ public class MerchantBitcoinChargesTest extends BaseTest {
         Charge transaction = this.api.charges().create(new CreateBitcoinChargeParams().amount(amount).description(desc)
                 .orderId(orderId));
         assertNotNull(transaction);
-        assertNotNull(transaction.getPaymentMethod().getReference());
-        assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+        assertEquals(transaction.getPaymentMethod().getType(), "bitcoin");
+        assertEquals(transaction.getAmount().intValue(), amount.intValue());
+        assertNotNull(transaction.getPaymentMethod().getPaymentAddress());
+        assertNotNull(transaction.getPaymentMethod().getPaymentUrlBip21());
+        assertNotNull(transaction.getPaymentMethod().getAmountBitcoins());
+        assertNotNull(transaction.getPaymentMethod().getExchangeRate());
         Assert.assertNull(transaction.getFee());
     }
 
