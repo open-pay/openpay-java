@@ -16,6 +16,7 @@
 package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -50,8 +51,8 @@ public class CreateCardChargeParams extends RequestBuilder {
     }
 
     /**
-	 * The amount to charge to the card. Required.
-	 */
+     * The amount to charge to the card. Required.
+     */
     public CreateCardChargeParams amount(final BigDecimal amount) {
         return this.with("amount", amount);
     }
@@ -93,54 +94,51 @@ public class CreateCardChargeParams extends RequestBuilder {
         return this.with("device_session_id", deviceSessionId);
     }
 
-	/**
-	 * A currency to give to the charge. Optional.<br>
-	 * Default value is MXN<br>
-	 * <br>
-	 * 
-	 * See @
-	 * 
-	 * @param currency
-	 * @return
-	 */
-	public CreateCardChargeParams currency(final Currency currency) {
-		return this.with("currency", currency == null ? Currency.MXN.name() : currency.name());
-	}
-	
-	/**
-	 * Customer Information when you want to send info but not create the resource
-	 * @param customer
-	 * @return
-	 */
-	public CreateCardChargeParams customer(final Customer customer) {
-	    return this.with("customer", customer);
-	}
+    /**
+     * A currency to give to the charge. Optional.<br>
+     * Default value is MXN<br>
+     * <br>
+     * See @
+     * @param currency
+     * @return
+     */
+    public CreateCardChargeParams currency(final Currency currency) {
+        return this.with("currency", currency == null ? Currency.MXN.name() : currency.name());
+    }
 
-	/**
-	 * Is Phone Order Flag indicate the transaction was sent from call center.
-	 * @param idPhoneOrder
-	 * @return
-	 */
-	public CreateCardChargeParams isPhoneOrder(final boolean isPhoneOrder) {
-	    return this.with("is_phone_order", isPhoneOrder);
-	}
-	
-	/**
-	 * Due Date when you create an unconfirmed charge you may want to define the date limit to confirm.
-	 * @param dueDate
-	 * @return
-	 */
-	public CreateCardChargeParams dueDate(final Date dueDate) {
-	    return this.with("due_date", dueDate);
-	}
-	
-	/**
-	 * 
-	 * @param metadata
-	 * @return
-	 */
-	public CreateCardChargeParams metadata(final Map<String, String> metadata) {
-		return this.with("metadata", metadata);
-	}
+    /**
+     * Customer Information when you want to send info but not create the resource
+     */
+    public CreateCardChargeParams customer(final Customer customer) {
+        return this.with("customer", customer);
+    }
 
+    /**
+     * Is Phone Order Flag indicate the transaction was sent from call center.
+     */
+    public CreateCardChargeParams isPhoneOrder(final boolean isPhoneOrder) {
+        return this.with("is_phone_order", isPhoneOrder);
+    }
+
+    /**
+     * Due Date when you create an unconfirmed charge you may want to define the date limit to confirm.
+     */
+    public CreateCardChargeParams dueDate(final Date dueDate) {
+        return this.with("due_date", dueDate);
+    }
+
+    /**
+     * Personalized metadata.
+     */
+    public CreateCardChargeParams metadata(final Map<String, String> metadata) {
+        return this.with("metadata", metadata);
+    }
+
+    /**
+     * If true, the charge will use the points available in the card. <br>
+     * The request will fail if the card does not accept points, so check the card response first.
+     */
+    public CreateCardChargeParams useCardPoints(final boolean useCardPoints) {
+        return this.with("use_card_points", useCardPoints);
+    }
 }

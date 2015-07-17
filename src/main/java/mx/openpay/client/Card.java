@@ -66,6 +66,9 @@ public class Card {
 
     private String cvv2;
 
+    @SerializedName("points_card")
+    private boolean pointsCard;
+
     /**
      * Card number. Required.
      */

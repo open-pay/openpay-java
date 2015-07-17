@@ -16,6 +16,11 @@
 package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -57,7 +62,7 @@ public class MerchantCardChargesTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.registeredCard = this.api.cards().create(new Card()
-                .cardNumber("4242424242424242")
+                .cardNumber("5555555555554444")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
@@ -83,6 +88,50 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
+        assertThat(transaction.getCardPoints(), is(nullValue()));
+        Assert.assertNotNull(transaction.getFee());
+    }
+
+    @Test
+    public void testCreate_Customer_WithPoints_Small() throws ServiceUnavailableException, OpenpayServiceException {
+        assertThat(this.registeredCard.isPointsCard(), is(true));
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(new CreateCardChargeParams()
+                .cardId(this.registeredCard.getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .useCardPoints(true));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        assertThat(transaction.getCardPoints(), is(notNullValue()));
+        assertThat(transaction.getCardPoints().getUsed(), is(greaterThan(BigDecimal.ZERO)));
+        assertThat(transaction.getCardPoints().getRemaining(), is(greaterThan(BigDecimal.ZERO)));
+        assertThat(transaction.getCardPoints().getAmount(), comparesEqualTo(amount));
+        Assert.assertNotNull(transaction.getFee());
+    }
+
+    @Test
+    public void testCreate_Customer_WithPoints_Big() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("30.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(new CreateCardChargeParams()
+                .cardId(this.registeredCard.getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .useCardPoints(true));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        assertThat(transaction.getCardPoints(), is(notNullValue()));
+        assertThat(transaction.getCardPoints().getUsed(), is(greaterThan(BigDecimal.ZERO)));
+        assertThat(transaction.getCardPoints().getRemaining(), is(greaterThan(BigDecimal.ZERO)));
+        assertThat(transaction.getCardPoints().getAmount(), comparesEqualTo(new BigDecimal("22.5")));
         Assert.assertNotNull(transaction.getFee());
     }
 

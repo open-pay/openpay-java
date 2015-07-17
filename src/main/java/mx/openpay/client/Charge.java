@@ -34,4 +34,7 @@ public class Charge extends Transaction {
     @SerializedName("payment_method")
     private PaymentMethod paymentMethod;
 
+    @SerializedName("card_points")
+    private CardPoints cardPoints;
+
 }
