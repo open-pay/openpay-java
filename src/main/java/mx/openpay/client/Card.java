@@ -66,6 +66,9 @@ public class Card {
 
     private String cvv2;
 
+    @SerializedName("device_session_id")
+    private String deviceSessionId;
+
     @SerializedName("points_card")
     private boolean pointsCard;
 

@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,16 +58,25 @@ public class CustomerCardChargesTest extends BaseTest {
 
     private Customer customerNoAccount;
 
-    private Card registeredCard;
+    private Card merchantRegisteredCard;
 
-    private Card registeredCardNoAccount;
+    private Card customerRegisteredCard;
+
+    private Card customerRegisteredCardNoAccount;
 
     @Before
     public void setUp() throws Exception {
+        this.merchantRegisteredCard = this.api.cards().create(new Card()
+                .cardNumber("4242424242424242")
+                .holderName("Juanito Pérez Nuñez")
+                .cvv2("111")
+                .expirationMonth(9)
+                .expirationYear(20)
+                .address(TestUtils.prepareAddress()));
         this.customer = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
                 .phoneNumber("55-25634013"));
-        this.registeredCard = this.api.cards().create(this.customer.getId(), new Card()
+        this.customerRegisteredCard = this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
@@ -76,7 +86,7 @@ public class CustomerCardChargesTest extends BaseTest {
         this.customerNoAccount = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
                 .phoneNumber("55-25634013").requiresAccount(false));
-        this.registeredCardNoAccount = this.api.cards().create(this.customerNoAccount.getId(), new Card()
+        this.customerRegisteredCardNoAccount = this.api.cards().create(this.customerNoAccount.getId(), new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
@@ -87,11 +97,14 @@ public class CustomerCardChargesTest extends BaseTest {
 
     @After
     public void tearDown() throws Exception {
-        if (this.registeredCard != null) {
-            this.api.cards().delete(this.customer.getId(), this.registeredCard.getId());
+        if (this.customerRegisteredCard != null) {
+            this.api.cards().delete(this.customer.getId(), this.customerRegisteredCard.getId());
         }
-        if (this.registeredCardNoAccount != null) {
-            this.api.cards().delete(this.customerNoAccount.getId(), this.registeredCardNoAccount.getId());
+        if (this.customerRegisteredCardNoAccount != null) {
+            this.api.cards().delete(this.customerNoAccount.getId(), this.customerRegisteredCardNoAccount.getId());
+        }
+        if (this.merchantRegisteredCard != null) {
+            this.api.cards().delete(this.merchantRegisteredCard.getId());
         }
         this.api.customers().delete(this.customer.getId());
     }
@@ -102,7 +115,8 @@ public class CustomerCardChargesTest extends BaseTest {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
-        Charge transaction = this.api.charges().create(this.customer.getId(), this.registeredCard.getId(), amount,
+        Charge transaction = this.api.charges().create(this.customer.getId(), this.customerRegisteredCard.getId(),
+                amount,
                 desc, orderId);
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
@@ -115,7 +129,7 @@ public class CustomerCardChargesTest extends BaseTest {
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId())
+                .cardId(this.customerRegisteredCard.getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId));
@@ -144,7 +158,7 @@ public class CustomerCardChargesTest extends BaseTest {
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(this.customerNoAccount.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCardNoAccount.getId())
+                .cardId(this.customerRegisteredCardNoAccount.getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId));
@@ -172,7 +186,7 @@ public class CustomerCardChargesTest extends BaseTest {
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId())
+                .cardId(this.customerRegisteredCard.getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
@@ -199,7 +213,7 @@ public class CustomerCardChargesTest extends BaseTest {
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId())
+                .cardId(this.customerRegisteredCard.getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
@@ -226,7 +240,7 @@ public class CustomerCardChargesTest extends BaseTest {
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         CreateCardChargeParams charge = new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId())
+                .cardId(this.customerRegisteredCard.getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
@@ -272,28 +286,28 @@ public class CustomerCardChargesTest extends BaseTest {
         assertNull(charge.getCard().getId());
     }
 
-	@Test
-	public void testCreate_Customer_WithCard_currencyUSD() throws Exception {
-		BigDecimal amount = new BigDecimal("1.00");
-		String desc = "Pago de taxi";
-		Map<String, String> metadata = new LinkedHashMap<String, String>();
-		metadata.put("origin", "Mexico");
-		metadata.put("destination", "Puebla");
-		metadata.put("seats", "3");
-		Charge charge = this.api.charges().create(
-				this.customer.getId(),
-				new CreateCardChargeParams()
-						.card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("111")
-								.expirationMonth(9).expirationYear(20)).amount(amount).description(desc)
-						.currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
-		assertNotNull(charge);
-		assertNotNull(charge.getCard());
-		assertNull(charge.getCard().getCvv2());
-		assertNull(charge.getCard().getId());
-		assertNotNull(charge.getExchangeRate());
-		assertNotNull(charge.getExchangeRate().getValue());
-		assertNotNull(charge.getMetadata());
-	}
+    @Test
+    public void testCreate_Customer_WithCard_currencyUSD() throws Exception {
+        BigDecimal amount = new BigDecimal("1.00");
+        String desc = "Pago de taxi";
+        Map<String, String> metadata = new LinkedHashMap<String, String>();
+        metadata.put("origin", "Mexico");
+        metadata.put("destination", "Puebla");
+        metadata.put("seats", "3");
+        Charge charge = this.api.charges().create(
+                this.customer.getId(),
+                new CreateCardChargeParams()
+                        .card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("111")
+                                .expirationMonth(9).expirationYear(20)).amount(amount).description(desc)
+                        .currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
+        assertNotNull(charge);
+        assertNotNull(charge.getCard());
+        assertNull(charge.getCard().getCvv2());
+        assertNull(charge.getCard().getId());
+        assertNotNull(charge.getExchangeRate());
+        assertNotNull(charge.getExchangeRate().getValue());
+        assertNotNull(charge.getMetadata());
+    }
 
     @Test
     public void testCreate_Customer_NoCardOrId() throws Exception {
@@ -321,7 +335,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .cardId(this.registeredCard.getId())
+                .cardId(this.merchantRegisteredCard.getId())
                 .customer(customer));
         assertNotNull(charge);
         assertNotNull(charge.getCard());
@@ -335,7 +349,7 @@ public class CustomerCardChargesTest extends BaseTest {
         Charge transaction = this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
                 .amount(amount)
                 .description(desc)
-                .cardId(this.registeredCard.getId()));
+                .cardId(this.customerRegisteredCard.getId()));
         String originalTransactionId = transaction.getId();
         assertNotNull(transaction);
         assertNull(transaction.getRefund());
@@ -359,7 +373,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .cardId(this.registeredCard.getId()));
+                .cardId(this.customerRegisteredCard.getId()));
         String originalTransactionId = transaction.getId();
         assertNotNull(transaction);
         assertNull(transaction.getRefund());
@@ -385,7 +399,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .cardId(this.registeredCardNoAccount.getId()));
+                .cardId(this.customerRegisteredCardNoAccount.getId()));
         String originalTransactionId = transaction.getId();
         assertNotNull(transaction);
         assertNull(transaction.getRefund());
@@ -412,7 +426,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .cardId(this.registeredCardNoAccount.getId()));
+                .cardId(this.customerRegisteredCardNoAccount.getId()));
         String originalTransactionId = transaction.getId();
         assertNotNull(transaction);
         assertNull(transaction.getRefund());
@@ -437,7 +451,7 @@ public class CustomerCardChargesTest extends BaseTest {
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId())
+                .cardId(this.customerRegisteredCard.getId())
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId));
@@ -459,15 +473,15 @@ public class CustomerCardChargesTest extends BaseTest {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(amount).description(desc));
+                .cardId(this.customerRegisteredCard.getId()).amount(amount).description(desc));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(amount).description(desc));
+                .cardId(this.customerRegisteredCard.getId()).amount(amount).description(desc));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(amount).description(desc));
+                .cardId(this.customerRegisteredCard.getId()).amount(amount).description(desc));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(amount).description(desc));
+                .cardId(this.customerRegisteredCard.getId()).amount(amount).description(desc));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(amount).description(desc));
+                .cardId(this.customerRegisteredCard.getId()).amount(amount).description(desc));
         List<Charge> charges = this.api.charges().list(this.customer.getId(), null);
         assertEquals(5, charges.size());
         charges = this.api.charges().list(this.customer.getId(), search().limit(3));
@@ -478,15 +492,15 @@ public class CustomerCardChargesTest extends BaseTest {
     public void testList_Customer_Amount() throws Exception {
         BigDecimal amount = BigDecimal.ONE;
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(amount).description("desc"));
+                .cardId(this.customerRegisteredCard.getId()).amount(amount).description("desc"));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(BigDecimal.TEN).description("desc"));
+                .cardId(this.customerRegisteredCard.getId()).amount(BigDecimal.TEN).description("desc"));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(new BigDecimal("123.00")).description("desc"));
+                .cardId(this.customerRegisteredCard.getId()).amount(new BigDecimal("123.00")).description("desc"));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(amount).description("desc"));
+                .cardId(this.customerRegisteredCard.getId()).amount(amount).description("desc"));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(amount).description("desc"));
+                .cardId(this.customerRegisteredCard.getId()).amount(amount).description("desc"));
         List<Charge> charges = this.api.charges().list(this.customer.getId(), search().amount(amount));
         assertThat(charges.size(), is(3));
         for (Charge charge : charges) {
@@ -507,7 +521,7 @@ public class CustomerCardChargesTest extends BaseTest {
     @Test
     public void testGetCustomerCharge_FromMerchant() throws Exception {
         Charge charge = this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
-                .cardId(this.registeredCard.getId()).amount(BigDecimal.TEN).description("desc"));
+                .cardId(this.customerRegisteredCard.getId()).amount(BigDecimal.TEN).description("desc"));
         try {
             this.api.charges().get(charge.getId());
         } catch (OpenpayServiceException e) {

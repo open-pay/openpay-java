@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
@@ -56,28 +57,16 @@ public class MerchantBankPayoutsTest extends BaseTest {
                         .expirationMonth(9)
                         .expirationYear(20)));
 
-        this.bankAccount = this.api.bankAccounts().create(
-                new BankAccount().clabe("012298026516924616").holderName("Mi nombre"));
+        this.bankAccount = this.api.bankAccounts().list(null).get(0);
     }
 
     @After
     public void tearDown() throws Exception {
-        if (this.bankAccount != null) {
-            this.api.bankAccounts().delete(this.bankAccount.getId());
-        }
     }
 
     @Test
     public void testListMerchantPayouts() throws ServiceUnavailableException, OpenpayServiceException {
-        Date date = new Date();
-        BigDecimal amount = new BigDecimal(String.format("%tI%<td.%<tM", date));
-        CreateCardChargeParams charge = new CreateCardChargeParams()
-                .amount(amount).description("Cargo")
-                .card(new Card().cardNumber("5555555555554444").holderName("Juanito Pérez Nuñez").cvv2("111")
-                        .expirationMonth(9).expirationYear(20)).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI");
-        this.api.charges().create(charge);
-        this.api.charges().create(charge);
-        this.api.charges().create(charge);
+        BigDecimal amount = new BigDecimal(new Random().nextInt(1000));
         this.api.payouts().create(new CreateBankPayoutParams()
                 .bankAccountId(this.bankAccount.getId()).amount(amount).description("desc 1"));
         this.api.payouts().create(new CreateBankPayoutParams()
@@ -164,7 +153,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
         Assert.assertNull(transaction.getCustomerId());
         Assert.assertNull(transaction.getFee());
     }
-    
+
     @Test
     public void testCreateMerchantBankPayout_WithBankAccount_Breakdown() throws ServiceUnavailableException,
             OpenpayServiceException {

@@ -47,12 +47,6 @@ public class BankAccountOperations extends ServiceOperations {
         super(client);
     }
 
-    public BankAccount create(final BankAccount bankAccount) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(MERCHANT_BANK_ACCOUNTS_PATH, this.getMerchantId());
-        return this.getJsonClient().post(path, bankAccount, BankAccount.class);
-    }
-
     public BankAccount create(final String customerId, final BankAccount bankAccount) throws OpenpayServiceException,
             ServiceUnavailableException {
         String path = String.format(CUSTOMER_BANK_ACCOUNTS_PATH, this.getMerchantId(), customerId);
@@ -94,6 +88,10 @@ public class BankAccountOperations extends ServiceOperations {
         return this.getJsonClient().get(path, BankAccount.class);
     }
 
+    /**
+     * @deprecated This operation was removed from the Openpay API.
+     */
+    @Deprecated
     public void delete(final String bankId) throws ServiceUnavailableException,
             OpenpayServiceException {
         String path = String.format(GET_MERCHANT_BANK_ACCOUNT, this.getMerchantId(), bankId);
@@ -104,6 +102,16 @@ public class BankAccountOperations extends ServiceOperations {
             OpenpayServiceException {
         String path = String.format(GET_CUSTOMER_BANK_ACCOUNT, this.getMerchantId(), customerId, bankId);
         this.getJsonClient().delete(path);
+    }
+
+    /**
+     * @deprecated This operation was removed from the Openpay API.
+     */
+    @Deprecated
+    public BankAccount create(final BankAccount bankAccount) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(MERCHANT_BANK_ACCOUNTS_PATH, this.getMerchantId());
+        return this.getJsonClient().post(path, bankAccount, BankAccount.class);
     }
 
 }

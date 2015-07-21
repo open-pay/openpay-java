@@ -30,8 +30,8 @@ public class BaseTest {
 
     @Before
     public void setupAPI() throws Exception {
-        String merchantId = "miklpzr4nsvsucghm2qp";
-        String apiKey = "sk_08453429e4c54220a3a82ab4d974c31a";
+        String merchantId = "mioppzc1kgz2cj21s8sp";
+        String apiKey = "sk_fe7d3759f4514f4b8fe11cf0404812de";
         String endpoint = "https://dev-api.openpay.mx/";
         this.api = new OpenpayAPI(endpoint, apiKey, merchantId);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));

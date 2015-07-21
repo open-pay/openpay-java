@@ -20,7 +20,6 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -207,8 +206,14 @@ public class SubscriptionsTest extends BaseTest {
         this.subscriptionsToDelete.add(subscription);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date trialEndDate = simpleDateFormat.parse("2015-03-16 01:12:55");
-        Date trialEndDateNoMinutes = simpleDateFormat.parse("2015-03-16 00:00:00");
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 60);
+        Date trialEndDate = c.getTime();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        Date trialEndDateNoMinutes = c.getTime();
         subscription = this.api.subscriptions().get(this.customer.getId(), id);
 
         subscription.setTrialEndDate(trialEndDate);

@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+
 import java.util.List;
 
 import mx.openpay.client.Card;
@@ -68,8 +69,12 @@ public class TransfersTest extends BaseTest {
 
     @After
     public void tearDown() throws Exception {
-        this.api.customers().delete(this.customerFrom.getId());
-        this.api.customers().delete(this.customerTo.getId());
+        if (this.customerFrom != null) {
+            this.api.customers().delete(this.customerFrom.getId());
+        }
+        if (this.customerTo != null) {
+            this.api.customers().delete(this.customerTo.getId());
+        }
     }
 
     @Test

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package mx.openpay.core.client.full;
 
@@ -10,12 +10,12 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+
 import java.util.List;
 
-import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Order;
+import mx.openpay.client.PaymentPlan;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
@@ -29,12 +29,26 @@ import org.junit.Test;
  */
 public class OrdersTest extends BaseTest {
 
-	private final String paymentPlanId = "apgvpxtsvlhrfaa6anem";
-	
+
     private Customer customer;
+
+    PaymentPlan paymentPlan;
 
     @Before
     public void setUp() throws Exception {
+        String name = "junit test plan " + System.currentTimeMillis();
+        BigDecimal firstPaymentPercentage = new BigDecimal("0.3");
+        int maxNumberOfPayments = 12;
+        int monthsToPay = 6;
+        int daysToFirstPayment = 15;
+        PaymentPlan request = new PaymentPlan()
+                .name(name)
+                .firstPaymentPercentage(firstPaymentPercentage)
+                .maxNumberOfPayments(maxNumberOfPayments)
+                .monthsToPay(monthsToPay)
+                .daysToFirstPayment(daysToFirstPayment);
+
+        this.paymentPlan = this.api.paymentsPlans().create(request);
         this.customer = this.api.customers().create(new Customer()
                 .name("Manuelito").email("manuelito.perez@gmail.com")
                 .phoneNumber("55-25634014"));
@@ -45,17 +59,15 @@ public class OrdersTest extends BaseTest {
         //this.api.customers().delete(this.customer.getId());
     }
 
-	
-
 	@Test
 	public void createOrderTest() throws OpenpayServiceException, ServiceUnavailableException {
-		String customerId = customer.getId();
+		String customerId = this.customer.getId();
 		BigDecimal orderAmount = new BigDecimal("3500.00");
 		Order request = new Order().description("producto de prueba 123444").amount(orderAmount)
-				.paymentPlanId(this.paymentPlanId);
+				.paymentPlanId(this.paymentPlan.getId());
 		Order newOrder = this.api.orders().create(customerId, request);
 		assertEquals(customerId, newOrder.getCustomerId());
-		assertEquals(this.paymentPlanId, newOrder.getPaymentPlanId());
+		assertEquals(this.paymentPlan.getId(), newOrder.getPaymentPlanId());
 		assertEquals("waiting_first_pay", newOrder.getStatus());
 		assertThat(newOrder.getAmount(), equalTo(orderAmount));
 		assertThat(newOrder.getTotalAmountToPay(), equalTo(orderAmount));
@@ -67,10 +79,10 @@ public class OrdersTest extends BaseTest {
 
 	@Test
 	public void cancelOrderTest() throws OpenpayServiceException, ServiceUnavailableException {
-		String customerId = customer.getId();
+		String customerId = this.customer.getId();
 		BigDecimal orderAmount = new BigDecimal("3500.00");
 		Order request = new Order().description("producto de prueba 123444").amount(orderAmount)
-				.paymentPlanId(this.paymentPlanId);
+				.paymentPlanId(this.paymentPlan.getId());
 		Order newOrder = this.api.orders().create(customerId, request);
 		this.assertNotNullValues(newOrder);
 		this.api.orders().delete(customerId, newOrder.getId());
@@ -85,10 +97,10 @@ public class OrdersTest extends BaseTest {
 
 	@Test
 	public void getOrderTest() throws OpenpayServiceException, ServiceUnavailableException {
-		String customerId = customer.getId();
+		String customerId = this.customer.getId();
 		BigDecimal orderAmount = new BigDecimal("3500.00");
 		Order request = new Order().description("producto de prueba 123444").amount(orderAmount)
-				.paymentPlanId(this.paymentPlanId);
+				.paymentPlanId(this.paymentPlan.getId());
 		Order newOrder = this.api.orders().create(customerId, request);
 		Order order = this.api.orders().get(customerId, newOrder.getId());
 		this.assertNotNullValues(order);
@@ -97,7 +109,7 @@ public class OrdersTest extends BaseTest {
 	@Test
 	public void getOrderList() throws OpenpayServiceException, ServiceUnavailableException {
 		this.createOrderTest();
-		String customerId = customer.getId();
+		String customerId = this.customer.getId();
 		List<Order> orderList = this.api.orders().list(customerId, null);
 		assertNotNull(orderList);
 		assertTrue(orderList.size() >= 1);
