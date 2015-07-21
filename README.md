@@ -5,15 +5,6 @@ Java client for Openpay services
 
 This is a client implementing the payment services for Openpay at openpay.mx
 
-What's new
-----------------
-
-- **API incompatibility**: Removed the option to look a transfer up using only the transactionId.
-- **API incompatibility**: Customer charges can't be looked up only with the transactionId anymore, customerId is required. 
-- **API incompatibility**: Refunds no longer accept an order Id. 
-- Added management of plans and subscriptions.
-- Fixed bug that made Java 7 required.
-- Parameters are now set into a request object to reduce method signatures.
 
 Installation
 ----------------
@@ -24,7 +15,7 @@ To install, add the following dependency to your pom.xml:
 <dependency>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.0.4/version>
+	<version>1.0.5/version>
 </dependency>
 ```
 
