@@ -16,6 +16,7 @@
 package mx.openpay.client.core;
 
 import mx.openpay.client.core.operations.BankAccountOperations;
+import mx.openpay.client.core.operations.BinesOperations;
 import mx.openpay.client.core.operations.CardOperations;
 import mx.openpay.client.core.operations.ChargeOperations;
 import mx.openpay.client.core.operations.CustomerOperations;
@@ -62,16 +63,18 @@ public class OpenpayAPI {
     private final SubscriptionOperations subscriptionsOperations;
 
     private final MerchantOperations merchantOperations;
-    
+
     private final PaymentPlanOperations paymentPlanOperations;
-    
+
     private final WebhookOperations webhookOperations;
 
     private final OpenpayFeesOperations openpayFeesOperations;
 
-	private final TransactionsPayoutOperations transactionsPayoutOperations;
+    private final TransactionsPayoutOperations transactionsPayoutOperations;
 
-	private final OrderOperations orderOperations;
+    private final OrderOperations orderOperations;
+
+    private final BinesOperations binesOperations;
 
     public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
         this(new JsonServiceClient(location, merchantId, apiKey));
@@ -90,10 +93,11 @@ public class OpenpayAPI {
         this.subscriptionsOperations = new SubscriptionOperations(this.jsonClient);
         this.merchantOperations = new MerchantOperations(this.jsonClient);
         this.openpayFeesOperations = new OpenpayFeesOperations(this.jsonClient);
-		this.transactionsPayoutOperations = new TransactionsPayoutOperations(this.jsonClient);
-		this.orderOperations = new OrderOperations(this.jsonClient);
+        this.transactionsPayoutOperations = new TransactionsPayoutOperations(this.jsonClient);
+        this.orderOperations = new OrderOperations(this.jsonClient);
         this.paymentPlanOperations = new PaymentPlanOperations(this.jsonClient);
         this.webhookOperations = new WebhookOperations(this.jsonClient);
+        this.binesOperations = new BinesOperations(this.jsonClient);
     }
 
     public void setTimeout(final int timeout) {
@@ -144,19 +148,23 @@ public class OpenpayAPI {
         return this.openpayFeesOperations;
     }
 
-	public TransactionsPayoutOperations transactionsPayout() {
-		return this.transactionsPayoutOperations;
-	}
+    public TransactionsPayoutOperations transactionsPayout() {
+        return this.transactionsPayoutOperations;
+    }
 
-	public OrderOperations orders() {
-		return this.orderOperations;
-	}
-    
-    public PaymentPlanOperations paymentsPlans(){
+    public OrderOperations orders() {
+        return this.orderOperations;
+    }
+
+    public PaymentPlanOperations paymentsPlans() {
         return this.paymentPlanOperations;
     }
-    
+
     public WebhookOperations webhooks() {
-    	return this.webhookOperations;
+        return this.webhookOperations;
+    }
+
+    public BinesOperations bines() {
+        return this.binesOperations;
     }
 }
