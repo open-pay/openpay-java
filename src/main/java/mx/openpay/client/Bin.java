@@ -44,4 +44,8 @@ public class Bin {
     @SerializedName("allowed_santander_points")
     private Boolean allowedSantanderPoints;
 
+    /** The Bank Code according to SAT. May be null if unknown. */
+    @SerializedName("bank_code")
+    private String bankCode;
+
 }
