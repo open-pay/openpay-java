@@ -38,9 +38,15 @@ public class PaymentMethod {
     private String name;
 
 	private String reference;
+	
+	@SerializedName("walmart_reference")
+	private String walmartReference;
 
 	@SerializedName("barcode_url")
 	private String barcodeUrl;
+	
+	@SerializedName("barcode_walmart_url")
+	private String barcodeWalmartUrl;
 	
 	@SerializedName("payment_address")
 	private String  paymentAddress;
