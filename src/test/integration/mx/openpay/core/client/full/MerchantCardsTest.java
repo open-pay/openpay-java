@@ -23,10 +23,12 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import mx.openpay.client.Card;
+import mx.openpay.client.PointsBalance;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
@@ -80,8 +82,10 @@ public class MerchantCardsTest extends BaseTest {
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.api.cards().get(card.getId());
+        PointsBalance balance = this.api.cards().points(card.getId());
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals(BigInteger.ZERO, balance.getRemainingPoints());
     }
 
     @Test
