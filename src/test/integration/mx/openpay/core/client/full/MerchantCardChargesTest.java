@@ -29,7 +29,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
-
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,6 +43,7 @@ import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.enums.Currency;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.utils.SearchParams;
 import mx.openpay.core.client.test.TestUtils;
 
 import org.junit.After;
@@ -90,6 +90,26 @@ public class MerchantCardChargesTest extends BaseTest {
         assertEquals(desc, transaction.getDescription());
         assertThat(transaction.getCardPoints(), is(nullValue()));
         Assert.assertNotNull(transaction.getFee());
+    }
+    
+    @Test
+    public void testSearchOrderId() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(new CreateCardChargeParams()
+                .cardId(this.registeredCard.getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        assertThat(transaction.getCardPoints(), is(nullValue()));
+        Assert.assertNotNull(transaction.getFee());
+        List<Charge> list = api.charges().list(new SearchParams().orderId(orderId));
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0).getId(), is(transaction.getId()));
     }
 
     @Test
