@@ -62,7 +62,7 @@ public class MerchantCardChargesTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.registeredCard = this.api.cards().create(new Card()
-                .cardNumber("5555555555554444")
+                .cardNumber("5470464956333056")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
@@ -91,7 +91,7 @@ public class MerchantCardChargesTest extends BaseTest {
         assertThat(transaction.getCardPoints(), is(nullValue()));
         Assert.assertNotNull(transaction.getFee());
     }
-    
+
     @Test
     public void testSearchOrderId() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("10.00");
@@ -216,7 +216,7 @@ public class MerchantCardChargesTest extends BaseTest {
     }
 
     @Test
-	public void testCreate_Charge_WithCard() throws Exception {
+    public void testCreate_Charge_WithCard() throws Exception {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         Charge charge = this.api.charges().create(new CreateCardChargeParams()
@@ -254,27 +254,28 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNull(charge.getCard().getId());
     }
 
-	@Test
-	public void testCreate_Charge_WithCard_currencyUSD_metadata() throws Exception {
-		BigDecimal amount = new BigDecimal("1.00");
-		String desc = "Pago de taxi";
-		Map<String, String> metadata = new LinkedHashMap<String, String>();
-		metadata.put("origin", "Mexico");
-		metadata.put("destination", "Puebla");
-		metadata.put("seats", "3");
-		Charge charge = this.api.charges().create(
-				new CreateCardChargeParams()
-						.card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("110")
-								.expirationMonth(12).expirationYear(20)).amount(amount).description(desc)
-						.currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
-		assertNotNull(charge);
-		assertNotNull(charge.getCard());
-		assertNull(charge.getCard().getCvv2());
-		assertNull(charge.getCard().getId());
-		assertNotNull(charge.getMetadata());
-		assertNotNull(charge.getExchangeRate());
-		assertNotNull(charge.getExchangeRate().getValue());
-	}
+    @Test
+    public void testCreate_Charge_WithCard_currencyUSD_metadata() throws Exception {
+        BigDecimal amount = new BigDecimal("1.00");
+        String desc = "Pago de taxi";
+        Map<String, String> metadata = new LinkedHashMap<String, String>();
+        metadata.put("origin", "Mexico");
+        metadata.put("destination", "Puebla");
+        metadata.put("seats", "3");
+        Charge charge = this.api.charges().create(
+                new CreateCardChargeParams()
+                        .card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("110")
+                                .expirationMonth(12).expirationYear(20))
+                        .amount(amount).description(desc)
+                        .currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
+        assertNotNull(charge);
+        assertNotNull(charge.getCard());
+        assertNull(charge.getCard().getCvv2());
+        assertNull(charge.getCard().getId());
+        assertNotNull(charge.getMetadata());
+        assertNotNull(charge.getExchangeRate());
+        assertNotNull(charge.getExchangeRate().getValue());
+    }
 
     @Test
     public void testCreate_Customer_NoCardOrId() throws Exception {
