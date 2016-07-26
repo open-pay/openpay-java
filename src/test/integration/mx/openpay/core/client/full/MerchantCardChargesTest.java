@@ -41,6 +41,7 @@ import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.enums.Currency;
+import mx.openpay.client.enums.UseCardPointsType;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.SearchParams;
@@ -123,7 +124,7 @@ public class MerchantCardChargesTest extends BaseTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .useCardPoints(true));
+                .useCardPoints(UseCardPointsType.MIXED));
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
@@ -144,7 +145,7 @@ public class MerchantCardChargesTest extends BaseTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId)
-                .useCardPoints(true));
+                .useCardPoints(UseCardPointsType.MIXED));
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());

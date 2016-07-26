@@ -22,9 +22,11 @@ import java.util.Map;
 
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
+import mx.openpay.client.DeferralPayments;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.enums.Currency;
+import mx.openpay.client.enums.UseCardPointsType;
 
 /**
  * Parameters to charge a credit or debit card.
@@ -138,7 +140,15 @@ public class CreateCardChargeParams extends RequestBuilder {
      * If true, the charge will use the points available in the card. <br>
      * The request will fail if the card does not accept points, so check the card response first.
      */
-    public CreateCardChargeParams useCardPoints(final boolean useCardPoints) {
+    public CreateCardChargeParams useCardPoints(final UseCardPointsType useCardPoints) {
         return this.with("use_card_points", useCardPoints);
+    }
+    
+    /**
+     * If true, the charge will use the points available in the card. <br>
+     * The request will fail if the card does not accept points, so check the card response first.
+     */
+    public CreateCardChargeParams deferralPayments(final DeferralPayments deferralPayments) {
+        return this.with("payment_plan", deferralPayments);
     }
 }
