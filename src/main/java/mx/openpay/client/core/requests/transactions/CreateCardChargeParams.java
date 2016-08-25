@@ -151,4 +151,19 @@ public class CreateCardChargeParams extends RequestBuilder {
     public CreateCardChargeParams deferralPayments(final DeferralPayments deferralPayments) {
         return this.with("payment_plan", deferralPayments);
     }
+    
+    /**
+     * Send Email Flag indicate the transaction will sent to email.
+     */
+    public CreateCardChargeParams sendEmail(final boolean sendEmail) {
+        return this.with("send_email", sendEmail);
+    }
+
+    /**
+     * Redirect Url indicate the url to redirect after completed the transaction.
+     */
+    public CreateCardChargeParams redirectUrl(final boolean redirectUrl) {
+        return this.with("redirect_url", redirectUrl);
+    }
+    
 }
