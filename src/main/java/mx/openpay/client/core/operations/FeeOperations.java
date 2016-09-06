@@ -78,4 +78,7 @@ public class FeeOperations extends ServiceOperations {
         return this.getJsonClient().post(path, params.asMap(), Fee.class);
     }
 
+    public Fee refund(final String transactionId,final String description) throws ServiceUnavailableException, OpenpayServiceException {
+        return this.refund(transactionId, new RefundParams().description(description));
+    }
 }
