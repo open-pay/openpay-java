@@ -18,6 +18,7 @@ package mx.openpay.client.core.operations;
 import static mx.openpay.client.utils.OpenpayPathComponents.FEES;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
+import static mx.openpay.client.utils.OpenpayPathComponents.REFUND;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.Map;
 import mx.openpay.client.Fee;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.requests.transactions.CreateFeeParams;
+import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.SearchParams;
@@ -38,6 +40,8 @@ public class FeeOperations extends ServiceOperations {
     private static final String FEES_PATH = MERCHANT_ID + FEES;
 
 	private static final String GET_FEE_PATH = MERCHANT_ID + FEES + ID;
+	
+	private static final String REFUND_FEES_PATH = GET_FEE_PATH + REFUND;
 
     public FeeOperations(final JsonServiceClient client) {
         super(client);
@@ -68,5 +72,10 @@ public class FeeOperations extends ServiceOperations {
 		String path = String.format(GET_FEE_PATH, this.getMerchantId(), transactionId);
 		return this.getJsonClient().get(path, Fee.class);
 	}
+	
+    public Fee refund(final String transactionId, final RefundParams params) throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(REFUND_FEES_PATH, this.getMerchantId(), transactionId, params);
+        return this.getJsonClient().post(path, params.asMap(), Fee.class);
+    }
 
 }
