@@ -123,4 +123,14 @@ public class SearchParams extends PaginationParams {
         this.params.put("order_id", orderId);
         return this;
     }
+    
+    /**
+     * Search customer by External Id.
+     * @param externalId The External ID. Unique customer external id.
+     * @return List of Customers with the given External ID.
+     */
+    public SearchParams externalId(final String externalId) {
+        this.params.put("external_id", externalId);
+        return this;
+    }
 }
