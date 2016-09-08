@@ -162,7 +162,7 @@ public class CreateCardChargeParams extends RequestBuilder {
     /**
      * Redirect Url indicate the url to redirect after completed the transaction.
      */
-    public CreateCardChargeParams redirectUrl(final boolean redirectUrl) {
+    public CreateCardChargeParams redirectUrl(final String redirectUrl) {
         return this.with("redirect_url", redirectUrl);
     }
     
