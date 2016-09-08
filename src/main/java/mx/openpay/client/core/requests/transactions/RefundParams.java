@@ -15,6 +15,8 @@
  */
 package mx.openpay.client.core.requests.transactions;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
 
@@ -44,5 +46,10 @@ public class RefundParams extends RequestBuilder {
     /** Address to refund bitcoins. Optional. */
     public RefundParams bitcoinAddress(final String bitcoinAddress) {
         return this.with("bitcoin_address", bitcoinAddress);
+    }
+    
+    /** amount to refund. Optional, used in partial refunds */
+    public RefundParams amount(final BigDecimal amount) {
+        return this.with("amount", amount);
     }
 }
