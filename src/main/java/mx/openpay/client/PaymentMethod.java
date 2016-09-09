@@ -60,4 +60,5 @@ public class PaymentMethod {
 	@SerializedName("exchange_rate")
 	private ExchangeRate exchangeRate;
 	
+	private String url;
 }
