@@ -16,6 +16,7 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 import lombok.Setter;
+import mx.openpay.client.enums.PointsType;
 
 /**
  * @author oswaldo
@@ -24,6 +25,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PointsBalance {
+    
+    @SerializedName("points_type")
+    public PointsType pointsType;
     
     @SerializedName("remaining_points")
     public BigInteger remainingPoints;
