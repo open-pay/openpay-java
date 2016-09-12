@@ -27,12 +27,16 @@ import mx.openpay.client.enums.PointsType;
 public class PointsBalance {
     
     @SerializedName("points_type")
-    public PointsType pointsType;
+    private String pointsType;
     
     @SerializedName("remaining_points")
-    public BigInteger remainingPoints;
+    private BigInteger remainingPoints;
     
     @SerializedName("remaining_mxn")
-    public BigDecimal remainingMxn;
+    private BigDecimal remainingMxn;
+
+    public PointsType getPointsType() {
+        return PointsType.valueOf(this.pointsType.toUpperCase());
+    }
 
 }
