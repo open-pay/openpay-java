@@ -17,13 +17,13 @@ package mx.openpay.client.core.operations;
 
 import static mx.openpay.client.utils.OpenpayPathComponents.CAPTURE;
 import static mx.openpay.client.utils.OpenpayPathComponents.CHARGES;
+import static mx.openpay.client.utils.OpenpayPathComponents.CONFIRM;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.REFUND;
 
 import java.math.BigDecimal;
-
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +31,9 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
+import mx.openpay.client.core.requests.transactions.ConfirmChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
@@ -47,19 +49,23 @@ public class ChargeOperations extends ServiceOperations {
 
     private static final String FOR_MERCHANT_PATH = MERCHANT_ID + CHARGES;
 
-    private static final String GET_FOR_MERCHANT_PATH = FOR_MERCHANT_PATH + ID;
+    protected static final String GET_FOR_MERCHANT_PATH = FOR_MERCHANT_PATH + ID;
 
     private static final String REFUND_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + REFUND;
 
-    private static final String CONFIRM_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + CAPTURE;
+    private static final String CAPTURE_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + CAPTURE;
+
+    private static final String CONFIRM_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + CONFIRM;
 
     private static final String FOR_CUSTOMER_PATH = MERCHANT_ID + CUSTOMERS + ID + CHARGES;
 
-    private static final String GET_FOR_CUSTOMER_PATH = FOR_CUSTOMER_PATH + ID;
+    protected static final String GET_FOR_CUSTOMER_PATH = FOR_CUSTOMER_PATH + ID;
 
     private static final String REFUND_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + REFUND;
 
-    private static final String CONFIRM_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + CAPTURE;
+    private static final String CAPTURE_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + CAPTURE;
+
+    private static final String CONFIRM_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + CONFIRM;
 
     public ChargeOperations(final JsonServiceClient client) {
         super(client);
@@ -96,6 +102,18 @@ public class ChargeOperations extends ServiceOperations {
     }
 
     public Charge create(final String customerId, final CreateStoreChargeParams request)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
+        return this.getJsonClient().post(path, request.asMap(), Charge.class);
+    }
+
+    public Charge create(final CreateBitcoinChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
+        return this.getJsonClient().post(path, request.asMap(), Charge.class);
+    }
+
+    public Charge create(final String customerId, final CreateBitcoinChargeParams request)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
         return this.getJsonClient().post(path, request.asMap(), Charge.class);
@@ -154,7 +172,7 @@ public class ChargeOperations extends ServiceOperations {
      */
     public Charge confirmCapture(final ConfirmCaptureParams params) throws OpenpayServiceException,
             ServiceUnavailableException {
-        String path = String.format(CONFIRM_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
+        String path = String.format(CAPTURE_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
         return this.getJsonClient().post(path, params.asMap(), Charge.class);
     }
 
@@ -162,6 +180,25 @@ public class ChargeOperations extends ServiceOperations {
      * Confirms a charge that was made with the option capture set to false.
      */
     public Charge confirmCapture(final String customerId, final ConfirmCaptureParams params)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(CAPTURE_FOR_CUSTOMER_PATH, this.getMerchantId(), customerId,
+                params.getChargeId());
+        return this.getJsonClient().post(path, params.asMap(), Charge.class);
+    }
+
+    /**
+     * Confirms a charge that was made with the option confirm set to false.
+     */
+    public Charge confirmCharge(final ConfirmChargeParams params) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(CONFIRM_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
+        return this.getJsonClient().post(path, params.asMap(), Charge.class);
+    }
+
+    /**
+     * Confirms a charge that was made with the option confirm set to false.
+     */
+    public Charge confirmCharge(final String customerId, final ConfirmChargeParams params)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(CONFIRM_FOR_CUSTOMER_PATH, this.getMerchantId(), customerId,
                 params.getChargeId());

@@ -21,6 +21,7 @@ import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.PAYOUTS;
 
 import java.math.BigDecimal;
+
 import java.util.List;
 import java.util.Map;
 

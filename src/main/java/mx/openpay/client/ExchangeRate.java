@@ -28,4 +28,7 @@ public class ExchangeRate {
 	private Date date;
 
 	private BigDecimal value;
+	
+	private BigDecimal rate;
+	
 }

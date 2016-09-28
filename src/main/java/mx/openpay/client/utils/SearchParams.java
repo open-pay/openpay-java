@@ -113,4 +113,24 @@ public class SearchParams extends PaginationParams {
         this.params.put("amount[gte]", amountGte.toPlainString());
         return this;
     }
+    
+    /**
+     * Search transactions by Order ID.
+     * @param orderId The Order ID. Unique among successful transactions (Failed transactions may repeat).
+     * @return List of transactions with the given Order ID.
+     */
+    public SearchParams orderId(final String orderId) {
+        this.params.put("order_id", orderId);
+        return this;
+    }
+    
+    /**
+     * Search customer by External Id.
+     * @param externalId The External ID. Unique customer external id.
+     * @return List of Customers with the given External ID.
+     */
+    public SearchParams externalId(final String externalId) {
+        this.params.put("external_id", externalId);
+        return this;
+    }
 }

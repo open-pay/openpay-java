@@ -15,15 +15,14 @@
  */
 package mx.openpay.core.client.full;
 
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
 import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
-import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -31,9 +30,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author Eli Lopez, eli.lopez@opencard.mx
+ * @author Oswaldo Martinez oswaldo.martinez@openpay.mx
  */
-public class CustomerStoreChargesTest extends BaseTest {
+public class CustomerBitcoinChargesTest extends BaseTest {
 
     private Customer customer;
 
@@ -51,30 +50,39 @@ public class CustomerStoreChargesTest extends BaseTest {
 
     @Test
     public void testCreate_Customer_Store() throws Exception {
-        BigDecimal amount = new BigDecimal("10.00");
-        String desc = "Pago de taxi";
+        BigDecimal amount = new BigDecimal("100.00");
+        String desc = "Pago de servicio";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(this.customer.getId(),
-                new CreateStoreChargeParams().amount(amount).description(desc).orderId(orderId));
+                new CreateBitcoinChargeParams().amount(amount).description(desc).orderId(orderId));
         assertNotNull(transaction);
-        assertNotNull(transaction.getPaymentMethod().getReference());
-        assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
-        assertThat(transaction.getStatus(), is("in_progress"));
+        assertEquals(transaction.getPaymentMethod().getType(), "bitcoin");
+        assertEquals(transaction.getAmount().intValue(), amount.intValue());
+        assertNotNull(transaction.getPaymentMethod().getPaymentAddress());
+        assertNotNull(transaction.getPaymentMethod().getPaymentUrlBip21());
+        assertNotNull(transaction.getPaymentMethod().getAmountBitcoins());
+        assertNotNull(transaction.getPaymentMethod().getExchangeRate());
+        assertNotNull(transaction.getStatus(), "CHARGE_PENDING");
         Assert.assertNull(transaction.getFee());
     }
 
     @Test
     public void testCreate_SingleCustomer_Store() throws Exception {
-        BigDecimal amount = new BigDecimal("10.00");
-        String desc = "Pago de taxi";
+        BigDecimal amount = new BigDecimal("100.00");
+        String desc = "Pago de servicio";
         String orderId = String.valueOf(System.currentTimeMillis());
         Charge transaction = this.api.charges().create(
-                new CreateStoreChargeParams().amount(amount).description(desc)
+                new CreateBitcoinChargeParams().amount(amount).description(desc)
                 .orderId(orderId).customer(new Customer().name("Vivaldi").email("v@comerce.com").phoneNumber("154234623")));
         assertNotNull(transaction);
-        assertNotNull(transaction.getPaymentMethod().getReference());
-        assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
+        assertEquals(transaction.getPaymentMethod().getType(), "bitcoin");
+        assertEquals(transaction.getAmount().intValue(), amount.intValue());
+        assertNotNull(transaction.getPaymentMethod().getPaymentAddress());
+        assertNotNull(transaction.getPaymentMethod().getPaymentUrlBip21());
+        assertNotNull(transaction.getPaymentMethod().getAmountBitcoins());
+        assertNotNull(transaction.getPaymentMethod().getExchangeRate());
+        assertNotNull(transaction.getStatus(), "CHARGE_PENDING");
         Assert.assertNull(transaction.getFee());
     }
-
+    
 }

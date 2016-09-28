@@ -121,7 +121,6 @@ public class ISO8601DateParser {
     /**
      * Format a date into 'yyyy-MM-ddThh:mm:ss[.sss]Z' (GMT timezone)
      * @param date the date to format
-     * @param millis true to include millis precision otherwise false
      * @return the date formatted as 'yyyy-MM-ddThh:mm:ss[.sss]Z'
      */
     public static String format(final Date date) {

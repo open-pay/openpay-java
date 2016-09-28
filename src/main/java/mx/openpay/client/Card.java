@@ -66,6 +66,15 @@ public class Card {
 
     private String cvv2;
 
+    @SerializedName("device_session_id")
+    private String deviceSessionId;
+
+    @SerializedName("points_card")
+    private boolean pointsCard;
+    
+    @SerializedName("points_type")
+    private String pointsType;
+
     /**
      * Card number. Required.
      */
@@ -147,7 +156,7 @@ public class Card {
         return this;
     }
 
-    /**
+    /*
      * Bank code in a three-digit string.
      * @see CreateCardParams#bankCode(Integer)
      */

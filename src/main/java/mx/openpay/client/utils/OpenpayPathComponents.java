@@ -42,10 +42,12 @@ public class OpenpayPathComponents {
 
     public static final String CAPTURE = "/capture";
 
+    public static final String CONFIRM = "/confirm";
+
     public static final String ID = "/%s";
 
     public static final String PLANS = "/plans";
-    
+
     public static final String PAYMETNS_PLANS = "/payments-plans";
 
     public static final String SUBSCRIPTIONS = "/subscriptions";
@@ -56,16 +58,22 @@ public class OpenpayPathComponents {
 
     public static final String OPENPAY_FEES = "/fees";
 
-	public static final String PAYOUT = "/payout";
+    public static final String PAYOUT = "/payout";
+    
+    public static final String POINTS = "/points";
 
-	public static final String ORDERS = "/orders";
+    public static final String ORDERS = "/orders";
 
     public static final String WEBHOOKS = "/webhooks";
-    
+
     public static final String WEBHOOK_ID = "/%s";
-    
+
     public static final String WEBHOOKS_VERIFY = "/verify";
-    
+
     public static final String WEBHOOK_CODE = "/%s";
+
+    public static final String BINES = "/bines";
+
+    public static final String BIN = "/%s";
 
 }

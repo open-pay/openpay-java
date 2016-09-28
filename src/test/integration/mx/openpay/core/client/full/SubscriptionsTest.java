@@ -20,16 +20,15 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Plan;
@@ -45,6 +44,7 @@ import org.junit.Test;
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
+@Slf4j
 public class SubscriptionsTest extends BaseTest {
 
     private Customer customer;
@@ -61,6 +61,7 @@ public class SubscriptionsTest extends BaseTest {
 
     @Before
     public void setUp() throws Exception {
+        log.info("Setup");
         this.subscriptionsToDelete = new ArrayList<Subscription>();
         this.customer = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
@@ -201,22 +202,31 @@ public class SubscriptionsTest extends BaseTest {
 
     @Test
     public void testUpdate() throws Exception {
+        log.info("Test update");
         Subscription subscription = this.api.subscriptions().create(this.customer.getId(), new Subscription()
                 .planId(this.planWithTrial.getId()).card(this.getCard()));
         String id = subscription.getId();
         this.subscriptionsToDelete.add(subscription);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date trialEndDate = simpleDateFormat.parse("2015-03-16 01:12:55");
-        Date trialEndDateNoMinutes = simpleDateFormat.parse("2015-03-16 00:00:00");
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 60);
+        Date trialEndDate = c.getTime();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        Date trialEndDateNoMinutes = c.getTime();
         subscription = this.api.subscriptions().get(this.customer.getId(), id);
 
         subscription.setTrialEndDate(trialEndDate);
         subscription.setCancelAtPeriodEnd(true);
         subscription.setCard(this.getCard());
 
+        log.info("Updated 1");
         subscription = this.api.subscriptions().update(subscription);
-
+        subscription = this.api.subscriptions().get(this.customer.getId(), id);
+        
         assertThat(subscription.getId(), is(id));
         assertNull(subscription.getCardId());
         assertNull(subscription.getCard().getId());
@@ -227,33 +237,53 @@ public class SubscriptionsTest extends BaseTest {
         trialEndDate = simpleDateFormat.parse("2017-05-21 06:12:55");
         trialEndDateNoMinutes = simpleDateFormat.parse("2017-05-21 00:00:00");
         subscription.setTrialEndDate(trialEndDate);
+        subscription.setCard(this.getCard().cardNumber("4242424242424242"));
+        log.info("Updated 2");
         subscription = this.api.subscriptions().update(subscription);
-
+        subscription = this.api.subscriptions().get(this.customer.getId(), id);
+        
         assertThat(subscription.getId(), is(id));
         assertNull(subscription.getCardId());
         assertNull(subscription.getCard().getId());
-        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
+        assertThat(subscription.getCard().getCardNumber(), is("424242XXXXXX4242"));
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(true));
 
         subscription.setCancelAtPeriodEnd(false);
+        log.info("Updated 3");
         subscription = this.api.subscriptions().update(subscription);
-
+        subscription = this.api.subscriptions().get(this.customer.getId(), id);
+        
         assertThat(subscription.getId(), is(id));
         assertNull(subscription.getCardId());
         assertNull(subscription.getCard().getId());
-        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
+        assertThat(subscription.getCard().getCardNumber(), is("424242XXXXXX4242"));
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(false));
 
-        subscription.setCardId(this.secondCard.getId());
+        subscription.setSourceId(this.secondCard.getId());
         subscription.setCard(null);
+        log.info("Updated 4");
         subscription = this.api.subscriptions().update(subscription);
-
+        subscription = this.api.subscriptions().get(this.customer.getId(), id);
+        
         assertThat(subscription.getId(), is(id));
         assertThat(subscription.getCardId(), is(nullValue()));
         assertThat(subscription.getCard().getId(), is(this.secondCard.getId()));
         assertThat(subscription.getCard().getCardNumber(), is("424242XXXXXX4242"));
+        assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
+        assertThat(subscription.getCancelAtPeriodEnd(), is(false));
+        
+        subscription.setSourceId(null);
+        subscription.setCard(this.getCard());
+        log.info("Updated 5");
+        subscription = this.api.subscriptions().update(subscription);
+        subscription = this.api.subscriptions().get(this.customer.getId(), id);
+        
+        assertThat(subscription.getId(), is(id));
+        assertThat(subscription.getCardId(), is(nullValue()));
+        assertThat(subscription.getCard().getId(), is(nullValue()));
+        assertThat(subscription.getCard().getCardNumber(), is("555555XXXXXX4444"));
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(false));
     }
@@ -279,7 +309,7 @@ public class SubscriptionsTest extends BaseTest {
                 .cardNumber("5555555555554444")
                 .holderName("Holder")
                 .expirationMonth(12)
-                .expirationYear(15)
+                .expirationYear(20)
                 .cvv2("123")
                 .address(TestUtils.prepareAddress());
         return card;

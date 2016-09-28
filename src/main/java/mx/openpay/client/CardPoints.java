@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Opencard Inc.
+ * Copyright 2012 - 2015 Opencard Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,26 +15,24 @@
  */
 package mx.openpay.client;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
- * @author elopez
+ * @author Eli Lopez, eli.lopez@opencard.mx
  */
 @Getter
-@Setter
-@ToString(callSuper = true)
-public class Charge extends Transaction {
+@ToString
+public class CardPoints {
 
-    private Refund refund;
+    private BigDecimal used;
 
-    @SerializedName("payment_method")
-    private PaymentMethod paymentMethod;
+    private BigDecimal remaining;
 
-    @SerializedName("card_points")
-    private CardPoints cardPoints;
+    private BigDecimal amount;
+
+    private String caption;
 
 }

@@ -3,20 +3,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>openpay-api-client</name>
 	<description>Java client for Openpay Services</description>
 	<url>http://github.com/open-pay/openpay-java</url>
 	
 <!-- Para publicar en Sonatype -->
-<!-- 	<parent> -->
-<!-- 		<groupId>org.sonatype.oss</groupId> -->
-<!-- 		<artifactId>oss-parent</artifactId> -->
-<!-- 		<version>7</version> -->
-<!-- 	</parent> -->
+ 	<parent>
+ 		<groupId>org.sonatype.oss</groupId>
+ 		<artifactId>oss-parent</artifactId>
+ 		<version>7</version>
+ 	</parent>
 
-<!-- Para publicar en repositorio local -->
+<!-- Para publicar en repositorio local
 	<distributionManagement>
 		<snapshotRepository>
 			<id>nexus-facelend</id>
@@ -29,7 +29,7 @@
 			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
 		</repository>
 	</distributionManagement>
-
+-->
 
 	<licenses>
 		<license>
@@ -117,7 +117,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>0.11.8</version>
+			<version>1.16.6</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -277,6 +277,6 @@
 	</profiles>
 
 	<organization>
-		<name>Opencard Inc.</name>
+		<name>Openpay</name>
 	</organization>
 </project>

@@ -22,11 +22,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
+import mx.openpay.client.PointsBalance;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
@@ -53,7 +55,7 @@ public class CustomerCardsTest extends BaseTest {
                 .phoneNumber("55-25634013"));
     }
 
-    @After
+//    @After
     public void tearDown() throws Exception {
         for (Card card : this.cardsToDelete) {
             this.api.cards().delete(this.customer.getId(), card.getId());
@@ -100,6 +102,23 @@ public class CustomerCardsTest extends BaseTest {
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
     }
 
+    @Test
+    public void testGetCustomerPointsCard() throws Exception {
+        Card card = this.api.cards().create(this.customer.getId(), new Card()
+                .cardNumber("4242424242424242")
+                .holderName("Juanito Pérez Nuñez")
+                .cvv2("111")
+                .expirationMonth(12)
+                .expirationYear(30)
+                .address(TestUtils.prepareAddress()));
+        this.cardsToDelete.add(card);
+        PointsBalance balance = this.api.cards().points(this.customer.getId(), card.getId());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals(new BigInteger("450"), balance.getRemainingPoints());
+        System.out.println("id " + card.getId());
+    }
+    
     @Test
     public void testDeleteCustomerCard() throws Exception {
         Card card = this.api.cards().create(this.customer.getId(), new Card()

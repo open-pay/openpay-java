@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Opencard Inc.
+ * Copyright 2014 Opencard Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.openpay.client;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import com.google.gson.annotations.SerializedName;
+package mx.openpay.client.enums;
 
 /**
- * @author elopez
+ * The Enum PointsType.
+ * 
+ * @author Martin Islas
  */
-@Getter
-@Setter
-@ToString(callSuper = true)
-public class Charge extends Transaction {
+public enum PointsType {
 
-    private Refund refund;
-
-    @SerializedName("payment_method")
-    private PaymentMethod paymentMethod;
-
-    @SerializedName("card_points")
-    private CardPoints cardPoints;
+	/** The None PointsType. */
+    NONE,
+    
+    /** The Bancomer PointsType. */
+    BANCOMER,
+    
+    /** The Santander PointsType. */
+    SANTANDER,
+    
+    /** The Scotiabank PointsType. */
+    SCOTIA;
 
 }

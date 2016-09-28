@@ -15,41 +15,38 @@
  */
 package mx.openpay.client.core.requests.transactions;
 
-import java.math.BigDecimal;
-
 import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
 
 /**
  * Parameters to refund a completed charge. Currently only card charges can be refunded this way.
- * @author elopez
+ * @author Oswaldo Martinez oswaldo.martinez@openpay.mx
  */
-public class RefundParams extends RequestBuilder {
+public class ConfirmChargeParams extends RequestBuilder {
 
     @Getter
     private String chargeId;
 
     /**
-     * The ID of the charge to refund. Required. The charge must belong to the merchant, or to the customer if the
-     * customer id is set.
+     * The ID of the charge to confirm. Required.
      */
-    public RefundParams chargeId(final String chargeId) {
+    public ConfirmChargeParams chargeId(final String chargeId) {
         this.chargeId = chargeId;
         return this;
     }
 
-    /** Cause of the refund. Optional. */
-    public RefundParams description(final String description) {
-        return this.with("description", description);
+    /**
+     * The token of the card to charge. Required, a valid token.
+     */
+    public ConfirmChargeParams tokenId(final String tokenId) {
+        return this.with("token_id", tokenId);
+    }
+
+    /**
+     * The device session id generated in client side. Required,
+     */
+    public ConfirmChargeParams deviceSessionId(final String deviceSessionId) {
+        return this.with("device_session_id", deviceSessionId);
     }
     
-    /** Address to refund bitcoins. Optional. */
-    public RefundParams bitcoinAddress(final String bitcoinAddress) {
-        return this.with("bitcoin_address", bitcoinAddress);
-    }
-    
-    /** amount to refund. Optional, used in partial refunds */
-    public RefundParams amount(final BigDecimal amount) {
-        return this.with("amount", amount);
-    }
 }

@@ -19,12 +19,14 @@ import static mx.openpay.client.utils.OpenpayPathComponents.CARDS;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
+import static mx.openpay.client.utils.OpenpayPathComponents.POINTS;
 
 import java.util.List;
 import java.util.Map;
 
 import mx.openpay.client.Address;
 import mx.openpay.client.Card;
+import mx.openpay.client.PointsBalance;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -41,7 +43,11 @@ public class CardOperations extends ServiceOperations {
 
     private static final String GET_MERCHANT_CARD_PATH = MERCHANT_CARDS_PATH + ID;
 
+    private static final String GET_MERCHANT_CARD_POINTS_PATH = GET_MERCHANT_CARD_PATH + POINTS;
+    
     private static final String GET_CUSTOMER_CARD_PATH = CUSTOMER_CARDS_PATH + ID;
+    
+    private static final String GET_CUSTOMER_CARD_POINTS_PATH = GET_CUSTOMER_CARD_PATH + POINTS;
 
     public CardOperations(final JsonServiceClient client) {
         super(client);
@@ -81,6 +87,17 @@ public class CardOperations extends ServiceOperations {
             OpenpayServiceException {
         String path = String.format(GET_CUSTOMER_CARD_PATH, this.getMerchantId(), customerId, cardId);
         return this.getJsonClient().get(path, Card.class);
+    }
+
+    public PointsBalance points(final String cardId) throws ServiceUnavailableException, OpenpayServiceException {
+        String path = String.format(GET_MERCHANT_CARD_POINTS_PATH, this.getMerchantId(), cardId);
+        return this.getJsonClient().get(path, PointsBalance.class);
+    }
+    
+    public PointsBalance points(final String customerId, final String cardId)
+            throws ServiceUnavailableException, OpenpayServiceException {
+        String path = String.format(GET_CUSTOMER_CARD_POINTS_PATH, this.getMerchantId(), customerId, cardId);
+        return this.getJsonClient().get(path, PointsBalance.class);
     }
 
     public void delete(final String cardId) throws ServiceUnavailableException,

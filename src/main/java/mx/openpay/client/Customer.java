@@ -55,6 +55,8 @@ public class Customer {
 
     @SerializedName("creation_date")
     private Date creationDate;
+    
+    private String clabe;
 
     /**
      * Customer first or only name. Required.
