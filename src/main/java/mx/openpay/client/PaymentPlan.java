@@ -29,10 +29,6 @@ import com.google.gson.annotations.SerializedName;
  * @author ismael
  */
 
-/**
- * Sets the days to first payment.
- * @param daysToFirstPayment the new days to first payment
- */
 @Getter
 @Setter
 @ToString

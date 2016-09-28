@@ -72,15 +72,14 @@ public class Subscription {
         return this;
     }
 
-    /**
-     * Use {@link #getSourceId()} instead.
-     * @param cardId
+    /*
+     *Use {@link #getSourceId()} instead.
      */
     public String getCardId() {
         return this.sourceId;
     }
 
-    /**
+    /*
      * Use {@link #setSourceId(String)} instead.
      * @param cardId
      */

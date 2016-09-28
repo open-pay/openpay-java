@@ -83,7 +83,6 @@ public class WebhookOperations extends ServiceOperations {
 	/**
 	 * <p>Método que permite eliminar un webhook en la plataforma Openpay</p>
 	 * @param webhookId  Identificador único del webhook
-	 * @return No regresa nada.
 	 */
 	public void delete(final String webhookId) throws OpenpayServiceException, ServiceUnavailableException {
 		String path = String.format(DELETE_PATH, this.getMerchantId(), webhookId);

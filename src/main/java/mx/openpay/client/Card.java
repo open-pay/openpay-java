@@ -156,7 +156,7 @@ public class Card {
         return this;
     }
 
-    /**
+    /*
      * Bank code in a three-digit string.
      * @see CreateCardParams#bankCode(Integer)
      */
