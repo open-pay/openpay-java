@@ -49,4 +49,11 @@ public class ConfirmChargeParams extends RequestBuilder {
         return this.with("device_session_id", deviceSessionId);
     }
     
+    /**
+     * Selected payments. Optional 
+     */
+    public ConfirmChargeParams payments(final Integer payments){
+        return this.with("payments", payments);
+    }
+    
 }
