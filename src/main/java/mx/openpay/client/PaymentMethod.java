@@ -38,15 +38,15 @@ public class PaymentMethod {
     private String name;
 
 	private String reference;
-	/*
-	@SerializedName("walmart_reference")
-	private String walmartReference;*/
+	
+	@SerializedName("paybin_reference")
+	private String paybinReference;
 
 	@SerializedName("barcode_url")
 	private String barcodeUrl;
-	/*
-	@SerializedName("barcode_walmart_url")
-	private String barcodeWalmartUrl;*/
+	
+	@SerializedName("barcode_paybin_url")
+	private String barcodePaybinUrl;
 	
 	@SerializedName("payment_address")
 	private String  paymentAddress;
