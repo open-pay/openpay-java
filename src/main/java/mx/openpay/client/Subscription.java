@@ -17,11 +17,11 @@ package mx.openpay.client;
 
 import java.util.Date;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import com.google.gson.annotations.SerializedName;
 
 /**
  * @author elopez
@@ -63,6 +63,8 @@ public class Subscription {
     private String sourceId;
 
     private Card card;
+    
+    private Transaction transaction; 
 
     /**
      * The ID of the plan to use for the subscription. Required.
