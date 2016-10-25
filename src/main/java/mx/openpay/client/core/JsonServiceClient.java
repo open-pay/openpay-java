@@ -144,39 +144,37 @@ public class JsonServiceClient {
 
     public <T> T post(final String path, final Map<String, Object> params, final Class<T> clazz)
             throws OpenpayServiceException, ServiceUnavailableException {
-        HttpServiceResponse response = this.httpClient.post(this.buildUri(path), this.serializer.serialize(params));
-        this.checkForErrors(response);
-        return this.deserializeObject(response, clazz);
+        return this.postObjectAsJson(path, params, clazz);
     }
 
     public <T> T post(final String path, final T params, final Class<T> clazz) throws OpenpayServiceException,
             ServiceUnavailableException {
-        HttpServiceResponse response = this.httpClient.post(this.buildUri(path), this.serializer.serialize(params));
-        this.checkForErrors(response);
-        return this.deserializeObject(response, clazz);
+        return this.postObjectAsJson(path, params, clazz);
     }
 
     public <T> T post(final String path, final Map<String, Object> params, final Class<T> clazz,
-            final boolean withResponse)
-            throws OpenpayServiceException, ServiceUnavailableException {
-        HttpServiceResponse response = this.httpClient.post(this.buildUri(path), this.serializer.serialize(params));
-        this.checkForErrors(response);
-        if (withResponse) {
-            return this.deserializeObject(response, clazz);
-        } else {
-            return null;
-        }
+            final boolean withResponse) throws OpenpayServiceException, ServiceUnavailableException {
+        return this.postObjectAsJson(path, params, withResponse ? clazz : null);
     }
 
     public <T> T post(final String path, final T params, final Class<T> clazz, final boolean withResponse)
-            throws OpenpayServiceException,
-            ServiceUnavailableException {
-        HttpServiceResponse response = this.httpClient.post(this.buildUri(path), this.serializer.serialize(params));
+            throws OpenpayServiceException, ServiceUnavailableException {
+        return this.postObjectAsJson(path, params, withResponse ? clazz : null);
+    }
+    
+    public <T> T postObjectAsJson(final String path, final Object request, final Class<T> clazz)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        return this.postString(path, this.serializer.serialize(request), clazz);
+    }
+
+    public <T> T postString(final String path, final String request, final Class<T> clazz)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        HttpServiceResponse response = this.httpClient.post(this.buildUri(path), request);
         this.checkForErrors(response);
-        if (withResponse) {
-            return this.deserializeObject(response, clazz);
-        } else {
+        if (clazz == null) {
             return null;
+        } else {
+            return this.deserializeObject(response, clazz);
         }
     }
 
