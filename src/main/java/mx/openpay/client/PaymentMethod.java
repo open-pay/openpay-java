@@ -37,28 +37,34 @@ public class PaymentMethod {
 
     private String name;
 
-	private String reference;
-	
-	@SerializedName("paybin_reference")
-	private String paybinReference;
+    private String reference;
 
-	@SerializedName("barcode_url")
-	private String barcodeUrl;
-	
-	@SerializedName("barcode_paybin_url")
-	private String barcodePaybinUrl;
-	
-	@SerializedName("payment_address")
-	private String  paymentAddress;
-	
-	@SerializedName("payment_url_bip21")
-	private String  paymentUrlBip21;
-	
-	@SerializedName("amount_bitcoins")
-	private BigDecimal  amountBitcoins;
-	
-	@SerializedName("exchange_rate")
-	private ExchangeRate exchangeRate;
-	
-	private String url;
+    @SerializedName("phone_number")
+    private String phoneNumber;
+
+    @SerializedName("ivr_key")
+    private String ivrKey;
+
+    @SerializedName("paybin_reference")
+    private String paybinReference;
+
+    @SerializedName("barcode_url")
+    private String barcodeUrl;
+
+    @SerializedName("barcode_paybin_url")
+    private String barcodePaybinUrl;
+
+    @SerializedName("payment_address")
+    private String paymentAddress;
+
+    @SerializedName("payment_url_bip21")
+    private String paymentUrlBip21;
+
+    @SerializedName("amount_bitcoins")
+    private BigDecimal amountBitcoins;
+
+    @SerializedName("exchange_rate")
+    private ExchangeRate exchangeRate;
+
+    private String url;
 }
