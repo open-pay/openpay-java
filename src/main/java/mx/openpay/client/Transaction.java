@@ -16,7 +16,6 @@
 package mx.openpay.client;
 
 import java.math.BigDecimal;
-
 import java.util.Date;
 import java.util.Map;
 
@@ -79,5 +78,7 @@ public class Transaction {
 	private ExchangeRate exchangeRate;
 
 	private Map<String, String> metadata;
+	
+	private String currency;
 
 }
