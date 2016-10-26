@@ -16,7 +16,6 @@
 package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
-
 import java.util.Date;
 import java.util.Map;
 
@@ -99,13 +98,21 @@ public class CreateCardChargeParams extends RequestBuilder {
     /**
      * A currency to give to the charge. Optional.<br>
      * Default value is MXN<br>
-     * <br>
-     * See @
      * @param currency
      * @return
      */
     public CreateCardChargeParams currency(final Currency currency) {
         return this.with("currency", currency == null ? Currency.MXN.name() : currency.name());
+    }
+
+    /**
+     * A currency to give to the charge in ISO 4217 alphanumeric code. Optional.<br>
+     * Default value is MXN<br>
+     * @param currency
+     * @return
+     */
+    public CreateCardChargeParams currency(final String currency) {
+        return this.with("currency", currency == null ? Currency.MXN.name() : currency);
     }
 
     /**
@@ -143,7 +150,7 @@ public class CreateCardChargeParams extends RequestBuilder {
     public CreateCardChargeParams useCardPoints(final UseCardPointsType useCardPoints) {
         return this.with("use_card_points", useCardPoints);
     }
-    
+
     /**
      * If true, the charge will use the points available in the card. <br>
      * The request will fail if the card does not accept points, so check the card response first.
@@ -151,7 +158,7 @@ public class CreateCardChargeParams extends RequestBuilder {
     public CreateCardChargeParams deferralPayments(final DeferralPayments deferralPayments) {
         return this.with("payment_plan", deferralPayments);
     }
-    
+
     /**
      * Send Email Flag indicate the transaction will sent to email.
      */
@@ -165,5 +172,5 @@ public class CreateCardChargeParams extends RequestBuilder {
     public CreateCardChargeParams redirectUrl(final String redirectUrl) {
         return this.with("redirect_url", redirectUrl);
     }
-    
+
 }
