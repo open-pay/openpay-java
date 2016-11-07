@@ -173,4 +173,12 @@ public class CreateCardChargeParams extends RequestBuilder {
         return this.with("redirect_url", redirectUrl);
     }
 
+    /**
+     * Sends cvv or cvc for those cases when the card is stored in Openpay
+     * in order to improve the acceptance
+     */
+    public CreateCardChargeParams cvv2(final String cvv2) {
+        return this.with("cvv2", cvv2);
+    }
+    
 }

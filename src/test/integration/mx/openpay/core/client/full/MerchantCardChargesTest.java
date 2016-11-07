@@ -85,7 +85,8 @@ public class MerchantCardChargesTest extends BaseTest {
                 .cardId(this.registeredCard.getId())
                 .amount(amount)
                 .description(desc)
-                .orderId(orderId));
+                .orderId(orderId).cvv2("235"));
+        
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
