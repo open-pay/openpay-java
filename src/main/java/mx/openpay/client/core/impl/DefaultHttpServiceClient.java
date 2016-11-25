@@ -24,13 +24,6 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import lombok.Setter;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import mx.openpay.client.core.HttpServiceClient;
-import mx.openpay.client.core.HttpServiceResponse;
-import mx.openpay.client.exceptions.ServiceUnavailableException;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.http.Consts;
@@ -48,7 +41,11 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.HttpClientUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.config.ConnectionConfig;
+import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -57,6 +54,13 @@ import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
+
+import lombok.Setter;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.core.HttpServiceClient;
+import mx.openpay.client.core.HttpServiceResponse;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * Uses Apache HttpClient to call the web service and retrieve the response information.
@@ -106,12 +110,22 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
             final int socketTimeout) {
         CloseableHttpClient httpClient;
         HttpClientConnectionManager manager;
-        if (requirePoolManager) {
-            manager = new PoolingHttpClientConnectionManager();
-        } else {
-            manager = new BasicHttpClientConnectionManager();
+        
+        SSLConnectionSocketFactory sslSocketFactory;
+        try {
+            sslSocketFactory = new SSLConnectionSocketFactory(new SSLContextBuilder().useProtocol("TLSv1.2").build());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
+        
+        if (requirePoolManager) {
+            manager = new PoolingHttpClientConnectionManager(
+                    RegistryBuilder.<ConnectionSocketFactory> create().register("https", sslSocketFactory).build());
+        } else {
+            manager = new BasicHttpClientConnectionManager(
+                    RegistryBuilder.<ConnectionSocketFactory> create().register("https", sslSocketFactory).build());
+        }
+        
         this.requestConfig = RequestConfig.custom().setConnectTimeout(connectionTimeout)
                 .setSocketTimeout(socketTimeout).build();
         ConnectionConfig connnectionConfig = ConnectionConfig.custom().setCharset(Charset.forName("UTF-8")).build();
