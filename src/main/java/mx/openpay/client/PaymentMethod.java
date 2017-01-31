@@ -32,10 +32,12 @@ public class PaymentMethod {
     private String type;
 
     private String bank;
-
+    
     private String clabe;
 
     private String name;
+    
+    private String agreement;
 
     private String reference;
 
