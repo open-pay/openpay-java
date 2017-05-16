@@ -30,6 +30,8 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import mx.openpay.client.enums.OrderStatusFilter;
+
 /**
  * <p>Clase que permite definir los criterios utilizados para realizar busquedas de algún tipo de entidad.</p>
  *
@@ -131,6 +133,16 @@ public class SearchParams extends PaginationParams {
      */
     public SearchParams externalId(final String externalId) {
         this.params.put("external_id", externalId);
+        return this;
+    }
+    
+    /**
+     * Search transactions by Order Status.
+     * @param orderStatus The Order Status. Unique among successful transactions (Failed transactions may repeat).
+     * @return List of transactions with the given Order ID.
+     */
+    public SearchParams orderStatus(final OrderStatusFilter orderStatus) {
+        this.params.put("order_status", orderStatus.getValue());
         return this;
     }
 }
