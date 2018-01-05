@@ -30,6 +30,7 @@ import mx.openpay.core.client.test.TestUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -72,6 +73,7 @@ public class CustomerCardPayoutsTest extends BaseTest {
         this.api.customers().delete(this.customer.getId());
     }
 
+    @Ignore("Card payouts unavailable")
     @SuppressWarnings("deprecation")
     @Test
     public void testCreate_Customer_Card_Old() throws ServiceUnavailableException, OpenpayServiceException {
@@ -95,6 +97,7 @@ public class CustomerCardPayoutsTest extends BaseTest {
         Assert.assertEquals(this.customer.getId(), transaction.getCustomerId());
     }
 
+    @Ignore("Card payouts unavailable")
     @SuppressWarnings("deprecation")
     @Test
     public void testCreateCustomerCardPayout_CardId_Old() throws ServiceUnavailableException, OpenpayServiceException {
@@ -112,7 +115,8 @@ public class CustomerCardPayoutsTest extends BaseTest {
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(this.customer.getId(), transaction.getCustomerId());
     }
-
+    
+    @Ignore("Card payouts unavailable")
     @Test
     public void testCreate_Customer_Card() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("1.00");
@@ -140,6 +144,7 @@ public class CustomerCardPayoutsTest extends BaseTest {
         Assert.assertNull(transaction.getFee());
     }
 
+    @Ignore("Card payouts unavailable")
     @Test
     public void testCreateCustomerCardPayout_CardId() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("1.00");

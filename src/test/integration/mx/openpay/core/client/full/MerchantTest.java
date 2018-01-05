@@ -16,6 +16,7 @@
 package mx.openpay.core.client.full;
 
 import static org.junit.Assert.assertNotNull;
+
 import mx.openpay.client.Merchant;
 
 import org.junit.Test;
@@ -34,7 +35,6 @@ public class MerchantTest extends BaseTest {
         assertNotNull(merchant.getName());
         assertNotNull(merchant.getStatus());
         assertNotNull(merchant.getPhone());
-        assertNotNull(merchant.getClabe());
         assertNotNull(merchant.getId());
     }
 }

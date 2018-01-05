@@ -16,10 +16,7 @@
 package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
-import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -63,7 +60,7 @@ public class MerchantCardChargesTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.registeredCard = this.api.cards().create(new Card()
-                .cardNumber("5470464956333056")
+                .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)

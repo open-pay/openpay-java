@@ -27,11 +27,13 @@ import mx.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Oswaldo Martinez oswaldo.martinez@openpay.mx
  */
+@Ignore("Bitcoin charges unavailable")
 public class CustomerBitcoinChargesTest extends BaseTest {
 
     private Customer customer;

@@ -28,6 +28,7 @@ import mx.openpay.core.client.test.TestUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -62,6 +63,7 @@ public class MerchantCardPayoutsTest extends BaseTest {
         this.api.cards().delete(this.card.getId());
     }
 
+    @Ignore("Card payouts unavailable")
     @SuppressWarnings("deprecation")
     @Test
     public void testCreate_Merchant_Card_Old() throws ServiceUnavailableException, OpenpayServiceException {
@@ -86,6 +88,7 @@ public class MerchantCardPayoutsTest extends BaseTest {
     }
 
     @Test
+    @Ignore("Card payouts unavailable")
     public void testCreate_Merchant_Card() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";
@@ -113,6 +116,7 @@ public class MerchantCardPayoutsTest extends BaseTest {
     }
 
     @Test
+    @Ignore("Card payouts unavailable")
     public void testCreateMerchantCardPayout_CardId() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Ganancias";

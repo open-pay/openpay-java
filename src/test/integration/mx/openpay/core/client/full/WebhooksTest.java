@@ -27,7 +27,6 @@ package mx.openpay.core.client.full;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.util.List;
 import java.util.TimeZone;
 
@@ -173,22 +172,6 @@ public class WebhooksTest {
     }
 
     private String getNewURLWebhook() throws IOException {
-        final String URL_BASE_WEBHOOK = "http://requestb.in/";
-        String resultString = null;
-        String webhookUrlId = null;
-
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost("http://requestb.in/api/v1/bins");
-        HttpResponse response = client.execute(post);
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-        while (rd.read() != -1) {
-            resultString += rd.readLine();
-        }
-        rd.close();
-        webhookUrlId = resultString.substring(resultString.indexOf("name") + 8, resultString.indexOf("name") + 16);
-
-        log.info("Nueva URL de Webhook: " + URL_BASE_WEBHOOK + webhookUrlId);
-        return URL_BASE_WEBHOOK + webhookUrlId;
+        return "http://httpbin.org/post?t=" + System.currentTimeMillis();
     }
 }

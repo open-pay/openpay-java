@@ -234,8 +234,15 @@ public class SubscriptionsTest extends BaseTest {
         assertThat(subscription.getTrialEndDate(), is(trialEndDateNoMinutes));
         assertThat(subscription.getCancelAtPeriodEnd(), is(true));
 
-        trialEndDate = simpleDateFormat.parse("2017-05-21 06:12:55");
-        trialEndDateNoMinutes = simpleDateFormat.parse("2017-05-21 00:00:00");
+        Calendar c2 = Calendar.getInstance();
+        c2.add(Calendar.YEAR, 1);
+        c2.set(Calendar.HOUR_OF_DAY, 6);
+        trialEndDate = c2.getTime();
+        c2.set(Calendar.HOUR_OF_DAY, 0);
+        c2.set(Calendar.MINUTE, 0);
+        c2.set(Calendar.SECOND, 0);
+        c2.set(Calendar.MILLISECOND, 0);
+        trialEndDateNoMinutes = c2.getTime();
         subscription.setTrialEndDate(trialEndDate);
         subscription.setCard(this.getCard().cardNumber("4242424242424242"));
         log.info("Updated 2");

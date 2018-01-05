@@ -3,6 +3,7 @@
  */
 package mx.openpay.core.client.full;
 
+import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,7 +11,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
-
 import java.util.List;
 
 import mx.openpay.client.Customer;
@@ -69,9 +69,9 @@ public class OrdersTest extends BaseTest {
 		assertEquals(customerId, newOrder.getCustomerId());
 		assertEquals(this.paymentPlan.getId(), newOrder.getPaymentPlanId());
 		assertEquals("waiting_first_pay", newOrder.getStatus());
-		assertThat(newOrder.getAmount(), equalTo(orderAmount));
-		assertThat(newOrder.getTotalAmountToPay(), equalTo(orderAmount));
-		assertThat(newOrder.getTotalAmountPaid(), equalTo(BigDecimal.ZERO));
+		assertThat(newOrder.getAmount(), comparesEqualTo(orderAmount));
+		assertThat(newOrder.getTotalAmountToPay(), comparesEqualTo(orderAmount));
+		assertThat(newOrder.getTotalAmountPaid(), comparesEqualTo(BigDecimal.ZERO));
 		assertThat(newOrder.getNumberOfPaymentsMade(), equalTo(new Integer("0")));
 		assertThat(newOrder.getMaximunNumberOfPayments(), equalTo(new Integer("12")));
 		this.assertNotNullValues(newOrder);

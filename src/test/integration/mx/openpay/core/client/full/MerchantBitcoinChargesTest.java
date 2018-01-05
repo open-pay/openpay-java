@@ -15,8 +15,8 @@
  */
 package mx.openpay.core.client.full;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
@@ -24,11 +24,13 @@ import mx.openpay.client.Charge;
 import mx.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Oswaldo Martinez oswaldo.martinez@openpay.mx
  */
+@Ignore("Bitcoin charges unavailable")
 public class MerchantBitcoinChargesTest extends BaseTest {
 
     @Test

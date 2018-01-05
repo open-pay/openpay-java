@@ -17,6 +17,7 @@ package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -88,8 +89,8 @@ public class MerchantCardsTest extends BaseTest {
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Pérez Nuñez", card.getHolderName());
         assertEquals(PointsType.BANCOMER, balance.getPointsType());
-        assertEquals(new BigInteger("450"), balance.getRemainingPoints());
-        assertEquals(new BigDecimal("33.750"), balance.getRemainingMxn());
+        assertThat(balance.getRemainingPoints(), comparesEqualTo(new BigInteger("450")));
+        assertThat(balance.getRemainingMxn(), comparesEqualTo(new BigDecimal("33.750")));
     }
 
     @Test
