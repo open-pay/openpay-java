@@ -9,14 +9,14 @@
 	<description>Java client for Openpay Services</description>
 	<url>http://github.com/open-pay/openpay-java</url>
 	
-<!-- Para publicar en Sonatype
+<!-- Para publicar en Sonatype -->
  	<parent>
  		<groupId>org.sonatype.oss</groupId>
  		<artifactId>oss-parent</artifactId>
  		<version>7</version>
- 	</parent> -->
+ 	</parent>
 
-<!-- Para publicar en repositorio local -->
+<!-- Para publicar en repositorio local
 	<distributionManagement>
 		<snapshotRepository>
 			<id>nexus-facelend</id>
@@ -28,7 +28,7 @@
 			<name>RepositoryProxy</name>
 			<url>http://nexus.facelend.com:8081/nexus/content/repositories/releases</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement> -->
 
 	<licenses>
 		<license>
