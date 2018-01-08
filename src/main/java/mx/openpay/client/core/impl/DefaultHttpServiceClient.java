@@ -21,8 +21,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.security.GeneralSecurityException;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.net.ssl.SSLContext;
+
+import lombok.Setter;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.core.HttpServiceClient;
+import mx.openpay.client.core.HttpServiceResponse;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
@@ -54,13 +64,6 @@ import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
-
-import lombok.Setter;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import mx.openpay.client.core.HttpServiceClient;
-import mx.openpay.client.core.HttpServiceResponse;
-import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * Uses Apache HttpClient to call the web service and retrieve the response information.
@@ -112,8 +115,15 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
         HttpClientConnectionManager manager;
         
         SSLConnectionSocketFactory sslSocketFactory;
+        SSLContext tlsContext;
         try {
-            sslSocketFactory = new SSLConnectionSocketFactory(new SSLContextBuilder().useProtocol("TLSv1.2").build());
+            try {
+                tlsContext = new SSLContextBuilder().useProtocol("TLSv1.2").build();
+            } catch (GeneralSecurityException e) {
+                log.warn("Could not force protocol TLSv1.2: {}", e.getMessage());
+                tlsContext = new SSLContextBuilder().build();
+            }
+            sslSocketFactory = new SSLConnectionSocketFactory(tlsContext);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
