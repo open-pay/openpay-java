@@ -33,7 +33,6 @@ import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,32 +65,32 @@ public class CustomerCardsTest extends BaseTest {
     @SuppressWarnings("deprecation")
     @Test
     public void testCreateCustomerCard_Old() throws Exception {
-        Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Pérez Nuñez", "111",
+        Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Perez Nunez", "111",
                 "09", "20", TestUtils.prepareAddress());
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
     @Test
     public void testCreateCustomerCard() throws Exception {
         Card card = this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
-                .holderName("Juanito Pérez Nuñez")
+                .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
                 .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
     @Test
     public void testGetCustomerCard() throws Exception {
         Card card = this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
-                .holderName("Juanito Pérez Nuñez")
+                .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
                 .expirationYear(20)
@@ -99,14 +98,14 @@ public class CustomerCardsTest extends BaseTest {
         this.cardsToDelete.add(card);
         card = this.api.cards().get(this.customer.getId(), card.getId());
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
     @Test
     public void testGetCustomerPointsCard() throws Exception {
         Card card = this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
-                .holderName("Juanito Pérez Nuñez")
+                .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(12)
                 .expirationYear(30)
@@ -114,7 +113,7 @@ public class CustomerCardsTest extends BaseTest {
         this.cardsToDelete.add(card);
         PointsBalance balance = this.api.cards().points(this.customer.getId(), card.getId());
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
         assertEquals(new BigInteger("450"), balance.getRemainingPoints());
         System.out.println("id " + card.getId());
     }
@@ -139,24 +138,24 @@ public class CustomerCardsTest extends BaseTest {
     @SuppressWarnings("deprecation")
     @Test
     public void testCreateCustomerCard_NoAddress_Old() throws Exception {
-        Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Pérez Nuñez", "111",
+        Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Perez Nunez", "111",
                 "09", "20", null);
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
     @Test
     public void testCreateCustomerCard_NoAddress() throws Exception {
         Card card = this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
-                .holderName("Juanito Pérez Nuñez")
+                .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
                 .expirationYear(20));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
     @Test

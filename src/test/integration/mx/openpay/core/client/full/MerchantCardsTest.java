@@ -64,21 +64,21 @@ public class MerchantCardsTest extends BaseTest {
     public void testCreateMerchantCard() throws Exception {
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
-                .holderName("Juanito Pérez Nuñez")
+                .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
                 .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
     @Test
     public void testGetMerchantCard() throws Exception {
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
-                .holderName("Juanito Pérez Nuñez")
+                .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
                 .expirationYear(20)
@@ -87,7 +87,7 @@ public class MerchantCardsTest extends BaseTest {
         card = this.api.cards().get(card.getId());
         PointsBalance balance = this.api.cards().points(card.getId());
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
         assertEquals(PointsType.BANCOMER, balance.getPointsType());
         assertThat(balance.getRemainingPoints(), comparesEqualTo(new BigInteger("450")));
         assertThat(balance.getRemainingMxn(), comparesEqualTo(new BigDecimal("33.750")));
@@ -114,13 +114,13 @@ public class MerchantCardsTest extends BaseTest {
     public void testCreateMerchantCard_NoAddress() throws Exception {
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
-                .holderName("Juanito Pérez Nuñez")
+                .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
                 .expirationYear(20));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
-        assertEquals("Juanito Pérez Nuñez", card.getHolderName());
+        assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
     @Test

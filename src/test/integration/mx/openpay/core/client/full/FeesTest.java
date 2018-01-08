@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class FeesTest extends BaseTest {
     @Test
     public void testCreate() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal feeAmount = new BigDecimal("2.00");
-        String desc = "Comisión general";
+        String desc = "Comision general";
         String orderId = this.dateFormat.format(new Date());
 
         Fee transaction = this.api.fees().create(this.customer.getId(), feeAmount, desc, orderId);
