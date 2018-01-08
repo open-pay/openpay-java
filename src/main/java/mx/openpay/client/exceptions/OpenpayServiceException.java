@@ -18,6 +18,7 @@ package mx.openpay.client.exceptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import mx.openpay.client.RiskData;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -40,6 +41,9 @@ public class OpenpayServiceException extends Exception {
 
     @SerializedName("request_id")
     private String requestId;
+    
+    @SerializedName("risk_data")
+    private RiskData riskData;
 
     private String body;
 

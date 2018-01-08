@@ -16,7 +16,10 @@
 package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -34,6 +37,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
+import mx.openpay.client.Customer;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
@@ -83,7 +87,7 @@ public class MerchantCardChargesTest extends BaseTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId).cvv2("235"));
-        
+
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
@@ -126,11 +130,11 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
-// TODO se comenta por que en ambiente de desarrollo regresa cardPoints nulo.
-//        assertThat(transaction.getCardPoints(), is(notNullValue()));
-//        assertThat(transaction.getCardPoints().getUsed(), is(greaterThan(BigDecimal.ZERO)));
-//        assertThat(transaction.getCardPoints().getRemaining(), is(greaterThan(BigDecimal.ZERO)));
-//        assertThat(transaction.getCardPoints().getAmount(), comparesEqualTo(amount));
+        // TODO se comenta por que en ambiente de desarrollo regresa cardPoints nulo.
+        // assertThat(transaction.getCardPoints(), is(notNullValue()));
+        // assertThat(transaction.getCardPoints().getUsed(), is(greaterThan(BigDecimal.ZERO)));
+        // assertThat(transaction.getCardPoints().getRemaining(), is(greaterThan(BigDecimal.ZERO)));
+        // assertThat(transaction.getCardPoints().getAmount(), comparesEqualTo(amount));
         Assert.assertNotNull(transaction.getFee());
     }
 
@@ -148,11 +152,11 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
-//TODO se comenta por que en ambiente de desarrollo regresa cardPoints nulo.
-//        assertThat(transaction.getCardPoints(), is(notNullValue()));
-//        assertThat(transaction.getCardPoints().getUsed(), is(greaterThan(BigDecimal.ZERO)));
-//        assertThat(transaction.getCardPoints().getRemaining(), is(greaterThan(BigDecimal.ZERO)));
-//        assertThat(transaction.getCardPoints().getAmount(), comparesEqualTo(new BigDecimal("22.5")));
+        // TODO se comenta por que en ambiente de desarrollo regresa cardPoints nulo.
+        // assertThat(transaction.getCardPoints(), is(notNullValue()));
+        // assertThat(transaction.getCardPoints().getUsed(), is(greaterThan(BigDecimal.ZERO)));
+        // assertThat(transaction.getCardPoints().getRemaining(), is(greaterThan(BigDecimal.ZERO)));
+        // assertThat(transaction.getCardPoints().getAmount(), comparesEqualTo(new BigDecimal("22.5")));
         Assert.assertNotNull(transaction.getFee());
     }
 
@@ -233,6 +237,8 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(charge.getCard());
         assertNull(charge.getCard().getCvv2());
         assertNull(charge.getCard().getId());
+        assertThat(charge.getRiskData().getScore(), is(notNullValue()));
+        assertThat(charge.getRiskData().getRules(), is(not(empty())));
     }
 
     @Test
@@ -416,6 +422,31 @@ public class MerchantCardChargesTest extends BaseTest {
             fail();
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
+        }
+    }
+
+    @Test
+    public void testFailedRiskTransaction() throws Exception {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        try {
+            this.api.charges().create(new CreateCardChargeParams()
+                    .card(new Card()
+                            .cardNumber("4444444444444448")
+                            .holderName("Juanito Pérez Nuñez")
+                            .cvv2("111")
+                            .expirationMonth(9)
+                            .expirationYear(20))
+                    .customer(new Customer()
+                            .name("Juanito Pérez Nuñez")
+                            .email("ERROR.FRAUD@OPENPAY.MX"))
+                    .amount(amount)
+                    .description(desc));
+        } catch (OpenpayServiceException e) {
+            assertEquals(402, e.getHttpCode().intValue());
+            assertThat(e.getErrorCode(), is(3003));
+            assertThat(e.getRiskData().getScore(), is(notNullValue()));
+            assertThat(e.getRiskData().getRules(), is(not(empty())));
         }
     }
 
