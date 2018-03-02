@@ -75,5 +75,9 @@ public class OpenpayPathComponents {
     public static final String BINES = "/bines";
 
     public static final String BIN = "/%s";
+    
+    public static final String GROUPS = "/groups";
+    
+    public static final String MERCHANTS = "/merchants";
 
 }
