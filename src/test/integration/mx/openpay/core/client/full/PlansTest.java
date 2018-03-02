@@ -53,8 +53,11 @@ public class PlansTest extends BaseTest {
 
     @After
     public void tearDown() throws Exception {
-        for (Plan plan : this.plansToDelete) {
-            this.api.plans().delete(plan.getId());
+        List<Plan> list = this.api.plans().list(null);
+        for (Plan plan : list) {
+            if (!plan.getStatus().equals("deleted")) {
+                this.api.plans().delete(plan.getId());
+            }
         }
     }
 
@@ -167,7 +170,7 @@ public class PlansTest extends BaseTest {
     }
 
     @Test
-    public void testList_Empty() throws Exception {
+    public void testList_Deleted() throws Exception {
         List<Plan> list = this.api.plans().list(null);
         for (Plan plan : list) {
             assertThat(plan.getStatus(), is("deleted"));

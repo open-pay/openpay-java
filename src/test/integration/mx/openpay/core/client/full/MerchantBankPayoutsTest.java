@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -66,7 +65,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
 
     @Test
     public void testListMerchantPayouts() throws ServiceUnavailableException, OpenpayServiceException {
-        BigDecimal amount = new BigDecimal(new Random().nextInt(1000));
+        BigDecimal amount = new BigDecimal(new Random().nextInt(1000)).add(new BigDecimal("0.01"));
         this.api.payouts().create(new CreateBankPayoutParams()
                 .bankAccountId(this.bankAccount.getId()).amount(amount).description("desc 1"));
         this.api.payouts().create(new CreateBankPayoutParams()
