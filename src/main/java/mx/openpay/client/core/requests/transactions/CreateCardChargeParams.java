@@ -174,6 +174,13 @@ public class CreateCardChargeParams extends RequestBuilder {
     }
 
     /**
+     * indicates if the charge must 
+     */
+    public CreateCardChargeParams use3dSecure(final Boolean use3dSecure) {
+        return this.with("use_3d_secure", use3dSecure);
+    }
+
+    /**
      * Sends cvv or cvc for those cases when the card is stored in Openpay
      * in order to improve the acceptance
      */
