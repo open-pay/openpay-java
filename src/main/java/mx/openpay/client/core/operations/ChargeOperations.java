@@ -30,6 +30,7 @@ import java.util.Map;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.ConfirmChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
@@ -43,6 +44,7 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.SearchParams;
 
 /**
+ * Operations for Openpay Charges.
  * @author elopez
  */
 public class ChargeOperations extends ServiceOperations {
@@ -71,49 +73,29 @@ public class ChargeOperations extends ServiceOperations {
         super(client);
     }
 
-    public Charge create(final CreateCardChargeParams request) throws OpenpayServiceException,
-            ServiceUnavailableException {
+    /**
+     * Creates any kind of charge at the Merchant level.
+     * @param request Generic request params.
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @since 1.0.10
+     */
+    public Charge createCharge(RequestBuilder request) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
         return this.getJsonClient().post(path, request.asMap(), Charge.class);
     }
 
-    public Charge create(final String customerId, final CreateCardChargeParams request) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
-        return this.getJsonClient().post(path, request.asMap(), Charge.class);
-    }
-
-    public Charge create(final CreateBankChargeParams request) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
-        return this.getJsonClient().post(path, request.asMap(), Charge.class);
-    }
-
-    public Charge create(final String customerId, final CreateBankChargeParams request) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
-        return this.getJsonClient().post(path, request.asMap(), Charge.class);
-    }
-
-    public Charge create(final CreateStoreChargeParams request) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
-        return this.getJsonClient().post(path, request.asMap(), Charge.class);
-    }
-
-    public Charge create(final String customerId, final CreateStoreChargeParams request)
-            throws OpenpayServiceException, ServiceUnavailableException {
-        String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
-        return this.getJsonClient().post(path, request.asMap(), Charge.class);
-    }
-
-    public Charge create(final CreateBitcoinChargeParams request) throws OpenpayServiceException,
-            ServiceUnavailableException {
-        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId());
-        return this.getJsonClient().post(path, request.asMap(), Charge.class);
-    }
-
-    public Charge create(final String customerId, final CreateBitcoinChargeParams request)
+    /**
+     * Creates any kind of charge at the Customer level.
+     * @param customerId ID of the Customer created previously in Openpay.
+     * @param request Generic request params.
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @since 1.0.10
+     */
+    public Charge createCharge(final String customerId, RequestBuilder request)
             throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(FOR_CUSTOMER_PATH, this.getMerchantId(), customerId);
         return this.getJsonClient().post(path, request.asMap(), Charge.class);
@@ -205,6 +187,9 @@ public class ChargeOperations extends ServiceOperations {
         return this.getJsonClient().post(path, params.asMap(), Charge.class);
     }
 
+    /**
+     * @deprecated Use {@link #createCharge(RequestBuilder)} with {@link CreateCardChargeParams}
+     */
     @Deprecated
     public Charge create(final Card card, final BigDecimal amount, final String description,
             final String orderId) throws OpenpayServiceException, ServiceUnavailableException {
@@ -215,9 +200,13 @@ public class ChargeOperations extends ServiceOperations {
         return this.create(charge);
     }
 
+    /**
+     * @deprecated Use {@link #createCharge(String, RequestBuilder)} with {@link CreateCardChargeParams}
+     */
     @Deprecated
     public Charge create(final String customerId, final Card card, final BigDecimal amount,
-            final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
+            final String description, final String orderId)
+            throws ServiceUnavailableException, OpenpayServiceException {
         CreateCardChargeParams charge = new CreateCardChargeParams()
                 .amount(amount)
                 .description(description)
@@ -226,9 +215,13 @@ public class ChargeOperations extends ServiceOperations {
         return this.create(customerId, charge);
     }
 
+    /**
+     * @deprecated Use {@link #createCharge(String, RequestBuilder)} with {@link CreateCardChargeParams}
+     */
     @Deprecated
     public Charge create(final String customerId, final String sourceId, final BigDecimal amount,
-            final String description, final String orderId) throws ServiceUnavailableException, OpenpayServiceException {
+            final String description, final String orderId)
+            throws ServiceUnavailableException, OpenpayServiceException {
         CreateCardChargeParams charge = new CreateCardChargeParams()
                 .cardId(sourceId)
                 .amount(amount)
@@ -237,6 +230,9 @@ public class ChargeOperations extends ServiceOperations {
         return this.create(customerId, charge);
     }
 
+    /**
+     * @deprecated Use {@link #createCharge(RequestBuilder)} with {@link CreateBankChargeParams}
+     */
     @Deprecated
     public Charge createMerchantBankTransfer(final BigDecimal amount, final String description, final String orderId)
             throws OpenpayServiceException, ServiceUnavailableException {
@@ -247,6 +243,9 @@ public class ChargeOperations extends ServiceOperations {
         return this.create(request);
     }
 
+    /**
+     * @deprecated Use {@link #createCharge(String, RequestBuilder)} with {@link CreateBankChargeParams}
+     */
     @Deprecated
     public Charge createCustomerBankTransfer(final String customerId, final BigDecimal amount,
             final String description,
@@ -256,6 +255,122 @@ public class ChargeOperations extends ServiceOperations {
                 .description(description)
                 .orderId(orderId);
         return this.create(customerId, request);
+    }
+
+    /**
+     * Creates a card charge at the Merchant level
+     * @param request Card charge params
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @deprecated You can use {@link #createCharge(RequestBuilder)} for all charge methods.
+     */
+    @Deprecated
+    public Charge create(final CreateCardChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        return createCharge(request);
+    }
+
+    /**
+     * Creates a card charge at the Customer level.
+     * @param customerId ID of the Customer created previously in Openpay.
+     * @param request Card charge params
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @deprecated You can use {@link #createCharge(String, RequestBuilder)} for all charge methods.
+     */
+    @Deprecated
+    public Charge create(final String customerId, final CreateCardChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        return createCharge(customerId, request);
+    }
+
+    /**
+     * Creates a bank account charge at the Merchant level
+     * @param request bank charge params
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @deprecated You can use {@link #createCharge(RequestBuilder)} for all charge methods.
+     */
+    @Deprecated
+    public Charge create(final CreateBankChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        return createCharge(request);
+    }
+
+    /**
+     * Creates a bank account charge at the Customer level.
+     * @param customerId ID of the Customer created previously in Openpay.
+     * @param request bank charge params
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @deprecated You can use {@link #createCharge(String, RequestBuilder)} for all charge methods.
+     */
+    @Deprecated
+    public Charge create(final String customerId, final CreateBankChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        return createCharge(customerId, request);
+    }
+
+    /**
+     * Creates a store charge at the Merchant level
+     * @param request bank charge params
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @deprecated You can use {@link #createCharge(RequestBuilder)} for all charge methods.
+     */
+    @Deprecated
+    public Charge create(final CreateStoreChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        return createCharge(request);
+    }
+
+    /**
+     * Creates a store charge at the Customer level.
+     * @param customerId ID of the Customer created previously in Openpay.
+     * @param request Store charge params
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @deprecated You can use {@link #createCharge(String, RequestBuilder)} for all charge methods.
+     */
+    @Deprecated
+    public Charge create(final String customerId, final CreateStoreChargeParams request)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        return createCharge(customerId, request);
+    }
+
+    /**
+     * Creates a Bitcoin charge at the Merchant level.
+     * @param request bank charge params
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @deprecated Bitcoin requests have been discontinued, but the method remains for code compatibility.
+     */
+    @Deprecated
+    public Charge create(final CreateBitcoinChargeParams request) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        return createCharge(request);
+    }
+
+    /**
+     * Creates a Bitcoin charge at the Customer level.
+     * @param customerId ID of the Customer created previously in Openpay.
+     * @param request Card charge params
+     * @return Charge data returned by Openpay
+     * @throws OpenpayServiceException When Openpay returns an error response
+     * @throws ServiceUnavailableException When an unexpected communication error occurs.
+     * @deprecated Bitcoin requests have been discontinued, but the method remains for code compatibility.
+     */
+    @Deprecated
+    public Charge create(final String customerId, final CreateBitcoinChargeParams request)
+            throws OpenpayServiceException, ServiceUnavailableException {
+        return createCharge(customerId, request);
     }
 
     @Deprecated

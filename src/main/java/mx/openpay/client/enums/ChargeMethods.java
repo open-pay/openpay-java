@@ -16,8 +16,26 @@
 package mx.openpay.client.enums;
 
 /**
+ * Methods to charge a transaction in Openpay.
  * @author elopez
  */
 public enum ChargeMethods {
-	CARD, BANK_ACCOUNT, STORE, BITCOIN;
+
+    /** Charges done to credit and debit cards. */
+    CARD,
+
+    /** Charges done through bank transfers. */
+    BANK_ACCOUNT,
+
+    /** Charges paid in a convenience store. */
+    STORE,
+
+    /** Charges paid through Bitcoin. Discontinued. */
+    BITCOIN,
+
+    /**
+     * Charges paid thtough Alipay.
+     * @since 1.0.10
+     */
+    ALIPAY;
 }

@@ -174,7 +174,8 @@ public class CreateCardChargeParams extends RequestBuilder {
     }
 
     /**
-     * indicates if the charge must 
+     * indicates if the charge must be done using 3D Secure.
+     * @since 1.0.10
      */
     public CreateCardChargeParams use3dSecure(final Boolean use3dSecure) {
         return this.with("use_3d_secure", use3dSecure);

@@ -91,7 +91,7 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
                 DEFAULT_CONNECTION_TIMEOUT);
         String version = this.getClass().getPackage().getImplementationVersion();
         if (version == null) {
-            version = "1.0.2-UNKNOWN";
+            version = "1.0.10-UNKNOWN";
         }
         this.userAgent = AGENT + version;
     }
