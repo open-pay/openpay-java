@@ -262,6 +262,26 @@ public class MerchantCardChargesTest extends BaseTest {
     }
 
     @Test
+    public void testCreate_Charge_WithCard_3dSecure() throws Exception {
+        BigDecimal amount = new BigDecimal("10.00");
+        String desc = "Pago de taxi";
+        Charge charge = this.api.charges().create(new CreateCardChargeParams()
+                .card(new Card()
+                        .cardNumber("5555555555554444")
+                        .holderName("Juanito Pérez Nuñez")
+                        .cvv2("111")
+                        .expirationMonth(9)
+                        .expirationYear(20))
+                .amount(amount)
+                .description(desc)
+                .use3dSecure(true)
+                .redirectUrl("http://openpay.mx"));
+        assertNotNull(charge);
+        assertNotNull(charge.getCard());
+        assertNotNull(charge.getPaymentMethod().getUrl());
+    }
+    
+    @Test
     public void testCreate_Charge_WithCard_currencyUSD_metadata() throws Exception {
         BigDecimal amount = new BigDecimal("1.00");
         String desc = "Pago de taxi";

@@ -21,7 +21,7 @@ import lombok.Getter;
 import mx.openpay.client.core.requests.RequestBuilder;
 
 /**
- * Parameters to refund a completed charge. Currently only card charges can be refunded this way.
+ * Parameters to capture a preauthorized charge.
  * @author elopez
  */
 public class ConfirmCaptureParams extends RequestBuilder {

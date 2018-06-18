@@ -24,9 +24,7 @@
  */
 package mx.openpay.core.client.full;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -37,11 +35,6 @@ import mx.openpay.client.enums.WebhookStatus;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -140,35 +133,11 @@ public class WebhooksTest {
         this.urlTest = this.getNewURLWebhook();
         this.testCreateWebhook();
         webhooks = this.api.webhooks().list();
+        this.webhooks = webhooks;
+        this.webhookId = null;
         log.info(webhooks.toString());
         Assert.assertNotNull(webhooks);
         Assert.assertEquals(2, webhooks.size());
-        this.webhookId = null;
-        this.webhooks = webhooks;
-    }
-
-    @SuppressWarnings("deprecation")
-    private String getVerificationCodeFromURLWebhook(final Webhook webhook) throws ClientProtocolException, IOException {
-        final String URL_DETAIL_WEBHOOK = "?inspect";
-        String resultString = null;
-        String verificationCode = null;
-
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(webhook.getUrl() + URL_DETAIL_WEBHOOK);
-        HttpResponse response = client.execute(post);
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-        while (rd.read() != -1) {
-            resultString += rd.readLine();
-        }
-        rd.close();
-
-        verificationCode = resultString.substring(resultString.indexOf("verification_code&#34;:&#34;")
-                + "verification_code&#34;:&#34;".length(), resultString.indexOf("verification_code&#34;:&#34;")
-                + "verification_code&#34;:&#34;".length() + 8);
-
-        log.info("codigo de verificacion para Webhook: " + verificationCode);
-        return verificationCode;
     }
 
     private String getNewURLWebhook() throws IOException {
