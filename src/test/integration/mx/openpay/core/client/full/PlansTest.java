@@ -173,7 +173,7 @@ public class PlansTest extends BaseTest {
     public void testList_Deleted() throws Exception {
         List<Plan> list = this.api.plans().list(null);
         for (Plan plan : list) {
-            assertThat(plan.getStatus(), is("deleted"));
+            assertThat("plan " + plan.getId() + " must be deleted", plan.getStatus(), is("deleted"));
         }
     }
 
