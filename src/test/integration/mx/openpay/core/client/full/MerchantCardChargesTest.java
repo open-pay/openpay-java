@@ -16,6 +16,7 @@
 package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
+import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -38,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
+import mx.openpay.client.SimpleRefund;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
@@ -369,6 +371,13 @@ public class MerchantCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(originalTransactionId);
         assertNotNull(transaction.getRefund());
         assertTrue(this.api.merchant().get().getBalance().compareTo(initialBalance) == 0);
+        assertThat(transaction.getRefunds().size(), is(1));
+        SimpleRefund refund = transaction.getRefunds().get(0);
+        assertThat(refund.getId(), is(notNullValue()));
+        assertThat(refund.getStatus(), is("completed"));
+        assertThat(refund.getOperationDate(), is(notNullValue()));
+        assertThat(refund.getAmount(), comparesEqualTo(amount));
+        
     }
 
     @Test
