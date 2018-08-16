@@ -36,9 +36,12 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.Address;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
+import mx.openpay.client.HttpContext;
+import mx.openpay.client.ShipTo;
 import mx.openpay.client.SimpleRefund;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
@@ -234,7 +237,25 @@ public class MerchantCardChargesTest extends BaseTest {
                         .expirationMonth(9)
                         .expirationYear(20))
                 .amount(amount)
-                .description(desc));
+                .description(desc)
+                .shipTo(new ShipTo()
+                        .firstName("Juanito")
+                        .lastName("Perez")
+                        .email("juanitoperez@example.com")
+                        .phoneNumber("0000000000")
+                        .method("shipping method")
+                        .address(new Address()
+                                .line1("line1")
+                                .line2("line2")
+                                .line3("")
+                                .city("city")
+                                .countryCode("MX")
+                                .postalCode("76000")
+                                .state("state")))
+                .httpContext(new HttpContext()
+                        .ip("127.0.0.1")
+                        .browser("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1")
+                        .domain("www.example.com")));
         assertNotNull(charge);
         assertNotNull(charge.getCard());
         assertNull(charge.getCard().getCvv2());

@@ -22,6 +22,8 @@ import java.util.Map;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.DeferralPayments;
+import mx.openpay.client.HttpContext;
+import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.enums.Currency;
@@ -182,11 +184,24 @@ public class CreateCardChargeParams extends RequestBuilder {
     }
 
     /**
-     * Sends cvv or cvc for those cases when the card is stored in Openpay
-     * in order to improve the acceptance
+     * Sends cvv or cvc for those cases when the card is stored in Openpay in order to improve the acceptance
      */
     public CreateCardChargeParams cvv2(final String cvv2) {
         return this.with("cvv2", cvv2);
     }
-    
+
+    /**
+     * Sends shipping information.
+     */
+    public CreateCardChargeParams shipTo(final ShipTo shipTo) {
+        return this.with("ship_to", shipTo);
+    }
+
+    /**
+     * Sends customer browser information.
+     */
+    public CreateCardChargeParams httpContext(final HttpContext httpContext) {
+        return this.with("http_context", httpContext);
+    }
+
 }
