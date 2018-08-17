@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import mx.openpay.client.Customer;
+import mx.openpay.client.HttpContext;
+import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.enums.Currency;
@@ -78,6 +80,20 @@ public class CreateAlipayChargeParams extends RequestBuilder {
      */
     public CreateAlipayChargeParams redirectUrl(final String redirectUrl) {
         return this.with("redirect_url", redirectUrl);
+    }
+    
+    /**
+     * Sends shipping information.
+     */
+    public CreateCardChargeParams shipTo(final ShipTo shipTo) {
+        return this.with("ship_to", shipTo);
+    }
+
+    /**
+     * Sends customer browser information.
+     */
+    public CreateCardChargeParams httpContext(final HttpContext httpContext) {
+        return this.with("http_context", httpContext);
     }
 
 }

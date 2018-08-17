@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import mx.openpay.client.Customer;
+import mx.openpay.client.HttpContext;
+import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 
@@ -64,4 +66,18 @@ public class CreateBankChargeParams extends RequestBuilder {
 	public CreateBankChargeParams customer(final Customer customer) {
 	    return this.with("customer", customer);
 	}
+	
+	 /**
+     * Sends shipping information.
+     */
+    public CreateCardChargeParams shipTo(final ShipTo shipTo) {
+        return this.with("ship_to", shipTo);
+    }
+
+    /**
+     * Sends customer browser information.
+     */
+    public CreateCardChargeParams httpContext(final HttpContext httpContext) {
+        return this.with("http_context", httpContext);
+    }
 }
