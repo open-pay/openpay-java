@@ -15,7 +15,7 @@ To install, add the following dependency to your pom.xml:
 <dependency>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.0.11</version>
+	<version>1.0.12</version>
 </dependency>
 ```
 
