@@ -40,6 +40,7 @@ import mx.openpay.client.Address;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
+import mx.openpay.client.GatewayParams;
 import mx.openpay.client.HttpContext;
 import mx.openpay.client.ShipTo;
 import mx.openpay.client.SimpleRefund;
@@ -91,7 +92,10 @@ public class MerchantCardChargesTest extends BaseTest {
                 .cardId(this.registeredCard.getId())
                 .amount(amount)
                 .description(desc)
-                .orderId(orderId).cvv2("235"));
+                .orderId(orderId).cvv2("235")
+                .gateway(new GatewayParams()
+                        .addData("amex", "keyName", "data")
+                        .addData("amex", "otherKey", "value")));
 
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
