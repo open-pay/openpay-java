@@ -22,6 +22,7 @@ import java.util.Map;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.DeferralPayments;
+import mx.openpay.client.GatewayParams;
 import mx.openpay.client.HttpContext;
 import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
@@ -202,6 +203,11 @@ public class CreateCardChargeParams extends RequestBuilder {
      */
     public CreateCardChargeParams httpContext(final HttpContext httpContext) {
         return this.with("http_context", httpContext);
+    }
+    
+    /** Additional Gateway Options. */
+    public CreateCardChargeParams gateway(final GatewayParams gatewayParams) {
+        return this.with("gateway", gatewayParams);
     }
 
 }
