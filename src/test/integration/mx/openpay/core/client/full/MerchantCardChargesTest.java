@@ -388,7 +388,10 @@ public class MerchantCardChargesTest extends BaseTest {
         String refDesc = "cancelacion (ignored description)";
         transaction = this.api.charges().refund(new RefundParams()
                 .chargeId(transaction.getId())
-                .description(refDesc));
+                .description(refDesc)
+                .gateway(new GatewayParams()
+                        .addData("amex_iso", "key123", "value456")
+                        .addData("amex_iso", "abc123", "def456")));
         assertNotNull(transaction.getRefund());
         assertNull(transaction.getRefund().getFee());
         assertEquals(refDesc, transaction.getRefund().getDescription());

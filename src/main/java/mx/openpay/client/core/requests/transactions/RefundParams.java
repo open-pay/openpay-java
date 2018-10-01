@@ -18,6 +18,7 @@ package mx.openpay.client.core.requests.transactions;
 import java.math.BigDecimal;
 
 import lombok.Getter;
+import mx.openpay.client.GatewayParams;
 import mx.openpay.client.core.requests.RequestBuilder;
 
 /**
@@ -51,5 +52,10 @@ public class RefundParams extends RequestBuilder {
     /** amount to refund. Optional, used in partial refunds */
     public RefundParams amount(final BigDecimal amount) {
         return this.with("amount", amount);
+    }
+    
+    /** Gateway options during refund. */
+    public RefundParams gateway(final GatewayParams gateway) {
+        return this.with("gateway", gateway);
     }
 }
