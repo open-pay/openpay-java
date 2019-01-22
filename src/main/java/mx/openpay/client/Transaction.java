@@ -56,7 +56,10 @@ public class Transaction {
 
     @SerializedName("error_message")
     private String errorMessage;
-
+   
+    @SerializedName("error_code")
+    private Integer errorCode;
+    
     private Card card;
 
     private String authorization;
