@@ -210,4 +210,10 @@ public class CreateCardChargeParams extends RequestBuilder {
         return this.with("gateway", gatewayParams);
     }
 
+    /**
+     * Sends iva 
+     */
+    public CreateCardChargeParams iva(final String iva) {
+    	return this.with("iva", iva);
+    }
 }
