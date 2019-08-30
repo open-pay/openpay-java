@@ -67,6 +67,20 @@ public class CreateBankChargeParams extends RequestBuilder {
 	    return this.with("customer", customer);
 	}
 	
+    /**
+     * Sends currency information.
+     */
+    public CreateBankChargeParams currency(final String currency) {
+        return this.with("currency", currency);
+    }
+    
+    /**
+     * Sends iva information.
+     */
+    public CreateBankChargeParams iva(final BigDecimal iva) {
+        return this.with("iva", iva);
+    }
+    
 	 /**
      * Sends shipping information.
      */
@@ -80,4 +94,5 @@ public class CreateBankChargeParams extends RequestBuilder {
     public CreateCardChargeParams httpContext(final HttpContext httpContext) {
         return this.with("http_context", httpContext);
     }
+    
 }
