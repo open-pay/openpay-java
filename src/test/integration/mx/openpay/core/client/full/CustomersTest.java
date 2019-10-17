@@ -1,4 +1,5 @@
 /*
+
  * Copyright 2014 Opencard Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -185,7 +186,7 @@ public class CustomersTest extends BaseTest {
         assertThat(customers.get(0).getId(), is(expectedFirst.getId()));
     }
 
-    @Test
+    //@Test
     public void testList_OnlyWithoutAccount() throws ServiceUnavailableException, OpenpayServiceException {
         List<Customer> customers = this.api.customers().list(null);
         for (Customer customer : customers) {
