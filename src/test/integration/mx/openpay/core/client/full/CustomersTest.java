@@ -187,7 +187,7 @@ public class CustomersTest extends BaseTest {
     }
 
     //@Test
-    public void testList_OnlyWithoutAccount() throws ServiceUnavailableException, OpenpayServiceException {
+    /*public void testList_OnlyWithoutAccount() throws ServiceUnavailableException, OpenpayServiceException {
         List<Customer> customers = this.api.customers().list(null);
         for (Customer customer : customers) {
             Assert.assertTrue(customer.getBalance() == null || customer.getBalance().compareTo(new BigDecimal("0.00")) == 0);
@@ -197,7 +197,7 @@ public class CustomersTest extends BaseTest {
             	assertThat(customer.getStatus(), is(nullValue()));	
             }
         }
-    }
+    }*/
 
     @Test
     public void testGet_DoesNotExist() throws Exception {
