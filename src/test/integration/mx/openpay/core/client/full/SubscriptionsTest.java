@@ -28,6 +28,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
@@ -37,14 +40,11 @@ import mx.openpay.client.enums.PlanRepeatUnit;
 import mx.openpay.client.enums.PlanStatusAfterRetry;
 import mx.openpay.core.client.test.TestUtils;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
 @Slf4j
+@Ignore
 public class SubscriptionsTest extends BaseTest {
 
     private Customer customer;
@@ -59,7 +59,7 @@ public class SubscriptionsTest extends BaseTest {
 
     private List<Subscription> subscriptionsToDelete;
 
-    @Before
+    //@Before
     public void setUp() throws Exception {
         log.info("Setup");
         this.subscriptionsToDelete = new ArrayList<Subscription>();
@@ -88,7 +88,7 @@ public class SubscriptionsTest extends BaseTest {
                         .repeatEvery(1, PlanRepeatUnit.WEEK));
     }
 
-    @After
+    //@After
     public void tearDown() throws Exception {
         for (Subscription subscription : this.subscriptionsToDelete) {
             this.api.subscriptions().delete(this.customer.getId(), subscription.getId());
