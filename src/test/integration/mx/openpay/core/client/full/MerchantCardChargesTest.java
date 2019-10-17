@@ -57,12 +57,14 @@ import mx.openpay.core.client.test.TestUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
 @Slf4j
+@Ignore
 public class MerchantCardChargesTest extends BaseTest {
 
     private Card registeredCard;
@@ -483,6 +485,7 @@ public class MerchantCardChargesTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testFailedRiskTransaction() throws Exception {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";

@@ -47,12 +47,14 @@ import mx.openpay.core.client.test.TestUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
 @Slf4j
+@Ignore
 public class CustomerCardChargesTest extends BaseTest {
 
     private Customer customer;
@@ -65,7 +67,8 @@ public class CustomerCardChargesTest extends BaseTest {
 
     private Card customerRegisteredCardNoAccount;
 
-    @Before
+    //@Before
+    @Ignore
     public void setUp() throws Exception {
         this.merchantRegisteredCard = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
