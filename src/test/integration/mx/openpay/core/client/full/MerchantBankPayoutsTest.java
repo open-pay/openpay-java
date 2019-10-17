@@ -35,6 +35,7 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -63,8 +64,8 @@ public class MerchantBankPayoutsTest extends BaseTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void testListMerchantPayouts() throws ServiceUnavailableException, OpenpayServiceException {
+    
+    /*public void testListMerchantPayouts() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal(new Random().nextInt(1000)).add(new BigDecimal("0.01"));
         this.api.payouts().create(new CreateBankPayoutParams()
                 .bankAccountId(this.bankAccount.getId()).amount(amount).description("desc 1"));
@@ -74,7 +75,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
                 .bankAccountId(this.bankAccount.getId()).amount(amount).description("desc 3"));
         List<Payout> transactions = this.api.payouts().list(search().amount(amount));
         assertEquals(3, transactions.size());
-    }
+    }*/
 
     @Test
     public void testListMerchantPayouts_Empty() throws ServiceUnavailableException, OpenpayServiceException {

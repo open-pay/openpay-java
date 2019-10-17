@@ -24,6 +24,7 @@ import mx.openpay.client.Customer;
 import mx.openpay.client.DeferralPayments;
 import mx.openpay.client.GatewayParams;
 import mx.openpay.client.HttpContext;
+import mx.openpay.client.PaymentOptions;
 import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
@@ -153,6 +154,12 @@ public class CreateCardChargeParams extends RequestBuilder {
     public CreateCardChargeParams useCardPoints(final UseCardPointsType useCardPoints) {
         return this.with("use_card_points", useCardPoints);
     }
+    
+    public CreateCardChargeParams paymentOptions(final String paymentOptions) {
+    	PaymentOptions po = new PaymentOptions(); 
+    	po.setPayments(paymentOptions);
+    	return this.with("payment_options", po);
+    }
 
     /**
      * If true, the charge will use the points available in the card. <br>
@@ -210,4 +217,10 @@ public class CreateCardChargeParams extends RequestBuilder {
         return this.with("gateway", gatewayParams);
     }
 
+    /**
+     * Sends iva 
+     */
+    public CreateCardChargeParams iva(final String iva) {
+    	return this.with("iva", iva);
+    }
 }

@@ -57,12 +57,14 @@ import mx.openpay.core.client.test.TestUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
 @Slf4j
+@Ignore
 public class MerchantCardChargesTest extends BaseTest {
 
     private Card registeredCard;
@@ -371,7 +373,7 @@ public class MerchantCardChargesTest extends BaseTest {
         assertTrue(this.api.merchant().get().getBalance().compareTo(initialBalance) == 0);
     }
 
-    @Test
+    //@Test
     public void testRefund_Customer() throws Exception {
         BigDecimal initialBalance = this.api.merchant().get().getBalance();
         BigDecimal amount = new BigDecimal("10.00");
@@ -408,7 +410,7 @@ public class MerchantCardChargesTest extends BaseTest {
         
     }
 
-    @Test
+    //@Test
     public void testGet_Customer() throws Exception {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
@@ -425,14 +427,14 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(charge);
     }
 
-    @Test
+    //@Test
     public void testListMerchantCardCharges_Empty() throws Exception {
         List<Charge> charges = this.api.charges().list(
                 search().creationGte(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24))));
         assertTrue(charges.isEmpty());
     }
 
-    @Test
+    //@Test
     public void testListMerchantCardCharges() throws Exception {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
@@ -452,7 +454,7 @@ public class MerchantCardChargesTest extends BaseTest {
         assertEquals(3, charges.size());
     }
 
-    @Test
+    //@Test
     public void testListMerchantCardCharges_Amount() throws Exception {
         Date date = new Date();
         BigDecimal amount = new BigDecimal(String.format("%tI%<td.%<tM", date)).remainder(new BigDecimal("1000"));
@@ -472,7 +474,7 @@ public class MerchantCardChargesTest extends BaseTest {
         }
     }
 
-    @Test
+    //@Test
     public void testList_CustomerDoesNotExist() throws Exception {
         try {
             this.api.charges().list("blahblahblah", search().limit(2));
@@ -482,7 +484,8 @@ public class MerchantCardChargesTest extends BaseTest {
         }
     }
 
-    @Test
+    //@Test
+    //@Ignore
     public void testFailedRiskTransaction() throws Exception {
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";

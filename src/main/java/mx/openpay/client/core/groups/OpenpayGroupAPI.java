@@ -4,6 +4,7 @@ import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.operations.groups.GroupCardOperations;
 import mx.openpay.client.core.operations.groups.GroupChargeOperations;
 import mx.openpay.client.core.operations.groups.GroupCustomerOperations;
+import mx.openpay.client.core.operations.groups.GroupSubscriptionOperations;
 
 /**
  * API for group operations. A group allows operations with customers shared between the merchants that belong to the
@@ -20,6 +21,8 @@ public class OpenpayGroupAPI {
 
     private final GroupChargeOperations groupChargeOperations;
 
+    private final GroupSubscriptionOperations groupSubscriptionOperations;
+
     public OpenpayGroupAPI(final String location, final String apiKey, final String merchantId) {
         this(new JsonServiceClient(location, merchantId, apiKey));
     }
@@ -29,6 +32,7 @@ public class OpenpayGroupAPI {
         this.groupCustomerOperations = new GroupCustomerOperations(this.jsonClient);
         this.groupCardOperations = new GroupCardOperations(this.jsonClient);
         this.groupChargeOperations = new GroupChargeOperations(this.jsonClient);
+        this.groupSubscriptionOperations = new GroupSubscriptionOperations(this.jsonClient);
     }
 
     public GroupCustomerOperations groupCustomers() {
@@ -41,5 +45,9 @@ public class OpenpayGroupAPI {
 
     public GroupChargeOperations groupCharges() {
         return this.groupChargeOperations;
+    }
+
+    public GroupSubscriptionOperations groupSubscriptions(){
+        return this.groupSubscriptionOperations;
     }
 }

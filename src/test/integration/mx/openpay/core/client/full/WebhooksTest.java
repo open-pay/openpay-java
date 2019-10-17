@@ -38,6 +38,7 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -49,6 +50,7 @@ import org.junit.Test;
  * @version 1.0
  */
 @Slf4j
+@Ignore
 public class WebhooksTest {
 
     private OpenpayAPI api;

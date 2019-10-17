@@ -22,6 +22,7 @@ import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.REFUND;
+import static mx.openpay.client.utils.OpenpayPathComponents.CANCEL;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,6 +32,7 @@ import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.requests.RequestBuilder;
+import mx.openpay.client.core.requests.transactions.CancelParams;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.ConfirmChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
@@ -54,6 +56,8 @@ public class ChargeOperations extends ServiceOperations {
     protected static final String GET_FOR_MERCHANT_PATH = FOR_MERCHANT_PATH + ID;
 
     private static final String REFUND_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + REFUND;
+    
+    private static final String CANCEL_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + CANCEL;
 
     private static final String CAPTURE_FOR_MERCHANT_PATH = GET_FOR_MERCHANT_PATH + CAPTURE;
 
@@ -64,6 +68,8 @@ public class ChargeOperations extends ServiceOperations {
     protected static final String GET_FOR_CUSTOMER_PATH = FOR_CUSTOMER_PATH + ID;
 
     private static final String REFUND_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + REFUND;
+    
+    private static final String CANCEL_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + CANCEL;
 
     private static final String CAPTURE_FOR_CUSTOMER_PATH = GET_FOR_CUSTOMER_PATH + CAPTURE;
 
@@ -147,6 +153,17 @@ public class ChargeOperations extends ServiceOperations {
             ServiceUnavailableException {
         String path = String.format(REFUND_FOR_CUSTOMER_PATH, this.getMerchantId(), customerId, params.getChargeId());
         return this.getJsonClient().post(path, params.asMap(), Charge.class);
+    }
+    
+    public Charge cancel(final CancelParams params) throws OpenpayServiceException, ServiceUnavailableException {
+    	String path = String.format(CANCEL_FOR_MERCHANT_PATH, this.getMerchantId(), params.getChargeId());
+    	return this.getJsonClient().post(path, params.asMap(), Charge.class);
+    }
+    
+    public Charge cancel(final String customerId, final CancelParams params) throws OpenpayServiceException,
+    ServiceUnavailableException {
+    	String path = String.format(CANCEL_FOR_CUSTOMER_PATH, this.getMerchantId(), customerId, params.getChargeId());
+    	return this.getJsonClient().post(path, params.asMap(), Charge.class);
     }
 
     /**

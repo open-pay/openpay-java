@@ -79,5 +79,7 @@ public class OpenpayPathComponents {
     public static final String GROUPS = "/groups";
     
     public static final String MERCHANTS = "/merchants";
+    
+    public static final String CANCEL = "/cancel";
 
 }
