@@ -57,6 +57,8 @@ public class Customer {
     private Date creationDate;
     
     private String clabe;
+	
+    private AddressColombia customer_address;
 
     /**
      * Customer first or only name. Required.
