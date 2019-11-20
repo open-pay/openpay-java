@@ -86,5 +86,8 @@ public class Transaction {
     private String currency;
 
     private List<SimpleRefund> refunds;
+    
+    /** Optional gateway affiliation information. */
+    private GatewayResponse gateway;
 
 }
