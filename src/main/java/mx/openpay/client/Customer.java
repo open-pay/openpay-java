@@ -58,8 +58,6 @@ public class Customer {
     
     private String clabe;
 	
-    private AddressColombia customer_address;
-
     /**
      * Customer first or only name. Required.
      */
