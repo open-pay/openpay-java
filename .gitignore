@@ -4,3 +4,6 @@ build-number.txt
 .settings/org.eclipse.wst.common.component
 .settings/org.eclipse.wst.common.project.facet.core.xml
 .settings/org.eclipse.wst.validation.prefs
+
+.idea*
+.idea/workspace.xml
