@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="049d80be-abd2-4c39-bafd-964719e81597" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
@@ -53,7 +53,8 @@
       <option name="presentableId" value="Default" />
       <updated>1579619596696</updated>
       <workItem from="1579619600227" duration="826000" />
-      <workItem from="1579806927452" duration="138000" />
+      <workItem from="1579806927452" duration="1416000" />
+      <workItem from="1579823647326" duration="464000" />
     </task>
     <servers />
   </component>
