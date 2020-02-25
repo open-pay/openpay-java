@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>co.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>openpay-api-client</name>
 	<description>Java client for Openpay Services</description>
@@ -15,21 +15,6 @@
  		<artifactId>oss-parent</artifactId>
  		<version>7</version>
  	</parent>
-
-<distributionManagement>
-		<!-- Publish the versioned releases here -->
-		<repository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.openpay.mx:8081/nexus/content/repositories/releases</url>
-		</repository>
-		<!-- Publish the versioned releases here -->
-		<snapshotRepository>
-			<id>nexus-facelend</id>
-			<name>RepositoryProxy</name>
-			<url>http://nexus.openpay.mx:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<licenses>
 		<license>
