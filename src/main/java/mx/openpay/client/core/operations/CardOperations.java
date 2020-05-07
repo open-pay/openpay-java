@@ -40,6 +40,10 @@ public class CardOperations extends ServiceOperations {
     private static final String MERCHANT_CARDS_PATH = MERCHANT_ID + CARDS;
 
     private static final String CUSTOMER_CARDS_PATH = MERCHANT_ID + CUSTOMERS + ID + CARDS;
+    
+    private static final String PUT_MERCHANT_CARDS_PATH = MERCHANT_ID + CARDS + ID;
+
+    private static final String PUT_CUSTOMER_CARDS_PATH = MERCHANT_ID + CUSTOMERS + ID + CARDS + ID;
 
     private static final String GET_MERCHANT_CARD_PATH = MERCHANT_CARDS_PATH + ID;
 
@@ -62,6 +66,17 @@ public class CardOperations extends ServiceOperations {
             ServiceUnavailableException {
         String path = String.format(CUSTOMER_CARDS_PATH, this.getMerchantId(), customerId);
         return this.getJsonClient().post(path, card, Card.class);
+    }
+
+    public Card update(final Card card) throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(PUT_MERCHANT_CARDS_PATH, this.getMerchantId(), card.getId());
+        return this.getJsonClient().put(path, card, Card.class);
+    }
+
+    public Card update(final String customerId, final Card card) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(PUT_CUSTOMER_CARDS_PATH, this.getMerchantId(), customerId, card.getId());
+        return this.getJsonClient().put(path, card, Card.class);
     }
 
     public List<Card> list(final SearchParams params) throws ServiceUnavailableException, OpenpayServiceException {
