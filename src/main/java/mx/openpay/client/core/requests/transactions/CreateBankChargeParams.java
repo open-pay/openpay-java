@@ -23,6 +23,7 @@ import mx.openpay.client.HttpContext;
 import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
+import mx.openpay.client.enums.OriginChannel;
 
 /**
  * Parameters to create a new charge that will be paid through a Bank transfer. The charge will be created with a
@@ -93,6 +94,16 @@ public class CreateBankChargeParams extends RequestBuilder {
      */
     public CreateCardChargeParams httpContext(final HttpContext httpContext) {
         return this.with("http_context", httpContext);
+    }
+    
+    /**
+     * Origin channel.
+     *
+     * @param originChannel the origin channel
+     * @return the creates the bank charge params
+     */
+    public CreateBankChargeParams originChannel(final OriginChannel originChannel) {
+       return this.with("origin_channel", originChannel.name().toLowerCase());
     }
     
 }
