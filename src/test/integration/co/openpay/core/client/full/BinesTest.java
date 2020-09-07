@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import co.openpay.client.Bin;
+import mx.openpay.client.Bin;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

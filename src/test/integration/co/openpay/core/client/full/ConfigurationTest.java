@@ -26,9 +26,9 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 
-import co.openpay.client.core.OpenpayAPI;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author elopez

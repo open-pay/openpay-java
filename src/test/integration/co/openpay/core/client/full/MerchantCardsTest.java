@@ -15,7 +15,7 @@
  */
 package co.openpay.core.client.full;
 
-import static co.openpay.client.utils.SearchParams.search;
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
@@ -34,12 +34,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import co.openpay.client.Card;
-import co.openpay.client.PointsBalance;
-import co.openpay.client.enums.PointsType;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
 import co.openpay.core.client.test.TestUtils;
+import mx.openpay.client.Card;
+import mx.openpay.client.PointsBalance;
+import mx.openpay.client.enums.PointsType;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

@@ -4,10 +4,10 @@ import java.util.TimeZone;
 
 import org.junit.Before;
 
-import co.openpay.client.core.OpenpayAPI;
-import co.openpay.client.core.groups.OpenpayGroupAPI;
 import co.openpay.core.client.test.OpenpayTestCredentials;
 import co.openpay.core.client.test.TestUtils;
+import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.groups.OpenpayGroupAPI;
 
 public class GroupBaseTest {
     

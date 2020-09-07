@@ -22,8 +22,8 @@ import java.math.BigDecimal;
 import org.junit.Assert;
 import org.junit.Test;
 
-import co.openpay.client.Charge;
-import co.openpay.client.core.requests.transactions.CreateStoreChargeParams;
+import mx.openpay.client.Charge;
+import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

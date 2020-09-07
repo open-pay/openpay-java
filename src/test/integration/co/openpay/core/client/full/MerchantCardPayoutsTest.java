@@ -23,13 +23,13 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import co.openpay.client.Card;
-import co.openpay.client.Payout;
-import co.openpay.client.core.requests.transactions.CreateCardChargeParams;
-import co.openpay.client.core.requests.transactions.CreateCardPayoutParams;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
 import co.openpay.core.client.test.TestUtils;
+import mx.openpay.client.Card;
+import mx.openpay.client.Payout;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

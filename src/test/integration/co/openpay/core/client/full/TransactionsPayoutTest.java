@@ -23,8 +23,8 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import co.openpay.client.TransactionsPayoutResume;
-import co.openpay.client.enums.TransactionsPayoutType;
+import mx.openpay.client.TransactionsPayoutResume;
+import mx.openpay.client.enums.TransactionsPayoutType;
 
 /**
  * The Class TransactionsPayoutTest.

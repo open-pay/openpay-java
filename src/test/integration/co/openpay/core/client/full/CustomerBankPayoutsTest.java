@@ -15,7 +15,7 @@
  */
 package co.openpay.core.client.full;
 
-import static co.openpay.client.utils.SearchParams.search;
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 
@@ -28,15 +28,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import co.openpay.client.BankAccount;
-import co.openpay.client.Card;
-import co.openpay.client.Customer;
-import co.openpay.client.Payout;
-import co.openpay.client.core.requests.transactions.CreateBankPayoutParams;
-import co.openpay.client.core.requests.transactions.CreateCardChargeParams;
-import co.openpay.client.enums.PayoutMethod;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.BankAccount;
+import mx.openpay.client.Card;
+import mx.openpay.client.Customer;
+import mx.openpay.client.Payout;
+import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.enums.PayoutMethod;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

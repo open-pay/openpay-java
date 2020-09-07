@@ -27,9 +27,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import co.openpay.client.BankAccount;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.BankAccount;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

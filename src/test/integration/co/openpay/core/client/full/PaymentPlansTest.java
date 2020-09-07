@@ -25,12 +25,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.PaymentPlan;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import co.openpay.client.PaymentPlan;
 
 @Slf4j
 public class PaymentPlansTest extends BaseTest {

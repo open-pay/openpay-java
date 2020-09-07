@@ -17,11 +17,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import co.openpay.client.Customer;
-import co.openpay.client.Order;
-import co.openpay.client.PaymentPlan;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.Customer;
+import mx.openpay.client.Order;
+import mx.openpay.client.PaymentPlan;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Luis Delucio

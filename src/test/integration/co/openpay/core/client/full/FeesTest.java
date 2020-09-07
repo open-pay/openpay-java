@@ -15,7 +15,7 @@
  */
 package co.openpay.core.client.full;
 
-import static co.openpay.client.utils.SearchParams.search;
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
@@ -28,12 +28,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import co.openpay.client.Card;
-import co.openpay.client.Customer;
-import co.openpay.client.Fee;
-import co.openpay.client.core.requests.transactions.CreateCardChargeParams;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.Card;
+import mx.openpay.client.Customer;
+import mx.openpay.client.Fee;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import co.openpay.client.Merchant;
+import mx.openpay.client.Merchant;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

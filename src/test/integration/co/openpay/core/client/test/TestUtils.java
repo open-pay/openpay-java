@@ -21,7 +21,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import co.openpay.client.Address;
+import mx.openpay.client.Address;
 
 /**
  * @author elopez

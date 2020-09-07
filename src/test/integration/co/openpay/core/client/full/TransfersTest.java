@@ -32,12 +32,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import co.openpay.client.Card;
-import co.openpay.client.Customer;
-import co.openpay.client.Transfer;
-import co.openpay.client.core.requests.transactions.CreateCardChargeParams;
-import co.openpay.client.core.requests.transactions.CreateTransferParams;
-import co.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.Card;
+import mx.openpay.client.Customer;
+import mx.openpay.client.Transfer;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateTransferParams;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

@@ -15,7 +15,7 @@
  */
 package co.openpay.core.client.full;
 
-import static co.openpay.client.utils.SearchParams.search;
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
@@ -36,6 +36,22 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.Address;
+import mx.openpay.client.Card;
+import mx.openpay.client.Charge;
+import mx.openpay.client.Customer;
+import mx.openpay.client.GatewayParams;
+import mx.openpay.client.HttpContext;
+import mx.openpay.client.ShipTo;
+import mx.openpay.client.SimpleRefund;
+import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.core.requests.transactions.RefundParams;
+import mx.openpay.client.enums.Currency;
+import mx.openpay.client.enums.UseCardPointsType;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.utils.SearchParams;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -43,22 +59,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import co.openpay.client.Address;
-import co.openpay.client.Card;
-import co.openpay.client.Charge;
-import co.openpay.client.Customer;
-import co.openpay.client.GatewayParams;
-import co.openpay.client.HttpContext;
-import co.openpay.client.ShipTo;
-import co.openpay.client.SimpleRefund;
-import co.openpay.client.core.requests.transactions.ConfirmCaptureParams;
-import co.openpay.client.core.requests.transactions.CreateCardChargeParams;
-import co.openpay.client.core.requests.transactions.RefundParams;
-import co.openpay.client.enums.Currency;
-import co.openpay.client.enums.UseCardPointsType;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
-import co.openpay.client.utils.SearchParams;
 import co.openpay.core.client.test.TestUtils;
 
 /**

@@ -19,7 +19,7 @@ import java.util.TimeZone;
 
 import org.junit.Before;
 
-import co.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.OpenpayAPI;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

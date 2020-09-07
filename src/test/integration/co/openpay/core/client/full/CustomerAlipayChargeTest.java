@@ -11,11 +11,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import co.openpay.client.Charge;
-import co.openpay.client.Customer;
-import co.openpay.client.core.requests.transactions.CreateAlipayChargeParams;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.Charge;
+import mx.openpay.client.Customer;
+import mx.openpay.client.core.requests.transactions.CreateAlipayChargeParams;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 public class CustomerAlipayChargeTest extends BaseTest {
 

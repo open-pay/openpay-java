@@ -23,8 +23,8 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import co.openpay.client.enums.FeeDetailsType;
-import co.openpay.client.reports.OpenpayFeesSummary;
+import mx.openpay.client.enums.FeeDetailsType;
+import mx.openpay.client.reports.OpenpayFeesSummary;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

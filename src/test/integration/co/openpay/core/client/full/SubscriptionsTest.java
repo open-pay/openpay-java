@@ -31,14 +31,14 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import co.openpay.client.Card;
-import co.openpay.client.Customer;
-import co.openpay.client.Plan;
-import co.openpay.client.Subscription;
-import co.openpay.client.enums.PlanRepeatUnit;
-import co.openpay.client.enums.PlanStatusAfterRetry;
 import co.openpay.core.client.test.TestUtils;
 import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.Card;
+import mx.openpay.client.Customer;
+import mx.openpay.client.Plan;
+import mx.openpay.client.Subscription;
+import mx.openpay.client.enums.PlanRepeatUnit;
+import mx.openpay.client.enums.PlanStatusAfterRetry;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

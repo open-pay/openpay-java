@@ -26,9 +26,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import co.openpay.client.Charge;
-import co.openpay.client.Customer;
-import co.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
+import mx.openpay.client.Charge;
+import mx.openpay.client.Customer;
+import mx.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
 
 /**
  * @author Oswaldo Martinez oswaldo.martinez@openpay.mx

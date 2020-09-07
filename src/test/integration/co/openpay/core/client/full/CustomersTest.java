@@ -16,7 +16,7 @@
  */
 package co.openpay.core.client.full;
 
-import static co.openpay.client.utils.SearchParams.search;
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
@@ -30,16 +30,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
+import mx.openpay.client.Address;
+import mx.openpay.client.Customer;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 import org.hamcrest.core.IsNot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import co.openpay.client.Address;
-import co.openpay.client.Customer;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
 import co.openpay.core.client.test.TestUtils;
 
 /**

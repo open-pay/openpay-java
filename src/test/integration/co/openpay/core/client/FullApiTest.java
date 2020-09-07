@@ -25,36 +25,35 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.Address;
+import mx.openpay.client.BankAccount;
+import mx.openpay.client.Card;
+import mx.openpay.client.Charge;
+import mx.openpay.client.Customer;
+import mx.openpay.client.Fee;
+import mx.openpay.client.Merchant;
+import mx.openpay.client.Payout;
+import mx.openpay.client.Plan;
+import mx.openpay.client.Subscription;
+import mx.openpay.client.Transfer;
+import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
+import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateBankPayoutParams;
+import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
+import mx.openpay.client.core.requests.transactions.CreateFeeParams;
+import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
+import mx.openpay.client.core.requests.transactions.CreateTransferParams;
+import mx.openpay.client.core.requests.transactions.RefundParams;
+import mx.openpay.client.enums.PlanRepeatUnit;
+import mx.openpay.client.enums.PlanStatusAfterRetry;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import co.openpay.client.Address;
-import co.openpay.client.BankAccount;
-import co.openpay.client.Card;
-import co.openpay.client.Charge;
-import co.openpay.client.Customer;
-import co.openpay.client.Fee;
-import co.openpay.client.Merchant;
-import co.openpay.client.Payout;
-import co.openpay.client.Plan;
-import co.openpay.client.Subscription;
-import co.openpay.client.Transfer;
-import co.openpay.client.core.OpenpayAPI;
-import co.openpay.client.core.requests.transactions.ConfirmCaptureParams;
-import co.openpay.client.core.requests.transactions.CreateBankChargeParams;
-import co.openpay.client.core.requests.transactions.CreateBankPayoutParams;
-import co.openpay.client.core.requests.transactions.CreateCardChargeParams;
-import co.openpay.client.core.requests.transactions.CreateCardPayoutParams;
-import co.openpay.client.core.requests.transactions.CreateFeeParams;
-import co.openpay.client.core.requests.transactions.CreateStoreChargeParams;
-import co.openpay.client.core.requests.transactions.CreateTransferParams;
-import co.openpay.client.core.requests.transactions.RefundParams;
-import co.openpay.client.enums.PlanRepeatUnit;
-import co.openpay.client.enums.PlanStatusAfterRetry;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * Test creating all kinds of objects using an empty merchant account.

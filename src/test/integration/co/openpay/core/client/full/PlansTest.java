@@ -15,7 +15,7 @@
  */
 package co.openpay.core.client.full;
 
-import static co.openpay.client.utils.SearchParams.search;
+import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,16 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.Plan;
+import mx.openpay.client.enums.PlanRepeatUnit;
+import mx.openpay.client.enums.PlanStatusAfterRetry;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import co.openpay.client.Plan;
-import co.openpay.client.enums.PlanRepeatUnit;
-import co.openpay.client.enums.PlanStatusAfterRetry;
-import co.openpay.client.exceptions.OpenpayServiceException;
-import co.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
