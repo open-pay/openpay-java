@@ -18,6 +18,7 @@ package mx.openpay.client.core.requests.transactions;
 import java.math.BigDecimal;
 
 import lombok.Getter;
+import mx.openpay.client.GatewayParams;
 import mx.openpay.client.core.requests.RequestBuilder;
 
 /**
@@ -44,4 +45,8 @@ public class ConfirmCaptureParams extends RequestBuilder {
         return this.with("amount", amount);
     }
 
+    /** Additional Gateway Options. */
+    public ConfirmCaptureParams gateway(final GatewayParams gatewayParams) {
+        return this.with("gateway", gatewayParams);
+    }
 }

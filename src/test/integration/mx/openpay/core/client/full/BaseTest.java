@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Opencard Inc.
+ * Copyright 2014 Opencard Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package mx.openpay.core.client.test;
-
-import static mx.openpay.core.client.TestConstans.API_KEY;
-import static mx.openpay.core.client.TestConstans.ENDPOINT;
-import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
+package mx.openpay.core.client.full;
 
 import java.util.TimeZone;
 
-import lombok.Getter;
-import mx.openpay.client.core.OpenpayAPI;
-
 import org.junit.Before;
 
-/**
- * @author elopez
- */
-public class BaseOperationsTest {
+import mx.openpay.client.core.OpenpayAPI;
 
-    @Getter
-    private OpenpayAPI api;
+/**
+ * @author Eli Lopez, eli.lopez@opencard.mx
+ */
+public class BaseTest {
+
+    protected OpenpayAPI api;
 
     @Before
-    public void setUp() throws Exception {
-        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
+    public void setupAPI() throws Exception {
+        String merchantId = "mioppzc1kgz2cj21s8sp";
+        String apiKey = "sk_fe7d3759f4514f4b8fe11cf0404812de";
+        String endpoint = "https://dev-api.openpay.mx/";
+        this.api = new OpenpayAPI(endpoint, apiKey, merchantId);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 

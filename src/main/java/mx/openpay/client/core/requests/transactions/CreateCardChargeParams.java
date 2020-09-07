@@ -29,6 +29,7 @@ import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.enums.Currency;
+import mx.openpay.client.enums.OriginChannel;
 import mx.openpay.client.enums.UseCardPointsType;
 
 /**
@@ -222,5 +223,15 @@ public class CreateCardChargeParams extends RequestBuilder {
      */
     public CreateCardChargeParams iva(final String iva) {
     	return this.with("iva", iva);
+    }
+    
+    /**
+     * Origin channel.
+     *
+     * @param originChannel the origin channel
+     * @return the creates the card charge params
+     */
+    public CreateCardChargeParams originChannel(OriginChannel originChannel) {
+       return this.with("origin_channel", originChannel.name().toLowerCase());
     }
 }
