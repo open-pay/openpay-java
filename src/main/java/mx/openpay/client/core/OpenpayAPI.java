@@ -15,22 +15,7 @@
  */
 package mx.openpay.client.core;
 
-import mx.openpay.client.core.operations.BankAccountOperations;
-import mx.openpay.client.core.operations.BinesOperations;
-import mx.openpay.client.core.operations.CardOperations;
-import mx.openpay.client.core.operations.ChargeOperations;
-import mx.openpay.client.core.operations.CustomerOperations;
-import mx.openpay.client.core.operations.FeeOperations;
-import mx.openpay.client.core.operations.MerchantOperations;
-import mx.openpay.client.core.operations.OpenpayFeesOperations;
-import mx.openpay.client.core.operations.OrderOperations;
-import mx.openpay.client.core.operations.PaymentPlanOperations;
-import mx.openpay.client.core.operations.PayoutOperations;
-import mx.openpay.client.core.operations.PlanOperations;
-import mx.openpay.client.core.operations.SubscriptionOperations;
-import mx.openpay.client.core.operations.TransactionsPayoutOperations;
-import mx.openpay.client.core.operations.TransferOperations;
-import mx.openpay.client.core.operations.WebhookOperations;
+import mx.openpay.client.core.operations.*;
 
 /**
  * Initializes all Operations from the Openpay API.
@@ -76,6 +61,8 @@ public class OpenpayAPI {
 
     private final BinesOperations binesOperations;
 
+    private final CheckoutsOperations checkoutsOperations;
+
     public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
         this(new JsonServiceClient(location, merchantId, apiKey));
     }
@@ -98,6 +85,7 @@ public class OpenpayAPI {
         this.paymentPlanOperations = new PaymentPlanOperations(this.jsonClient);
         this.webhookOperations = new WebhookOperations(this.jsonClient);
         this.binesOperations = new BinesOperations(this.jsonClient);
+        this.checkoutsOperations = new CheckoutsOperations(this.jsonClient);
     }
 
     public void setTimeout(final int timeout) {
@@ -166,5 +154,9 @@ public class OpenpayAPI {
 
     public BinesOperations bines() {
         return this.binesOperations;
+    }
+
+    public CheckoutsOperations checkouts() {
+        return this.checkoutsOperations;
     }
 }

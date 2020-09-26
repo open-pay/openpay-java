@@ -17,6 +17,9 @@ public enum Currency {
 	/**
 	 * US Dollar.
 	 */
-	USD;
-
+	USD,
+	/**
+	 * Colombian pese
+	 * */
+	COP;
 }

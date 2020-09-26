@@ -82,4 +82,6 @@ public class OpenpayPathComponents {
     
     public static final String CANCEL = "/cancel";
 
+    public static final String CHECKOUT = "/checkouts";
+
 }
