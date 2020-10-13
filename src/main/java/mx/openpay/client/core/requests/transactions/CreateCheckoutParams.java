@@ -57,9 +57,7 @@ public class CreateCheckoutParams extends RequestBuilder {
     /**
      * Expiration dato to checkout
      */
-    public CreateCheckoutParams expirationDate(final Date dueDate) {
-        return this.with("expiration_date", dueDate);
-    }
+    public CreateCheckoutParams expirationDate(final String dueDate) { return this.with("expiration_date", dueDate); }
 
     /**
      * Flag send email, default true
