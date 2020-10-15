@@ -25,6 +25,9 @@ public class ShipTo {
 
     private String method;
 
+    @SerializedName("phone_area_code")
+    private String phoneAreaCode;
+
     private Address address;
 
     public ShipTo firstName(String firstName) {
@@ -54,6 +57,11 @@ public class ShipTo {
 
     public ShipTo address(Address address) {
         this.address = address;
+        return this;
+    }
+
+    public ShipTo phoneAreaCode(String phoneAreaCode) {
+        this.phoneAreaCode = phoneAreaCode;
         return this;
     }
 
