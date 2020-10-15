@@ -17,14 +17,17 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
+import mx.openpay.client.Billing;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.DeferralPayments;
 import mx.openpay.client.GatewayParams;
 import mx.openpay.client.HttpContext;
 import mx.openpay.client.PaymentOptions;
+import mx.openpay.client.ProductsChargebackInsurance;
 import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
@@ -233,5 +236,18 @@ public class CreateCardChargeParams extends RequestBuilder {
      */
     public CreateCardChargeParams originChannel(OriginChannel originChannel) {
        return this.with("origin_channel", originChannel.name().toLowerCase());
+    }
+
+    public CreateCardChargeParams billing(final Billing billing) {
+        return this.with("billing", billing);
+    }
+
+    public CreateCardChargeParams productSum(final BigDecimal productSum) {
+
+        return this.with("product_sum", productSum);
+    }
+
+    public CreateCardChargeParams products(final List<ProductsChargebackInsurance> products) {
+        return this.with("products", products);
     }
 }
