@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class ProductsChargebackInsurance implements DefaultJsonSerialization {
+public class ProductsChargebackInsurance {
 
 
     @SerializedName("id")
@@ -28,8 +28,6 @@ public class ProductsChargebackInsurance implements DefaultJsonSerialization {
     private Integer productQuantity;
 
     private Category category;
-
-    private String index;
 
 
 }
