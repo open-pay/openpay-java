@@ -1,11 +1,8 @@
 package mx.openpay.client;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
-import mx.openpay.commons.json.BigDecimalJsonSerializer;
-import mx.openpay.commons.json.DefaultJsonSerialization;
 
 import java.math.BigDecimal;
 
@@ -19,8 +16,7 @@ public class ProductsChargebackInsurance {
 
     @SerializedName("name")
     private String productName;
-
-    @JsonSerialize(using = BigDecimalJsonSerializer.class)
+    
     @SerializedName("price")
     private BigDecimal productPrice;
 
