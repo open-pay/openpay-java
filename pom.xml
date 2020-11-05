@@ -134,11 +134,6 @@
 		  <version>20020423</version>
 		  <scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>mx.openpay</groupId>
-			<artifactId>commons</artifactId>
-			<version>1.2.70-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<build>
