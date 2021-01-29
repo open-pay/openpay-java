@@ -65,4 +65,11 @@ public class CreateCheckoutParams extends RequestBuilder {
     public CreateCheckoutParams sendEmail(boolean sendEmail) {
         return this.with("send_email", sendEmail);
     }
+
+    /**
+     * Flag do redirect for store payment
+     */
+    public CreateCheckoutParams redirectStorePayment(Boolean redirectStorePayment) {
+        return this.with("redirect_store_payment", redirectStorePayment);
+    }
 }
