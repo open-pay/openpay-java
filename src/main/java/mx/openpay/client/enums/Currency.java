@@ -21,5 +21,10 @@ public enum Currency {
 	/**
 	 * Colombian pese
 	 * */
-	COP;
+	COP,
+
+	/**
+	 * Peru peso
+	 */
+	PEN;
 }
