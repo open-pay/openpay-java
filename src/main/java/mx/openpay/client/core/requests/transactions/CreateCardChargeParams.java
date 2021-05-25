@@ -29,6 +29,7 @@ import mx.openpay.client.HttpContext;
 import mx.openpay.client.PaymentOptions;
 import mx.openpay.client.ProductsChargebackInsurance;
 import mx.openpay.client.ShipTo;
+import mx.openpay.client.Affiliation;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.enums.Currency;
@@ -249,5 +250,12 @@ public class CreateCardChargeParams extends RequestBuilder {
 
     public CreateCardChargeParams products(final List<ProductsChargebackInsurance> products) {
         return this.with("products", products);
+    }
+    
+    /**
+     * Sends Affiliation information.
+     */
+    public CreateCardChargeParams affiliation(final Affiliation affiliation) {
+        return this.with("affiliation", affiliation);
     }
 }
