@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import mx.openpay.client.Affiliation;
 import mx.openpay.client.Billing;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
@@ -29,11 +29,9 @@ import mx.openpay.client.HttpContext;
 import mx.openpay.client.PaymentOptions;
 import mx.openpay.client.ProductsChargebackInsurance;
 import mx.openpay.client.ShipTo;
-import mx.openpay.client.Affiliation;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.enums.Currency;
-import mx.openpay.client.enums.OriginChannel;
 import mx.openpay.client.enums.UseCardPointsType;
 
 /**
@@ -229,16 +227,6 @@ public class CreateCardChargeParams extends RequestBuilder {
     	return this.with("iva", iva);
     }
     
-    /**
-     * Origin channel.
-     *
-     * @param originChannel the origin channel
-     * @return the creates the card charge params
-     */
-    public CreateCardChargeParams originChannel(OriginChannel originChannel) {
-       return this.with("origin_channel", originChannel.name().toLowerCase());
-    }
-
     public CreateCardChargeParams billing(final Billing billing) {
         return this.with("billing", billing);
     }
