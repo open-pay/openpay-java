@@ -13,6 +13,8 @@ import java.util.Date;
 @ToString(callSuper = true)
 public class Checkout {
 
+    private String id;
+
     private BigDecimal amount;
 
     private String description;
@@ -33,4 +35,6 @@ public class Checkout {
     private Date expirationDate;
 
     private Customer customer;
+
+    private Transaction transaction;
 }

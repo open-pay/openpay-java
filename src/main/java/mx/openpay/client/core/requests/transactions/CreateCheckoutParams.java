@@ -3,6 +3,7 @@ package mx.openpay.client.core.requests.transactions;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.Currency;
 
+import mx.openpay.client.Customer;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -41,6 +42,16 @@ public class CreateCheckoutParams extends RequestBuilder {
     }
 
     /**
+     * A currency to give to the charge in ISO 4217 alphanumeric code. Optional.<br>
+     * Default value is MXN<br>
+     * @param currency
+     * @return
+     */
+    public CreateCheckoutParams currency(final String currency) {
+        return this.with("currency", currency == null ? Currency.MXN.name() : currency);
+    }
+
+    /**
      * Sends iva
      */
     public CreateCheckoutParams iva(final String iva) {
@@ -72,4 +83,12 @@ public class CreateCheckoutParams extends RequestBuilder {
     public CreateCheckoutParams redirectStorePayment(Boolean redirectStorePayment) {
         return this.with("redirect_store_payment", redirectStorePayment);
     }
+
+    /**
+     * Customer Information when you want to send info but not create the resource
+     */
+    public CreateCheckoutParams customer(final Customer customer) {
+	    return this.with("customer", customer);
+    }
+    
 }
