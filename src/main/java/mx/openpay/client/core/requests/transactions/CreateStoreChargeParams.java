@@ -17,13 +17,11 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
 import mx.openpay.client.Customer;
 import mx.openpay.client.HttpContext;
 import mx.openpay.client.ShipTo;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
-import mx.openpay.client.enums.OriginChannel;
 
 /**
  * @author Luis Delucio
@@ -97,13 +95,4 @@ public class CreateStoreChargeParams extends RequestBuilder {
     	return this.with("iva", iva);
     }
     
-   /**
-     * Origin channel.
-     *
-     * @param originChannel the origin channel
-     * @return the creates the store charge params
-     */
-    public CreateStoreChargeParams originChannel(final OriginChannel originChannel) {
-       return this.with("origin_channel", originChannel.name().toLowerCase());
-    }
 }
