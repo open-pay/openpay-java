@@ -15,6 +15,7 @@
  */
 package mx.openpay.client.core;
 
+
 import mx.openpay.client.core.operations.*;
 
 /**
@@ -140,6 +141,7 @@ public class OpenpayAPI {
         return this.transactionsPayoutOperations;
     }
 
+    @Deprecated
     public OrderOperations orders() {
         return this.orderOperations;
     }

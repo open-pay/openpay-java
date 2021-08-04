@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -55,7 +56,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20)));
+                        .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)));
 
         this.bankAccount = this.api.bankAccounts().list(null).get(0);
     }

@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import mx.openpay.client.Customer;
@@ -27,6 +28,7 @@ import mx.openpay.client.exceptions.ServiceUnavailableException;
  * @author Luis Delucio
  *
  */
+@Ignore
 public class OrdersTest extends BaseTest {
 
 

@@ -28,11 +28,6 @@ public class CustomerAlipayChargeTest extends BaseTest {
                 .phoneNumber("55-25634013"));
     }
 
-    @After
-    public void tearDown() throws Exception {
-        this.api.customers().delete(this.customer.getId());
-    }
-
     @Test
     public void testCreateAlipayCharge() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("10.00");

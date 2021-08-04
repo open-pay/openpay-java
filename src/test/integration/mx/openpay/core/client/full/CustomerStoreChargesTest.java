@@ -41,7 +41,8 @@ public class CustomerStoreChargesTest extends BaseTest {
     public void setUp() throws Exception {
         this.customer = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
-                .phoneNumber("55-25634013"));
+                .requiresAccount(true)
+                .phoneNumber("44200000000"));
     }
 
     @After

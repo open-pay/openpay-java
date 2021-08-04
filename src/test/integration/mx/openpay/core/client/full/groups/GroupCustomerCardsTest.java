@@ -22,14 +22,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.exceptions.OpenpayServiceException;
@@ -48,8 +46,8 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
     public void setUp() throws Exception {
         this.cardsToDelete = new ArrayList<Card>();
         this.customer = this.groupApi.groupCustomers().create(new Customer()
-                .name("Juan").email("juan.perez@gmail.com")
-                .phoneNumber("55-25634013"));
+                .name("Jorge Perez").email("juan.perez@example.com")
+                .phoneNumber("44200000000"));
     }
 
     @After
@@ -67,12 +65,16 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
                 .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(getYear())
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
+
+   private int getYear() {
+      return Calendar.getInstance().get(Calendar.YEAR) % 100 + 1;
+   }
 
     @Test
     public void testGetCustomerCard() throws Exception {
@@ -81,7 +83,7 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
                 .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(getYear())
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.groupApi.groupCards().get(this.customer.getId(), card.getId());
@@ -113,7 +115,7 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20));
+                .expirationYear(getYear()));
         this.groupApi.groupCards().delete(this.customer.getId(), card.getId());
         try {
             card = this.groupApi.groupCards().get(this.customer.getId(), card.getId());
@@ -156,13 +158,13 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
     public void testListCustomerCards() throws Exception {
         this.cardsToDelete.add(this.groupApi.groupCards().create(this.customer.getId(), new Card()
                 .cardNumber("5555555555554444").holderName("Juan Pérez Nuñez")
-                .cvv2("111").expirationMonth(9).expirationYear(20)));
+                .cvv2("111").expirationMonth(9).expirationYear(getYear())));
         this.cardsToDelete.add(this.groupApi.groupCards().create(this.customer.getId(), new Card()
                 .cardNumber("4111111111111111").holderName("Ruben Pérez Nuñez")
-                .cvv2("111").expirationMonth(9).expirationYear(20)));
+                .cvv2("111").expirationMonth(9).expirationYear(getYear())));
         this.cardsToDelete.add(this.groupApi.groupCards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242").holderName("Carlos Pérez Nuñez")
-                .cvv2("111").expirationMonth(9).expirationYear(20)));
+                .cvv2("111").expirationMonth(9).expirationYear(getYear())));
         List<Card> cards = this.groupApi.groupCards().list(this.customer.getId(), null);
         assertThat(cards.size(), is(3));
         for (Card card : cards) {

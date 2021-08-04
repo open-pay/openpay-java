@@ -10,7 +10,6 @@ import static mx.openpay.client.utils.OpenpayPathComponents.ORDERS;
 
 import java.util.List;
 import java.util.Map;
-
 import mx.openpay.client.Order;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.exceptions.OpenpayServiceException;
@@ -21,6 +20,7 @@ import mx.openpay.client.utils.SearchParams;
  * @author Luis Delucio
  *
  */
+@Deprecated
 public class OrderOperations extends ServiceOperations {
 
 	private static final String CUSTOMER_ORDERS_PATH = MERCHANT_ID + CUSTOMERS + ID + ORDERS;
