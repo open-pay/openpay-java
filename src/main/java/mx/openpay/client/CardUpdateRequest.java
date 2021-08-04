@@ -18,9 +18,14 @@ package mx.openpay.client;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
+import mx.openpay.client.core.requests.cards.UpdateCardParams;
 
-import java.util.Date;
-
+/**
+ * Petición para actualizar una tarjeta.
+ * 
+ * @deprecated Usar {@link UpdateCardParams}
+ */
+@Deprecated
 @Getter
 @Setter
 public class CardUpdateRequest {
@@ -36,9 +41,10 @@ public class CardUpdateRequest {
 
     private String cvv2;
 
+    @Deprecated
     @SerializedName("merchant_id")
     private String merchantId;
-
+    
     /**
      * Security code. Required only for charges.
      */

@@ -33,6 +33,7 @@ import org.junit.Test;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.PointsBalance;
+import mx.openpay.client.core.requests.cards.UpdateCardParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
@@ -133,6 +134,28 @@ public class CustomerCardsTest extends BaseTest {
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
         }
+    }
+    
+    @Test
+    public void testUpdateCustomerCard() throws Exception {
+        Card card = this.api.cards().create(this.customer.getId(), new Card()
+                .cardNumber("4242424242424242")
+                .holderName("Juanito Pérez Nuñez")
+                .cvv2("111")
+                .expirationMonth(9)
+                .expirationYear(23));
+        this.api.cards().update(this.customer.getId(), new UpdateCardParams()
+              .cardId(card.getId())
+              .holderName("Jorge Rodriguez")
+              .expirationYear(25)
+              .expirationMonth(2)
+              .cvv2("222")
+              );
+        Card updatedCard = this.api.cards().get(this.customer.getId(), card.getId());
+        assertThat(updatedCard.getId(),is(card.getId()));
+        assertThat(updatedCard.getHolderName(), is("Jorge Rodriguez"));
+        assertThat(updatedCard.getExpirationMonth(), is("02"));
+        assertThat(updatedCard.getExpirationYear(), is("25"));
     }
 
     @SuppressWarnings("deprecation")
