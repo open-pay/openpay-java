@@ -20,15 +20,15 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
-import mx.openpay.client.Charge;
-import mx.openpay.client.Customer;
-import mx.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import mx.openpay.client.Charge;
+import mx.openpay.client.Customer;
+import mx.openpay.client.core.requests.transactions.CreateBitcoinChargeParams;
 
 /**
  * @author Oswaldo Martinez oswaldo.martinez@openpay.mx

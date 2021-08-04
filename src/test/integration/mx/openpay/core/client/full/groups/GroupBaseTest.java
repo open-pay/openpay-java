@@ -2,12 +2,12 @@ package mx.openpay.core.client.full.groups;
 
 import java.util.TimeZone;
 
+import org.junit.Before;
+
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.groups.OpenpayGroupAPI;
 import mx.openpay.core.client.test.OpenpayTestCredentials;
 import mx.openpay.core.client.test.TestUtils;
-
-import org.junit.Before;
 
 public class GroupBaseTest {
     

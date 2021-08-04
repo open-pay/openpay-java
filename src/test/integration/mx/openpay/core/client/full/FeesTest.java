@@ -17,23 +17,21 @@ package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.junit.Assert.assertEquals;
-
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Fee;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
@@ -47,17 +45,18 @@ public class FeesTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.customer = this.api.customers().create(new Customer()
-                .name("Juan").email("juan.perez@gmail.com")
-                .phoneNumber("55-25634013"));
+                .name("Juan Nuñez").email("juan.perez@example.com")
+                .phoneNumber("44200000000")
+                .requiresAccount(true));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
                 .amount(new BigDecimal("5"))
                 .description("Cargo")
                 .card(new Card()
                         .cardNumber("5555555555554444")
-                        .holderName("Juanito Pérez Nuñez")
+                        .holderName("Jorge Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20)));
+                        .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)));
     }
 
     @After
@@ -86,10 +85,10 @@ public class FeesTest extends BaseTest {
                 .description("Cargo")
                 .card(new Card()
                         .cardNumber("5555555555554444")
-                        .holderName("Juanito Pérez Nuñez")
+                        .holderName("Jorge Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20)));
+                        .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)));
         this.api.fees().create(this.customer.getId(), amount, "desc 1", null);
         this.api.fees().create(this.customer.getId(), amount, "desc 2", null);
         this.api.fees().create(this.customer.getId(), amount, "desc 3", null);

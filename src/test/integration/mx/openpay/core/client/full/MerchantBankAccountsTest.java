@@ -24,12 +24,12 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

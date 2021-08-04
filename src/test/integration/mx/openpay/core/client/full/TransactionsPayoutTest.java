@@ -21,10 +21,10 @@ import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
+import org.junit.Test;
+
 import mx.openpay.client.TransactionsPayoutResume;
 import mx.openpay.client.enums.TransactionsPayoutType;
-
-import org.junit.Test;
 
 /**
  * The Class TransactionsPayoutTest.

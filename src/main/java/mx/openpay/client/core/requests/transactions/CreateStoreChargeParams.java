@@ -17,7 +17,6 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
 import mx.openpay.client.Customer;
 import mx.openpay.client.HttpContext;
 import mx.openpay.client.ShipTo;
@@ -88,4 +87,12 @@ public class CreateStoreChargeParams extends RequestBuilder {
     public CreateStoreChargeParams currency(final String currency) {
     	return this.with("currency", currency);
     }
+    
+    /**
+     * Sends iva 
+     */
+    public CreateStoreChargeParams iva(final String iva) {
+    	return this.with("iva", iva);
+    }
+    
 }

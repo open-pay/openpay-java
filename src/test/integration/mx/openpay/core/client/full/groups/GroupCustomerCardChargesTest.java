@@ -19,9 +19,11 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-
 import java.math.BigDecimal;
-
+import java.util.Calendar;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
@@ -31,10 +33,6 @@ import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
@@ -49,14 +47,14 @@ public class GroupCustomerCardChargesTest extends GroupBaseTest {
     @Before
     public void setUp() throws Exception {
         this.customer = this.groupApi.groupCustomers().create(new Customer()
-                .name("Juan").email("juan.perez@gmail.com")
-                .phoneNumber("55-25634013").requiresAccount(false));
+                .name("Jorge Perez").email("juan.perez@example.com")
+                .phoneNumber("44200000000").requiresAccount(false));
         this.customerRegisteredCard = this.groupApi.groupCards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)
                 .address(TestUtils.prepareAddress()));
         
     }

@@ -7,13 +7,13 @@ import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
+import org.junit.Test;
+
 import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.requests.transactions.CreateAlipayChargeParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-
-import org.junit.Test;
 
 public class MerchantAlipayChargeTest extends BaseTest {
 

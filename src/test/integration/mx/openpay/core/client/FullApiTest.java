@@ -25,17 +25,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.openpay.client.Address;
-import mx.openpay.client.BankAccount;
-import mx.openpay.client.Card;
-import mx.openpay.client.Charge;
-import mx.openpay.client.Customer;
-import mx.openpay.client.Fee;
-import mx.openpay.client.Merchant;
-import mx.openpay.client.Payout;
-import mx.openpay.client.Plan;
-import mx.openpay.client.Subscription;
-import mx.openpay.client.Transfer;
+import mx.openpay.client.*;
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateBankChargeParams;
@@ -57,6 +47,7 @@ import org.junit.Test;
 
 /**
  * Test creating all kinds of objects using an empty merchant account.
+ *
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
 @Slf4j
@@ -495,9 +486,9 @@ public class FullApiTest {
     private void testChargeMerchantCard() throws OpenpayServiceException, ServiceUnavailableException {
         Charge charge = this.api.charges().create(
                 new CreateCardChargeParams().description("Service charge").amount(new BigDecimal("200.00")) // Amount
-                                                                                                            // is
-                                                                                                            // in
-                                                                                                            // MXN
+                        // is
+                        // in
+                        // MXN
                         .orderId(String.valueOf(System.currentTimeMillis())).cardId(this.merchantCreditCard.getId()));
         log.info("Merchant card charge: {}", charge.getId());
     }
@@ -507,9 +498,9 @@ public class FullApiTest {
         Charge charge = this.api.charges().create(
                 this.customer.getId(),
                 new CreateCardChargeParams().description("Service charge").amount(new BigDecimal("200.00")) // Amount
-                                                                                                            // is
-                                                                                                            // in
-                                                                                                            // MXN
+                        // is
+                        // in
+                        // MXN
                         .cardId(this.customerCreditCard.getId()));
         log.info("Customer card charge: {}", charge.getId());
     }

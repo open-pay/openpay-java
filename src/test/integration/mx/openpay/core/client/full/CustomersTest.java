@@ -162,13 +162,12 @@ public class CustomersTest extends BaseTest {
     @Test
     public void testList() throws Exception {
         // To get next three customers first
-        Thread.sleep(1000);
         this.customersToDelete.add(this.api.customers().create(new Customer().name("Juan").lastName("Perez Perez")
-                .email("juan.perez@gmail.com").phoneNumber("55-25634013")));
+                .email("juan.perez@gmail.com").phoneNumber("55-25634013").requiresAccount(false)));
         this.customersToDelete.add(this.api.customers().create(new Customer().name("Jose").lastName("Perez Perez")
-                .email("jose.perez@gmail.com").phoneNumber("55-25634013")));
+                .email("jose.perez@gmail.com").phoneNumber("55-25634013").requiresAccount(false)));
         this.customersToDelete.add(this.api.customers().create(new Customer().name("Ruben").lastName("Perez Perez")
-                .email("ruben.perez@gmail.com").phoneNumber("55-25634013")));
+                .email("ruben.perez@gmail.com").phoneNumber("55-25634013").requiresAccount(false)));
         List<Customer> customers = this.api.customers().list(search().limit(3));
         assertThat(customers.size(), is(3));
         for (Customer customer : customers) {
@@ -176,8 +175,8 @@ public class CustomersTest extends BaseTest {
             assertNotNull(customer.getCreationDate());
             assertNotNull(customer.getEmail());
             assertNotNull(customer.getName());
-            assertNotNull(customer.getBalance());
-            assertNotNull(customer.getStatus());
+            assertNull(customer.getBalance());
+            assertNull(customer.getStatus());
         }
         customers = this.api.customers().list(search().limit(2));
         assertThat(customers.size(), is(2));

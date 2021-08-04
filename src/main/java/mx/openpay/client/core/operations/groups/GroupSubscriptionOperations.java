@@ -18,12 +18,10 @@ package mx.openpay.client.core.operations.groups;
 import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.GROUPS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
+import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANTS;
 import static mx.openpay.client.utils.OpenpayPathComponents.SUBSCRIPTIONS;
 
 import mx.openpay.client.Subscription;
-
-import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANTS;
-
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.operations.ServiceOperations;
 import mx.openpay.client.exceptions.OpenpayServiceException;

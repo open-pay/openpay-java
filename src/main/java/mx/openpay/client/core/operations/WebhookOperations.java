@@ -24,11 +24,11 @@
  */
 package mx.openpay.client.core.operations;
 
+import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.WEBHOOKS;
 import static mx.openpay.client.utils.OpenpayPathComponents.WEBHOOKS_VERIFY;
 import static mx.openpay.client.utils.OpenpayPathComponents.WEBHOOK_CODE;
-import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 
 import java.util.HashMap;
 import java.util.List;

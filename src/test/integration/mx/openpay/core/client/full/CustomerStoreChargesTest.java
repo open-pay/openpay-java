@@ -21,14 +21,14 @@ import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
-import mx.openpay.client.Charge;
-import mx.openpay.client.Customer;
-import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import mx.openpay.client.Charge;
+import mx.openpay.client.Customer;
+import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
@@ -41,7 +41,8 @@ public class CustomerStoreChargesTest extends BaseTest {
     public void setUp() throws Exception {
         this.customer = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
-                .phoneNumber("55-25634013"));
+                .requiresAccount(true)
+                .phoneNumber("44200000000"));
     }
 
     @After

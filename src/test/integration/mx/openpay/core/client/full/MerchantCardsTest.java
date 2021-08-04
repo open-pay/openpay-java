@@ -27,19 +27,21 @@ import static org.junit.Assert.fail;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
-import mx.openpay.client.Card;
-import mx.openpay.client.PointsBalance;
-import mx.openpay.client.enums.PointsType;
-import mx.openpay.client.exceptions.OpenpayServiceException;
-import mx.openpay.client.exceptions.ServiceUnavailableException;
-import mx.openpay.core.client.test.TestUtils;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import mx.openpay.client.Card;
+import mx.openpay.client.PointsBalance;
+import mx.openpay.client.core.requests.cards.UpdateCardParams;
+import mx.openpay.client.enums.PointsType;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.core.client.test.TestUtils;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
@@ -67,7 +69,7 @@ public class MerchantCardsTest extends BaseTest {
                 .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
@@ -81,7 +83,7 @@ public class MerchantCardsTest extends BaseTest {
                 .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.api.cards().get(card.getId());
@@ -100,7 +102,7 @@ public class MerchantCardsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20));
+                .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1));
         this.api.cards().delete(card.getId());
         try {
             card = this.api.cards().get(card.getId());
@@ -108,6 +110,28 @@ public class MerchantCardsTest extends BaseTest {
         } catch (OpenpayServiceException e) {
             assertEquals(404, e.getHttpCode().intValue());
         }
+    }
+    
+    @Test
+    public void testUpdateMerchantCard() throws Exception {
+        Card card = this.api.cards().create(new Card()
+                .cardNumber("4242424242424242")
+                .holderName("Juanito Pérez Nuñez")
+                .cvv2("111")
+                .expirationMonth(9)
+                .expirationYear(23));
+        this.api.cards().update(new UpdateCardParams()
+              .cardId(card.getId())
+              .holderName("Jorge Rodriguez")
+              .expirationYear(25)
+              .expirationMonth(2)
+              .cvv2("222")
+              );
+        Card updatedCard = this.api.cards().get(card.getId());
+        assertThat(updatedCard.getId(),is(card.getId()));
+        assertThat(updatedCard.getHolderName(), is("Jorge Rodriguez"));
+        assertThat(updatedCard.getExpirationMonth(), is("02"));
+        assertThat(updatedCard.getExpirationYear(), is("25"));
     }
 
     @Test
@@ -117,7 +141,7 @@ public class MerchantCardsTest extends BaseTest {
                 .holderName("Juanito Perez Nunez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20));
+                .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1));
         this.cardsToDelete.add(card);
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
@@ -154,15 +178,16 @@ public class MerchantCardsTest extends BaseTest {
 
     @Test
     public void testListMerchantCards() throws ServiceUnavailableException, OpenpayServiceException {
+       int year = Calendar.getInstance().get(Calendar.YEAR) % 100 + 1;
         this.cardsToDelete.add(this.api.cards().create(
                 new Card().cardNumber("5555555555554444").holderName("Juan Pérez Nuñez").cvv2("111").expirationMonth(9)
-                        .expirationYear(20)));
+                        .expirationYear(year)));
         this.cardsToDelete.add(this.api.cards().create(
                 new Card().cardNumber("4111111111111111").holderName("Ruben Pérez Nuñez").cvv2("111")
-                        .expirationMonth(9).expirationYear(20)));
+                        .expirationMonth(9).expirationYear(year)));
         this.cardsToDelete.add(this.api.cards().create(
                 new Card().cardNumber("4242424242424242").holderName("Carlos Pérez Nuñez").cvv2("111")
-                        .expirationMonth(9).expirationYear(20)));
+                        .expirationMonth(9).expirationYear(year)));
         List<Card> cards = this.api.cards().list(null);
 		assertNotNull(cards);
 		assertTrue(cards.size() >= 3);

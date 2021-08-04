@@ -198,6 +198,33 @@ public class MerchantCardChargesTest extends BaseTest {
     }
 
     @Test
+    public void testCreate_Customer_WithCaptureFalseAndGateway() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("10.00");
+        BigDecimal initialBalance = this.api.merchant().get().getBalance();
+        String desc = "Pago de taxi";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        Charge transaction = this.api.charges().create(new CreateCardChargeParams()
+                .cardId(this.registeredCard.getId())
+                .amount(amount)
+                .description(desc)
+                .orderId(orderId)
+                .capture(false)
+        .gateway(new GatewayParams().addData("amex_iso","invoice_reference_number","1234")));
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        assertEquals("in_progress", transaction.getStatus());
+
+        BigDecimal newBalance = this.api.merchant().get().getBalance();
+        assertTrue(newBalance.compareTo(initialBalance) == 0);
+        Charge confirmed = this.api.charges().confirmCapture(new ConfirmCaptureParams().chargeId(transaction.getId())
+                .amount(amount).gateway(new GatewayParams().addData("amex_iso","invoice_reference_number","1234")));
+        newBalance = this.api.merchant().get().getBalance();
+        assertTrue(initialBalance.add(amount).compareTo(newBalance) == 0);
+        assertEquals("completed", confirmed.getStatus());
+    }
+
+    @Test
     public void testCreate_Customer_WithCaptureFalse_LessAmount() throws ServiceUnavailableException,
             OpenpayServiceException {
         BigDecimal amount = new BigDecimal("10.00");

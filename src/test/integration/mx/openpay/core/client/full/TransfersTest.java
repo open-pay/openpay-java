@@ -22,22 +22,19 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.math.BigDecimal;
-
+import java.util.Calendar;
 import java.util.List;
-
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Transfer;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.CreateTransferParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
@@ -51,20 +48,20 @@ public class TransfersTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.customerFrom = this.api.customers().create(new Customer()
-                .name("Juan").email("juan.perez@gmail.com")
-                .phoneNumber("55-25634013"));
+                .name("Jorge Perez").email("juan.perez@example.com")
+                .phoneNumber("44200000000").requiresAccount(true));
         this.api.charges().create(this.customerFrom.getId(), new CreateCardChargeParams()
                 .amount(new BigDecimal("100"))
                 .description("Some funds")
                 .card(new Card()
                         .cardNumber("5555555555554444")
                         .expirationMonth(12)
-                        .expirationYear(20)
+                        .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)
                         .cvv2("123")
                         .holderName("Someone")));
         this.customerTo = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
-                .phoneNumber("55-25634013"));
+                .phoneNumber("44200000000").requiresAccount(true));
     }
 
     @After

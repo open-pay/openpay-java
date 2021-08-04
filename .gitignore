@@ -1,6 +1,12 @@
 /target
 build-number.txt
-.settings/org.eclipse.core.resources.prefs
-.settings/org.eclipse.wst.common.component
-.settings/org.eclipse.wst.common.project.facet.core.xml
-.settings/org.eclipse.wst.validation.prefs
+.settings
+.project
+.classpath
+.factorypath
+/bin
+.idea
+.DS_Store
+
+.idea*
+.idea/workspace.xml

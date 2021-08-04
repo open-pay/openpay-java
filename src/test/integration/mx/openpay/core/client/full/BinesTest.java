@@ -12,9 +12,10 @@ package mx.openpay.core.client.full;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import mx.openpay.client.Bin;
 
 import org.junit.Test;
+
+import mx.openpay.client.Bin;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

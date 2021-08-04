@@ -24,11 +24,11 @@ import static org.junit.Assert.fail;
 
 import java.util.TimeZone;
 
+import org.junit.Test;
+
 import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-
-import org.junit.Test;
 
 /**
  * @author elopez

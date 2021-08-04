@@ -20,14 +20,14 @@ import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.POINTS;
-
 import java.util.List;
 import java.util.Map;
-
 import mx.openpay.client.Address;
 import mx.openpay.client.Card;
+import mx.openpay.client.CardUpdateRequest;
 import mx.openpay.client.PointsBalance;
 import mx.openpay.client.core.JsonServiceClient;
+import mx.openpay.client.core.requests.cards.UpdateCardParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.client.utils.SearchParams;
@@ -40,6 +40,10 @@ public class CardOperations extends ServiceOperations {
     private static final String MERCHANT_CARDS_PATH = MERCHANT_ID + CARDS;
 
     private static final String CUSTOMER_CARDS_PATH = MERCHANT_ID + CUSTOMERS + ID + CARDS;
+    
+    private static final String PUT_MERCHANT_CARDS_PATH = MERCHANT_ID + CARDS + ID;
+
+    private static final String PUT_CUSTOMER_CARDS_PATH = MERCHANT_ID + CUSTOMERS + ID + CARDS + ID;
 
     private static final String GET_MERCHANT_CARD_PATH = MERCHANT_CARDS_PATH + ID;
 
@@ -62,6 +66,30 @@ public class CardOperations extends ServiceOperations {
             ServiceUnavailableException {
         String path = String.format(CUSTOMER_CARDS_PATH, this.getMerchantId(), customerId);
         return this.getJsonClient().post(path, card, Card.class);
+    }
+
+    @Deprecated
+    public CardUpdateRequest update(final String cardId, final CardUpdateRequest card) throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(PUT_MERCHANT_CARDS_PATH, this.getMerchantId(), cardId);
+        return this.getJsonClient().put(path, card, CardUpdateRequest.class);
+    }
+
+    @Deprecated
+    public CardUpdateRequest update(final String customerId, final String cardId, final CardUpdateRequest card) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(PUT_CUSTOMER_CARDS_PATH, this.getMerchantId(), customerId, cardId);
+        return this.getJsonClient().put(path, card, CardUpdateRequest.class);
+    }
+    
+    public void update(final UpdateCardParams updateCardParams) throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(PUT_MERCHANT_CARDS_PATH, this.getMerchantId(), updateCardParams.getCardId());
+        this.getJsonClient().put(path, updateCardParams.asMap(), Card.class);
+    }
+
+    public void update(final String customerId, final UpdateCardParams updateCardParams) throws OpenpayServiceException,
+            ServiceUnavailableException {
+        String path = String.format(PUT_CUSTOMER_CARDS_PATH, this.getMerchantId(), customerId, updateCardParams.getCardId());
+        this.getJsonClient().put(path, updateCardParams.asMap(), Card.class);
     }
 
     public List<Card> list(final SearchParams params) throws ServiceUnavailableException, OpenpayServiceException {

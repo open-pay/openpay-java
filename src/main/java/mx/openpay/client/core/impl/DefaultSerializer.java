@@ -19,12 +19,12 @@ import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import mx.openpay.client.core.JsonSerializer;
 import mx.openpay.client.serialization.DateFormatDeserializer;
 import mx.openpay.client.serialization.SubscriptionAdapterFactory;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
  * Serializes and deserializes the values using Gson.

@@ -18,11 +18,13 @@ package mx.openpay.core.client.full;
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
-
 import java.math.BigDecimal;
-
+import java.util.Calendar;
 import java.util.List;
-
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
@@ -32,11 +34,6 @@ import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.enums.PayoutMethod;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
@@ -50,17 +47,18 @@ public class CustomerBankPayoutsTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.customer = this.api.customers().create(new Customer()
-                .name("Juan").email("juan.perez@gmail.com")
-                .phoneNumber("55-25634013"));
+                .name("Jorge Perez").email("juan.perez@example.com")
+                .phoneNumber("44200000000")
+                .requiresAccount(true));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
                 .amount(new BigDecimal("5"))
                 .description("Cargo")
                 .card(new Card()
-                        .cardNumber("5555555555554444")
-                        .holderName("Juanito Pérez Nuñez")
+                        .cardNumber("4242424242424242")
+                        .holderName("Jorge Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20)));
+                        .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)));
 
         this.bankAccount = this.api.bankAccounts().create(this.customer.getId(), new BankAccount()
                 .clabe("012298026516924616").holderName("Mi nombre"));

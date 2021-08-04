@@ -17,11 +17,11 @@ package mx.openpay.core.client.test;
 
 import java.math.BigDecimal;
 
-import mx.openpay.client.Address;
-
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+
+import mx.openpay.client.Address;
 
 /**
  * @author elopez

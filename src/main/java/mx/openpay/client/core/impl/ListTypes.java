@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.reflect.TypeToken;
+
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
@@ -34,8 +36,6 @@ import mx.openpay.client.Plan;
 import mx.openpay.client.Subscription;
 import mx.openpay.client.Transfer;
 import mx.openpay.client.Webhook;
-
-import com.google.gson.reflect.TypeToken;
 
 /**
  * @author elopez

@@ -17,9 +17,9 @@ package mx.openpay.core.client.full;
 
 import java.util.TimeZone;
 
-import mx.openpay.client.core.OpenpayAPI;
-
 import org.junit.Before;
+
+import mx.openpay.client.core.OpenpayAPI;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

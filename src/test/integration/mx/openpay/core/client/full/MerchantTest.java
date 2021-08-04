@@ -17,9 +17,9 @@ package mx.openpay.core.client.full;
 
 import static org.junit.Assert.assertNotNull;
 
-import mx.openpay.client.Merchant;
-
 import org.junit.Test;
+
+import mx.openpay.client.Merchant;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

@@ -19,11 +19,11 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 
-import mx.openpay.client.Charge;
-import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import mx.openpay.client.Charge;
+import mx.openpay.client.core.requests.transactions.CreateStoreChargeParams;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

@@ -17,6 +17,9 @@ package mx.openpay.examples;
 
 import java.math.BigDecimal;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 import mx.openpay.client.Address;
 import mx.openpay.client.BankAccount;
 import mx.openpay.client.Card;
@@ -33,9 +36,6 @@ import mx.openpay.client.core.requests.transactions.CreateCardPayoutParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.enums.PlanRepeatUnit;
 import mx.openpay.client.enums.PlanStatusAfterRetry;
-
-import org.junit.Ignore;
-import org.junit.Test;
 
 /**
  * A syntax test for the examples in the README.md file. It's not meant to run, just to check that the examples are

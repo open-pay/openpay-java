@@ -17,7 +17,6 @@ package mx.openpay.client.core.requests.transactions;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
 import mx.openpay.client.Customer;
 import mx.openpay.client.HttpContext;
 import mx.openpay.client.ShipTo;
@@ -93,6 +92,20 @@ public class CreateBankChargeParams extends RequestBuilder {
      */
     public CreateCardChargeParams httpContext(final HttpContext httpContext) {
         return this.with("http_context", httpContext);
+    }
+    
+    /**
+     * If false, a charge intention will be registered and the card won't be charged until the confirm method is called.
+     */
+    public CreateBankChargeParams confirm(final Boolean confirm) {
+        return this.with("confirm", confirm);
+    }
+
+    /**
+     * Sends redirect_url information.
+     */
+    public CreateBankChargeParams redirectUrl(final String redirect_url) {
+        return this.with("redirect_url", redirect_url);
     }
     
 }

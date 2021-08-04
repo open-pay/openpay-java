@@ -18,6 +18,7 @@ package mx.openpay.client;
 import java.math.BigDecimal;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import com.google.gson.annotations.SerializedName;
@@ -26,6 +27,7 @@ import com.google.gson.annotations.SerializedName;
  * @author elopez
  */
 @Getter
+@Setter
 @ToString
 public class PaymentMethod {
 

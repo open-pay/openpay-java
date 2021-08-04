@@ -21,10 +21,10 @@ import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
+import org.junit.Test;
+
 import mx.openpay.client.enums.FeeDetailsType;
 import mx.openpay.client.reports.OpenpayFeesSummary;
-
-import org.junit.Test;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

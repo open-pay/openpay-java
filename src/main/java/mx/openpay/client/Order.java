@@ -16,6 +16,7 @@ import com.google.gson.annotations.SerializedName;
  * @author Luis Delucio
  *
  */
+@Deprecated
 @Getter
 @Setter
 @ToString

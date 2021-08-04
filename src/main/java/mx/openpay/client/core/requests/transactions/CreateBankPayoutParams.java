@@ -72,4 +72,7 @@ public class CreateBankPayoutParams extends RequestBuilder {
         return this.with("bank_account", bankAccount);
     }
 
+    public CreateBankPayoutParams currency(final String currency){
+        return this.with("currency", currency);
+    }
 }

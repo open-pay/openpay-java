@@ -7,15 +7,15 @@ import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
 import mx.openpay.client.core.requests.transactions.CreateAlipayChargeParams;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 public class CustomerAlipayChargeTest extends BaseTest {
 
@@ -26,11 +26,6 @@ public class CustomerAlipayChargeTest extends BaseTest {
         this.customer = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
                 .phoneNumber("55-25634013"));
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        this.api.customers().delete(this.customer.getId());
     }
 
     @Test

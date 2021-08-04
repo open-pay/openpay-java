@@ -17,9 +17,9 @@ package mx.openpay.client.serialization;
 
 import java.text.SimpleDateFormat;
 
-import mx.openpay.client.Subscription;
-
 import com.google.gson.JsonElement;
+
+import mx.openpay.client.Subscription;
 
 /**
  * Makes changes to the Subscription's generated JSON. The trialEndDate is formatted different from other dates.

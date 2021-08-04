@@ -16,6 +16,7 @@
 package mx.openpay.client.core.operations;
 
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
+
 import mx.openpay.client.Merchant;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.exceptions.OpenpayServiceException;

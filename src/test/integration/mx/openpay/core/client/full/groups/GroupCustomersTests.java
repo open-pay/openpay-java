@@ -15,15 +15,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /** Tests to create customers belonging to a group. */
 public class GroupCustomersTests extends GroupBaseTest {

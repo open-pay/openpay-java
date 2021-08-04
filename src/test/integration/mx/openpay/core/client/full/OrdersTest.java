@@ -13,20 +13,22 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import mx.openpay.client.Customer;
 import mx.openpay.client.Order;
 import mx.openpay.client.PaymentPlan;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
  * @author Luis Delucio
  *
  */
+@Ignore
 public class OrdersTest extends BaseTest {
 
 

@@ -26,6 +26,7 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.openpay.client.serialization.DateFormatDeserializer;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -25,15 +25,15 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import mx.openpay.client.BankAccount;
-import mx.openpay.client.Customer;
-import mx.openpay.client.exceptions.OpenpayServiceException;
-import mx.openpay.client.exceptions.ServiceUnavailableException;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import mx.openpay.client.BankAccount;
+import mx.openpay.client.Customer;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx

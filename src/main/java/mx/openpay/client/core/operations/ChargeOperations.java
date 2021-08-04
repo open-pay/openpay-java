@@ -15,6 +15,7 @@
  */
 package mx.openpay.client.core.operations;
 
+import static mx.openpay.client.utils.OpenpayPathComponents.CANCEL;
 import static mx.openpay.client.utils.OpenpayPathComponents.CAPTURE;
 import static mx.openpay.client.utils.OpenpayPathComponents.CHARGES;
 import static mx.openpay.client.utils.OpenpayPathComponents.CONFIRM;
@@ -22,7 +23,6 @@ import static mx.openpay.client.utils.OpenpayPathComponents.CUSTOMERS;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.MERCHANT_ID;
 import static mx.openpay.client.utils.OpenpayPathComponents.REFUND;
-import static mx.openpay.client.utils.OpenpayPathComponents.CANCEL;
 
 import java.math.BigDecimal;
 import java.util.List;
