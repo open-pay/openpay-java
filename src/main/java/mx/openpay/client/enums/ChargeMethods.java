@@ -34,8 +34,13 @@ public enum ChargeMethods {
     BITCOIN,
 
     /**
-     * Charges paid thtough Alipay.
+     * Charges paid through Alipay.
      * @since 1.0.10
      */
-    ALIPAY;
+    ALIPAY,
+
+    /**
+     * Charges paid through Checkout Lending.
+     */
+    LENDING;
 }
