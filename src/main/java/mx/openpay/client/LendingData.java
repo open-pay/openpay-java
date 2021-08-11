@@ -25,5 +25,6 @@ public class LendingData {
     @SerializedName("is_privacy_terms_accepted")
     private boolean isPrivacyTermsAccepted;
 
+    @SerializedName("is_digital_product")
     private boolean isDigitalProduct;
 }

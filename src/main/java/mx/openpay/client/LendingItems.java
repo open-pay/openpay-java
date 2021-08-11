@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @ToString
@@ -15,13 +17,13 @@ public class LendingItems {
 
     private Integer quantity;
 
-    private double price;
+    private BigDecimal price;
 
-    private double tax;
+    private BigDecimal tax;
 
     private String sku;
 
-    private double discount;
+    private BigDecimal discount;
 
     private String currency;
 

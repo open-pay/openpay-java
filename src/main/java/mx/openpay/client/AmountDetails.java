@@ -5,20 +5,22 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @ToString
 public class AmountDetails {
 
-    private double subtotal;
+    private BigDecimal subtotal;
 
-    private double shipping;
+    private BigDecimal shipping;
 
     @SerializedName("handling_fee")
-    private double handlingFee;
+    private BigDecimal handlingFee;
 
-    private double tax;
+    private BigDecimal tax;
 
-    private double discount;
+    private BigDecimal discount;
 
 }
