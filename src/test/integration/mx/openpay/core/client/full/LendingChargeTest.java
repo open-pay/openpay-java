@@ -53,7 +53,7 @@ public class LendingChargeTest extends BaseTest {
         lendingShipping.setAddress(lendingAddress);
         lendingShipping.setPhoneNumber("4158688276");
         lendingShipping.setEmail("jose.lopez+1@openpay.com");
-        lendingShipping.setType(LendingShippingType.HOME);
+        lendingShipping.setType(LendingShippingType.HOME.name());
         lendingData.setShipping(lendingShipping);
 
         LendingBilling lendingBilling = new LendingBilling();
@@ -130,7 +130,7 @@ public class LendingChargeTest extends BaseTest {
         lendingShipping.setAddress(lendingAddress);
         lendingShipping.setPhoneNumber("4158688276");
         lendingShipping.setEmail("jose.lopez+1@openpay.com");
-        lendingShipping.setType(LendingShippingType.HOME);
+        lendingShipping.setType(LendingShippingType.HOME.name());
         lendingData.setShipping(lendingShipping);
 
         LendingBilling lendingBilling = new LendingBilling();

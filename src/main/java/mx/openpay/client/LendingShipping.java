@@ -23,5 +23,5 @@ public class LendingShipping {
 
     private String email;
 
-    private LendingShippingType type;
+    private String type;
 }
