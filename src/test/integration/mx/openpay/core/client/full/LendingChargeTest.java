@@ -92,8 +92,8 @@ public class LendingChargeTest extends BaseTest {
         Charge charge = this.api.charges().createCharge(request);
         Assert.assertNotNull(charge);
         Assert.assertNotNull(charge.getId());
-        Assert.assertEquals(charge.getStatus(),"in_progress");
-        Assert.assertEquals(charge.getMethod(),"lending");
+        Assert.assertEquals("in_progress", charge.getStatus());
+        Assert.assertEquals("lending", charge.getMethod());
 
     }
 
@@ -162,8 +162,8 @@ public class LendingChargeTest extends BaseTest {
         Charge charge = this.api.charges().createCharge("a3chshllsuzlf8dcnwas",request);
         Assert.assertNotNull(charge);
         Assert.assertNotNull(charge.getId());
-        Assert.assertEquals(charge.getStatus(),"in_progress");
-        Assert.assertEquals(charge.getMethod(),"lending");
+        Assert.assertEquals("in_progress", charge.getStatus());
+        Assert.assertEquals("lending", charge.getMethod());
 
     }
 }
