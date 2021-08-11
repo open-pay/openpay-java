@@ -6,6 +6,7 @@ import mx.openpay.client.core.requests.transactions.CreateLendingChargeParams;
 import mx.openpay.client.enums.LendingShippingType;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -83,12 +84,16 @@ public class LendingChargeTest extends BaseTest {
 
         request.amount(new BigDecimal("2000.00"));
         request.currency("MXN");
-        request.description("Cargo desde cliente Java test 3");
-        request.orderId("88uiiwe82346");
+        request.description("Cargo desde cliente Java test");
+        request.orderId("Order" + String.format("%f", Math.random()));
         request.customer(customer);
         request.lendingData(lendingData);
 
-        Charge charge = this.api.lending().createCharge(request);
+        Charge charge = this.api.charges().createCharge(request);
+        Assert.assertNotNull(charge);
+        Assert.assertNotNull(charge.getId());
+        Assert.assertEquals(charge.getStatus(),"in_progress");
+        Assert.assertEquals(charge.getMethod(),"lending");
 
     }
 
@@ -150,11 +155,15 @@ public class LendingChargeTest extends BaseTest {
 
         request.amount(new BigDecimal("2000.00"));
         request.currency("MXN");
-        request.description("Cargo desde cliente Java test 3");
-        request.orderId("88uiiwe82347");
+        request.description("Cargo desde cliente Java test");
+        request.orderId("Order" + String.format("%f", Math.random()));
         request.lendingData(lendingData);
 
-        Charge charge = this.api.lending().createCharge("a3chshllsuzlf8dcnwas",request);
+        Charge charge = this.api.charges().createCharge("a3chshllsuzlf8dcnwas",request);
+        Assert.assertNotNull(charge);
+        Assert.assertNotNull(charge.getId());
+        Assert.assertEquals(charge.getStatus(),"in_progress");
+        Assert.assertEquals(charge.getMethod(),"lending");
 
     }
 }
