@@ -57,7 +57,8 @@ public class LendingChargeTest extends BaseTest {
         lendingData.setShipping(lendingShipping);
 
         LendingBilling lendingBilling = new LendingBilling();
-        lendingBilling.setName("Jose Lopez");
+        lendingBilling.setName("Jose");
+        lendingBilling.setLastName("Lopez");
         lendingBilling.setRfc("LOMJ800117E21");
         lendingBilling.setAddress(lendingAddress);
         lendingBilling.setPhoneNumber("4428767865");
@@ -134,7 +135,8 @@ public class LendingChargeTest extends BaseTest {
         lendingData.setShipping(lendingShipping);
 
         LendingBilling lendingBilling = new LendingBilling();
-        lendingBilling.setName("Jose Lopez");
+        lendingBilling.setName("Jose");
+        lendingBilling.setLastName("Lopez");
         lendingBilling.setRfc("LOMJ800117E21");
         lendingBilling.setAddress(lendingAddress);
         lendingBilling.setPhoneNumber("4428767865");

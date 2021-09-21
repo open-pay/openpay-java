@@ -71,4 +71,6 @@ public class PaymentMethod {
     private ExchangeRate exchangeRate;
 
     private String url;
+    
+    private String callbackUrl;
 }

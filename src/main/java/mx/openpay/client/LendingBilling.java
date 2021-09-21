@@ -11,6 +11,8 @@ import lombok.ToString;
 public class LendingBilling {
 
     private String name;
+    
+    private String lastName;
 
     private String rfc;
 
