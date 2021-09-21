@@ -64,7 +64,7 @@ public class LendingChargeTest extends BaseTest {
         lendingBilling.setEmail("jose.lopez+1@openpay.com");
         lendingData.setBilling(lendingBilling);
 
-        List<LendingItems> lendingItemsList = new ArrayList<>();
+        List<LendingItems> lendingItemsList = new ArrayList<LendingItems>();
         LendingItems lendingItems =  new LendingItems();
         lendingItems.setName("Tenis zoom 5");
         lendingItems.setDescription("Nike Air Zoom Wild Horse 5, Color Blanco Talla 32");
@@ -141,7 +141,7 @@ public class LendingChargeTest extends BaseTest {
         lendingBilling.setEmail("jose.lopez+1@openpay.com");
         lendingData.setBilling(lendingBilling);
 
-        List<LendingItems> lendingItemsList = new ArrayList<>();
+        List<LendingItems> lendingItemsList = new ArrayList<LendingItems>();
         LendingItems lendingItems =  new LendingItems();
         lendingItems.setName("Tenis zoom 5");
         lendingItems.setDescription("Nike Air Zoom Wild Horse 5, Color Blanco Talla 32");
