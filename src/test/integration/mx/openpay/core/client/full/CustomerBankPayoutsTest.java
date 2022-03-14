@@ -166,7 +166,8 @@ public class CustomerBankPayoutsTest extends BaseTest {
                         .holderName("Cuenta"))
                 .amount(amount)
                 .description(desc)
-                .orderId(orderId));
+                .orderId(orderId)
+                .currency("MXN"));
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
