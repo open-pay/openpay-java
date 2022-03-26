@@ -9,6 +9,13 @@ public class CreateOpenCheckoutParams extends RequestBuilder {
 
 
     /**
+     * The id to openCheckout for update.
+     */
+    public CreateCheckoutParams id(final String id) {
+        return this.with("id", id);
+    }
+
+    /**
      * The amount to charge Required.
      */
     public CreateCheckoutParams amount(final BigDecimal amount) {

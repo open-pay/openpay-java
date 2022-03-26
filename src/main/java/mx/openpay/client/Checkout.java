@@ -34,6 +34,9 @@ public class Checkout {
     @SerializedName("expiration_date")
     private Date expirationDate;
 
+    @SerializedName("plan_id")
+    private Integer planId;
+
     private Customer customer;
 
     private Transaction transaction;

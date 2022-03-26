@@ -85,6 +85,13 @@ public class CreateCheckoutParams extends RequestBuilder {
     }
 
     /**
+     * Plan for store checkout
+     */
+    public CreateCheckoutParams idPlan(final Integer idPlan) {
+        return this.with("plan_id", idPlan);
+    }
+
+    /**
      * Customer Information when you want to send info but not create the resource
      */
     public CreateCheckoutParams customer(final Customer customer) {
