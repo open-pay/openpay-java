@@ -87,8 +87,8 @@ public class CreateCheckoutParams extends RequestBuilder {
     /**
      * Plan for store checkout
      */
-    public CreateCheckoutParams idPlan(final Integer idPlan) {
-        return this.with("plan_id", idPlan);
+    public CreateCheckoutParams planIdPublic(final String planIdPublic) {
+        return this.with("plan_id_public", planIdPublic);
     }
 
     /**
