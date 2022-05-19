@@ -18,4 +18,7 @@ public class DeferralPayments {
     @SerializedName("payments_type")
     private PaymentType paymentsType;
 
+    public DeferralPayments(Integer payments) {
+        this.payments = payments;
+    }
 }
