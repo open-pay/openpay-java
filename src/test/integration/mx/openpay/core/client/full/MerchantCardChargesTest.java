@@ -36,18 +36,12 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.openpay.client.Address;
-import mx.openpay.client.Card;
-import mx.openpay.client.Charge;
-import mx.openpay.client.Customer;
-import mx.openpay.client.GatewayParams;
-import mx.openpay.client.HttpContext;
-import mx.openpay.client.ShipTo;
-import mx.openpay.client.SimpleRefund;
+import mx.openpay.client.*;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
 import mx.openpay.client.core.requests.transactions.RefundParams;
 import mx.openpay.client.enums.Currency;
+import mx.openpay.client.enums.PaymentType;
 import mx.openpay.client.enums.UseCardPointsType;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
@@ -76,7 +70,7 @@ public class MerchantCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(25)
                 .address(TestUtils.prepareAddress()));
     }
 
@@ -95,6 +89,54 @@ public class MerchantCardChargesTest extends BaseTest {
                 .amount(amount)
                 .description(desc)
                 .orderId(orderId).cvv2("235")
+                .gateway(new GatewayParams()
+                        .addData("amex", "keyName", "data")
+                        .addData("amex", "otherKey", "value")));
+
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        assertThat(transaction.getCardPoints(), is(nullValue()));
+        Assert.assertNotNull(transaction.getFee());
+    }
+
+    @Test
+    public void testCreate_Charge_WithoutInterest() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("1500.00");
+        String desc = "Pago con bandera paymentsType con valor WITHOUT_INTEREST";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        DeferralPayments deferralPayments = new DeferralPayments(3, PaymentType.WITHOUT_INTEREST);
+        Charge transaction = this.api.charges().create(new CreateCardChargeParams()
+                .cardId(this.registeredCard.getId())
+                .amount(amount)
+                .description(desc)
+                .capture(true)
+                .orderId(orderId).cvv2("235")
+                .deferralPayments(deferralPayments)
+                .gateway(new GatewayParams()
+                        .addData("amex", "keyName", "data")
+                        .addData("amex", "otherKey", "value")));
+
+        assertNotNull(transaction);
+        assertEquals(amount, transaction.getAmount());
+        assertEquals(desc, transaction.getDescription());
+        assertThat(transaction.getCardPoints(), is(nullValue()));
+        Assert.assertNotNull(transaction.getFee());
+    }
+
+    @Test
+    public void testCreate_Charge_WithInterest() throws ServiceUnavailableException, OpenpayServiceException {
+        BigDecimal amount = new BigDecimal("1500.00");
+        String desc = "Pago con bandera paymentsType con valor WITHOUT_INTEREST";
+        String orderId = String.valueOf(System.currentTimeMillis());
+        DeferralPayments deferralPayments = new DeferralPayments(3, PaymentType.WITH_INTEREST);
+        Charge transaction = this.api.charges().create(new CreateCardChargeParams()
+                .cardId(this.registeredCard.getId())
+                .amount(amount)
+                .description(desc)
+                .capture(true)
+                .orderId(orderId).cvv2("235")
+                .deferralPayments(deferralPayments)
                 .gateway(new GatewayParams()
                         .addData("amex", "keyName", "data")
                         .addData("amex", "otherKey", "value")));
