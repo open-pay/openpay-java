@@ -3,18 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.9.4-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
+
 	<name>openpay-api-client</name>
 	<description>Java client for Openpay Services</description>
 	<url>http://github.com/open-pay/openpay-java</url>
 	
-<!-- Para publicar en Sonatype -->
+<!-- Para publicar en Sonatype 
  	<parent>
  		<groupId>org.sonatype.oss</groupId>
  		<artifactId>oss-parent</artifactId>
  		<version>7</version>
- 	</parent>
+ 	</parent> -->
 
 	<licenses>
 		<license>
@@ -23,12 +24,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
-	<scm>
-		<connection>scm:git:https://github.com/open-pay/openpay-java.git</connection>
-		<developerConnection>scm:git:https://github.com/open-pay/openpay-java.git</developerConnection>
-		<url>http://github.com/open-pay/openpay-java</url>
-	</scm>
 
 	<developers>
 		<developer>
@@ -44,6 +39,23 @@
 			<email>marcos.coronado@openpay.mx</email>
 		</developer>
 	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/open-pay/openpay-java.git</connection>
+		<developerConnection>scm:git:ssh://github.com/open-pay/openpay-java.git</developerConnection>
+		<url>https://github.com/open-pay/openpay-java</url>
+	</scm>
+
+	<distributionManagement>
+  		<snapshotRepository>
+   			<id>ossrh</id>
+   			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+  		</snapshotRepository>
+  		<repository>
+   			<id>ossrh</id>
+   			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+  		</repository>
+ 	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -193,6 +205,20 @@
 					</archive>
 				</configuration>
 			</plugin>
+
+			<plugin>
+        			<groupId>org.sonatype.plugins</groupId>
+        			<artifactId>nexus-staging-maven-plugin</artifactId>
+        			<version>1.6.7</version>
+        			<extensions>true</extensions>
+        			<configuration>
+          			<serverId>ossrh</serverId>
+          			<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          			<autoReleaseAfterClose>true</autoReleaseAfterClose>
+        				</configuration>
+      			</plugin>
+
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -214,7 +240,6 @@
 				<executions>
 					<execution>
 						<id>attach-javadoc</id>
-						<phase>verify</phase>
 						<goals>
 							<goal>jar</goal>
 						</goals>
