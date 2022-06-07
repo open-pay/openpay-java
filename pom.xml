@@ -3,19 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.7.1-SNAPSHOT</version>
+	<version>1.7.1</version>
 	<packaging>jar</packaging>
 
 	<name>openpay-api-client</name>
 	<description>Java client for Openpay Services</description>
 	<url>http://github.com/open-pay/openpay-java</url>
-	
-<!-- Para publicar en Sonatype 
- 	<parent>
- 		<groupId>org.sonatype.oss</groupId>
- 		<artifactId>oss-parent</artifactId>
- 		<version>7</version>
- 	</parent> -->
 
 	<licenses>
 		<license>
@@ -43,19 +36,19 @@
 	<scm>
 		<connection>scm:git:git://github.com/open-pay/openpay-java.git</connection>
 		<developerConnection>scm:git:ssh://github.com/open-pay/openpay-java.git</developerConnection>
-		<url>https://github.com/open-pay/openpay-java</url>
+		<url>https://github.com/open-pay/openpay-java/tree/develop</url>
 	</scm>
 
 	<distributionManagement>
-  		<snapshotRepository>
-   			<id>ossrh</id>
-   			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-  		</snapshotRepository>
-  		<repository>
-   			<id>ossrh</id>
-   			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-  		</repository>
- 	</distributionManagement>
+		<snapshotRepository>
+			<id>openpayra</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>openpayra</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -207,22 +200,30 @@
 			</plugin>
 
 			<plugin>
-        			<groupId>org.sonatype.plugins</groupId>
-        			<artifactId>nexus-staging-maven-plugin</artifactId>
-        			<version>1.6.7</version>
-        			<extensions>true</extensions>
-        			<configuration>
-          			<serverId>ossrh</serverId>
-          			<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          			<autoReleaseAfterClose>true</autoReleaseAfterClose>
-        				</configuration>
-      			</plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>openpayra</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -236,10 +237,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>attach-javadoc</id>
+						<phase>verify</phase>
 						<goals>
 							<goal>jar</goal>
 						</goals>
@@ -288,10 +290,10 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.4</version>
+						<version>1.6</version>
 						<configuration>
 							<keyname>${gpg.keyname}</keyname>
-							<passphrase>${gpg.passphrase}</passphrase>
+							<passphraseServerId>${gpg.passphrase}</passphraseServerId>
 						</configuration>
 						<executions>
 							<execution>
