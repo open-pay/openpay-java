@@ -47,8 +47,8 @@ public class GroupCustomerCardChargesTest extends GroupBaseTest {
     @Before
     public void setUp() throws Exception {
         this.customer = this.groupApi.groupCustomers().create(new Customer()
-                .name("Jorge Perez").email("juan.perez@example.com")
-                .phoneNumber("44200000000").requiresAccount(false));
+                .name("Jorge Perez").email("juan.perez@correo.com")
+                .phoneNumber("44212033000").requiresAccount(false));
         this.customerRegisteredCard = this.groupApi.groupCards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")

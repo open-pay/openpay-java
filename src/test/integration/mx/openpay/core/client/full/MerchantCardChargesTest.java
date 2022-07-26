@@ -127,7 +127,7 @@ public class MerchantCardChargesTest extends BaseTest {
     @Test
     public void testCreate_Charge_WithInterest() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal amount = new BigDecimal("1500.00");
-        String desc = "Pago con bandera paymentsType con valor WITHOUT_INTEREST";
+        String desc = "Pago con bandera paymentsType con valor WITH_INTEREST";
         String orderId = String.valueOf(System.currentTimeMillis());
         DeferralPayments deferralPayments = new DeferralPayments(3, PaymentType.WITH_INTEREST);
         Charge transaction = this.api.charges().create(new CreateCardChargeParams()
