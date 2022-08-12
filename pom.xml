@@ -33,7 +33,7 @@
 		</developer>
 	</developers>
 
-	<!--scm>
+	<scm>
 		<connection>scm:git:git://github.com/open-pay/openpay-java.git</connection>
 		<developerConnection>scm:git:ssh://github.com/open-pay/openpay-java.git</developerConnection>
 		<url>https://github.com/open-pay/openpay-java/tree/develop</url>
@@ -48,7 +48,7 @@
 			<id>openpayra</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-	</distributionManagement -->
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -209,7 +209,7 @@
 				</configuration>
 			</plugin>
 
-			<!--plugin>
+			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
 				<version>1.6.8</version>
@@ -228,7 +228,7 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
-			</plugin-->
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
