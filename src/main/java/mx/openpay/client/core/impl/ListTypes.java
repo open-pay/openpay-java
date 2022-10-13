@@ -62,6 +62,8 @@ public class ListTypes {
         }.getType());
         map.put(OpenCheckoutConfigurationResponseLight.class, new TypeToken<List<OpenCheckoutConfigurationResponseLight>>() {
         }.getType());
+        map.put(CheckoutResponse.class, new TypeToken<List<CheckoutResponse>>(){
+        }.getType());
         
         TYPES_MAP = Collections.unmodifiableMap(map);
     }
