@@ -107,5 +107,9 @@ public class CreateBankChargeParams extends RequestBuilder {
     public CreateBankChargeParams redirectUrl(final String redirect_url) {
         return this.with("redirect_url", redirect_url);
     }
-    
+
+    /**
+     * Sends product type
+     */
+    public CreateBankChargeParams productType(final String productType) { return this.with("product_type", productType); }
 }

@@ -246,4 +246,9 @@ public class CreateCardChargeParams extends RequestBuilder {
     public CreateCardChargeParams affiliation(final Affiliation affiliation) {
         return this.with("affiliation", affiliation);
     }
+
+    /**
+     * Sends product type
+     */
+    public CreateCardChargeParams productType(final String productType) { return this.with("product_type", productType); }
 }
