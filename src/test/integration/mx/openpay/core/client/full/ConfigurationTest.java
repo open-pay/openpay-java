@@ -18,12 +18,15 @@ package mx.openpay.core.client.full;
 import static mx.openpay.core.client.TestConstans.API_KEY;
 import static mx.openpay.core.client.TestConstans.ENDPOINT;
 import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
+import static mx.openpay.core.client.TestConstans.PUBLIC_IP;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.TimeZone;
 
+import mx.openpay.client.Merchant;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import mx.openpay.client.core.OpenpayAPI;
@@ -84,6 +87,13 @@ public class ConfigurationTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNullLocation() throws Exception {
         new OpenpayAPI(null, API_KEY, MERCHANT_ID);
+    }
+
+    @Test
+    public void testWithPublicIp() throws Exception {
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID, PUBLIC_IP);
+        Merchant merchant = api.merchant().get();
+        assertEquals(MERCHANT_ID, merchant.getId());
     }
 
 }

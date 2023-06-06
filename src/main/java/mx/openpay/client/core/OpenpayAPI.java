@@ -70,6 +70,10 @@ public class OpenpayAPI {
         this(new JsonServiceClient(location, merchantId, apiKey));
     }
 
+    public OpenpayAPI(final String location, final String apiKey, final String merchantId, final String publicIp) {
+        this(new JsonServiceClient(location, merchantId, apiKey, publicIp));
+    }
+
     public OpenpayAPI(final JsonServiceClient client) {
         this.jsonClient = client;
         this.cardOperations = new CardOperations(this.jsonClient);

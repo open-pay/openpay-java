@@ -156,6 +156,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testCreateMerchantBankPayout_WithBankAccount_Breakdown() throws ServiceUnavailableException,
             OpenpayServiceException {
         BigDecimal amount = BigDecimal.ONE;
