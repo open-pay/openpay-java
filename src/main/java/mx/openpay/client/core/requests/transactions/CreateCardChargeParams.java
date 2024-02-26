@@ -42,6 +42,7 @@ public class CreateCardChargeParams extends RequestBuilder {
 
     public CreateCardChargeParams() {
         this.with("method", ChargeMethods.CARD.name().toLowerCase());
+        originChannel("");
     }
 
     /**
@@ -59,7 +60,7 @@ public class CreateCardChargeParams extends RequestBuilder {
     }
 
     public CreateCardChargeParams originChannel(final String originChannel) {
-        return this.with("origin_channel", originChannel == null ? "SDK_JAVA" : originChannel);
+        return this.with("origin_channel", originChannel.isEmpty() ? "SDK_JAVA" : originChannel);
     }
 
     /**
