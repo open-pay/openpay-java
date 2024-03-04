@@ -58,6 +58,10 @@ public class CreateCardChargeParams extends RequestBuilder {
         return this.with("source_id", cardId);
     }
 
+    public CreateCardChargeParams originChannel(final String originChannel) {
+        return this.with("origin_channel", originChannel);
+    }
+
     /**
      * The amount to charge to the card. Required.
      */

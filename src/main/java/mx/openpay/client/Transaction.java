@@ -90,4 +90,6 @@ public class Transaction {
     /** Optional gateway affiliation information. */
     private GatewayResponse gateway;
 
+    @SerializedName("origin_channel")
+    private String originChannel;
 }

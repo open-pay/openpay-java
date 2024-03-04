@@ -40,4 +40,7 @@ public class Checkout {
     private Customer customer;
 
     private Transaction transaction;
+
+    @SerializedName("origin")
+    private String originChannel;
 }
