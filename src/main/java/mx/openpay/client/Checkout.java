@@ -42,5 +42,5 @@ public class Checkout {
     private Transaction transaction;
 
     @SerializedName("origin")
-    private String originChannel = "SDK_JAVA";
+    private String originChannel;
 }

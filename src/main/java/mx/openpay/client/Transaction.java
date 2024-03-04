@@ -91,5 +91,5 @@ public class Transaction {
     private GatewayResponse gateway;
 
     @SerializedName("origin_channel")
-    private String originChannel = "SDK_JAVA";
+    private String originChannel;
 }

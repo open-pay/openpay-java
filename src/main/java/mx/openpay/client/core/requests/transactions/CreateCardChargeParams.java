@@ -42,7 +42,6 @@ public class CreateCardChargeParams extends RequestBuilder {
 
     public CreateCardChargeParams() {
         this.with("method", ChargeMethods.CARD.name().toLowerCase());
-        originChannel("SDK_JAVA");
     }
 
     /**
