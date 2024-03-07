@@ -30,6 +30,10 @@ public enum Currency {
 	/**
 	 * Argentina peso
 	 */
-	ARS
-	;
+	ARS,
+
+	/**
+	 * Euros
+	 */
+	EUR
 }
