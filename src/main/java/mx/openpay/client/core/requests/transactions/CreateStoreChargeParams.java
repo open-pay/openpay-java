@@ -94,5 +94,9 @@ public class CreateStoreChargeParams extends RequestBuilder {
     public CreateStoreChargeParams iva(final String iva) {
     	return this.with("iva", iva);
     }
-    
+
+    /**
+     * Sends product type
+     */
+    public CreateStoreChargeParams productType(final String productType) { return this.with("product_type", productType); }
 }

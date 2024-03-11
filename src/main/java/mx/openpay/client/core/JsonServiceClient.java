@@ -56,7 +56,18 @@ public class JsonServiceClient {
      * @param key Public or private key. Public Key may have limited permissions.
      */
     public JsonServiceClient(final String location, final String merchantId, final String key) {
-        this(location, merchantId, key, new DefaultSerializer(), new DefaultHttpServiceClient(true));
+        this(location, merchantId, key, null, new DefaultSerializer(), new DefaultHttpServiceClient(true));
+    }
+
+    /**
+     * Initializes a JsonServiceClient with the default JsonSerializer and HttpServiceClient.
+     * @param location Base URL of the Webservice.
+     * @param merchantId Merchant's Id.
+     * @param key Public or private key. Public Key may have limited permissions.
+     * @param publicIp Public IP
+     */
+    public JsonServiceClient(final String location, final String merchantId, final String key, final String publicIp) {
+        this(location, merchantId, key, publicIp, new DefaultSerializer(), new DefaultHttpServiceClient(true));
     }
 
     /**
@@ -69,7 +80,7 @@ public class JsonServiceClient {
      * @param httpClient
      */
     public JsonServiceClient(final String location, final String merchantId, final String key,
-            final JsonSerializer serializer, final HttpServiceClient httpClient) {
+            final String publicIp, final JsonSerializer serializer, final HttpServiceClient httpClient) {
         this.validateParameters(location, merchantId);
         String url = this.getUrl(location);
         this.root = url;
@@ -77,6 +88,7 @@ public class JsonServiceClient {
         this.serializer = serializer;
         this.httpClient = httpClient;
         this.httpClient.setKey(key);
+        this.httpClient.setPublicIp(publicIp);
     }
 
     private void validateParameters(final String location, final String merchantId) {

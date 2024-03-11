@@ -47,8 +47,8 @@ public class CustomerBankPayoutsTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.customer = this.api.customers().create(new Customer()
-                .name("Jorge Perez").email("juan.perez@example.com")
-                .phoneNumber("44200000000")
+                .name("Jorge Perez").email("juan.perez@correo.com")
+                .phoneNumber("44212033000")
                 .requiresAccount(true));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
                 .amount(new BigDecimal("5"))
@@ -166,7 +166,8 @@ public class CustomerBankPayoutsTest extends BaseTest {
                         .holderName("Cuenta"))
                 .amount(amount)
                 .description(desc)
-                .orderId(orderId));
+                .orderId(orderId)
+                .currency("MXN"));
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
         Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));

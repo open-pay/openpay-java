@@ -86,6 +86,9 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
     @Setter
     private String key;
 
+    @Setter
+    private String publicIp;
+
     public DefaultHttpServiceClient(final boolean requirePoolManager) {
         this.httpClient = this.initHttpClient(requirePoolManager, DEFAULT_CONNECTION_TIMEOUT,
                 DEFAULT_CONNECTION_TIMEOUT);
@@ -236,6 +239,9 @@ public class DefaultHttpServiceClient implements HttpServiceClient {
         request.addHeader(new BasicHeader("User-Agent", this.userAgent));
         request.addHeader(new BasicHeader("Accept", "application/json"));
         request.setHeader(new BasicHeader("Content-Type", "application/json"));
+        if(this.publicIp != null) {
+            request.setHeader(new BasicHeader("X-Forwarded-For", this.publicIp));
+        }
     }
 
     protected void addAuthentication(final HttpRequestBase request) {

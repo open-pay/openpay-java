@@ -26,5 +26,14 @@ public enum Currency {
 	/**
 	 * Peru peso
 	 */
-	PEN;
+	PEN,
+	/**
+	 * Argentina peso
+	 */
+	ARS,
+
+	/**
+	 * Euros
+	 */
+	EUR
 }

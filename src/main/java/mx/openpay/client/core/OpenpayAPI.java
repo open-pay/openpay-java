@@ -64,8 +64,14 @@ public class OpenpayAPI {
 
     private final CheckoutsOperations checkoutsOperations;
 
+    private final OpenCheckoutOperations openCheckoutOperations;
+
     public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
         this(new JsonServiceClient(location, merchantId, apiKey));
+    }
+
+    public OpenpayAPI(final String location, final String apiKey, final String merchantId, final String publicIp) {
+        this(new JsonServiceClient(location, merchantId, apiKey, publicIp));
     }
 
     public OpenpayAPI(final JsonServiceClient client) {
@@ -87,6 +93,7 @@ public class OpenpayAPI {
         this.webhookOperations = new WebhookOperations(this.jsonClient);
         this.binesOperations = new BinesOperations(this.jsonClient);
         this.checkoutsOperations = new CheckoutsOperations(this.jsonClient);
+        this.openCheckoutOperations =  new OpenCheckoutOperations(this.jsonClient);
     }
 
     public void setTimeout(final int timeout) {
@@ -161,5 +168,7 @@ public class OpenpayAPI {
     public CheckoutsOperations checkouts() {
         return this.checkoutsOperations;
     }
+
+    public  OpenCheckoutOperations openCheckout(){return this.openCheckoutOperations;}
 
 }

@@ -3,17 +3,30 @@ package mx.openpay.client.core.requests.transactions;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.Currency;
 
-import mx.openpay.client.Customer;
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class CreateCheckoutParams extends RequestBuilder {
+public class CreateOpenCheckoutParams extends RequestBuilder {
+
+
+    /**
+     * The id to openCheckout for update.
+     */
+    public CreateCheckoutParams id(final String id) {
+        return this.with("id", id);
+    }
 
     /**
      * The amount to charge Required.
      */
     public CreateCheckoutParams amount(final BigDecimal amount) {
         return this.with("amount", amount);
+    }
+
+    /**
+     * The amount to charge Required.
+     */
+    public CreateCheckoutParams name(final String name) {
+        return this.with("name", name);
     }
 
     /**
@@ -70,32 +83,14 @@ public class CreateCheckoutParams extends RequestBuilder {
      */
     public CreateCheckoutParams expirationDate(final String dueDate) { return this.with("expiration_date", dueDate); }
 
-    /**
-     * Flag send email, default true
-     */
-    public CreateCheckoutParams sendEmail(boolean sendEmail) {
-        return this.with("send_email", sendEmail);
-    }
+
 
     /**
-     * Flag do redirect for store payment
+     * Flag do open amount
      */
-    public CreateCheckoutParams redirectStorePayment(Boolean redirectStorePayment) {
-        return this.with("redirect_store_payment", redirectStorePayment);
+    public CreateCheckoutParams openAmount(Boolean openAmount) {
+        return this.with("open_amount", openAmount);
     }
 
-    /**
-     * Plan for store checkout
-     */
-    public CreateCheckoutParams planIdPublic(final String planIdPublic) {
-        return this.with("plan_id_public", planIdPublic);
-    }
 
-    /**
-     * Customer Information when you want to send info but not create the resource
-     */
-    public CreateCheckoutParams customer(final Customer customer) {
-	    return this.with("customer", customer);
-    }
-    
 }

@@ -3,18 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.7.0</version>
+	<version>1.9.9-SNAPSHOT</version>
 	<packaging>jar</packaging>
+
 	<name>openpay-api-client</name>
 	<description>Java client for Openpay Services</description>
 	<url>http://github.com/open-pay/openpay-java</url>
-	
-<!-- Para publicar en Sonatype -->
- 	<parent>
- 		<groupId>org.sonatype.oss</groupId>
- 		<artifactId>oss-parent</artifactId>
- 		<version>7</version>
- 	</parent>
 
 	<licenses>
 		<license>
@@ -23,12 +17,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
-	<scm>
-		<connection>scm:git:https://github.com/open-pay/openpay-java.git</connection>
-		<developerConnection>scm:git:https://github.com/open-pay/openpay-java.git</developerConnection>
-		<url>http://github.com/open-pay/openpay-java</url>
-	</scm>
 
 	<developers>
 		<developer>
@@ -45,11 +33,28 @@
 		</developer>
 	</developers>
 
+	<!--scm>
+		<connection>scm:git:git://github.com/open-pay/openpay-java.git</connection>
+		<developerConnection>scm:git:ssh://github.com/open-pay/openpay-java.git</developerConnection>
+		<url>https://github.com/open-pay/openpay-java/tree/develop</url>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>openpayra</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>openpayra</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement-->
+
 	<dependencies>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.2.4</version>
+			<version>2.9.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -110,11 +115,21 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.5</version>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 			<scope>test</scope>
+		</dependency>-->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.17.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.17.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -134,6 +149,7 @@
 		  <version>20020423</version>
 		  <scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -192,10 +208,32 @@
 					</archive>
 				</configuration>
 			</plugin>
+
+			<!--plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>openpayra</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin!-->
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -209,7 +247,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>attach-javadoc</id>
@@ -262,10 +300,10 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.4</version>
+						<version>1.6</version>
 						<configuration>
 							<keyname>${gpg.keyname}</keyname>
-							<passphrase>${gpg.passphrase}</passphrase>
+							<passphraseServerId>${gpg.passphrase}</passphraseServerId>
 						</configuration>
 						<executions>
 							<execution>

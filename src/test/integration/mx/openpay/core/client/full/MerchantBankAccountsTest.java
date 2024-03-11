@@ -61,7 +61,7 @@ public class MerchantBankAccountsTest extends BaseTest {
     public void testGet() throws Exception {
         BankAccount bankAccount = this.api.bankAccounts().list(null).get(0);
         bankAccount = this.api.bankAccounts().get(bankAccount.getId());
-        assertEquals("012XXXXXXXXXX24616", bankAccount.getClabe());
+        assertEquals("012XXXXXXXXXX60639", bankAccount.getClabe());
     }
 
     @Test

@@ -1,10 +1,16 @@
 package mx.openpay.client.core.operations;
 
 import mx.openpay.client.Checkout;
+import mx.openpay.client.CheckoutResponse;
 import mx.openpay.client.core.JsonServiceClient;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
+import mx.openpay.client.utils.SearchCheckoutParams;
+import mx.openpay.client.utils.SearchOpenCheckoutParams;
+
+import java.util.List;
+import java.util.Map;
 
 import static mx.openpay.client.utils.OpenpayPathComponents.*;
 import static mx.openpay.client.utils.OpenpayPathComponents.ID;
@@ -55,5 +61,18 @@ public class CheckoutsOperations extends ServiceOperations {
     public Checkout getCheckoutByCheckoutIdOrOrderId(final String checkoutOrOrderId) throws OpenpayServiceException, ServiceUnavailableException {
         String path = String.format(FOR_GET_CHECKOUT_PATH, this.getMerchantId(), checkoutOrOrderId);
         return this.getJsonClient().get(path, Checkout.class);
+    }
+
+    /**
+     * Get a specific checkout by merchantid
+     * @param merchantId
+     * @return
+     * @throws OpenpayServiceException
+     * @throws ServiceUnavailableException
+     */
+    public List<CheckoutResponse> getCheckoutsByMerchant(final String merchantId, SearchCheckoutParams params) throws OpenpayServiceException, ServiceUnavailableException {
+        String path = String.format(FOR_MERCHANT_PATH, this.getMerchantId(), FOR_MERCHANT_PATH);
+        Map<String, String> map = params.asMap();
+        return this.getJsonClient().list(path, map,CheckoutResponse.class);
     }
 }

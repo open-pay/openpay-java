@@ -48,8 +48,8 @@ public class TransfersTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.customerFrom = this.api.customers().create(new Customer()
-                .name("Jorge Perez").email("juan.perez@example.com")
-                .phoneNumber("44200000000").requiresAccount(true));
+                .name("Jorge Perez").email("juan.perez@correo.com")
+                .phoneNumber("44212033000").requiresAccount(true));
         this.api.charges().create(this.customerFrom.getId(), new CreateCardChargeParams()
                 .amount(new BigDecimal("100"))
                 .description("Some funds")

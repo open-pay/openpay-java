@@ -27,6 +27,7 @@ import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import mx.openpay.client.Card;
 import mx.openpay.client.Charge;
 import mx.openpay.client.Customer;
+import mx.openpay.client.core.OpenpayAPI;
 import mx.openpay.client.core.requests.transactions.CancelParams;
 import mx.openpay.client.core.requests.transactions.ConfirmCaptureParams;
 import mx.openpay.client.core.requests.transactions.CreateCardChargeParams;
@@ -345,6 +347,60 @@ public class CustomerCardChargesTest extends BaseTest {
         assertNull(charge.getCard().getId());
         assertNotNull(charge.getExchangeRate());
         assertNotNull(charge.getExchangeRate().getValue());
+        assertNotNull(charge.getMetadata());
+    }
+
+    @Test
+    public void testCreate_Customer_WithCard_currencyEUR() throws Exception {
+        BigDecimal amount = new BigDecimal("300.00");
+        String desc = "Pago de taxi";
+        Map<String, String> metadata = new LinkedHashMap<String, String>();
+        metadata.put("origin", "Madrid");
+        metadata.put("destination", "Paris");
+        metadata.put("seats", "3");
+
+        OpenpayAPI api = new OpenpayAPI(
+                "https://dev-api.openpay.com.es/",
+                "sk_3c4897405bc34dce9b29609fd793b43c",
+                "mwlcpd7myrasxzrz7j61"
+        );
+
+        Customer customer = api.customers().create(
+                new Customer()
+                        .name("Carlos")
+                        .lastName("Chavez")
+                        .email("carlos.chavez@openpay.mx")
+                        .phoneNumber("4491053632")
+        );
+
+        Calendar exp = Calendar.getInstance();
+        exp.add(Calendar.YEAR, 2);
+
+        Card card = api.cards().create(
+                customer.getId(),
+                new Card()
+                        .cardNumber("4111111111111111")
+                        .holderName("Juanito Pérez Nuñez")
+                        .cvv2("111")
+                        .expirationMonth(exp.get(Calendar.MONTH))
+                        .expirationYear(exp.get(Calendar.YEAR) % 100)
+        );
+
+        Charge charge = api.charges().create(
+                customer.getId(),
+                new CreateCardChargeParams()
+                        .cardId(card.getId())
+                        .amount(amount)
+                        .description(desc)
+                        .currency(Currency.EUR)
+                        .metadata(metadata)
+                        .deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI")
+        );
+
+        assertNotNull(charge);
+        assertNotNull(charge.getCard());
+        assertNull(charge.getCard().getCvv2());
+        assertNotNull(charge.getCard().getId());
         assertNotNull(charge.getMetadata());
     }
 

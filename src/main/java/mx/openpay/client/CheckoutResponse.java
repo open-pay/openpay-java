@@ -6,12 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.util.Date;
+
 
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class Checkout {
+public class CheckoutResponse {
+
 
     private String id;
 
@@ -31,8 +32,11 @@ public class Checkout {
     @SerializedName("checkout_link")
     private String checkoutLink;
 
+    @SerializedName("creation_date")
+    private String creationDate;
+
     @SerializedName("expiration_date")
-    private Date expirationDate;
+    private String expirationDate;
 
     @SerializedName("plan_id")
     private Integer planId;
@@ -40,7 +44,5 @@ public class Checkout {
     private Customer customer;
 
     private Transaction transaction;
-
-    @SerializedName("origin")
-    private String originChannel;
 }
+

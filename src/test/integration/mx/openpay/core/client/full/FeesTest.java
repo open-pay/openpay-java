@@ -45,8 +45,8 @@ public class FeesTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.customer = this.api.customers().create(new Customer()
-                .name("Juan Nuñez").email("juan.perez@example.com")
-                .phoneNumber("44200000000")
+                .name("Juan Nuñez").email("juan.perez@correo.com")
+                .phoneNumber("44212033000")
                 .requiresAccount(true));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
                 .amount(new BigDecimal("5"))

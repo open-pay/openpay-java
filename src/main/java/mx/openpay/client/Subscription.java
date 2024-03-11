@@ -62,6 +62,9 @@ public class Subscription {
     @SerializedName("source_id")
     private String sourceId;
 
+    @SerializedName("order_id")
+    private String orderId;
+
     private Card card;
     
     private Transaction transaction; 
