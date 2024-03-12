@@ -144,7 +144,7 @@ public class CustomerCardsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(23));
+                .expirationYear(getYear()));
         int year = Calendar.getInstance().get(Calendar.YEAR) % 100 + 5;
         this.api.cards().update(this.customer.getId(), new UpdateCardParams()
               .cardId(card.getId())

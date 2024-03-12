@@ -89,7 +89,7 @@ public class GroupCustomerCardChargesTest extends GroupBaseTest {
             transaction = this.firstMerchantApi.charges().get(transactionId);
             assertThat(transaction.getId(), is(transactionId));
             assertNotNull(transaction);
-            assertEquals(amount, transaction.getAmount());
+            assertEquals(amount.setScale(2), transaction.getAmount().setScale(2));
             assertEquals(desc, transaction.getDescription());
             // Reembolso desde el grupo
             this.groupApi.groupCharges().refund(this.firstMerchantCredentials.getId(), this.customer.getId(),
@@ -107,7 +107,7 @@ public class GroupCustomerCardChargesTest extends GroupBaseTest {
             transaction = this.secondMerchantApi.charges().get(transactionId);
             assertThat(transaction.getId(), is(transactionId));
             assertNotNull(transaction);
-            assertEquals(amount, transaction.getAmount());
+            assertEquals(amount.setScale(2), transaction.getAmount().setScale(2));
             assertEquals(desc, transaction.getDescription());
             // Reembolso desde el grupo
             this.groupApi.groupCharges().refund(this.secondMerchantCredentials.getId(), this.customer.getId(),

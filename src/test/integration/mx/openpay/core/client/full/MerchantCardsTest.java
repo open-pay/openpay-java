@@ -119,7 +119,7 @@ public class MerchantCardsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(23));
+                .expirationYear(24));
         this.api.cards().update(new UpdateCardParams()
               .cardId(card.getId())
               .holderName("Jorge Rodriguez")
