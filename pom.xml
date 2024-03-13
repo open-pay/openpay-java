@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.9.8-SNAPSHOT</version>
+	<version>1.7.4</version>
 	<packaging>jar</packaging>
 
 	<name>openpay-api-client</name>
@@ -20,20 +20,11 @@
 
 	<developers>
 		<developer>
-			<name>Heber Lazcano</name>
-			<email>heber.lazcano@opencard.mx</email>
-		</developer>
-		<developer>
-			<name>Eli Lopez</name>
-			<email>eli.lopez@opencard.mx</email>
-		</developer>
-		<developer>
-			<name>Marcos Coronado</name>
-			<email>marcos.coronado@openpay.mx</email>
+			<email>soporte@openpay.mx</email>
 		</developer>
 	</developers>
 
-	<!--scm>
+	<scm>
 		<connection>scm:git:git://github.com/open-pay/openpay-java.git</connection>
 		<developerConnection>scm:git:ssh://github.com/open-pay/openpay-java.git</developerConnection>
 		<url>https://github.com/open-pay/openpay-java/tree/develop</url>
@@ -48,7 +39,7 @@
 			<id>openpayra</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-	</distributionManagement-->
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
