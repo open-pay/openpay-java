@@ -15,7 +15,7 @@ To install, add the following dependency to your pom.xml:
 <dependency>
 	<groupId>mx.openpay</groupId>
 	<artifactId>openpay-api-client</artifactId>
-	<version>1.8.0</version>
+	<version>1.7.5</version>
 </dependency>
 ```
 
@@ -30,7 +30,8 @@ Examples
 #### Starting the API ####
 
 ```java
-OpenpayAPI api = new OpenpayAPI("https://sandbox-api.openpay.mx", privateKey, merchantId);
+var publicIp = "138.84.62.109"; // customer ip address
+OpenpayAPI api = new OpenpayAPI("https://sandbox-api.openpay.mx", privateKey, merchantId, publicIp);
 ```
 
 #### Creating a customer ####

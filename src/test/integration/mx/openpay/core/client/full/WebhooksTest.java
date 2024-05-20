@@ -74,7 +74,8 @@ public class WebhooksTest {
         String merchantId = "miklpzr4nsvsucghm2qp";
         String apiKey = "sk_08453429e4c54220a3a82ab4d974c31a";
         String endpoint = "https://dev-api.openpay.mx/";
-        this.api = new OpenpayAPI(endpoint, apiKey, merchantId);
+        String publicIp = "138.84.62.109";
+        this.api = new OpenpayAPI(endpoint, apiKey, merchantId,publicIp);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 

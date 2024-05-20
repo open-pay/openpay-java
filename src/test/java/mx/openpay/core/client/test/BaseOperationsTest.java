@@ -15,16 +15,14 @@
  */
 package mx.openpay.core.client.test;
 
-import static mx.openpay.core.client.TestConstans.API_KEY;
-import static mx.openpay.core.client.TestConstans.ENDPOINT;
-import static mx.openpay.core.client.TestConstans.MERCHANT_ID;
-
 import java.util.TimeZone;
 
 import lombok.Getter;
 import mx.openpay.client.core.OpenpayAPI;
 
 import org.junit.Before;
+
+import static mx.openpay.core.client.TestConstans.*;
 
 /**
  * @author elopez
@@ -36,7 +34,7 @@ public class BaseOperationsTest {
 
     @Before
     public void setUp() throws Exception {
-        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID);
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, MERCHANT_ID, PUBLIC_IP);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 

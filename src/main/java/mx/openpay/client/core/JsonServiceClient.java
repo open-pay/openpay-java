@@ -81,7 +81,7 @@ public class JsonServiceClient {
      */
     public JsonServiceClient(final String location, final String merchantId, final String key,
             final String publicIp, final JsonSerializer serializer, final HttpServiceClient httpClient) {
-        this.validateParameters(location, merchantId);
+        this.validateParameters(location, merchantId,publicIp);
         String url = this.getUrl(location);
         this.root = url;
         this.merchantId = merchantId;
@@ -91,12 +91,15 @@ public class JsonServiceClient {
         this.httpClient.setPublicIp(publicIp);
     }
 
-    private void validateParameters(final String location, final String merchantId) {
+    private void validateParameters(final String location, final String merchantId,final String publicIp) {
         if (location == null) {
             throw new IllegalArgumentException("Location can't be null");
         }
         if (merchantId == null) {
             throw new IllegalArgumentException("Merchant ID can't be null");
+        }
+        if (publicIp == null|| publicIp.isEmpty()) {
+            throw new IllegalArgumentException("Public Ip can't be null or empty");
         }
     }
 
