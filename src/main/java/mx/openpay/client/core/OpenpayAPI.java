@@ -66,10 +66,6 @@ public class OpenpayAPI {
 
     private final OpenCheckoutOperations openCheckoutOperations;
 
-//    public OpenpayAPI(final String location, final String apiKey, final String merchantId) {
-//        this(new JsonServiceClient(location, merchantId, apiKey));
-//    }
-
     public OpenpayAPI(final String location, final String apiKey, final String merchantId, final String publicIp) {
         this(new JsonServiceClient(location, merchantId, apiKey, publicIp));
     }
