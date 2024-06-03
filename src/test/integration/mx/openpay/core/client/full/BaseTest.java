@@ -33,7 +33,8 @@ public class BaseTest {
         String merchantId = "mioppzc1kgz2cj21s8sp";
         String apiKey = "sk_fe7d3759f4514f4b8fe11cf0404812de";
         String endpoint = "https://dev-api.openpay.mx/";
-        this.api = new OpenpayAPI(endpoint, apiKey, merchantId);
+        String publicIp = "138.84.62.109";
+        this.api = new OpenpayAPI(endpoint, apiKey, merchantId,publicIp);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
     }
 

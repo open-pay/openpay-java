@@ -29,7 +29,8 @@ import mx.openpay.client.Address;
 public class TestUtils {
     
     public static final String TEST_ENVIRONMENT = "https://dev-api.openpay.mx/";
-    
+    public static final String TEST_PUBLIC_IP = "138.84.62.109";
+
     public static Address prepareAddress() {
         Address address = new Address();
         address.setCity("Querétaro");

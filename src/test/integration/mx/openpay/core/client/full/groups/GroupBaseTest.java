@@ -26,12 +26,12 @@ public class GroupBaseTest {
     @Before
     public void setupAPI() throws Exception {
         this.groupApi = new OpenpayGroupAPI(TestUtils.TEST_ENVIRONMENT, groupCredentials.getPrivateKey(),
-                groupCredentials.getId());
+                groupCredentials.getId(),TestUtils.TEST_PUBLIC_IP);
         TimeZone.setDefault(TimeZone.getTimeZone("Mexico/General"));
         this.firstMerchantApi = new OpenpayAPI(TestUtils.TEST_ENVIRONMENT, firstMerchantCredentials.getPrivateKey(),
-                firstMerchantCredentials.getId());
+                firstMerchantCredentials.getId(), TestUtils.TEST_PUBLIC_IP);
         this.secondMerchantApi = new OpenpayAPI(TestUtils.TEST_ENVIRONMENT, secondMerchantCredentials.getPrivateKey(),
-                secondMerchantCredentials.getId());
+                secondMerchantCredentials.getId(),TestUtils.TEST_PUBLIC_IP);
     }
 
 }

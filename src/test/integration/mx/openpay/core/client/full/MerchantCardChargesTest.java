@@ -328,7 +328,7 @@ public class MerchantCardChargesTest extends BaseTest {
                                 .postalCode("76000")
                                 .state("state")))
                 .httpContext(new HttpContext()
-                        .ip("127.0.0.1")
+                        .ip("138.84.62.109")
                         .browser("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1")
                         .domain("www.example.com")));
         assertNotNull(charge);

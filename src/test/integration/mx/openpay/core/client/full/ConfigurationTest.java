@@ -40,7 +40,7 @@ public class ConfigurationTest {
 
     @Test
     public void testNoAPIKey() throws Exception {
-        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https", "http"), null, MERCHANT_ID);
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https", "http"), null, MERCHANT_ID, PUBLIC_IP);
         try {
             api.customers().list(null);
             fail();
@@ -52,30 +52,30 @@ public class ConfigurationTest {
 
     @Test
     public void testForceHttps() throws Exception {
-        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https", "http"), API_KEY, MERCHANT_ID);
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https", "http"), API_KEY, MERCHANT_ID, PUBLIC_IP);
         assertNotNull(api.customers().list(null));
     }
 
     @Test(expected = ServiceUnavailableException.class)
     public void testNoConnection() throws Exception {
-        OpenpayAPI api = new OpenpayAPI("http://localhost:9090", API_KEY, MERCHANT_ID);
+        OpenpayAPI api = new OpenpayAPI("http://localhost:9090", API_KEY, MERCHANT_ID, "138.84.62.109");
         api.customers().list(null);
     }
 
     @Test
     public void testAddHttps() throws Exception {
-        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https://", ""), API_KEY, MERCHANT_ID);
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT.replace("https://", ""), API_KEY, MERCHANT_ID, PUBLIC_IP);
         assertNotNull(api.customers().list(null));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullMerchant() throws Exception {
-        new OpenpayAPI(ENDPOINT.replace("https://", ""), API_KEY, null);
+        new OpenpayAPI(ENDPOINT.replace("https://", ""), API_KEY, null, PUBLIC_IP);
     }
 
     @Test
     public void testWrongMerchant() throws Exception {
-        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, "notexists");
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, "notexists", "138.84.62.109");
         try {
             api.customers().list(null);
             fail();
@@ -86,7 +86,7 @@ public class ConfigurationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullLocation() throws Exception {
-        new OpenpayAPI(null, API_KEY, MERCHANT_ID);
+        new OpenpayAPI(null, API_KEY, MERCHANT_ID,null);
     }
 
     @Test

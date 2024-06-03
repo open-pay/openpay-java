@@ -23,8 +23,8 @@ public class OpenpayGroupAPI {
 
     private final GroupSubscriptionOperations groupSubscriptionOperations;
 
-    public OpenpayGroupAPI(final String location, final String apiKey, final String merchantId) {
-        this(new JsonServiceClient(location, merchantId, apiKey));
+    public OpenpayGroupAPI(final String location, final String apiKey, final String merchantId, final String publicIp) {
+        this(new JsonServiceClient(location, merchantId, apiKey, publicIp));
     }
 
     public OpenpayGroupAPI(final JsonServiceClient client) {

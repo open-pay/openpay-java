@@ -50,10 +50,10 @@ public class ReadmeExamples {
     public void testReadmeExamples() throws Exception {
         String merchantId = "mtfsdeoulmcoj0xofpfc";
         String apiKey = "sk_4ec3ef18cd01471487ca719f566d4d3f";
-
+        String publicIp = "138.84.62.109";
         // #### Starting the API ####
 
-        OpenpayAPI api = new OpenpayAPI("https://dev-api.openpay.mx/", apiKey, merchantId);
+        OpenpayAPI api = new OpenpayAPI("https://dev-api.openpay.mx/", apiKey, merchantId,publicIp);
 
         Address address = new Address()
                 .line1("Calle Morelos #12 - 11")
