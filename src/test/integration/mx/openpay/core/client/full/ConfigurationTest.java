@@ -58,7 +58,7 @@ public class ConfigurationTest {
 
     @Test(expected = ServiceUnavailableException.class)
     public void testNoConnection() throws Exception {
-        OpenpayAPI api = new OpenpayAPI("http://localhost:9090", API_KEY, MERCHANT_ID, "");
+        OpenpayAPI api = new OpenpayAPI("http://localhost:9090", API_KEY, MERCHANT_ID, "138.84.62.109");
         api.customers().list(null);
     }
 
@@ -75,7 +75,7 @@ public class ConfigurationTest {
 
     @Test
     public void testWrongMerchant() throws Exception {
-        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, "notexists", "");
+        OpenpayAPI api = new OpenpayAPI(ENDPOINT, API_KEY, "notexists", "138.84.62.109");
         try {
             api.customers().list(null);
             fail();

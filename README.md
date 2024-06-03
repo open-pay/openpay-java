@@ -30,7 +30,7 @@ Examples
 #### Starting the API ####
 
 ```java
-var publicIp = "138.84.62.109"; // customer ip address
+String publicIp = "138.84.62.109"; // customer ip address
 OpenpayAPI api = new OpenpayAPI("https://sandbox-api.openpay.mx", privateKey, merchantId, publicIp);
 ```
 
