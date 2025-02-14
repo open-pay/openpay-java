@@ -84,7 +84,7 @@ public class OpenCheckoutTest extends BaseTest{
 
         } catch (OpenpayServiceException e) {
             e.printStackTrace();
-            assertEquals(404, e.getHttpCode().intValue());
+            assertEquals(412, e.getHttpCode().intValue());
             assertNotNull(e.getErrorCode());
         }
     }
@@ -93,7 +93,7 @@ public class OpenCheckoutTest extends BaseTest{
     @Test
     public void testgetBylight() throws ServiceUnavailableException, OpenpayServiceException {
         try {
-            List<OpenCheckoutConfigurationResponseLight> response = this.api.openCheckout().getConfigurationsLight("myjsc2gdtfccbzgxdqza");
+            List<OpenCheckoutConfigurationResponseLight> response = this.api.openCheckout().getConfigurationsLight("movcg01xcf9kggrron0e");
             assertNotNull(response);
         } catch (OpenpayServiceException e) {
             e.printStackTrace();
