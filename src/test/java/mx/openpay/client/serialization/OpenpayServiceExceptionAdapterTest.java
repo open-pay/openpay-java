@@ -1,8 +1,10 @@
 package mx.openpay.client.serialization;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import junit.framework.TestCase;
 import mx.openpay.client.exceptions.OpenpayServiceException;
+import org.junit.Test;
 
 public class OpenpayServiceExceptionAdapterTest extends TestCase {
 
@@ -39,5 +41,27 @@ public class OpenpayServiceExceptionAdapterTest extends TestCase {
         assertNull(exception.getCategory());
         assertEquals("Invalid request", exception.getMessage());
         assertNull(exception.getRequestId());
+    }
+    
+
+    @Test
+    public void testSerialize() {
+        OpenpayServiceExceptionAdapter adapter = new OpenpayServiceExceptionAdapter();
+
+        // Crear una instancia de excepción con un mensaje de prueba
+        OpenpayServiceException exception = new OpenpayServiceException("Error de prueba");
+
+        // Serializar la instancia de excepción manualmente
+        JsonElement result = adapter.serialize(exception, null, null);
+
+        // Crear un objeto JSON esperado
+        JsonObject expected = new JsonObject();
+        expected.addProperty("message", "Error de prueba");
+
+        // Validar que el resultado no sea nulo
+        assertNotNull(result);
+
+        // Validar que el resultado sea igual al esperado
+        assertEquals(expected, result);
     }
 }
