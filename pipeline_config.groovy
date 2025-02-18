@@ -12,3 +12,4 @@ jte {
 libraries{
     maven
 }
+pull_request_enabled = false
