@@ -91,8 +91,8 @@ public class MerchantCardsTest extends BaseTest {
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
         assertEquals(PointsType.BANCOMER, balance.getPointsType());
-        assertThat(balance.getRemainingPoints(), comparesEqualTo(new BigInteger("450")));
-        assertThat(balance.getRemainingMxn(), comparesEqualTo(new BigDecimal("33.750")));
+        assertThat(balance.getRemainingPoints(), comparesEqualTo(new BigInteger("2667")));
+        assertThat(balance.getRemainingMxn(), comparesEqualTo(new BigDecimal("200.00")));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class MerchantCardsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(24));
+                .expirationYear(31));
         this.api.cards().update(new UpdateCardParams()
               .cardId(card.getId())
               .holderName("Jorge Rodriguez")

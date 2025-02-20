@@ -23,23 +23,42 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import mx.openpay.client.core.JsonSerializer;
+import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.serialization.DateFormatDeserializer;
+import mx.openpay.client.serialization.OpenpayServiceExceptionAdapter;
 import mx.openpay.client.serialization.SubscriptionAdapterFactory;
 
 /**
  * Serializes and deserializes the values using Gson.
+ *
  * @author elopez
  * @see JsonSerializer
  */
 public class DefaultSerializer implements JsonSerializer {
 
     private final Gson gson;
-
     public DefaultSerializer() {
-        this.gson = new GsonBuilder()
+        String javaVersion = System.getProperty("java.version");
+        GsonBuilder gsonBuilder = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateFormatDeserializer())
-                .registerTypeAdapterFactory(new SubscriptionAdapterFactory())
-                .create();
+                .registerTypeAdapterFactory(new SubscriptionAdapterFactory());
+
+        if (isJava17OrHigher(javaVersion)) {
+            gsonBuilder.registerTypeAdapter(OpenpayServiceException.class, new OpenpayServiceExceptionAdapter());
+        }
+
+        this.gson = gsonBuilder.create();
+    }
+
+    private boolean isJava17OrHigher(String javaVersion) {
+        // Toma el primer número de la versión: "17.0.1" -> "17"
+        String majorVersion = javaVersion.split("\\.")[0];
+
+        try {
+            return Integer.parseInt(majorVersion) >= 17;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     @Override

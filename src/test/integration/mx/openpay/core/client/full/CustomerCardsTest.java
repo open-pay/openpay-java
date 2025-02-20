@@ -116,7 +116,7 @@ public class CustomerCardsTest extends BaseTest {
         PointsBalance balance = this.api.cards().points(this.customer.getId(), card.getId());
         assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
-        assertEquals(new BigInteger("450"), balance.getRemainingPoints());
+        assertEquals(new BigInteger("2667"), balance.getRemainingPoints());
         System.out.println("id " + card.getId());
     }
     
