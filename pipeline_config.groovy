@@ -13,4 +13,4 @@ libraries{
     maven
 }
 pull_request_enabled = false
-git_credentials_id = "github_openpay"
+git_ssh_credentials_id = "github_openpay"
