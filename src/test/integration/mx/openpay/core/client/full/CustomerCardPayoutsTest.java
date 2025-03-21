@@ -52,7 +52,7 @@ public class CustomerCardPayoutsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(30)
                 .address(TestUtils.prepareAddress()));
         this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
                 .amount(new BigDecimal("5"))
@@ -62,7 +62,7 @@ public class CustomerCardPayoutsTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20)));
+                        .expirationYear(30)));
     }
 
     @After
@@ -88,7 +88,7 @@ public class CustomerCardPayoutsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(30)
                 .address(TestUtils.prepareAddress()), amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
@@ -134,7 +134,7 @@ public class CustomerCardPayoutsTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20)
+                        .expirationYear(30)
                         .address(TestUtils.prepareAddress())));
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
