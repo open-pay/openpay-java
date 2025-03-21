@@ -1,4 +1,4 @@
-﻿package mx.openpay.core.client.test;
+package mx.openpay.core.client.test;
 
 import mx.openpay.client.core.OpenpayAPI;
 import org.junit.Test;
