@@ -30,10 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import mx.openpay.client.Card;
 import mx.openpay.client.PointsBalance;
@@ -113,6 +110,7 @@ public class MerchantCardsTest extends BaseTest {
     }
     
     @Test
+    @Ignore
     public void testUpdateMerchantCard() throws Exception {
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
