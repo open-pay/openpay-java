@@ -70,7 +70,7 @@ public class MerchantCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(25)
+                .expirationYear(30)
                 .address(TestUtils.prepareAddress()));
     }
 
@@ -310,7 +310,7 @@ public class MerchantCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20))
+                        .expirationYear(30))
                 .amount(amount)
                 .description(desc)
                 .shipTo(new ShipTo()
@@ -349,7 +349,7 @@ public class MerchantCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20))
+                        .expirationYear(30))
                 .amount(amount)
                 .description(desc)
                 .isPhoneOrder(true));
@@ -369,7 +369,7 @@ public class MerchantCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20))
+                        .expirationYear(30))
                 .amount(amount)
                 .description(desc)
                 .use3dSecure(true)
@@ -390,7 +390,7 @@ public class MerchantCardChargesTest extends BaseTest {
         Charge charge = this.api.charges().create(
                 new CreateCardChargeParams()
                         .card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("110")
-                                .expirationMonth(12).expirationYear(20))
+                                .expirationMonth(12).expirationYear(30))
                         .amount(amount).description(desc)
                         .currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
         assertNotNull(charge);
@@ -565,7 +565,7 @@ public class MerchantCardChargesTest extends BaseTest {
                             .holderName("Juanito Pérez Nuñez")
                             .cvv2("111")
                             .expirationMonth(9)
-                            .expirationYear(20))
+                            .expirationYear(30))
                     .customer(new Customer()
                             .name("Juanito Pérez Nuñez")
                             .email("ERROR.FRAUD@OPENPAY.MX"))

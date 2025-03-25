@@ -75,7 +75,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(30)
                 .address(TestUtils.prepareAddress()));
         this.customer = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
@@ -85,7 +85,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(30)
                 .address(TestUtils.prepareAddress()));
         this.customerNoAccount = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
@@ -95,7 +95,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(30)
                 .address(TestUtils.prepareAddress()));
     }
 
@@ -281,7 +281,7 @@ public class CustomerCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(20))
+                        .expirationYear(30))
                 .amount(amount)
                 .description(desc));
         assertNotNull(charge);
@@ -337,7 +337,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 this.customer.getId(),
                 new CreateCardChargeParams()
                         .card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("111")
-                                .expirationMonth(9).expirationYear(20)).amount(amount).description(desc)
+                                .expirationMonth(9).expirationYear(30)).amount(amount).description(desc)
                         .currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
         assertNotNull(charge);
         assertNotNull(charge.getCard());

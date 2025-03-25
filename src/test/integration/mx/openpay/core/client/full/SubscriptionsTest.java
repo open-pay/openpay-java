@@ -71,14 +71,14 @@ public class SubscriptionsTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(30)
                 .address(TestUtils.prepareAddress()));
         this.secondCard = this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(20)
+                .expirationYear(30)
                 .address(TestUtils.prepareAddress()));
         this.planWithTrial = this.api.plans().create(
                 new Plan().name("Test plan").amount(BigDecimal.TEN).statusAfterRetry(PlanStatusAfterRetry.CANCELLED)
@@ -316,7 +316,7 @@ public class SubscriptionsTest extends BaseTest {
                 .cardNumber("5555555555554444")
                 .holderName("Holder")
                 .expirationMonth(12)
-                .expirationYear(20)
+                .expirationYear(30)
                 .cvv2("123")
                 .address(TestUtils.prepareAddress());
         return card;

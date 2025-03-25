@@ -29,6 +29,7 @@ import com.google.gson.annotations.SerializedName;
 @ToString(callSuper = true)
 public class Charge extends Transaction {
 
+    @SerializedName("refund")
     private Refund refund;
 
     @SerializedName("payment_method")
