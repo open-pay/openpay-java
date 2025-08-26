@@ -16,7 +16,7 @@
 package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
-import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -109,7 +109,7 @@ public class CustomerBankPayoutsTest extends BaseTest {
                 this.bankAccount.getId(), amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
-        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        assertThat(transaction.getAmount()).isEqualByComparingTo(amount);
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(this.customer.getId(), transaction.getCustomerId());
     }
@@ -127,7 +127,7 @@ public class CustomerBankPayoutsTest extends BaseTest {
         Payout transaction = this.api.payouts().create(this.customer.getId(), createPayout);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
-        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        assertThat(transaction.getAmount()).isEqualByComparingTo(amount);
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(this.customer.getId(), transaction.getCustomerId());
         Assert.assertNull(transaction.getFee());
@@ -148,7 +148,7 @@ public class CustomerBankPayoutsTest extends BaseTest {
                 , amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
-        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        assertThat(transaction.getAmount()).isEqualByComparingTo(amount);
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(this.customer.getId(), transaction.getCustomerId());
     }
@@ -170,7 +170,7 @@ public class CustomerBankPayoutsTest extends BaseTest {
                 .currency("MXN"));
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
-        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        assertThat(transaction.getAmount()).isEqualByComparingTo(amount);
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals(this.customer.getId(), transaction.getCustomerId());
     }

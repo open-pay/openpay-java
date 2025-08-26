@@ -17,12 +17,12 @@ package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -69,7 +69,7 @@ public class MerchantCardsTest extends BaseTest {
                 .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -85,11 +85,11 @@ public class MerchantCardsTest extends BaseTest {
         this.cardsToDelete.add(card);
         card = this.api.cards().get(card.getId());
         PointsBalance balance = this.api.cards().points(card.getId());
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
         assertEquals(PointsType.BANCOMER, balance.getPointsType());
-        assertThat(balance.getRemainingPoints(), comparesEqualTo(new BigInteger("2667")));
-        assertThat(balance.getRemainingMxn(), comparesEqualTo(new BigDecimal("200.00")));
+        assertThat(balance.getRemainingPoints()).isEqualByComparingTo(new BigInteger("2667"));
+        assertThat(balance.getRemainingMxn()).isEqualByComparingTo(new BigDecimal("200.00"));
     }
 
     @Test
@@ -141,7 +141,7 @@ public class MerchantCardsTest extends BaseTest {
                 .expirationMonth(9)
                 .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1));
         this.cardsToDelete.add(card);
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 

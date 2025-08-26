@@ -80,7 +80,7 @@ public class FeesTest extends BaseTest {
     @Test
     public void testCreate_ZeroAmount() throws Exception {
         BigDecimal amount = BigDecimal.ONE;
-        this.api.charges().create(this.customer.getId(), new CreateCardChargeParams()
+        this.api.charges().createCharge(this.customer.getId(), new CreateCardChargeParams()
                 .amount(amount.multiply(new BigDecimal(3)))
                 .description("Cargo")
                 .card(new Card()

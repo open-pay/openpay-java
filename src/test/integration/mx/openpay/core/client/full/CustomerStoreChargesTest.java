@@ -15,9 +15,10 @@
  */
 package mx.openpay.core.client.full;
 
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 import java.math.BigDecimal;
 
@@ -60,7 +61,7 @@ public class CustomerStoreChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertNotNull(transaction.getPaymentMethod().getReference());
         assertNotNull(transaction.getPaymentMethod().getBarcodeUrl());
-        assertThat(transaction.getStatus(), is("in_progress"));
+        assertThat(transaction.getStatus()).isEqualTo("in_progress");
         Assert.assertNull(transaction.getFee());
     }
 

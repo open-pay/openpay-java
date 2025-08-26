@@ -15,9 +15,7 @@
  */
 package mx.openpay.core.client.full;
 
-import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 
@@ -34,23 +32,23 @@ public class OpenpayFeesTest extends BaseTest {
     @Test
     public void testSummary() throws Exception {
         OpenpayFeesSummary summary = this.api.openpayFees().getSummary(2013, 1);
-        assertThat(summary.getTotal(), comparesEqualTo(BigDecimal.ZERO));
-        assertThat(summary.getCharged(), comparesEqualTo(BigDecimal.ZERO));
-        assertThat(summary.getChargedAdjustments(), comparesEqualTo(BigDecimal.ZERO));
-        assertThat(summary.getChargedAdjustmentsTax(), comparesEqualTo(BigDecimal.ZERO));
-        assertThat(summary.getChargedTax(), comparesEqualTo(BigDecimal.ZERO));
-        assertThat(summary.getRefunded(), comparesEqualTo(BigDecimal.ZERO));
-        assertThat(summary.getRefundedAdjustments(), comparesEqualTo(BigDecimal.ZERO));
-        assertThat(summary.getRefundedAdjustmentsTax(), comparesEqualTo(BigDecimal.ZERO));
-        assertThat(summary.getRefundedTax(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(summary.getTotal()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(summary.getCharged()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(summary.getChargedAdjustments()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(summary.getChargedAdjustmentsTax()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(summary.getChargedTax()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(summary.getRefunded()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(summary.getRefundedAdjustments()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(summary.getRefundedAdjustmentsTax()).isEqualByComparingTo(BigDecimal.ZERO);
+        assertThat(summary.getRefundedTax()).isEqualByComparingTo(BigDecimal.ZERO);
     }
 
     @Test
     public void testDetails() throws Exception {
-        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.CHARGED, null).size(), is(0));
-        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.CHARGED_ADJUSTMENTS, null).size(), is(0));
-        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.REFUNDED, null).size(), is(0));
-        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.REFUNDED_ADJUSTMENTS, null).size(), is(0));
+        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.CHARGED, null).size()).isZero();
+        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.CHARGED_ADJUSTMENTS, null).size()).isZero();
+        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.REFUNDED, null).size()).isZero();
+        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.REFUNDED_ADJUSTMENTS, null).size()).isZero();
     }
 
 }

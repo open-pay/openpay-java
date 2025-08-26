@@ -16,9 +16,9 @@
 package mx.openpay.core.client.full;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 
@@ -65,7 +65,7 @@ public class PaymentPlansTest extends BaseTest {
         log.info("{}", paymentPlan);
         assertNotNull(paymentPlan.getId());
         assertThat(paymentPlan.getStatus(), is("active"));
-        assertThat(paymentPlan.getFirstPaymentPercentage(), comparesEqualTo(firstPaymentPercentage));
+        assertThat(paymentPlan.getFirstPaymentPercentage()).isEqualByComparingTo(firstPaymentPercentage);
         assertThat(paymentPlan.getMaxNumberOfPayments(), is(maxNumberOfPayments));
         assertThat(paymentPlan.getName(), is(name));
         assertThat(paymentPlan.getMonthsToPay(), is(monthsToPay));
@@ -78,7 +78,7 @@ public class PaymentPlansTest extends BaseTest {
         paymentPlan = this.api.paymentsPlans().get(paymentPlan.getId());
         assertThat(paymentPlan.getId(), is(paymentPlan.getId()));
         assertThat(paymentPlan.getDaysToFirstPayment(), is(daysToFirstPayment));
-        assertThat(paymentPlan.getFirstPaymentPercentage(), comparesEqualTo(firstPaymentPercentage));
+        assertThat(paymentPlan.getFirstPaymentPercentage()).isEqualByComparingTo(firstPaymentPercentage);
         assertThat(paymentPlan.getMaxNumberOfPayments(), is(maxNumberOfPayments));
         assertThat(paymentPlan.getMonthsToPay(), is(monthsToPay));
         assertThat(paymentPlan.getName(), is(name));

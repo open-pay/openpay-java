@@ -16,8 +16,9 @@
 package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
-import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -108,7 +109,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
         Payout transaction = this.api.payouts().create(createPayout);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
-        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        assertThat(transaction.getAmount()).isEqualByComparingTo(amount);
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertNull(transaction.getCustomerId());
     }
@@ -128,7 +129,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
                 , amount, desc, orderId);
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
-        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        assertThat(transaction.getAmount()).isEqualByComparingTo(amount);
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertNull(transaction.getCustomerId());
     }
@@ -149,7 +150,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
                 .orderId(orderId));
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
-        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        assertThat(transaction.getAmount()).isEqualByComparingTo(amount);
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertNull(transaction.getCustomerId());
         Assert.assertNull(transaction.getFee());
@@ -173,7 +174,7 @@ public class MerchantBankPayoutsTest extends BaseTest {
                 .makeBreakdown(true));
         Assert.assertNotNull(transaction);
         Assert.assertNotNull(transaction.getCreationDate());
-        Assert.assertThat(transaction.getAmount(), comparesEqualTo(amount));
+        assertThat(transaction.getAmount()).isEqualByComparingTo(amount);
         Assert.assertEquals(desc, transaction.getDescription());
         Assert.assertEquals("payout", transaction.getTransactionType());
         Assert.assertNull(transaction.getCustomerId());

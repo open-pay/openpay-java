@@ -16,11 +16,12 @@
 package mx.openpay.core.client.full;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class MerchantBankAccountsTest extends BaseTest {
     @Test
     public void testList() throws ServiceUnavailableException, OpenpayServiceException {
         List<BankAccount> bankAccounts = this.api.bankAccounts().list(null);
-        assertThat(bankAccounts.size(), is(greaterThan(0)));
+        assertThat(bankAccounts).isNotEmpty();
         for (BankAccount bankAccount : bankAccounts) {
             Assert.assertNotNull(bankAccount);
             Assert.assertNotNull(bankAccount.getId());

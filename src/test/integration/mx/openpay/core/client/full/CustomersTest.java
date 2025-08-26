@@ -18,25 +18,21 @@ package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
 import mx.openpay.client.Address;
 import mx.openpay.client.Customer;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
 
-import org.hamcrest.core.IsNot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

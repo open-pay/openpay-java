@@ -16,10 +16,9 @@
 package mx.openpay.core.client.full.groups;
 
 import static mx.openpay.client.utils.SearchParams.search;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
                 .expirationYear(getYear())
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -87,7 +86,7 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.groupApi.groupCards().get(this.customer.getId(), card.getId());
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -166,14 +165,14 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
                 .cardNumber("4242424242424242").holderName("Carlos Pérez Nuñez")
                 .cvv2("111").expirationMonth(9).expirationYear(getYear())));
         List<Card> cards = this.groupApi.groupCards().list(this.customer.getId(), null);
-        assertThat(cards.size(), is(3));
+        assertThat(cards).hasSize(3);
         for (Card card : cards) {
             assertNotNull(card.getId());
         }
         cards = this.groupApi.groupCards().list(this.customer.getId(), search().limit(2));
-        assertThat(cards.size(), is(2));
+        assertThat(cards).hasSize(2);
         cards = this.groupApi.groupCards().list(this.customer.getId(), search().limit(2).offset(2));
-        assertThat(cards.size(), is(1));
+        assertThat(cards).hasSize(1);
     }
 
 }

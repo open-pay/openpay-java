@@ -1,9 +1,9 @@
 package mx.openpay.core.client.full;
 
-import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 
@@ -45,7 +45,7 @@ public class CustomerAlipayChargeTest extends BaseTest {
         assertNotNull(transaction.getPaymentMethod().getUrl());
         assertNotNull(transaction.getDueDate());
         assertEquals("charge_pending", transaction.getStatus());
-        assertThat(amount, comparesEqualTo(transaction.getAmount()));
+        assertThat(amount).isEqualByComparingTo(transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
         System.out.println(transaction.getPaymentMethod().getUrl());
     }
@@ -69,7 +69,7 @@ public class CustomerAlipayChargeTest extends BaseTest {
         assertNotNull(transaction.getPaymentMethod().getUrl());
         assertNotNull(transaction.getDueDate());
         assertEquals("charge_pending", transaction.getStatus());
-        assertThat(amount, comparesEqualTo(transaction.getAmount()));
+        assertThat(amount).isEqualByComparingTo(transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
         System.out.println(transaction.getPaymentMethod().getUrl());
     }
