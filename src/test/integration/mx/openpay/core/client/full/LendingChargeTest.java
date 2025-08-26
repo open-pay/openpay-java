@@ -19,8 +19,8 @@ public class LendingChargeTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.api = new OpenpayAPI("https://dev-api.openpay.mx",
-                "sk_902afcb096104425b43a80337788955b",
-                "mtd4dwopalmf9ags3eqs","138.84.62.109");
+                "sk_e58d4b09f41f45018b51831f361ac13b",
+                "mvwqxwbsg0xk9uf6spyq","138.84.62.109");
     }
     @Test
     public void merchantLendingCharge() throws OpenpayServiceException, ServiceUnavailableException {

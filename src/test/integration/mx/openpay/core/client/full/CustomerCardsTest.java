@@ -70,7 +70,7 @@ public class CustomerCardsTest extends BaseTest {
         Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Perez Nunez", "111",
                 "09", Integer.toString(getYear()), TestUtils.prepareAddress());
         this.cardsToDelete.add(card);
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -84,7 +84,7 @@ public class CustomerCardsTest extends BaseTest {
                 .expirationYear(getYear())
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -99,7 +99,7 @@ public class CustomerCardsTest extends BaseTest {
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.api.cards().get(this.customer.getId(), card.getId());
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -114,7 +114,7 @@ public class CustomerCardsTest extends BaseTest {
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         PointsBalance balance = this.api.cards().points(this.customer.getId(), card.getId());
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
         assertEquals(new BigInteger("2667"), balance.getRemainingPoints());
         System.out.println("id " + card.getId());
@@ -166,7 +166,7 @@ public class CustomerCardsTest extends BaseTest {
         Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Perez Nunez", "111",
                 "09", Integer.toString(getYear()), null);
         this.cardsToDelete.add(card);
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -179,7 +179,7 @@ public class CustomerCardsTest extends BaseTest {
                 .expirationMonth(9)
                 .expirationYear(getYear()));
         this.cardsToDelete.add(card);
-        assertEquals("424242XXXXXX4242", card.getCardNumber());
+        assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 

@@ -17,13 +17,15 @@ package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 import java.math.BigDecimal;
 
@@ -452,7 +454,7 @@ public class CustomerCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(this.customerNoAccount.getId(), originalTransactionId);
         assertNotNull(transaction.getRefund());
         BigDecimal balanceNew = this.api.merchant().get().getBalance();
-        assertThat(balanceNew, comparesEqualTo(balanceOld));
+        assertThat(balanceNew).isEqualByComparingTo(balanceOld);
     }
 
     @Test
@@ -481,7 +483,7 @@ public class CustomerCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(originalTransactionId);
         assertNotNull(transaction.getRefund());
         BigDecimal balanceNew = this.api.merchant().get().getBalance();
-        assertThat(balanceNew, comparesEqualTo(balanceOld));
+        assertThat(balanceNew).isEqualByComparingTo(balanceOld);
     }
 
     @Test

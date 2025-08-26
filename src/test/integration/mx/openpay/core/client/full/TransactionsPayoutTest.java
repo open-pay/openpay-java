@@ -15,9 +15,7 @@
  */
 package mx.openpay.core.client.full;
 
-import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 
@@ -36,25 +34,25 @@ public class TransactionsPayoutTest extends BaseTest {
 	@Test
 	public void testResume() throws Exception {
 		TransactionsPayoutResume resume = this.api.transactionsPayout().getResume("trutv6djm2suh2bo4v1f");
-		assertThat(resume.getIn(), comparesEqualTo(BigDecimal.ZERO));
-		assertThat(resume.getOut(), comparesEqualTo(BigDecimal.ZERO));
-		assertThat(resume.getChargedAdjustments(), comparesEqualTo(BigDecimal.ZERO));
-		assertThat(resume.getRefundedAdjustments(), comparesEqualTo(BigDecimal.ZERO));
+		assertThat(resume.getIn()).isEqualByComparingTo(BigDecimal.ZERO);
+		assertThat(resume.getOut()).isEqualByComparingTo(BigDecimal.ZERO);
+		assertThat(resume.getChargedAdjustments()).isEqualByComparingTo(BigDecimal.ZERO);
+		assertThat(resume.getRefundedAdjustments()).isEqualByComparingTo(BigDecimal.ZERO);
 	}
 
 	@Test
 	public void testDetails() throws Exception {
 		assertThat(this.api.transactionsPayout().getDetails("trutv6djm2suh2bo4v1f", TransactionsPayoutType.IN, null)
-				.size(), is(0));
+				.size()).isZero();
 		assertThat(this.api.transactionsPayout().getDetails("trutv6djm2suh2bo4v1f", TransactionsPayoutType.OUT, null)
-				.size(), is(0));
+				.size()).isZero();
 		assertThat(
 				this.api.transactionsPayout()
 						.getDetails("trutv6djm2suh2bo4v1f", TransactionsPayoutType.CHARGED_ADJUSTMENTS, null)
-				.size(), is(0));
+				.size()).isZero();
 		assertThat(
 				this.api.transactionsPayout()
 						.getDetails("trutv6djm2suh2bo4v1f", TransactionsPayoutType.REFUNDED_ADJUSTMENTS, null)
-				.size(), is(0));
+				.size()).isZero();
 	}
 }

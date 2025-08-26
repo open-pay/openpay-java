@@ -9,9 +9,8 @@
  */
 package mx.openpay.core.client.full;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 import org.junit.Test;
 
@@ -25,13 +24,13 @@ public class BinesTest extends BaseTest {
     @Test
     public void testGetMerchant() throws Exception {
         Bin bin = this.api.bines().get("415231");
-        assertThat(bin.getBank(), is(notNullValue()));
-        assertThat(bin.getBin(), is(notNullValue()));
-        assertThat(bin.getBrand(), is(notNullValue()));
-        assertThat(bin.getCategory(), is(notNullValue()));
-        assertThat(bin.getCountryCode(), is(notNullValue()));
-        assertThat(bin.getType(), is(notNullValue()));
-        assertThat(bin.getAllowedOnline(), is(notNullValue()));
-        assertThat(bin.getAllowedSantanderPoints(), is(notNullValue()));
+        assertThat(bin.getBank()).isNotNull();
+        assertThat(bin.getBin()).isNotNull();
+        assertThat(bin.getBrand()).isNotNull();
+        assertThat(bin.getCategory()).isNotNull();
+        assertThat(bin.getCountryCode()).isNotNull();
+        assertThat(bin.getType()).isNotNull();
+        assertThat(bin.getAllowedOnline()).isNotNull();
+        assertThat(bin.getAllowedSantanderPoints()).isNotNull();
     }
 }
