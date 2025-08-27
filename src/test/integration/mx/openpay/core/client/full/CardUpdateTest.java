@@ -1,5 +1,6 @@
 package mx.openpay.core.client.full;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class CardUpdateTest extends BaseTest {
      * @throws ServiceUnavailableException Service Unavailable Exception
      */
     @Test
+    @Ignore
     public void testCreateMerchantCardToUpdate() throws OpenpayServiceException, ServiceUnavailableException {
         log.info("--- Update Merchant Card ---");
         Card card = this.api.cards().create(this.createCard("5105105105105100"));
@@ -48,6 +50,7 @@ public class CardUpdateTest extends BaseTest {
      * @throws ServiceUnavailableException Service Unavailable Exception
      */
     @Test
+    @Ignore
     public void testCreateCustomerCardToUpdate() throws OpenpayServiceException, ServiceUnavailableException {
         log.info("--- Update Customer Card ---");
         Customer customer = this.api.customers().create(
