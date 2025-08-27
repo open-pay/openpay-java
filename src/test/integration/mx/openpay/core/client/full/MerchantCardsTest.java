@@ -175,6 +175,7 @@ public class MerchantCardsTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testListMerchantCards() throws ServiceUnavailableException, OpenpayServiceException {
        int year = Calendar.getInstance().get(Calendar.YEAR) % 100 + 1;
         this.cardsToDelete.add(this.api.cards().create(

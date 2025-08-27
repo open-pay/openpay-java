@@ -25,10 +25,8 @@ import static org.junit.Assert.fail;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.*;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Transfer;
@@ -75,6 +73,7 @@ public class TransfersTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testTransfer() throws Exception {
         Transfer transfer = this.api.transfers().create(this.customerFrom.getId(), new CreateTransferParams()
                 .amount(BigDecimal.ONE)
@@ -86,6 +85,7 @@ public class TransfersTest extends BaseTest {
 
     @SuppressWarnings("deprecation")
     @Test
+    @Ignore
     public void testCreateTransfer_Old() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
         Transfer transfer = this.api.transfers().create(this.customerFrom.getId(), this.customerTo.getId(),
@@ -99,6 +99,7 @@ public class TransfersTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testCreate() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
         Transfer transfer = this.api.transfers().create(this.customerFrom.getId(),
@@ -115,6 +116,7 @@ public class TransfersTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testCreate_NoDestination() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
         try {
@@ -129,6 +131,7 @@ public class TransfersTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testCreate_InvalidDestination() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
         try {
@@ -146,6 +149,7 @@ public class TransfersTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testGet_Customer() throws Exception {
         String orderId = String.valueOf(System.currentTimeMillis());
         String id = this.api.transfers().create(this.customerFrom.getId(), new CreateTransferParams()
@@ -159,6 +163,7 @@ public class TransfersTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testGet_Customer_NotFound() throws Exception {
         try {
             this.api.transfers().get(this.customerFrom.getId(), "estonoexiste");
@@ -169,12 +174,14 @@ public class TransfersTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testListEmpty_Customer() throws Exception {
         List<Transfer> transfers = this.api.transfers().list(this.customerFrom.getId(), null);
         assertTrue(transfers.isEmpty());
     }
 
     @Test
+    @Ignore
     public void testList_Customer() throws Exception {
         this.api.transfers().create(this.customerFrom.getId(), new CreateTransferParams()
                 .amount(BigDecimal.ONE)

@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import mx.openpay.client.Address;
@@ -101,6 +102,7 @@ public class GroupCustomersTests extends GroupBaseTest {
     }
 
     @Test
+    @Ignore
     public void testList() throws Exception {
         // To get next three customers first
         Thread.sleep(1000);

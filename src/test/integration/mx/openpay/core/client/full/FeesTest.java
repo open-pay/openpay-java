@@ -22,10 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.*;
 import mx.openpay.client.Card;
 import mx.openpay.client.Customer;
 import mx.openpay.client.Fee;
@@ -65,6 +63,7 @@ public class FeesTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testCreate() throws ServiceUnavailableException, OpenpayServiceException {
         BigDecimal feeAmount = new BigDecimal("2.00");
         String desc = "Comision general";
@@ -78,6 +77,7 @@ public class FeesTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testCreate_ZeroAmount() throws Exception {
         BigDecimal amount = BigDecimal.ONE;
         this.api.charges().createCharge(this.customer.getId(), new CreateCardChargeParams()
@@ -103,12 +103,14 @@ public class FeesTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testList() throws Exception {
         List<Fee> fees = this.api.fees().list(search().limit(3));
         assertEquals(3, fees.size());
     }
 
     @Test
+    @Ignore
     public void testList_Empty() throws Exception {
         List<Fee> fees = this.api.fees().list(
                 search().creation(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24))));

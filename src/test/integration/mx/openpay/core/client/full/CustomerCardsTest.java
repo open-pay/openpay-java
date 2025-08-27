@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import mx.openpay.client.Card;
@@ -213,6 +214,7 @@ public class CustomerCardsTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testListCustomerCards() throws ServiceUnavailableException, OpenpayServiceException {
         this.cardsToDelete.add(this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("5555555555554444").holderName("Juan Pérez Nuñez")

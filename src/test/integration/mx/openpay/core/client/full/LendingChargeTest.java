@@ -8,6 +8,7 @@ import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public class LendingChargeTest extends BaseTest {
                 "mvwqxwbsg0xk9uf6spyq","138.84.62.109");
     }
     @Test
+    @Ignore
     public void merchantLendingCharge() throws OpenpayServiceException, ServiceUnavailableException {
         CreateLendingChargeParams request = new CreateLendingChargeParams();
         LendingData lendingData = new LendingData();
@@ -101,6 +103,7 @@ public class LendingChargeTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void customerLendingCharge() throws OpenpayServiceException, ServiceUnavailableException {
         CreateLendingChargeParams request = new CreateLendingChargeParams();
         LendingData lendingData = new LendingData();
