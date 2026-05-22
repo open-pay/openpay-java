@@ -4,6 +4,7 @@ import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.Currency;
 
 import mx.openpay.client.Customer;
+import mx.openpay.client.Taxes;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -96,6 +97,20 @@ public class CreateCheckoutParams extends RequestBuilder {
      */
     public CreateCheckoutParams customer(final Customer customer) {
 	    return this.with("customer", customer);
+    }
+
+    /**
+     * Tax breakdown for the checkout. Optional.
+     */
+    public CreateCheckoutParams taxes(final Taxes taxes) {
+        return this.with("taxes", taxes);
+    }
+
+    /**
+     * Indicates whether the checkout includes tip. Optional.
+     */
+    public CreateCheckoutParams tip(final Boolean tip) {
+        return this.with("tip", tip);
     }
     
 }

@@ -27,6 +27,10 @@ public class CheckoutResponse {
 
     private String iva;
 
+    private Taxes taxes;
+
+    private Boolean tip;
+
     private String status;
 
     @SerializedName("checkout_link")
@@ -45,4 +49,3 @@ public class CheckoutResponse {
 
     private Transaction transaction;
 }
-

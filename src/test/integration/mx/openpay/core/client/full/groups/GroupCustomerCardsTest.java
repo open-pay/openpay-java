@@ -101,7 +101,7 @@ public class GroupCustomerCardsTest extends GroupBaseTest {
     // .address(TestUtils.prepareAddress()));
     // this.cardsToDelete.add(card);
     // PointsBalance balance = this.groupApi.groupCards().points(this.customer.getId(), card.getId());
-    // assertEquals("424242XXXXXX4242", card.getCardNumber());
+    // assertEquals("42424242XXXX4242", card.getCardNumber());
     // assertEquals("Juanito Perez Nunez", card.getHolderName());
     // assertEquals(new BigInteger("450"), balance.getRemainingPoints());
     // System.out.println("id " + card.getId());
