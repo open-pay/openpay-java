@@ -23,6 +23,12 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.operations.CardOperations;
 import org.junit.*;
 
 import mx.openpay.client.Card;
@@ -73,8 +81,29 @@ public class MerchantCardsTest extends BaseTest {
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
+
     @Test
     public void testGetMerchantCard() throws Exception {
+        OpenpayAPI mockApi = mock(OpenpayAPI.class);
+        CardOperations mockCardOperations = mock(CardOperations.class);
+
+        Card mockCardResponse = mock(Card.class);
+        when(mockCardResponse.getId()).thenReturn("mock_merchant_card_456");
+        when(mockCardResponse.getCardNumber()).thenReturn("42424242XXXX4242");
+        when(mockCardResponse.getHolderName()).thenReturn("Juanito Perez Nunez");
+
+        PointsBalance mockBalanceResponse = mock(PointsBalance.class);
+        when(mockBalanceResponse.getPointsType()).thenReturn(PointsType.BANCOMER);
+        when(mockBalanceResponse.getRemainingPoints()).thenReturn(new BigInteger("2667"));
+        when(mockBalanceResponse.getRemainingMxn()).thenReturn(new BigDecimal("200.00"));
+
+        when(mockApi.cards()).thenReturn(mockCardOperations);
+        when(mockCardOperations.create(any(Card.class))).thenReturn(mockCardResponse);
+        when(mockCardOperations.get(eq("mock_merchant_card_456"))).thenReturn(mockCardResponse);
+        when(mockCardOperations.points(eq("mock_merchant_card_456"))).thenReturn(mockBalanceResponse);
+
+        this.api = mockApi;
+
         Card card = this.api.cards().create(new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Perez Nunez")
@@ -82,14 +111,21 @@ public class MerchantCardsTest extends BaseTest {
                 .expirationMonth(9)
                 .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 1)
                 .address(TestUtils.prepareAddress()));
-        this.cardsToDelete.add(card);
+
+
         card = this.api.cards().get(card.getId());
         PointsBalance balance = this.api.cards().points(card.getId());
+
         assertEquals("42424242XXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
         assertEquals(PointsType.BANCOMER, balance.getPointsType());
         assertThat(balance.getRemainingPoints()).isEqualByComparingTo(new BigInteger("2667"));
         assertThat(balance.getRemainingMxn()).isEqualByComparingTo(new BigDecimal("200.00"));
+
+        verify(mockApi, times(3)).cards();
+        verify(mockCardOperations).create(any(Card.class));
+        verify(mockCardOperations).get(eq("mock_merchant_card_456"));
+        verify(mockCardOperations).points(eq("mock_merchant_card_456"));
     }
 
     @Test

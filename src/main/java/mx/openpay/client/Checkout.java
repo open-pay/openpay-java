@@ -26,6 +26,10 @@ public class Checkout {
 
     private String iva;
 
+    private Taxes taxes;
+
+    private Boolean tip;
+
     private String status;
 
     @SerializedName("checkout_link")
