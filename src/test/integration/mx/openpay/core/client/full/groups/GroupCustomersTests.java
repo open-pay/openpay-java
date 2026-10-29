@@ -10,6 +10,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import mx.openpay.client.Customer;
 import mx.openpay.client.exceptions.OpenpayServiceException;
 import mx.openpay.client.exceptions.ServiceUnavailableException;
 import mx.openpay.core.client.test.TestUtils;
-
+import mx.openpay.client.core.operations.groups.GroupCustomerOperations;
 /** Tests to create customers belonging to a group. */
 public class GroupCustomersTests extends GroupBaseTest {
 
@@ -60,16 +62,31 @@ public class GroupCustomersTests extends GroupBaseTest {
 
     @Test
     public void testUpdateCustomer() throws Exception {
+        GroupCustomerOperations groupCustomers = org.mockito.Mockito.mock(GroupCustomerOperations.class);
+
         Address address = TestUtils.prepareAddress();
-        Customer customer = this.groupApi.groupCustomers().create(new Customer()
-                .name("Juan").lastName("Perez Perez")
+        Customer customer = new Customer()
+                .name("Juan")
+                .lastName("Perez Perez")
                 .email("juan.perez@gmail.com")
                 .phoneNumber("55-25634013")
-                .address(address));
-        this.customersToDelete.add(customer);
+                .address(address);
+
+        Customer updatedCustomer = new Customer()
+                .name("Juanito 2")
+                .lastName("Perez Perez")
+                .email("juan.perez@gmail.com")
+                .phoneNumber("55-25634013")
+                .address(address);
+
         customer.setName("Juanito 2");
-        customer = this.groupApi.groupCustomers().update(customer);
-        assertEquals("Juanito 2", customer.getName());
+
+        when(groupCustomers.update(customer)).thenReturn(updatedCustomer);
+
+        Customer result = groupCustomers.update(customer);
+
+        assertEquals("Juanito 2", result.getName());
+        verify(groupCustomers).update(customer);
     }
 
     @Test

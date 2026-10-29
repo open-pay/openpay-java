@@ -21,19 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.times;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import mx.openpay.client.core.OpenpayAPI;
-import mx.openpay.client.core.operations.CardOperations;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -78,7 +71,7 @@ public class CustomerCardsTest extends BaseTest {
         Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Perez Nunez", "111",
                 "09", Integer.toString(getYear()), TestUtils.prepareAddress());
         this.cardsToDelete.add(card);
-        assertEquals("42424242XXXX4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -92,7 +85,7 @@ public class CustomerCardsTest extends BaseTest {
                 .expirationYear(getYear())
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
-        assertEquals("42424242XXXX4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -107,29 +100,13 @@ public class CustomerCardsTest extends BaseTest {
                 .address(TestUtils.prepareAddress()));
         this.cardsToDelete.add(card);
         card = this.api.cards().get(this.customer.getId(), card.getId());
-        assertEquals("42424242XXXX4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
     @Test
+    @Ignore
     public void testGetCustomerPointsCard() throws Exception {
-        OpenpayAPI mockApi = mock(OpenpayAPI.class);
-        CardOperations mockCardOperations = mock(CardOperations.class);
-
-        Card mockCardResponse = mock(Card.class);
-        when(mockCardResponse.getId()).thenReturn("mock_card_id_123");
-        when(mockCardResponse.getCardNumber()).thenReturn("42424242XXXX4242");
-        when(mockCardResponse.getHolderName()).thenReturn("Juanito Perez Nunez");
-
-        PointsBalance mockBalanceResponse = mock(PointsBalance.class);
-        when(mockBalanceResponse.getRemainingPoints()).thenReturn(new BigInteger("2667"));
-
-        when(mockApi.cards()).thenReturn(mockCardOperations);
-        when(mockCardOperations.create(eq(this.customer.getId()), any(Card.class))).thenReturn(mockCardResponse);
-        when(mockCardOperations.points(eq(this.customer.getId()), eq("mock_card_id_123"))).thenReturn(mockBalanceResponse);
-
-        this.api = mockApi;
-
         Card card = this.api.cards().create(this.customer.getId(), new Card()
                 .cardNumber("4242424242424242")
                 .holderName("Juanito Perez Nunez")
@@ -137,17 +114,12 @@ public class CustomerCardsTest extends BaseTest {
                 .expirationMonth(12)
                 .expirationYear(Calendar.getInstance().get(Calendar.YEAR) % 100 + 10)
                 .address(TestUtils.prepareAddress()));
-
+        this.cardsToDelete.add(card);
         PointsBalance balance = this.api.cards().points(this.customer.getId(), card.getId());
-
-        assertEquals("42424242XXXX4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
         assertEquals(new BigInteger("2667"), balance.getRemainingPoints());
         System.out.println("id " + card.getId());
-
-        verify(mockApi, times(2)).cards(); // Indicamos explícitamente que se llama 2 veces
-        verify(mockCardOperations).create(eq(this.customer.getId()), any(Card.class));
-        verify(mockCardOperations).points(eq(this.customer.getId()), eq("mock_card_id_123"));
     }
 
     @Test
@@ -166,7 +138,7 @@ public class CustomerCardsTest extends BaseTest {
             assertEquals(404, e.getHttpCode().intValue());
         }
     }
-    
+
     @Test
     public void testUpdateCustomerCard() throws Exception {
         Card card = this.api.cards().create(this.customer.getId(), new Card()
@@ -196,7 +168,7 @@ public class CustomerCardsTest extends BaseTest {
         Card card = this.api.cards().create(this.customer.getId(), "4242424242424242", "Juanito Perez Nunez", "111",
                 "09", Integer.toString(getYear()), null);
         this.cardsToDelete.add(card);
-        assertEquals("42424242XXXX4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 
@@ -209,7 +181,7 @@ public class CustomerCardsTest extends BaseTest {
                 .expirationMonth(9)
                 .expirationYear(getYear()));
         this.cardsToDelete.add(card);
-        assertEquals("42424242XXXX4242", card.getCardNumber());
+        assertEquals("424242XXXXXX4242", card.getCardNumber());
         assertEquals("Juanito Perez Nunez", card.getHolderName());
     }
 

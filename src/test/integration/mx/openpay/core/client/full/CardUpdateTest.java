@@ -29,7 +29,6 @@ public class CardUpdateTest extends BaseTest {
      * @throws ServiceUnavailableException Service Unavailable Exception
      */
     @Test
-    @Ignore
     public void testCreateMerchantCardToUpdate() throws OpenpayServiceException, ServiceUnavailableException {
         log.info("--- Update Merchant Card ---");
         Card card = this.api.cards().create(this.createCard("5105105105105100"));
