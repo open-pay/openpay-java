@@ -16,7 +16,12 @@
 package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -65,7 +70,7 @@ public class MerchantCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(30)
+                .expirationYear(25)
                 .address(TestUtils.prepareAddress()));
     }
 
@@ -91,7 +96,7 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
-        assertThat(transaction.getCardPoints()).isNull();
+        assertThat(transaction.getCardPoints(), is(nullValue()));
         Assert.assertNotNull(transaction.getFee());
     }
 
@@ -115,7 +120,7 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
-        assertThat(transaction.getCardPoints()).isNull();
+        assertThat(transaction.getCardPoints(), is(nullValue()));
         Assert.assertNotNull(transaction.getFee());
     }
 
@@ -139,7 +144,7 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
-        assertThat(transaction.getCardPoints()).isNull();
+        assertThat(transaction.getCardPoints(), is(nullValue()));
         Assert.assertNotNull(transaction.getFee());
     }
 
@@ -156,16 +161,16 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(transaction);
         assertEquals(amount, transaction.getAmount());
         assertEquals(desc, transaction.getDescription());
-        assertThat(transaction.getCardPoints()).isNull();
+        assertThat(transaction.getCardPoints(), is(nullValue()));
         Assert.assertNotNull(transaction.getFee());
         List<Charge> list = api.charges().list(new SearchParams().orderId(orderId));
-        assertThat(list).hasSize(1);
-        assertThat(list.get(0).getId()).isEqualTo(transaction.getId());
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0).getId(), is(transaction.getId()));
     }
 
     @Test
     public void testCreate_Customer_WithPoints_Small() throws ServiceUnavailableException, OpenpayServiceException {
-        assertThat(this.registeredCard.isPointsCard()).isTrue();
+        assertThat(this.registeredCard.isPointsCard(), is(true));
         BigDecimal amount = new BigDecimal("10.00");
         String desc = "Pago de taxi";
         String orderId = String.valueOf(System.currentTimeMillis());
@@ -305,7 +310,7 @@ public class MerchantCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(30))
+                        .expirationYear(20))
                 .amount(amount)
                 .description(desc)
                 .shipTo(new ShipTo()
@@ -330,8 +335,8 @@ public class MerchantCardChargesTest extends BaseTest {
         assertNotNull(charge.getCard());
         assertNull(charge.getCard().getCvv2());
         assertNull(charge.getCard().getId());
-        assertThat(charge.getRiskData().getScore()).isNotNull();
-        assertThat(charge.getRiskData().getRules()).isNotEmpty();
+        assertThat(charge.getRiskData().getScore(), is(notNullValue()));
+        assertThat(charge.getRiskData().getRules(), is(not(empty())));
     }
 
     @Test
@@ -344,7 +349,7 @@ public class MerchantCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(30))
+                        .expirationYear(20))
                 .amount(amount)
                 .description(desc)
                 .isPhoneOrder(true));
@@ -364,7 +369,7 @@ public class MerchantCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(30))
+                        .expirationYear(20))
                 .amount(amount)
                 .description(desc)
                 .use3dSecure(true)
@@ -385,7 +390,7 @@ public class MerchantCardChargesTest extends BaseTest {
         Charge charge = this.api.charges().create(
                 new CreateCardChargeParams()
                         .card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("110")
-                                .expirationMonth(12).expirationYear(30))
+                                .expirationMonth(12).expirationYear(20))
                         .amount(amount).description(desc)
                         .currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
         assertNotNull(charge);
@@ -465,12 +470,12 @@ public class MerchantCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(originalTransactionId);
         assertNotNull(transaction.getRefund());
         assertTrue(this.api.merchant().get().getBalance().compareTo(initialBalance) == 0);
-        assertThat(transaction.getRefunds()).hasSize(1);
+        assertThat(transaction.getRefunds().size(), is(1));
         SimpleRefund refund = transaction.getRefunds().get(0);
-        assertThat(refund.getId()).isNotNull();
-        assertThat(refund.getStatus()).isEqualTo("completed");
-        assertThat(refund.getOperationDate()).isNotNull();
-        assertThat(refund.getAmount()).isEqualByComparingTo(amount);
+        assertThat(refund.getId(), is(notNullValue()));
+        assertThat(refund.getStatus(), is("completed"));
+        assertThat(refund.getOperationDate(), is(notNullValue()));
+        assertThat(refund.getAmount(), comparesEqualTo(amount));
         
     }
 
@@ -560,7 +565,7 @@ public class MerchantCardChargesTest extends BaseTest {
                             .holderName("Juanito Pérez Nuñez")
                             .cvv2("111")
                             .expirationMonth(9)
-                            .expirationYear(30))
+                            .expirationYear(20))
                     .customer(new Customer()
                             .name("Juanito Pérez Nuñez")
                             .email("ERROR.FRAUD@OPENPAY.MX"))
@@ -568,9 +573,9 @@ public class MerchantCardChargesTest extends BaseTest {
                     .description(desc));
         } catch (OpenpayServiceException e) {
             assertEquals(402, e.getHttpCode().intValue());
-            assertThat(e.getErrorCode()).isEqualTo(3003);
-            assertThat(e.getRiskData().getScore()).isNotNull();
-            assertThat(e.getRiskData().getRules()).isNotEmpty();
+            assertThat(e.getErrorCode(), is(3003));
+            assertThat(e.getRiskData().getScore(), is(notNullValue()));
+            assertThat(e.getRiskData().getRules(), is(not(empty())));
         }
     }
 

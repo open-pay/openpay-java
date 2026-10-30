@@ -15,7 +15,7 @@
  */
 package mx.openpay.client.enums;
 
-/**
+/**ChargeMethods.CARD.name().toLowerCase())
  * Methods to charge a transaction in Openpay.
  * @author elopez
  */
@@ -42,5 +42,7 @@ public enum ChargeMethods {
     /**
      * Charges paid through Checkout Lending.
      */
-    LENDING;
+    LENDING,
+
+    QR;
 }

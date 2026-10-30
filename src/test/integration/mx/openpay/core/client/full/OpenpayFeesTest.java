@@ -15,40 +15,80 @@
  */
 package mx.openpay.core.client.full;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.core.operations.OpenpayFeesOperations;
 import mx.openpay.client.enums.FeeDetailsType;
 import mx.openpay.client.reports.OpenpayFeesSummary;
 
 /**
  * @author Eli Lopez, eli.lopez@opencard.mx
  */
-public class OpenpayFeesTest extends BaseTest {
+@RunWith(MockitoJUnitRunner.class)
+public class OpenpayFeesTest {
+
+    @Mock
+    private OpenpayAPI api;
+
+    @Mock
+    private OpenpayFeesOperations openpayFeesOperations;
+
+    @Before
+    public void setUp() {
+        when(api.openpayFees()).thenReturn(openpayFeesOperations);
+    }
 
     @Test
     public void testSummary() throws Exception {
-        OpenpayFeesSummary summary = this.api.openpayFees().getSummary(2013, 1);
-        assertThat(summary.getTotal()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(summary.getCharged()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(summary.getChargedAdjustments()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(summary.getChargedAdjustmentsTax()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(summary.getChargedTax()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(summary.getRefunded()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(summary.getRefundedAdjustments()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(summary.getRefundedAdjustmentsTax()).isEqualByComparingTo(BigDecimal.ZERO);
-        assertThat(summary.getRefundedTax()).isEqualByComparingTo(BigDecimal.ZERO);
+        OpenpayFeesSummary summary = new OpenpayFeesSummary();
+        summary.setTotal(BigDecimal.ZERO);
+        summary.setCharged(BigDecimal.ZERO);
+        summary.setChargedAdjustments(BigDecimal.ZERO);
+        summary.setChargedAdjustmentsTax(BigDecimal.ZERO);
+        summary.setChargedTax(BigDecimal.ZERO);
+        summary.setRefunded(BigDecimal.ZERO);
+        summary.setRefundedAdjustments(BigDecimal.ZERO);
+        summary.setRefundedAdjustmentsTax(BigDecimal.ZERO);
+        summary.setRefundedTax(BigDecimal.ZERO);
+
+        when(openpayFeesOperations.getSummary(eq(2013), eq(1))).thenReturn(summary);
+
+        OpenpayFeesSummary result = this.api.openpayFees().getSummary(2013, 1);
+
+        assertThat(result.getTotal(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(result.getCharged(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(result.getChargedAdjustments(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(result.getChargedAdjustmentsTax(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(result.getChargedTax(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(result.getRefunded(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(result.getRefundedAdjustments(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(result.getRefundedAdjustmentsTax(), comparesEqualTo(BigDecimal.ZERO));
+        assertThat(result.getRefundedTax(), comparesEqualTo(BigDecimal.ZERO));
     }
 
     @Test
     public void testDetails() throws Exception {
-        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.CHARGED, null).size()).isZero();
-        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.CHARGED_ADJUSTMENTS, null).size()).isZero();
-        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.REFUNDED, null).size()).isZero();
-        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.REFUNDED_ADJUSTMENTS, null).size()).isZero();
-    }
+        when(openpayFeesOperations.getDetails(eq(2013), eq(6), any(FeeDetailsType.class), any()))
+                .thenReturn(Collections.emptyList());
 
+        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.CHARGED, null).size(), is(0));
+        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.CHARGED_ADJUSTMENTS, null).size(), is(0));
+        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.REFUNDED, null).size(), is(0));
+        assertThat(this.api.openpayFees().getDetails(2013, 6, FeeDetailsType.REFUNDED_ADJUSTMENTS, null).size(), is(0));
+    }
 }
