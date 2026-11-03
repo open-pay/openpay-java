@@ -3,10 +3,11 @@
  */
 package mx.openpay.core.client.full;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -70,11 +71,11 @@ public class OrdersTest extends BaseTest {
 		assertEquals(customerId, newOrder.getCustomerId());
 		assertEquals(this.paymentPlan.getId(), newOrder.getPaymentPlanId());
 		assertEquals("waiting_first_pay", newOrder.getStatus());
-		assertThat(newOrder.getAmount()).isEqualByComparingTo(orderAmount);
-		assertThat(newOrder.getTotalAmountToPay()).isEqualByComparingTo(orderAmount);
-		assertThat(newOrder.getTotalAmountPaid()).isEqualByComparingTo(BigDecimal.ZERO);
-		assertThat(newOrder.getNumberOfPaymentsMade()).isEqualTo(new Integer("0"));
-		assertThat(newOrder.getMaximunNumberOfPayments()).isEqualTo(new Integer("12"));
+		assertThat(newOrder.getAmount(), comparesEqualTo(orderAmount));
+		assertThat(newOrder.getTotalAmountToPay(), comparesEqualTo(orderAmount));
+		assertThat(newOrder.getTotalAmountPaid(), comparesEqualTo(BigDecimal.ZERO));
+		assertThat(newOrder.getNumberOfPaymentsMade(), equalTo(new Integer("0")));
+		assertThat(newOrder.getMaximunNumberOfPayments(), equalTo(new Integer("12")));
 		this.assertNotNullValues(newOrder);
 	}
 
@@ -90,8 +91,8 @@ public class OrdersTest extends BaseTest {
 		try {
 			this.api.orders().get(customerId, newOrder.getId());
 		} catch (OpenpayServiceException e) {
-			assertThat(e.getHttpCode()).isEqualTo(404);
-			assertThat(e.getErrorCode()).isEqualTo(1005);
+			assertThat(e.getHttpCode(), equalTo(404));
+			assertThat(e.getErrorCode(), equalTo(1005));
 		}
 
 	}

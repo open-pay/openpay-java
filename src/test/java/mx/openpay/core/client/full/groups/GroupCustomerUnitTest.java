@@ -66,9 +66,9 @@ public class GroupCustomerUnitTest {
         // El método que probablemente se llama internamente es: post(path, params, clazz)
         // Usamos los "matchers" de Mockito para mayor flexibilidad.
         when(jsonServiceClientMock.post(
-                anyString(),              // Coincide con cualquier path (ej. "customers")
-                any(Customer.class),      // Coincide con cualquier objeto de tipo Customer
-                eq(Customer.class)        // Coincide con el argumento Class<Customer>
+                anyString(),
+                any(Customer.class),
+                eq(Customer.class)
         )).thenReturn(expectedCustomerResponse); // Devuelve el OBJETO Java, no un String.
 
         // --- ACT (Actuar) ---
@@ -200,9 +200,9 @@ public class GroupCustomerUnitTest {
 
         // 2. ¡LA LÍNEA CORRECTA! Mockeamos el método 'list' con los argumentos correctos.
         when(jsonServiceClientMock.list(
-                anyString(),            // Coincide con el path "/groups/null/customers"
-                anyMap(),               // Coincide con el mapa {"limit" = "2"}
-                any(Class.class)        // Coincide con class mx.openpay.client.Customer
+                anyString(),
+                anyMap(),
+                any(Class.class)
         )).thenReturn(customerListResponse); // Devuelve la lista que preparamos.
 
         // --- ACT ---
@@ -234,9 +234,9 @@ public class GroupCustomerUnitTest {
 
         List<Customer> mockedResponseList = Arrays.asList(c1, c2);
         when(jsonServiceClientMock.list(
-                anyString(),            // Coincide con el path "/groups/null/customers"
-                anyMap(),               // Coincide con el mapa {"limit" = "2"}
-                any(Class.class)        // Coincide con class mx.openpay.client.Customer
+                anyString(),
+                anyMap(),
+                any(Class.class)
         )).thenReturn(mockedResponseList); // Devuelve la lista que preparamos.
 
         // --- ACT ---

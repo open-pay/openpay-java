@@ -73,4 +73,12 @@ public class PaymentMethod {
     private String url;
     
     private String callbackUrl;
+
+    @SerializedName("barcode_base64")
+    private String barcodeBase64;
+
+
+    @SerializedName("qr_type")
+    private String qrType;
+
 }

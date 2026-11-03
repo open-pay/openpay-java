@@ -59,7 +59,7 @@ public class GroupCustomerCardChargesUnitTest {
         // envía realmente los parámetros del cargo.
         when(jsonServiceClientMock.post(
                 anyString(),
-                any(Map.class), // <-- Coincide con el mapa {"amount"=10.00, ...}
+                any(Map.class),
                 eq(Charge.class)))
                 .thenReturn(chargeResponse);
 
@@ -89,12 +89,9 @@ public class GroupCustomerCardChargesUnitTest {
         RefundParams refundRequestParams = new RefundParams();
         refundRequestParams.chargeId(FAKE_CHARGE_ID);
 
-        // AQUÍ ESTÁ EL CAMBIO:
-        // Ajustamos el mock para que espere CUALQUIER MAPA, lo que incluye
-        // el mapa vacío {} que vimos en el log.
         when(jsonServiceClientMock.post(
                 contains("/refund"),
-                any(Map.class), // <-- Coincide con el cuerpo vacío {}
+                any(Map.class),
                 eq(Charge.class)))
                 .thenReturn(refundedChargeResponse);
 

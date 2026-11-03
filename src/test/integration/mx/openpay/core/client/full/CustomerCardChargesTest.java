@@ -17,15 +17,13 @@ package mx.openpay.core.client.full;
 
 import static mx.openpay.client.utils.SearchParams.search;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 import java.math.BigDecimal;
 
@@ -77,7 +75,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(30)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.customer = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
@@ -87,7 +85,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(30)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
         this.customerNoAccount = this.api.customers().create(new Customer()
                 .name("Juan").email("juan.perez@gmail.com")
@@ -97,7 +95,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 .holderName("Juanito Pérez Nuñez")
                 .cvv2("111")
                 .expirationMonth(9)
-                .expirationYear(30)
+                .expirationYear(20)
                 .address(TestUtils.prepareAddress()));
     }
 
@@ -283,7 +281,7 @@ public class CustomerCardChargesTest extends BaseTest {
                         .holderName("Juanito Pérez Nuñez")
                         .cvv2("111")
                         .expirationMonth(9)
-                        .expirationYear(30))
+                        .expirationYear(20))
                 .amount(amount)
                 .description(desc));
         assertNotNull(charge);
@@ -339,7 +337,7 @@ public class CustomerCardChargesTest extends BaseTest {
                 this.customer.getId(),
                 new CreateCardChargeParams()
                         .card(new Card().cardNumber("4111111111111111").holderName("Juanito Pérez Nuñez").cvv2("111")
-                                .expirationMonth(9).expirationYear(30)).amount(amount).description(desc)
+                                .expirationMonth(9).expirationYear(20)).amount(amount).description(desc)
                         .currency(Currency.USD).metadata(metadata).deviceSessionId("Tu2yXO0sJpT6KUVi1g4IWDOEmIHP69XI"));
         assertNotNull(charge);
         assertNotNull(charge.getCard());
@@ -454,7 +452,7 @@ public class CustomerCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(this.customerNoAccount.getId(), originalTransactionId);
         assertNotNull(transaction.getRefund());
         BigDecimal balanceNew = this.api.merchant().get().getBalance();
-        assertThat(balanceNew).isEqualByComparingTo(balanceOld);
+        assertThat(balanceNew, comparesEqualTo(balanceOld));
     }
 
     @Test
@@ -483,7 +481,7 @@ public class CustomerCardChargesTest extends BaseTest {
         transaction = this.api.charges().get(originalTransactionId);
         assertNotNull(transaction.getRefund());
         BigDecimal balanceNew = this.api.merchant().get().getBalance();
-        assertThat(balanceNew).isEqualByComparingTo(balanceOld);
+        assertThat(balanceNew, comparesEqualTo(balanceOld));
     }
 
     @Test

@@ -19,16 +19,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import mx.openpay.client.Affiliation;
-import mx.openpay.client.Billing;
-import mx.openpay.client.Card;
-import mx.openpay.client.Customer;
-import mx.openpay.client.DeferralPayments;
-import mx.openpay.client.GatewayParams;
-import mx.openpay.client.HttpContext;
-import mx.openpay.client.PaymentOptions;
-import mx.openpay.client.ProductsChargebackInsurance;
-import mx.openpay.client.ShipTo;
+
+import mx.openpay.client.*;
 import mx.openpay.client.core.requests.RequestBuilder;
 import mx.openpay.client.enums.ChargeMethods;
 import mx.openpay.client.enums.Currency;
@@ -255,4 +247,9 @@ public class CreateCardChargeParams extends RequestBuilder {
      * Sends product type
      */
     public CreateCardChargeParams productType(final String productType) { return this.with("product_type", productType); }
+
+    /**
+     * Sends taxes information.
+     */
+    public CreateCardChargeParams taxes(final Taxes taxes) { return this.with("taxes", taxes); }
 }
